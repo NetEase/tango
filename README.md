@@ -7,9 +7,16 @@
 
 A source code based low-code designer from the NetEase Cloud Music Develop Team.
 
+[![NPM version][npm-image]][npm-url]
+
+<img src="https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/30108735057/7ba9/dced/9ac3/420f6e04b371dd47de06e7d71142560d.gif" alt="preview" />
+
 </div>
 
 English | [简体中文](/packages/designer/README.zh-CN.md)
+
+[npm-image]: https://img.shields.io/npm/v/@music163/tango-designer.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/@music163/tango-designer
 
 ## ✨ Features
 
@@ -66,7 +73,6 @@ Find details from [Documentation Site](./#)。
 - Yarn >= 1.22.0
 
 ### Development Quick Start
-
 
 ```bash
 # clone the repo

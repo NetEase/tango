@@ -7,9 +7,16 @@
 
 一个源码驱动的低代码设计器，来自网易云音乐技术团队
 
+[![NPM version][npm-image]][npm-url]
+
+<img src="https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/30108735057/7ba9/dced/9ac3/420f6e04b371dd47de06e7d71142560d.gif" alt="preview" />
+
 </div>
 
 简体中文 | [English](/packages/designer/README.md)
+
+[npm-image]: https://img.shields.io/npm/v/@music163/tango-designer.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/@music163/tango-designer
 
 ## ✨ 特性
 

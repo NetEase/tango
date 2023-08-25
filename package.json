@@ -9,6 +9,7 @@
     "start": "yarn workspace playground start",
     "start:docs": "yarn workspace docs storybook",
     "start:site": "yarn workspace website start",
+    "deploy:site": "yarn workspace website deploy",
     "build": "lerna run build",
     "test": "jest",
     "test:watch": "jest --watch",
