@@ -10,6 +10,17 @@
   overflow: hidden;
 }
 
+.heroImageBox {
+  margin-top: 4rem;
+}
+
+.heroImage {
+  width: 100%;
+  border-radius: var(--ifm-global-radius);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  box-shadow: var(--ifm-global-shadow-md);
+}
+
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;

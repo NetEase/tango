@@ -3,8 +3,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Tango',
-  tagline: 'Tango is pretty cool',
+  title: '使用 Tango 构建低代码生产力工具',
+  tagline: '基于源代码 AST 实现可视化搭建操作，支持实时出码，不受私有 DSL 和协议限制',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -25,8 +25,8 @@ const config = {
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: 'zh-CN',
+    locales: ['zh-CN'],
   },
 
   presets: [
@@ -61,17 +61,23 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'Tango',
+        title: '',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'Tango Logo',
+          src: 'https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/27987950370/5db0/e2e8/5388/3fc184017c2c176642c4a67de45ce766.png',
         },
         items: [
           {
             type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            sidebarId: 'designer',
             position: 'left',
-            label: 'Tutorial',
+            label: 'Designer',
+          },
+          {
+            type: 'docSidebar',
+            sidebarId: 'boot',
+            position: 'left',
+            label: 'Boot',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
           {
@@ -120,7 +126,12 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} NetEase, Inc.`,
+        logo: {
+          alt: 'NetEase Cloud Music',
+          src: 'https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/15400855445/6c8b/10d4/a8a8/452c8518b0c0a660549996d366cdff77.png',
+          width: 320,
+        },
+        copyright: `Copyright © ${new Date().getFullYear()} NetEase Cloud Music, Inc.`,
       },
       prism: {
         theme: lightCodeTheme,

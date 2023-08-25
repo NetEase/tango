@@ -13,7 +13,7 @@
 
 </div>
 
-简体中文 | [English](/packages/designer/README.md)
+简体中文 | [English](/README.md)
 
 [npm-image]: https://img.shields.io/npm/v/@music163/tango-designer.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/@music163/tango-designer
