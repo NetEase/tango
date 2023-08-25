@@ -27,7 +27,7 @@ const sidebars = {
     // },
   ],
 
-  boot: ['framework/intro'],
+  boot: ['boot/intro'],
 };
 
 module.exports = sidebars;
