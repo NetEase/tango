@@ -9,7 +9,7 @@
 
 </div>
 
-简体中文 | [English](./README.md)
+简体中文 | [English](/packages/designer/README.md)
 
 ## ✨ 特性
 

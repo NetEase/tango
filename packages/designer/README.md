@@ -9,7 +9,7 @@ A source code based low-code designer from the NetEase Cloud Music Develop Team.
 
 </div>
 
-English | [简体中文](./README.zh-CN.md)
+English | [简体中文](/packages/designer/README.zh-CN.md)
 
 ## ✨ Features
 
