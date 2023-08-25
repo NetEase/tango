@@ -1,0 +1,42 @@
+{
+  "name": "@music163/tango-context",
+  "version": "0.1.1",
+  "description": "react context for tango-apps",
+  "keywords": [
+    "react",
+    "hooks"
+  ],
+  "author": "wwsun <ww.sun@outlook.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netease/tango.git"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc --project tsconfig.prod.json --outDir lib/esm/ --module ES2020",
+    "build:cjs": "tsc --project tsconfig.prod.json --outDir lib/cjs/ --module CommonJS",
+    "prepublishOnly": "yarn build"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8.0"
+  },
+  "dependencies": {
+    "@music163/tango-core": "^0.1.1",
+    "@music163/tango-helpers": "^0.1.1",
+    "mobx-react-lite": "4.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

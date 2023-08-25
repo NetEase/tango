@@ -1,0 +1,57 @@
+{
+  "name": "@music163/tango-designer",
+  "version": "0.1.1",
+  "description": "lowcode designer",
+  "keywords": [
+    "react"
+  ],
+  "author": "wwsun <ww.sun@outlook.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netease/tango.git"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc --project tsconfig.prod.json --outDir lib/esm/ --module ES2020",
+    "build:cjs": "tsc --project tsconfig.prod.json --outDir lib/cjs/ --module CommonJS",
+    "prepublishOnly": "yarn build"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8.0"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.8.0",
+    "@music163/request": "^0.1.0",
+    "@music163/tango-context": "^0.1.1",
+    "@music163/tango-core": "^0.1.1",
+    "@music163/tango-helpers": "^0.1.1",
+    "@music163/tango-sandbox": "^0.1.1",
+    "@music163/tango-setting-form": "^0.1.1",
+    "@music163/tango-ui": "^0.1.1",
+    "antd": "^4.24.2",
+    "cash-dom": "^8.1.2",
+    "classnames": "^2.3.2",
+    "coral-system": "^1.0.5",
+    "date-fns": "^2.29.2",
+    "lodash-es": "^4.17.21",
+    "react-resizable": "^3.0.5",
+    "semver": "^7.3.8"
+  },
+  "devDependencies": {
+    "@types/react-resizable": "^3.0.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

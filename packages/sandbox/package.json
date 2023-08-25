@@ -1,0 +1,45 @@
+{
+  "name": "@music163/tango-sandbox",
+  "version": "0.1.1",
+  "description": "sandbox of tango apps",
+  "author": "wwsun <ww.sun@outlook.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netease/tango.git"
+  },
+  "scripts": {
+    "clean": "rimraf dist/ && rimraf lib/",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc --project tsconfig.prod.json --outDir lib/esm/ --module ES2020",
+    "build:cjs": "tsc --project tsconfig.prod.json --outDir lib/cjs/ --module CommonJS",
+    "prepublishOnly": "yarn build"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8.0",
+    "react-dom": ">= 16.8.0"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.8.0",
+    "@music163/tango-core": "^0.1.1",
+    "@music163/tango-helpers": "^0.1.1",
+    "crypto-js": "^4.1.1",
+    "lodash.isequal": "4.5.0",
+    "react-frame-component": "^5.2.4"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

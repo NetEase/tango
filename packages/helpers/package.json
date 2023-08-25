@@ -1,0 +1,45 @@
+{
+  "name": "@music163/tango-helpers",
+  "version": "0.1.1",
+  "description": "Shared types, helpers, and hooks of tango-apps",
+  "keywords": [
+    "shared",
+    "helper",
+    "utils",
+    "types"
+  ],
+  "author": "wwsun <ww.sun@outlook.com>",
+  "homepage": "",
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netease/tango.git"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc --project tsconfig.prod.json --outDir lib/esm/ --module ES2020",
+    "build:cjs": "tsc --project tsconfig.prod.json --outDir lib/cjs/ --module CommonJS",
+    "prepublishOnly": "yarn build"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8.0"
+  },
+  "dependencies": {
+    "hoist-non-react-statics": "^3.3.2",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

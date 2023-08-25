@@ -1,0 +1,30 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "private": "true",
+  "description": "> tango-apps docs",
+  "license": "MIT",
+  "author": "wwsun <sunweiwei01@corp.netease.com>",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "echo \"skip\"",
+    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 6008"
+  },
+  "dependencies": {
+    "@music163/tango-setting-form": "*",
+    "@music163/tango-ui": "*",
+    "mobx": "6.9.0",
+    "mobx-react-lite": "4.0.2"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^6.5.14",
+    "@storybook/addon-essentials": "^6.5.14",
+    "@storybook/addon-links": "^6.5.14",
+    "@storybook/react": "^6.5.14",
+    "babel-plugin-styled-components": "^2.0.7",
+    "tsconfig-paths-webpack-plugin": "^3.5.2"
+  }
+}

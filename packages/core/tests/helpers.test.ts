@@ -1,0 +1,283 @@
+import { JSXElement } from '@babel/types';
+import {
+  code2ast,
+  code2expression,
+  value2node,
+  value2code,
+  expression2code,
+  upperCamelCase,
+  expressionCode2ast,
+  typeOf,
+  isPathnameMatchRoute,
+  namesToImportDeclarations,
+  getBlockNameByFilename,
+  getRelativePath,
+  isFilepath,
+  isValidComponentName,
+  getFilepath,
+  getPrivilegeCode,
+  isPlainObject,
+  getJSXElementAttributes,
+  inferFileType,
+  camelCase,
+  deepCloneNode,
+} from '../src/helpers';
+import { FileType } from '../src/types';
+
+describe('helpers', () => {
+  it('code2ast', () => {
+    expect(code2ast('function App() {}').type).toEqual('File');
+  });
+
+  it('code2expression: null', () => {
+    expect(code2expression('')).toBeUndefined();
+  });
+
+  it('code2expression: object', () => {
+    const code = `
+    {
+      foo: 'bar',
+    }
+    `;
+    const node = code2expression(code);
+    expect(node.type).toEqual('ObjectExpression');
+  });
+
+  it('code2expression: arrow function', () => {
+    expect(code2expression('() => {};').type).toEqual('ArrowFunctionExpression');
+  });
+
+  it('code2expression: list', () => {
+    const code = `
+    [
+      { label: 'foo', value: 'foo' },
+      { label: 'bar', value: 'bar' },
+    ]
+    `;
+    const node = code2expression(code);
+    expect(node.type).toEqual('ArrayExpression');
+  });
+
+  it('code2expression: jsxElement', () => {
+    const node = code2expression('<Button>hello</Button>');
+    expect(node.type).toEqual('JSXElement');
+  });
+
+  it('parse jsxElement attributes', () => {
+    const node = code2expression(
+      "<XColumn dataIndex='col' enumMap={{ 1: '已解决', 2: '未解决' }} />",
+    );
+    const attributes = getJSXElementAttributes(node as JSXElement);
+    expect(attributes).toEqual({
+      dataIndex: 'col',
+      enumMap: {
+        1: '已解决',
+        2: '未解决',
+      },
+    });
+  });
+
+  it('code2expression: closed jsxElement', () => {
+    const node = code2expression('<BreadcrumbItem children="节点名称" />');
+    expect(node.type).toEqual('JSXElement');
+  });
+
+  it('value2node: number', () => {
+    expect(value2node(1).type).toEqual('NumericLiteral');
+  });
+
+  it('value2node: string', () => {
+    expect(value2node('hello').type).toEqual('StringLiteral');
+  });
+
+  it('value2node: arrowFunction', () => {
+    const node = value2node(() => {});
+    expect(node.type).toEqual('ArrowFunctionExpression');
+  });
+
+  it('value2node: object', () => {
+    const node = value2node({
+      num: 1,
+      str: 'string',
+      fn: () => {},
+      nest: '{this.hello}',
+    });
+    expect(node.type).toEqual('ObjectExpression');
+  });
+
+  it('expression2code: functionExpression', () => {
+    expect(expression2code(code2expression('function(){}'))).toEqual('function () {}');
+  });
+
+  it('expression2code: arrowFunctionExpression', () => {
+    expect(expression2code(code2expression('() => {}'))).toEqual('() => {}');
+  });
+
+  it('expression2code: memberExpression', () => {
+    expect(expression2code(code2expression('this.foo.bar'))).toEqual('this.foo.bar');
+  });
+
+  it('expression2code: identifier', () => {
+    expect(expression2code(code2expression('data'))).toEqual('data');
+  });
+
+  it('expressionCode2ast', () => {
+    expect(expressionCode2ast('<Button>hello</Button>').type).toEqual('File');
+    expect(expressionCode2ast('{<Button>hello</Button>}').type).toEqual('File');
+    expect(expressionCode2ast('() => <Button>hello</Button>').type).toEqual('File');
+    expect(expressionCode2ast('{() => <Button>hello</Button>}').type).toEqual('File');
+  });
+});
+
+describe('string helpers', () => {
+  it('camelCase', () => {
+    expect(camelCase('foo')).toEqual('foo');
+    expect(camelCase('foo-bar')).toEqual('fooBar');
+  });
+
+  it('upperCamelCase', () => {
+    expect(upperCamelCase('foo')).toEqual('Foo');
+    expect(upperCamelCase('foo-bar')).toEqual('FooBar');
+  });
+
+  it('value2code: empty array', () => {
+    expect(value2code([])).toEqual('[]');
+  });
+
+  it('value2code: array', () => {
+    expect(value2code([{ label: 'foo' }])).toEqual('[{ label: "foo" }]');
+  });
+
+  it('value2code: object', () => {
+    expect(value2code({ width: 200 })).toEqual('{ width: 200 }');
+  });
+
+  it('typeOf', () => {
+    expect(typeOf()).toBe('undefined');
+    expect(typeOf('')).toBe('string');
+    expect(typeOf('hello')).toBe('string');
+    expect(typeOf(5)).toBe('number');
+    expect(typeOf({})).toBe('object');
+    expect(typeOf([])).toBe('array');
+  });
+
+  it('isPathnameMatchRoute', () => {
+    expect(isPathnameMatchRoute('/user/123', '/user/:id')).toBeTruthy();
+    expect(isPathnameMatchRoute('/user/123?foo=bar', '/user/:id')).toBeTruthy();
+    expect(isPathnameMatchRoute('/user/:id', '/user/:id')).toBeTruthy();
+    expect(isPathnameMatchRoute('/user', '/user')).toBeTruthy();
+    expect(isPathnameMatchRoute('/user/123/modify/123', '/user/:uid/modify/:rid')).toBeTruthy();
+    expect(isPathnameMatchRoute('/user/123', '/user')).toBeFalsy();
+  });
+
+  it('namesToImportDeclarations', () => {
+    expect(
+      namesToImportDeclarations(['Button', 'Box', 'React'], {
+        Button: { package: '@music/tango-cms' },
+        Box: { package: '@music/tango-cms' },
+        React: { package: 'react', isDefault: true },
+      }),
+    ).toEqual([
+      { sourcePath: '@music/tango-cms', specifiers: ['Button', 'Box'] },
+      { sourcePath: 'react', defaultSpecifier: 'React' },
+    ]);
+  });
+
+  it('getBlockNameByFilename', () => {
+    expect(getBlockNameByFilename('/src/blocks/local-comp/index.js')).toEqual('LocalComp');
+  });
+
+  it('getRelativePath', () => {
+    expect(getRelativePath('/src/pages/index.js', '/src/blocks/sample-block/index.js')).toEqual(
+      '../blocks/sample-block/index.js',
+    );
+    // TODO: fix me
+    // expect(getRelativePath('/src/pages/', '/src/pages/index.js')).toEqual('./index.js');
+  });
+
+  it('getFilepath', () => {
+    expect(getFilepath('/user', '/src/pages')).toBe('/src/pages/user');
+    expect(getFilepath('/user/:id', '/src/pages')).toBe('/src/pages/user@id');
+    expect(getFilepath('/user/detail', '/src/pages')).toBe('/src/pages/user-detail');
+  });
+
+  it('isFilepath', () => {
+    expect(isFilepath('./pages/index.js')).toBeTruthy();
+    expect(isFilepath('../pages/index.js')).toBeTruthy();
+    expect(isFilepath('./pages/index.css')).toBeTruthy();
+    expect(isFilepath('/src/pages/index.js')).toBeTruthy();
+    expect(isFilepath('path')).toBeFalsy();
+    expect(isFilepath('path-browserify')).toBeFalsy();
+    expect(isFilepath('@music/one')).toBeFalsy();
+  });
+
+  it('getPrivilegeCode', () => {
+    expect(getPrivilegeCode('sample-app', '/user')).toBe('sample-app@%user');
+    expect(getPrivilegeCode('sample-app', '/user/:id')).toBe('sample-app@%user%:id');
+  });
+
+  it('isValidComponentName', () => {
+    expect(isValidComponentName('Button')).toBeTruthy();
+    expect(isValidComponentName('Button.Group')).toBeTruthy();
+  });
+
+  it('upperCamelCase', () => {
+    expect(upperCamelCase('about')).toBe('About');
+    expect(upperCamelCase('not-found')).toBe('NotFound');
+    expect(upperCamelCase('@music/input')).toBe('MusicInput');
+    expect(upperCamelCase('@music/ct-input')).toBe('MusicCtInput');
+    // TODO: FIXME
+    // expect(upperCamelCase('-not-found')).toBe('NotFound');
+    // expect(upperCamelCase('not_found')).toBe('NotFound');
+    // expect(upperCamelCase('_not_found')).toBe('NotFound');
+  });
+
+  it('isPlainObject', () => {
+    expect(isPlainObject({})).toBeTruthy();
+    expect(isPlainObject({ foo: 'foo' })).toBeTruthy();
+    expect(isPlainObject(null)).toBeFalsy();
+    expect(isPlainObject(undefined)).toBeFalsy();
+  });
+
+  it('inferFileType', () => {
+    expect(inferFileType('/src/pages/template.js')).toBe(FileType.JsxViewModule);
+    expect(inferFileType('/src/pages/template.jsx')).toBe(FileType.JsxViewModule);
+    expect(inferFileType('/src/pages/template.ejs')).toBe(FileType.File);
+    expect(inferFileType('/src/index.scss')).toBe(FileType.Scss);
+    expect(inferFileType('/src/index.less')).toBe(FileType.Less);
+    expect(inferFileType('/src/index.json')).toBe(FileType.Json);
+  });
+});
+
+describe('schema helpers', () => {
+  const schema = {
+    id: 'Section:1',
+    component: 'Section',
+    props: {
+      id: '111',
+    },
+    children: [
+      {
+        id: 'Button:1',
+        component: 'Button',
+        props: {
+          id: '222',
+        },
+      },
+      {
+        id: 'Button:2',
+        component: 'Button',
+        props: {
+          id: '333',
+        },
+      },
+    ],
+  };
+  const cloned = deepCloneNode(schema);
+  console.log(cloned);
+  expect(cloned.props.id).toBe(schema.props.id);
+  expect(cloned.children[0].props.id).toBe(schema.children[0].props.id);
+
+  expect(cloned.id).not.toBe(schema.id);
+  expect(cloned.children[0].id).not.toBe(schema.children[0].id);
+});

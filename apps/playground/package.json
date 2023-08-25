@@ -1,0 +1,26 @@
+{
+  "name": "playground",
+  "version": "0.0.0",
+  "private": true,
+  "description": "playground of tango-apps",
+  "license": "MIT",
+  "author": "wwsun <ww.sun@outlook.com>",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "COMPRESS=none umi build",
+    "start": "HTTPS=1 umi dev"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.8.0",
+    "@music163/antd": "^0.1.1",
+    "@music163/tango-designer": "*",
+    "@music163/tango-helpers": "*",
+    "antd": "^4.24.2",
+    "coral-system": "^1.0.5"
+  },
+  "devDependencies": {
+    "umi": "^3.5.24"
+  }
+}

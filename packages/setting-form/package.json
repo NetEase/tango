@@ -1,0 +1,51 @@
+{
+  "name": "@music163/tango-setting-form",
+  "version": "0.1.1",
+  "description": "setting form of tango-apps",
+  "author": "wwsun <ww.sun@outlook.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netease/tango.git"
+  },
+  "scripts": {
+    "clean": "rimraf dist/ && rimraf lib/",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc --project tsconfig.prod.json --outDir lib/esm/ --module ES2020",
+    "build:cjs": "tsc --project tsconfig.prod.json --outDir lib/cjs/ --module CommonJS",
+    "prepublishOnly": "yarn build"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8.0"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.8.0",
+    "@music163/tango-core": "^0.1.1",
+    "@music163/tango-helpers": "^0.1.1",
+    "@music163/tango-ui": "^0.1.1",
+    "antd": "^4.24.2",
+    "color": "^4.2.3",
+    "coral-system": "^1.0.5",
+    "cssjson": "^2.1.3",
+    "mobx": "6.9.0",
+    "mobx-react-lite": "4.0.2",
+    "moment": "^2.29.3",
+    "react-color": "^2.19.3"
+  },
+  "devDependencies": {
+    "@types/color": "^3.0.3",
+    "@types/react-color": "^3.0.6"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

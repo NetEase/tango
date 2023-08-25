@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "ES2015",
+    "lib": ["dom", "esnext"],
+    "importHelpers": true,
+    "declaration": true,
+    "sourceMap": false,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "ignoreDeprecations": "5.0",
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": false,
+    "jsx": "react",
+    "esModuleInterop": true
+  },
+  "exclude": ["node_modules", "dist"]
+}
