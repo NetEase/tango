@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
-        <title>使用 Tango 构建低代码生产力工具 Blog</title>
+        <title>基于 Tango 开发低代码生产力工具 Blog</title>
         <link>https://netease.github.io/tango/blog</link>
-        <description>使用 Tango 构建低代码生产力工具 Blog</description>
+        <description>基于 Tango 开发低代码生产力工具 Blog</description>
         <lastBuildDate>Thu, 26 Aug 2021 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
