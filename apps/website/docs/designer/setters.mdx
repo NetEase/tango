@@ -1,0 +1,81 @@
+# 属性设置器
+
+属性设置器用于在配置面板中展示特定配置项的配置逻辑。Tango 内置了多种标准的属性设置器，对于一些特殊场景，内置的属性设置器可能无法满足你的需要，此时开发者可以扩展自己的属性设置。
+
+## 内置属性设置器
+
+| 设置器名          | 接收值类型                           | 设置器说明                 | 可配置项           |
+| ----------------- | ------------------------------------ | -------------------------- | ------------------ |
+| eventSetter       | expression                           | 动作函数或事件监听器设置器 |                    |
+| actionListSetter  |                                      | ActionList 的 value 设置器 |                    |
+| boolSetter        | boolean                              | 布尔值设置器               |                    |
+| choiceSetter      | `{ label: string, value: string }[]` | RadioGroup 设置器          | - options 选项列表 |
+| pickerSetter      | `{ label: string, value: string }[]` | 下拉值设置器               | - options 选项列表 |
+| colorSetter       | string                               | 色彩                       |                    |
+| dateSetter        | string                               | 日期设置器                 |                    |
+| dateRangeSetter   | `string[]`                           | 日期范围设置器             |                    |
+| timeSetter        | `string`                             | 时间设置器                 |                    |
+| timeRangeSetter   | `string[]`                           | 时间范围设置器             |                    |
+| expressionSetter  | expression                           | 表达式设置器               |                    |
+| jsonSetter        | json expression                      | JSON 表达式设置器          |                    |
+| jsxSetter         | jsx expression                       | JSX 设置器                 |                    |
+| iconSetter        | string                               | Icon 组件设置器            |                    |
+| iconTypeSetter    | string                               | Icon 组件类型设置器        |                    |
+| numberSetter      | number                               | 数字类型设置器             |                    |
+| textSetter        | string                               | 文本设置器                 |                    |
+| textAreaSetter    | string                               | 文本域设置器               |                    |
+| modelSetter       | string                               | 变量绑定设置器             |                    |
+| enumSetter        | enum                                 | 枚举值设置器               |                    |
+| sliderSetter      | number                               | 滑块设置器                 |                    |
+| listSetter        | `object[]`                           | 列表值设置器               |                    |
+| renderPropsSetter | Function                             | render props 设置器        |                    |
+| imageSetter       | string                               | 云鹿图片设置器             |                    |
+
+## 注册自定义属性设置器
+
+### 属性设置器的实现标准
+
+属性设置器组件是一个标准的受控型表单组件，开发者所开发的组件只需要暴露 `value` 和 `onChange(value)` 两个属性让属性面板的表单容器进行控制即可。
+
+例如，我们可以实现一个简单的字符串设置器 StringSetter，其实现如下：
+
+```jsx
+function StringSetter({ value, onChange, ...rest }) {
+  const handleChange = (e) => {
+    onChange(e.target.value);
+  };
+  return <input value={value} onChange={handleChange} />;
+}
+```
+
+### 注册属性设置器
+
+注册属性设置器非常简单，只需要借助设置器暴露出来的 `registerSetter` 即可。
+
+```jsx
+import { registerSetter } from '@music163/tango-designer';
+
+// 注册自定义 setter
+registerSetter({
+  name: 'stringSetter',
+  component: StringSetter,
+});
+```
+
+### 使用自定义的属性设置器
+
+在组件的物料协议中直接声明对应的属性设置器名称即可。例如：
+
+```jsx
+const prototype = {
+  name: 'PageHeader',
+  title: 'PageHeader',
+  props: [
+    {
+      name: 'title',
+      title: '标题',
+      setter: 'stringSetter',
+    },
+  ],
+};
+```

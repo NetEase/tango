@@ -1,0 +1,87 @@
+# 全局单例
+
+TangoBoot 默认提供全局单例模式，意味着，您可以在项目中始终使用该全局单例来进行必要的应用运行时信息的访问。
+
+:::tip
+单例意味着单一实例，也叫单例模式，是一种比较常见的设计模式。限制类实例化次数只能一次，一个类只有一个实例，并提供一个访问它的全局访问点。TangoBoot 单例意味着您的应用各种始终只有一个 TangoBoot 实例，并且可以借助该单一实例，一致的获取到应用到运行时信息。
+:::
+
+## 如何获取全局单例
+
+```js
+// 从模块包引入
+import tango from '@music163/tango-boot';
+
+// 或直接从 window 获取
+window.tango;
+
+// 两者是对等的
+console.log(tango === window.tango); // true
+```
+
+### 可以从 `tango` 单例中获取的信息
+
+```js
+// tango
+{
+  // 自定义配置信息
+  config: {},
+
+  // 自定义辅助函数
+  helpers: {},
+
+  // History
+  history: History;
+
+  // 服务函数集合
+  services: {},
+
+  // 状态模型集合
+  stores: {},
+
+  // builtin helpers
+  closeModal: Function;
+  openModal: Function;
+  setStoreValue: Function;
+  getStoreValue: Function;
+  // ...
+}
+```
+
+## 如何使用
+
+### 在模型定义中使用
+
+```jsx
+import tango, { defineModel } from '@music163/tango-boot';
+
+export default defineModel(
+  {
+    title: 'hello',
+
+    async listUsers() {
+      const data = await tango.services.listUsers();
+      this.title = data;
+    },
+  },
+  'app'
+);
+```
+
+### 在视图中使用
+
+```jsx
+import tango, { definePage } from '@music163/tango-boot';
+
+function App() {
+  return (
+    <Box>
+      {tango.stores.app.title}
+
+      <Button onClick={tango.services.list}>request</Button>
+    </Box>
+  );
+}
+
+export default definePage(App);
+```

@@ -9,7 +9,7 @@ export default {
 const code = `
 import React from 'react';
 import { definePage } from '@music163/tango-boot';
-import { Layout, Page, Section, Button } from '@music/tango-cms';
+import { Layout, Page, Section, Button } from '@music163/antd';
 
 function About(props) {
   const { stores } = props;

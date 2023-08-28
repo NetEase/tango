@@ -1,0 +1,67 @@
+# 外部数据源
+
+如果您的扩展部件需要使用外部数据源，可以参考本文的做法。
+
+## 存在部件共享
+
+如果数据源需要在多个扩展部件中共享，我们推荐您借助 tango 的 `remoteServices` 规范进行接口的实现。
+
+### 外部数据源定义
+
+例如，我们需要调用一组图片素材的接口，此时我们可以定义一个 `ImageService`，如下：
+
+```tsx
+import { createServices } from '@music/request';
+
+export const remoteServices = {
+  ImageService: createServices(
+    {
+      listMy: {
+        url: '/my/upload/list',
+      },
+      listFav: {
+        url: '/my/star/list',
+      },
+      listPub: {
+        url: '/list',
+      },
+    },
+    {
+      baseURL: 'https://febase-openapi.fn.netease.com/deer/api/deer/pic',
+      withCredentials: false, // 解决跨域时必须非*问题
+    }
+  ),
+};
+```
+
+### 外部数据源引入
+
+我们在设计器初始化的时候可以通过 `remoteServices` 属性进行外部数据源的传入。
+
+```tsx
+<Designer remoteServices={remoteServices}></Designer>
+```
+
+### 在设计器扩展中使用定义的外部数据源
+
+```tsx
+import { useRemoteServices } from '@music163/tango-designer';
+
+export function CustomWidget() {
+  const remoteServices = useRemoteServices();
+}
+```
+
+## 仅在单个组件
+
+如果您的外部数据服务没有额外的共享需求，您也可以直接在组件内部进行数据服务的发起。
+
+```tsx
+import request from '@music/request';
+
+export function CustomWidget() {
+  useEffect(() => {
+    request('//some.domain/get');
+  }, []);
+}
+```

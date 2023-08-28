@@ -61,7 +61,7 @@ const prototype: ComponentPrototypeType = {
   icon: 'icon-test',
   type: 'element',
   category: 'basic',
-  package: '@music/tango-cms',
+  package: '@music163/antd',
   hasChildren: false,
   props: [
     {

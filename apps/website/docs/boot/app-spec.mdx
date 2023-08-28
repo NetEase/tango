@@ -1,0 +1,46 @@
+# 目录结构
+
+## 目录结构规范
+
+在目录结构上，我们约定了一套通用的目录结构
+
+```md
+── src
+│ +── assets
+│ +── pages
+│ +── components
+│ +── services/index.js
+│ +── stores
+│ +── config // 运行时配置
+| | |-- index.js 默认配置文件
+│ │ ├── config.dev.js 开发环境配置，包括设计器环境
+│ │ ├── config.online.js 线上环境配置文件
+│ │ └── config.test.js 测试环境配置
+│ ├── helper.js // 工具函数扩展，自动合并到 ctx 上下文中
+│ ├── routes.js // 路由配置
+│ ├── global.less
+| |-- index.js 应用启动配置
+└── package.json
+|---appJson.json 应用附加元信息，包括 PaaS 菜单和权限数据
+|---tango.config.json 设计器和 external 配置
+|---easy.config.js 项目构建配置
+```
+
+## `src/components` 自定义组件
+
+该目录放置本地开发的组件，例如
+
+```jsx
+// src/components/sample.jsx
+import React from 'react';
+import { Box } from '@music163/antd';
+
+// 如果需要被搭建，使用 Box 代替 div，并且支持透出属性
+export function Sample(props) {
+  return <Box {...props}>sample component</Box>;
+}
+```
+
+:::info
+注意，如果需要 Sample 组件能够被设计器解析和搭建，则一定要使用 MusicOne 的 `Box` 组件代替普遍的 `div` 元素，你也可以使用 `<Box as="span" />` 来改变渲染的 html 元素。
+:::

@@ -1,0 +1,210 @@
+import Link from '@docusaurus/Link';
+
+# 快速开始
+
+tango 是一个用于快速构建低代码平台的 JavaScript 框架。借助 tango 只需要少量代码就可以快速的搭建一个基本的低代码设计器。本文将会帮助你借助 tango-apps 实现一个基本的低代码可视化设计器。
+
+## 环境设置
+
+- 安装 node 10.13 以上版本
+- 安装 npm 或 yarn
+
+### 初始化
+
+推荐使用 [umi 来初始化项目](https://v3.umijs.org/zh-CN/docs/getting-started)。
+
+:::tip
+本文使用的是 umi3，如果使用 umi4 可以参考官方文档进行升级改造。
+:::
+
+创建空目录
+
+```bash
+mkdir myapp && cd myapp
+```
+
+通过 umi 工具初始化工程
+
+```bash
+$ yarn create @umijs/umi-app
+# 或 npx @umijs/create-umi-app
+```
+
+安装依赖
+
+```bash
+yarn
+```
+
+启动项目
+
+```bash
+yarn start
+```
+
+### Host 配置
+
+Host 配置如下：
+
+```text
+127.0.0.1 local.netease.com
+```
+
+在浏览器中打开 <https://local.netease.com:8000>
+
+:::tip
+内部渲染沙箱默认走 https ，所以外层应用也需要为 https 应用。为避免跨域，需要配置 netease.com 域名。可以参考 [mkcert](https://github.com/FiloSottile/mkcert) 文档进行 https 证书签发。
+:::
+
+## 安装依赖
+
+### 使用 npm 包
+
+```bash
+# 设计器主框架
+yarn add @music163/tango-designer
+
+# UI 组件包
+yarn add @music163/antd
+```
+
+### 浏览器引入
+
+在浏览器中使用 script 和 link 标签直接引入文件，并使用全局变量 `TangoDesigner`。
+
+:::info
+tango-designer 构建包依赖 react, react-dom, styled-components, antd 等，请确保提前引入这些文件。
+:::
+
+例如
+
+```html
+<script src="https://unpkg.com/react@16.14.0/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16.14.0/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/react-is@16.13.1/umd/react-is.production.min.js"></script>
+<script src="https://unpkg.com/moment/min/moment-with-locales.js"></script>
+<script src="https://unpkg.com/styled-components@5.3.11/dist/styled-components.js"></script>
+<script src="https://unpkg.com/antd@4.24.13/dist/antd-with-locales.min.js"></script>
+```
+
+## 引入 antd 样式
+
+设计器的部分组件使用 antd 组件，因此需要引入 antd 对应的样式文件，也可以使用 CDN 引入。
+
+```less
+// src/pages/index.less
+@import '~antd/dist/antd.less';
+```
+
+## 引擎内核的初始化
+
+```jsx
+// src/pages/index.tsx
+import { createEngine } form '@music163/tango-designer';
+
+// 引擎初始化
+const engine = createEngine({
+  entry: '/src/index.js',
+  files: sampleFiles,
+  componentPrototypes: prototypes as any,
+});
+```
+
+## 拖拽引擎的初始化
+
+```jsx
+// src/pages/index.tsx
+import { DndQuery } form '@music163/tango-designer';
+
+const sandboxQuery = new DndQuery({
+  context: 'iframe',
+});
+```
+
+## 设计器框架的初始化
+
+```jsx
+// 平台初始化
+export default function App() {
+  useEffect(() => {
+    engine.workspace.selectSource.clear();
+  }, []);
+
+  return (
+    <Designer engine={engine} sandboxQuery={sandboxQuery}>
+      <DesignerPanel logo="Tango">
+        <SidebarPanel>
+          <SidebarPanel.Item key="components">
+            <ComponentsView
+              menuData={
+                {
+                  common: [
+                    {
+                      title: '基本',
+                      items: [
+                        'Button',
+                        'ButtonGroup',
+                        'ActionList',
+                        'Action',
+                        'Image',
+                        'Text',
+                        'Icon',
+                      ],
+                    },
+                  ],
+                } as any
+              }
+            />
+          </SidebarPanel.Item>
+          <SidebarPanel.Item key="outline" />
+          <SidebarPanel.Item key="model" isFloat width="40vw" />
+          <SidebarPanel.Item key="dataSource" isFloat width="40vw" />
+          <SidebarPanel.Item key="history" />
+        </SidebarPanel>
+        <WorkspacePanel>
+          <ToolbarPanel>
+            <ToolbarPanel.Item key="history" />
+            <ToolbarPanel.Item key="viewportRefresh" />
+            <ToolbarPanel.Item key="preview" />
+            <ToolbarPanel.Item key="routeSwitch" />
+            <ToolbarPanel.Item key="modeSwitch" placement="center" />
+            <ToolbarPanel.Item key="viewportSwitch" placement="right" />
+          </ToolbarPanel>
+          <ViewPanel mode="design">
+            <Sandbox
+              bundlerURL={`${window.location.protocol}//codesandbox.fn.${
+                window.location.hostname.endsWith('netease.com')
+                  ? 'netease'
+                  : 'igame.163'
+              }.com/`}
+            />
+          </ViewPanel>
+          <ViewPanel mode="code">
+            <CodeEditor />
+          </ViewPanel>
+        </WorkspacePanel>
+        <SettingPanel />
+      </DesignerPanel>
+    </Designer>
+  );
+}
+```
+
+## 代码格式化
+
+如果需要自动格式化生成的代码，则需要在浏览器中提前引入 standalone prettier，可以使用如下标签：
+
+```html
+<script src="https://unpkg.com/prettier@2.6.0/standalone.js"></script>
+<script src="https://unpkg.com/prettier@2.6.0/parser-babel.js"></script>
+```
+
+## 运行结果
+
+运行结果如下：
+
+![img](https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/14410831217/8cdc/ec54/b137/71877a803f62a37496954a02e00af615.png)
+
+## Playground 示例
+
+实际的代码，可以参考 <https://github.com/NetEase/tango/tree/main/apps/playground> 源码。

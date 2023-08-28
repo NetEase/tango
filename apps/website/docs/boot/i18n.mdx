@@ -1,0 +1,24 @@
+# 国际化
+
+TangoBoot 本身不提供国际化功能，国际化和您的 UI 组件库相关，在云音乐，我们采用的是基于 `@music163/antd` 的 UI 层解决方案。可以借助应用入口的容器配置功能进行国际化配置。
+
+:::tip
+如果您还不了解应用入口配置，可以先访问 [应用入口](./app) 一节进行了解。
+:::
+
+## 配置示例
+
+```js
+import { runApp } from '@music163/tango-boot';
+import { ConfigProvider } from '@music163/antd';
+import locale from '@music163/antd/es/locale/zh_CN';
+import 'moment/dist/locale/zh-cn';
+
+// 设置 moment 的文案
+moment.locale('zh-cn');
+
+runApp({
+  // 设置 UI 组件库的文案配置
+  providers: [<ConfigProvider locale={locale} />],
+});
+```
