@@ -26,9 +26,25 @@ English | [简体中文](/README.zh-CN.md)
 - Out-of-the-box front-end low-code designer, providing flexible and easy-to-use designer React components
 - Developed using TypeScript, providing complete type definition files
 
-## 🎯 Compatibility
+## 🌐 Compatibility
 
 - Modern browsers（Chrome >= 80, Edge >= 80, last 2 safari versions, last 2 firefox versions）
+
+## 🎯 Milestone
+
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    title       Tango Release Milestone
+    excludes    weekends
+    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+
+    section Builder Release
+    Alpha version            :active,  des1, 2023-08-10, 2023-08-30
+    Beta version               :         des2, 2023-09-01, 2023-09-30
+    1.0 RC               :         des3, after des2, 40d
+    1.0 version              :         des4, after des3, 21d
+```
 
 ## 📄 Usage
 
