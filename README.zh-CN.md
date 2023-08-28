@@ -26,9 +26,25 @@
 - 开箱即用的前端低代码设计器，提供灵活易用的设计器 React 组件
 - 使用 TypeScript 开发，提供完整的类型定义文件
 
-## 🎯 兼容环境
+## 🌐 兼容环境
 
 - 现代浏览器（Chrome >= 80, Edge >= 80, last 2 safari versions, last 2 firefox versions）
+
+## 🎯 里程碑
+
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    title       Tango Release Milestone
+    excludes    weekends
+    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+
+    section Builder Release
+    Alpha version            :active,  des1, 2023-08-10, 2023-08-30
+    Beta version               :         des2, 2023-09-01, 2023-09-30
+    1.0 RC               :         des3, after des2, 40d
+    1.0 version              :         des4, after des3, 21d
+```
 
 ## 📄 如何使用
 
