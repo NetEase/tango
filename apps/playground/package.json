@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
-    "@music163/antd": "^0.1.1",
+    "@music163/antd": "^0.1.2",
     "@music163/tango-designer": "*",
     "@music163/tango-helpers": "*",
     "antd": "^4.24.2",

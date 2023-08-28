@@ -63,7 +63,7 @@ const sandboxQuery = new DndQuery({
 
 设计器框架初始化(WIP)
 
-详细使用方法请参考 [使用文档](./#)。
+详细使用方法请参考 [使用文档](https://netease.github.io/tango/)。
 
 ## 💻 开发
 
@@ -100,6 +100,6 @@ yarn start
 
 ## 💗 致谢
 
-感谢网易云音乐大前端团队，公共技术团队，直播技术团队，以及所有参与过 Tango 项目的同学们。
+感谢网易云音乐公共技术团队，大前端团队，直播技术团队，以及所有参与过 Tango 项目的同学们。
 
-感谢 CodeSandbox 提供的 [Sandpack](https://sandpack.codesandbox.io/) 项目，为 Tango 提供了强大的在线代码执行能力。
+感谢 CodeSandbox 提供的 [Sandpack](https://sandpack.codesandbox.io/) 项目，为 Tango 提供了强大的基于浏览器的代码构建与执行能力。

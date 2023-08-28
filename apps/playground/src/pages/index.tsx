@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  createEngine,
   Designer,
   DesignerPanel,
   SidebarPanel,
@@ -13,25 +12,25 @@ import {
   DndQuery,
   ComponentsView,
 } from '@music163/tango-designer';
+import { createEngine, Workspace } from '@music163/tango-core';
 import { prototypes, menuData } from '@music163/antd/lib/esm/designer';
 import { Logo, ProjectDetail } from './share';
 import { sampleFiles } from '../mock/project';
 import './index.less';
 
-/**
- * 1. 如果要支持代码格式化，需要提前在 html 模板中引入
- * <script src="https://unpkg.com/prettier@2.6.0/standalone.js"></script>
- * <scrip src="https://unpkg.com/prettier@2.6.0/parser-graphql.js"></script>
- */
+console.log(prototypes, menuData);
+
+// 1. 实例化工作区
+const workspace = new Workspace({
+  entry: '/src/index.js',
+  files: sampleFiles,
+  prototypes: prototypes as any,
+});
 
 // 2. 引擎初始化
 const engine = createEngine({
-  entry: '/src/index.js',
-  files: sampleFiles,
-  componentPrototypes: prototypes,
+  workspace,
 });
-
-const workspace = engine.workspace;
 
 // @ts-ignore
 window.__workspace__ = workspace;

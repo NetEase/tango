@@ -11,10 +11,7 @@ import TypeTable from '@site/src/components/TypeTable';
 ## 设计器初始化
 
 ```jsx
-<Designer
-  engine={engine}
-  sandboxQuery={sandboxQuery}
-  remoteServices={remoteServices}></Designer>
+<Designer engine={engine} sandboxQuery={sandboxQuery} remoteServices={remoteServices}></Designer>
 ```
 
 ## engine
@@ -28,22 +25,6 @@ const engine = createEngine({
   entry: '/src/index.js',
   files: sampleFiles,
   componentPrototypes: prototypes as any,
-});
-```
-
-### 使用内置的 workspace 实
-
-:::warning
-只适用于配合 LegacySandbox 使用。
-:::
-
-```js
-// 引擎初始化
-const engine = createEngine({
-  entry: '/src/index.js',
-  // files: sampleFilesForLegacy,
-  componentPrototypes: prototypes as any,
-  useBuiltinWorkspace: true,
 });
 ```
 

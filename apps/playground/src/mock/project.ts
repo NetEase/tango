@@ -44,11 +44,11 @@ const tangoJson = {
       resources: ['https://unpkg.com/moment@{{version}}/moment.js'],
     },
     '@music163/tango-boot': {
-      version: '0.1.2',
+      version: '0.1.3',
       library: 'TangoBoot',
       type: 'baseDependency',
-      // resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],
-      resources: ['http://localhost:9001/boot.js'],
+      resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],
+      // resources: ['http://localhost:9001/boot.js'],
       description: '云音乐低代码运行时框架',
     },
     '@music163/antd': {

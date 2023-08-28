@@ -2741,20 +2741,22 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@music163/antd@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@music163/antd/-/antd-0.1.1.tgz"
-  integrity sha512-yUD42g1pAMK5MxhBqXUXsgapGGPAY6VcOXLEhjJVcYuR835mC6LvHFsBEvqgjUIFMnI3aol/VohOwPRIqqaqDw==
+"@music163/antd@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/@music163/antd/-/antd-0.1.2.tgz#15d0dd41839649d1294bb89a9c8c78eb370e06c9"
+  integrity sha512-4S7Bi3f0VWmvEdQFjPQQWlwgMrTPX1uwTIKnLMB8a4LT617kJrW748f/tZwY32kuDdooZ5tpMZCM93rmu5hEKQ==
   dependencies:
-    "@music163/foundation" "^0.1.1"
+    "@music163/foundation" "^0.1.2"
     "@music163/tango-boot" "^0.1.2"
     "@music163/tango-helpers" "^0.1.1"
     antd "4"
+    classnames "^2.3.2"
+    coral-system "^1.0.6"
 
-"@music163/foundation@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@music163/foundation/-/foundation-0.1.1.tgz"
-  integrity sha512-opkEWIGcVhKznRMnptz04qhUcphMUl0mPEgH1QovIpj738veSiQExqCs0C2pqZThNwVMYZlzbweSjOlAT9D+Sw==
+"@music163/foundation@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/@music163/foundation/-/foundation-0.1.2.tgz#e541bee3bbfc223ca94b9e15f9ec97da4e88b495"
+  integrity sha512-vy1RFFvklwY4F0/WpSKw4XUCjVrrl9lQtKiwNaz/iUfxg01MAYAX4dUziQFNHKrdPP6ROAPmMNkAZGYxbhAhIA==
   dependencies:
     "@music163/tango-boot" "^0.1.2"
     coral-system "^1.0.6"

@@ -33,11 +33,13 @@ const sidebars = {
         'designer/modules/sandbox',
         'designer/modules/hooks',
       ],
+      collapsible: false,
     },
     {
       type: 'category',
       label: '扩展',
       items: ['designer/extend/overview', 'designer/extend/remote-service'],
+      collapsible: false,
     },
     'designer/setters',
   ],

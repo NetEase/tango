@@ -88,7 +88,6 @@ export const ComponentsView = observer(
     menuData = emptyMenuData,
     showBizComps = true,
     showBlocks = true,
-    onBizDependencyAdd,
     getBizCompName = upperCamelCase,
     loading = false,
   }: ComponentsViewProps) => {
