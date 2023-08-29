@@ -173,12 +173,12 @@ describe('string helpers', () => {
   it('namesToImportDeclarations', () => {
     expect(
       namesToImportDeclarations(['Button', 'Box', 'React'], {
-        Button: { package: '@music/tango-cms' },
-        Box: { package: '@music/tango-cms' },
+        Button: { package: '@music163/antd' },
+        Box: { package: '@music163/antd' },
         React: { package: 'react', isDefault: true },
       }),
     ).toEqual([
-      { sourcePath: '@music/tango-cms', specifiers: ['Button', 'Box'] },
+      { sourcePath: '@music163/antd', specifiers: ['Button', 'Box'] },
       { sourcePath: 'react', defaultSpecifier: 'React' },
     ]);
   });

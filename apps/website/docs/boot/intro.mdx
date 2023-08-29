@@ -1,0 +1,139 @@
+# TangoBoot
+
+TangoBoot 是一个服务于 Tango 低代码应用开发体系的前端应用框架，提供了标准的数据请求，状态管理，路由方案，并提供了通用的运行时工具函数，让开发者通过简单的配置即可生成单页应用。
+
+## 应用架构
+
+TangoBoot 的应用架构使用的是 View-Model-Service 三层模型，其中模型层定义了 Observable States，视图层观察 Model 的变化而进行自动更新，服务层用来创建一组服务函数，供视图层和模型层消费。图如下图所示:
+
+<img
+  alt="image"
+  width="600px"
+  src="https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/13760951704/985c/9706/7f18/be713816a143d3a054f51c9d1fc59b36.png"
+/>
+
+## 核心 API
+
+- `runApp` 创建应用入口
+- `definePage` 定义 Reactive 视图
+- `defineStore` 定义可观察的状态模型
+- `defineServices` 定义服务函数
+
+### 创建应用入口
+
+其中`index.js` 为应用的入口文件，一个基本的实现为
+
+```jsx
+import { runApp } from '@music163/tango-boot';
+import routes from './routes';
+import services from './services';
+import home from './stores/home';
+import counter from './stores/counter';
+// 全局样式
+import './global.less';
+
+const { mount, unmount, bootstrap } = runApp({
+  boot: {
+    mountElement: document.querySelector('#root'),
+    qiankun: false,
+  },
+
+  stores: {
+    home,
+    counter,
+  },
+
+  services,
+
+  router: {
+    type: 'browser',
+    config: routes,
+  },
+});
+
+export { mount, unmount, bootstrap };
+```
+
+### 创建视图模型
+
+通过 defineStore 来进行视图模型的定义非常简单，只需简单的声明状态和动作即可
+
+```jsx
+import { defineStore } from '@music163/tango-boot';
+
+const counter = defineStore({
+  num: 0,
+
+  get() {},
+
+  decrement: function () {
+    counter.num--;
+  },
+
+  increment: () => counter.num++,
+});
+
+export default counter;
+```
+
+### 创建 Reactive 视图
+
+视图层如果要监听状态的变化，只需要 `definePage` 对视图组件进行一层包裹即可。
+
+```jsx
+import React from 'react';
+import tango, { definePage } from '@music163/tango-boot';
+
+class App extends React.Component {
+  increment = () => {
+    tango.stores.counter.increment();
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>Counter: {tango.stores.counter.num}</h1>
+        <button type="primary" onClick={this.increment}>
+          +1
+        </button>
+      </div>
+    );
+  }
+}
+
+export default definePage(App);
+```
+
+### 创建数据服务函数
+
+`defineServices` 提供了低成本声明异步服务函数的能力。
+
+```jsx
+import { defineServices } from '@music163/tango-boot';
+
+export default defineServices({
+  list: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+    formatter: (res) => {
+      const { data, message } = res;
+      return {
+        code: 200,
+        list: data,
+        total: data.length,
+        message,
+      };
+    },
+  },
+  add: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+    method: 'post',
+  },
+  update: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+    method: 'post',
+  },
+  delete: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users?id=1',
+  },
+});
+```

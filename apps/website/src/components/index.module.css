@@ -1,0 +1,30 @@
+.homepageSection {
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  background-color: var(--ifm-color-emphasis-100);
+  padding: 5rem 0;
+}
+
+.homepageSectionTitle {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.timelineItemStyle {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.timelineDot {
+  background-color: var(--ifm-color-emphasis-300);
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+}
+
+.timelineLine {
+  background-color: var(--ifm-color-emphasis-300);
+  width: 100%;
+  height: 2px;
+}

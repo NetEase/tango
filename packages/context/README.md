@@ -7,7 +7,7 @@
 install
 
 ```bash
-yarn add @music/tango-apps-context
+yarn add @music163/tango-context
 ```
 
 usage

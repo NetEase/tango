@@ -1,0 +1,214 @@
+# 管理前端应用状态
+
+TangoBoot 采用了一个轻量级的使用 Reactive 的状态管理方案，开发者可以非常轻松的进行页面状态的管理。一个最基本的示例如下所示：
+
+```js
+import React from 'react';
+import { defineStore, definePage } from '@music163/tango-boot';
+
+const counter = defineStore({
+  num: 0,
+  increment: () => counter.num++,
+});
+
+// 当状态变化的时候，视图会自动刷新
+export default definePage(() => <button onClick={counter.increment}>{counter.num}</button>);
+```
+
+值得注意的是，开发者必须借助 `defineStore` 来定义状态，它会帮助你创建一个 observable 的状态对象。借助 `definePage` 来定义视图，它会帮你订一个 reactive 的视图组件，并且在自动监听状态的变化，按需进行 UI 更新。
+
+## 创建状态模型 Stores
+
+基本语法为 `defineStore(storeObject: object, namespace?: string)`
+
+- `storeObject` 为原始的状态对象
+- `namespace` 为该 Store 对应的命名空间，如果你定义了，可以借助 `tango.stores[namespace]` 来获取该引用
+
+一个基本的例子如下：
+
+```js
+import { defineStore } from '@music163/tango-boot';
+
+const user = defineStore({ name: 'Rick' });
+// stores behave like normal JS objects
+user.name = 'Bob';
+```
+
+### 复杂的数据结构
+
+```js
+// stores can include any valid JS structure
+// including nested data, arrays, Maps, Sets, getters, setters, inheritance, ...
+const user = defineStore({
+  profile: {
+    firstName: 'Bob',
+    lastName: 'Smith',
+    get name() {
+      return `${user.profile.firstName} ${user.profile.lastName}`;
+    },
+  },
+  hobbies: ['programming', 'sports'],
+  friends: new Map(),
+});
+
+// stores may be mutated in any syntactically valid way
+user.profile.firstName = 'Bob';
+delete user.profile.lastName;
+user.hobbies.push('reading');
+user.friends.set('id', otherUser);
+```
+
+### 异步方法
+
+```js
+const userStore = defineStore({
+  user: {},
+  async fetchUser() {
+    userStore.user = await fetch('/user');
+
+    // or use this
+    // this.user = await fetch('/user');
+  },
+});
+```
+
+### 多个 Store
+
+useStore.js
+
+```js
+import { store } from '@music163/tango-boot';
+
+const userStore = defineStore(
+  {
+    user: {},
+    async fetchUser() {
+      userStore.user = await fetch('/user');
+    },
+  },
+  'userStore',
+);
+
+export default userStore;
+```
+
+recipesStore.js
+
+```js
+import tango, { store } from '@music163/tango-boot';
+import userStore from './userStore';
+
+const recipesStore = defineStore(
+  {
+    recipes: [],
+
+    // 方式1：直接用调用
+    async fetchRecipes() {
+      recipesStore.recipes = await fetch(`/recipes?user=${userStore.user.id}`);
+    },
+
+    // 方法2：使用 this 调用，仅支持 method property，不支持箭头函数
+    async fetchRecipes2() {
+      this.recipes = await fetch(`/recipes?user=${userStore.user.id}`);
+    },
+
+    // 方法3：使用 tango 全局变量调用，你也可以使用这种方式引入其他的 store
+    async fetchRecipes3() {
+      tango.stores.recipesStore.recipes = await fetch(
+        `/recipes?user=${tango.stores.userStore.user.id}`,
+      );
+    },
+  },
+  'recipesStore',
+);
+
+export default recipesStore;
+```
+
+## 创建 Reactive 视图
+
+你可以借助 `definePage` 创建视图，也可以直接包裹您的原始组件。基本用法为 `definePage(Component)`，借助 `definePage` 可以帮你自动监听状态的变化，并在变化时自动触发视图的重新渲染。
+
+一个简单的例子如下：
+
+```js
+import React from 'react';
+import { view, store } from '@music163/tango-boot';
+
+// this is a global state store
+const user = defineStore({ name: 'Bob' });
+
+// this is re-rendered whenever user.name changes
+export default definePage(() => (
+  <div>
+    <input value={user.name} onChange={(ev) => (user.name = ev.target.value)} />
+    <div>Hello {user.name}!</div>
+  </div>
+));
+```
+
+## 实现视图与状态双向绑定
+
+TangoBoot 提供了一个名为 `withModel` 的 [HOC](https://zh-hans.reactjs.org/docs/higher-order-components.html)，可以借助它来实现视图与状态的双向绑定。
+
+使用方法如下：
+
+```js
+withModel(options)(BaseComponent);
+```
+
+### 参数配置
+
+其中可配置的 options 参数包括：
+
+- `name` 用于配置包裹后组件的 displayName，可选
+- `valuePropName` 绑定的 value 属性名，用于实现双向绑定的受控逻辑，默认为 `value`
+- `trigger` 设置收集字段值变更的时机，默认为 `onChange`
+- `getValueFromEvent` 设置从事件回调中获取 value 值的方法，默认为 `val => val`，直接返回 trigger 的第一个参数
+
+嵌套 `whitModel` 后，组件将会获得两个新增的属性：
+
+- `model` 用于绑定 Store 中的状态
+- `innerRef` 用于获取内部组件的 [ref](https://zh-hans.reactjs.org/docs/refs-and-the-dom.html) 引用
+
+### 双向绑定示例
+
+基本用法如下：
+
+```jsx
+import tango, { withModel, defineView, defineStore } from '@music163/tango-boot';
+
+// 定义一个基本的 Input 组件
+class Input extends React.Component {
+  foo() {}
+
+  render() {
+    return <input {...this.props} />;
+  }
+}
+
+// 实现双向绑定
+const ModelInput = withModel({
+  getValueFromEvent(e) {
+    return e.target.value;
+  },
+})(Input);
+
+// 定义一个 Store
+defineStore(
+  {
+    name: 'alice',
+  },
+  'user',
+);
+
+// 双向绑定验证
+const ModelApp = defineView((props) => {
+  return (
+    <div>
+      <ModelInput model="user.name" />
+      <div>{tango.stores.user.name}</div>
+    </div>
+  );
+});
+```

@@ -1,0 +1,90 @@
+# 消费异步数据服务
+
+TangoBoot 提供一个配置式的创建数据服务函数的方法，通过 `defineServices` 可以非常轻松的声明一组异步服务函数，供视图层或模型层消费。
+
+## 简单用法
+
+```js
+import { defineServices } from '@music163/tango-boot';
+
+const services = defineServices({
+  list: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+  },
+  add: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+    method: 'post',
+  },
+});
+```
+
+调用异步服务函数
+
+```js
+async () => {
+  // 最简单的调用方法
+  await services.list();
+
+  // 用可以快捷传递参数，参数1为数据载荷，参数2为请求配置
+  await services.add(payload, config);
+};
+```
+
+## 请求配置
+
+默认情况下，`defineServices` 底层采用 [axios](https://github.com/axios/axios) 发起请求。
+
+```js
+import { defineServices } from '@music163/tango-boot';
+
+export default defineServices({
+  list: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+    formatter: (res) => {
+      const { data, message } = res;
+      return {
+        code: 200,
+        list: data,
+        total: data.length,
+        message,
+      };
+    },
+    // 这里你也可以传入 axios 的其他配置
+  },
+});
+```
+
+常用的配置如下：
+
+- url 请求地址
+- method 请求方法，默认为 `GET`
+  - `GET`
+  - `POST`
+  - `PUT`
+  - `DELETE`
+- formatter 格式化响应数据
+- requestType 请求体编码类型（content-type），默认值为 `json`
+  - `json` 默认将 JavaScript 对象序列化为 JSON
+  - `x-www-form-urlencoded` 对应为 `application/x-www-form-urlencoded`
+- headers 自定义请求头
+- timeout 超时的毫秒数
+
+更多的配置选项可以参考 [axios 请求配置文档](https://axios-http.com/zh/docs/req_config)。
+
+:::tip 请求体编码
+默认情况下 TangoBoot 将 JavaScript 对象序列化为 JSON。如果要以 `application/x-www-form-urlencoded` 格式发送数据，可以将 `requestType` 设置为 `x-www-form-urlencoded`。
+
+`application/x-www-form-urlencoded` 数据被编码成以 '&' 分隔的键 - 值对，同时以 '=' 分隔键和值。非字母或数字的字符会被 [percent-encoding](https://developer.mozilla.org/zh-CN/docs/Glossary/percent-encoding): 这也就是为什么这种类型不支持二进制数据 (应使用 multipart/form-data 代替).
+:::
+
+
+## 配置错误消息展示
+
+配置请求错误发生时消息默认的展现方式，此处使用 `message` 组件进行消息浮层的展示。推荐在应用的入口文件进行配置：
+
+```js
+import { tangoBootConfig } from '@music163/tango-boot';
+import { message } from '@music163/antd';
+
+tangoBootConfig.toast = message;
+```

@@ -1,0 +1,56 @@
+# Designer 设计器容器
+
+设计器根节点，注入全局状态。
+
+## 属性列表
+
+import TypesTable from '@site/src/components/TypesTable';
+
+<TypesTable name="DesignerProps" />
+
+## 设计器初始化
+
+```jsx
+<Designer engine={engine} sandboxQuery={sandboxQuery} remoteServices={remoteServices}></Designer>
+```
+
+## engine
+
+设计器引擎实例，用于管理设计器的核心状态。
+
+### 基本的初始化方式
+
+```js
+const engine = createEngine({
+  entry: '/src/index.js',
+  files: sampleFiles,
+  componentPrototypes: prototypes as any,
+});
+```
+
+### 自定义 workspace 的初始化方式
+
+默认情况下，引擎采用的是源码解析模式，即将源码解析为 ast 树，后续的搭建逻辑转为对 ast 树的操作。如果你想自定义搭建逻辑，可以通过自定义 workspace 的方式来实现。
+
+引擎在 2.0 本本中提供了新的 JsonWorkspace 来支持自定义搭建逻辑，JsonWorkspace 采用的是 json 格式的数据结构，你可以通过自定义 json 来实现自定义搭建逻辑。
+
+```js
+const engine = createEngine({
+  workspace: new JsonWorkspace({
+    prototypes: prototypes as any,
+    files: schemaFiles,
+  }),
+});
+```
+
+:::tip
+按照这种方式，你可以自定义自己的 Workspace 实现。具体可以参考 Workspace 的实现标准。
+:::
+
+## sandboxQuery
+
+沙箱的查询实例，用于向沙箱注册 dom 查询能力。
+
+## remoteServices
+
+远程服务实例，用于注册全局共享的数据服务实例。

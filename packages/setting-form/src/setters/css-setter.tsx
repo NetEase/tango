@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Box } from 'coral-system';
+// @ts-ignore
 import { toJSON } from 'cssjson';
 import { InputNumber, Space } from 'antd';
 import { SliderSetter } from './number-setter';
@@ -54,8 +55,8 @@ const cssPattern = (string: string, name: string): any => {
  * @deprecated 使用嵌套属性代替
  */
 export function CssSetter(props: FormItemComponentProps<string>) {
-  const { value, onChange } = props;
-  const [contentValue, setContentValue] = useState<string>(() => getRawCssValue(value));
+  const { value: valueProp, onChange } = props;
+  const [contentValue, setContentValue] = useState<string>(() => getRawCssValue(valueProp));
   const [display, setDisplay] = useState('');
 
   // 修改指定的CSS样式

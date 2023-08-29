@@ -39,7 +39,7 @@ npm manifest:
     ],
     "author": "wwsun <sunweiwei01@corp.netease.com>",
     "homepage": "",
-    "license": "MIT",
+    "license": "GPL-3.0",
     "files": [
       "dist"
     ],
@@ -2360,9 +2360,9 @@ Lockfile:
       react-router "^5.2.0"
       react-router-config "^5.1.1"
   
-  "@music/tango-cms@1.25.6":
+  "@music163/antd@1.25.6":
     version "1.25.6"
-    resolved "http://rnpm.hz.netease.com/@music/tango-cms/download/@music/tango-cms-1.25.6.tgz#61e447c5be140129a113d5ac75ca97180e19f925"
+    resolved "http://rnpm.hz.netease.com/@music163/antd/download/@music163/antd-1.25.6.tgz#61e447c5be140129a113d5ac75ca97180e19f925"
     integrity sha1-YeRHxb4UASmhE9WsdcqXGA4Z+SU=
     dependencies:
       "@music/charts" "^1.8.8"

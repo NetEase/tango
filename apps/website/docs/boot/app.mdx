@@ -1,0 +1,134 @@
+# 应用入口
+
+框架通过 `runApp` 创建渲染整个应用，在创建应用时可以传入应用的全局配置。
+
+## 基本配置
+
+通过 `src/index.js` 对应用进行全局配置，设置路由、运行时环境、服务函数、状态模型等。
+
+```js
+import { runApp, tangoBootConfig } from '@music163/tango-boot';
+import { message } from '@music163/antd';
+
+// 配置请求错误发生时消息默认的展现方式，此处使用 message 组件进行消息浮层的展示
+tangoBootConfig.toast = message;
+
+runApp({
+  // 启动项配置
+  boot: {},
+
+  // 应用容器注入
+  providers: [],
+
+  // 状态模型
+  stores: {},
+
+  // 服务函数
+  services: {},
+
+  // 路由配置
+  router: {},
+});
+```
+
+## 启动项配置
+
+`boot` 配置项用于应用的启动项配置：
+
+```js
+runApp({
+  boot: {
+    // 应用挂载的 dom 结点
+    mountElement: document.querySelector('#root'),
+
+    // 是否开启 qiankun，如开启则对应为 `qiankun: { appName: string }`
+    qiankun: false,
+  },
+});
+```
+
+## 路由配置
+
+`router` 配置项用于配置应用的前端路由，底层基于 `react-router` 实现：
+
+```js
+import routes from './routes';
+
+runApp({
+  router: {
+    // 路由类型: hash | browser
+    type: 'hash',
+
+    // 路由配置信息
+    config: routes,
+
+    // basename,
+  },
+});
+```
+
+TangoBoot 使用的是 ReactRouter 的[静态路由配置方案](https://github.com/remix-run/react-router/tree/v5/packages/react-router-config)。具体的路由配置文件如下：
+
+```js
+// routes.js
+import Index from './pages/index';
+import About from './pages/about';
+
+const routes = [
+  {
+    path: '/',
+    exact: true,
+    component: Index,
+  },
+  {
+    path: '/about',
+    component: About,
+  },
+  {
+    path: '/user/:id',
+    component: About,
+  },
+];
+
+export default routes;
+```
+
+## 应用容器配置
+
+由于 `runApp` 封装了根组件的渲染逻辑，某些时候，你可能想要为根组件包裹特定的容器类组件，例如多语言配置，状态容器等等，可以借助 `providers` 配置项进行：
+
+```js
+runApp({
+  // 传入 providers 组件实例，按照传入顺序进行包裹
+  providers: [<ConfigProvider />, <LocaleProvider />],
+});
+```
+
+## 设置环境变量 {#env}
+
+某些时候你可能需要自定义一些环境变量，以便在应用运行在不同的环境中的时候进行快速的判断。你可以借助 `tango.env` 来快速的获取到应用的环境信息。需要注意的是，默认情况下不会有任何的环境信息，你可以在需要的时候通过在 `runApp` 中传入 `getEnv` 设置的方式来设置你想要的环境变量。
+
+例如：
+
+```js
+runApp({
+  // 自定义应用的环境信息，你可以返回对象
+  getEnv() {
+    if (location.origin.includes('tango')) {
+      // tango 设计器中
+      return 'development';
+    }
+    if (location.origin.includes('localhost')) {
+      // 本地开发
+      return 'local';
+    }
+    return 'production';
+  },
+});
+```
+
+在任意地方消费环境变量，例如：
+
+```jsx
+<Box isRender={tango.env === 'development'}>一个仅在开发态显示的区域</Box>
+```

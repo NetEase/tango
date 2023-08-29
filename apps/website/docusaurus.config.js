@@ -3,7 +3,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '使用 Tango 构建低代码生产力工具',
+  title: '基于 Tango 开发低代码生产力工具',
   tagline: '基于源代码 AST 实现可视化搭建操作，支持实时出码，不受私有 DSL 和协议限制',
   favicon: 'img/favicon.ico',
 
@@ -79,7 +79,13 @@ const config = {
             position: 'left',
             label: 'Boot',
           },
-          { to: '/blog', label: 'Blog', position: 'left' },
+          {
+            type: 'docSidebar',
+            sidebarId: 'protocol',
+            position: 'left',
+            label: 'Protocol',
+          },
+          { to: '/blog', label: 'Blog', position: 'right' },
           {
             href: 'https://github.com/netease/tango',
             label: 'GitHub',

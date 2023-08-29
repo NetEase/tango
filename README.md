@@ -79,7 +79,7 @@ const sandboxQuery = new DndQuery({
 
 Initialize the designer layout (WIP)
 
-Find details from [Documentation Site](./#)。
+Find details from [Documentation Site](https://netease.github.io/tango/)。
 
 ## 💻 Development
 

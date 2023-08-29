@@ -2,8 +2,8 @@ const packageJson = {
   name: 'demo',
   private: true,
   dependencies: {
-    '@music163/antd': '^0.1.0',
-    '@music163/tango-boot': '^0.1.0',
+    '@music163/antd': '0.1.5',
+    '@music163/tango-boot': '0.1.3',
     react: '17.0.2',
     'react-dom': '17.0.2',
     'prop-types': '15.7.2',
@@ -44,15 +44,15 @@ const tangoJson = {
       resources: ['https://unpkg.com/moment@{{version}}/moment.js'],
     },
     '@music163/tango-boot': {
-      version: '0.1.2',
+      version: '0.1.3',
       library: 'TangoBoot',
       type: 'baseDependency',
-      // resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],
-      resources: ['http://localhost:9001/boot.js'],
+      resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],
+      // resources: ['http://localhost:9001/boot.js'],
       description: '云音乐低代码运行时框架',
     },
     '@music163/antd': {
-      version: '0.1.1',
+      version: '0.1.5',
       library: 'TangoAntd',
       type: 'baseDependency',
       resources: [
@@ -62,6 +62,7 @@ const tangoJson = {
       description: '云音乐低代码中后台应用基础物料',
       designerResources: [
         'https://unpkg.com/@music163/antd@{{version}}/dist/designer.js',
+        // 'http://localhost:9002/designer.js',
         'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
     },
@@ -138,16 +139,23 @@ const viewHomeCode = `
 import React from "react";
 import { definePage } from "@music163/tango-boot";
 import {
+  Page,
+  Section,
   Button,
-  Input
+  Input,
+  FormilyForm,
 } from "@music163/antd";
 class App extends React.Component {
   render() {
     return (
-      <div>
-        <Button>button</Button>
-        <Input />
-      </div>
+      <Page title="页面标题">
+       <Section>
+       </Section>
+       <Section>
+          <Button>button</Button>
+          <Input />
+        </Section>
+      </Page>
     );
   }
 }
@@ -231,15 +239,13 @@ export const genDefaultPage = (index: number) => ({
   code: `
   import React from 'react';
   import tango, { definePage } from '@music163/tango-boot';
-  import { Layout, Page, Section } from '@music163/antd';
+  import { Page, Section } from '@music163/antd';
 
   function App() {
     return (
-      <Layout>
-        <Page title="空白模板${index}">
-          <Section></Section>
-        </Page>
-      </Layout>
+      <Page title="空白模板${index}">
+        <Section></Section>
+      </Page>
     )
   }
 

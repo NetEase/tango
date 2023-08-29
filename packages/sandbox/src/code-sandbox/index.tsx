@@ -74,10 +74,10 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
     this.manager.cleanup();
 
     // clear tango event
-    if (this.iframe && this.props.eventHandlers && this.props.eventHandlers['onTango']) {
+    if (this.iframe && this.props?.eventHandlers?.onTango) {
       this.iframe.contentDocument?.removeEventListener(
         TangoEventName.DesignerAction,
-        this.props.eventHandlers['onTango'],
+        this.props.eventHandlers.onTango,
       );
     }
   }
@@ -149,7 +149,7 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
 
         // 执行沙箱页面加载后的回调函数
         if (this.props.onLoad) {
-          this.props.onLoad();
+          this.props.onLoad(el);
         }
 
         // 注册监听函数

@@ -19,15 +19,47 @@ const sidebars = {
   // But you can create a sidebar manually
   designer: [
     'intro',
-    'designer/intro',
+    'designer/quick-start',
     // {
     //   type: 'category',
-    //   label: 'Tutorial',
-    //   items: ['tutorial-basics/create-a-document'],
+    //   label: '模块',
+    //   items: [
+    //     'designer/modules/designer',
+    //     'designer/modules/designer-panel',
+    //     'designer/modules/sidebar-panel',
+    //     'designer/modules/setting-panel',
+    //     'designer/modules/workspace-panel',
+    //     'designer/modules/view-panel',
+    //     'designer/modules/sandbox',
+    //     'designer/modules/hooks',
+    //   ],
+    //   collapsible: false,
     // },
+    // {
+    //   type: 'category',
+    //   label: '扩展',
+    //   items: ['designer/extend/overview', 'designer/extend/remote-service'],
+    //   collapsible: false,
+    // },
+    // 'designer/setters',
   ],
 
-  boot: ['framework/intro'],
+  boot: [
+    'boot/intro',
+    'boot/app-spec',
+    'boot/tango-config',
+    'boot/app',
+    'boot/service',
+    'boot/store',
+    'boot/page',
+    'boot/global',
+    // 'boot/helpers',
+    // 'boot/model',
+    // 'boot/ref',
+    // 'boot/i18n',
+  ],
+
+  protocol: ['protocol/material-protocol', 'protocol/material-package-spec'],
 };
 
 module.exports = sidebars;

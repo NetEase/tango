@@ -1,0 +1,148 @@
+# 基础物料协议
+
+import TypesTable from '@site/src/components/TypesTable';
+
+物料协议定义了一个组件的基本信息，包括组件的名称、属性、拖拽规则等。物料协议是为组件附加的额外描述文件，不会侵入到你的组件代码中，因此你可以在不改动组件代码的情况下，为组件添加物料协议。
+
+## 组件原型 prototype
+
+<TypesTable name="ComponentPrototypeType" />
+
+## 组件属性 ComponentPropType
+
+<TypesTable name="ComponentPropType" />
+
+### 嵌套属性
+
+当某个组件属性为嵌套属性时，例如 `<Table scroll={{ x: 800, y: 400 }} />`，此时可以描述如下：
+
+```jsx
+{
+  name: 'Table',
+  props: [
+    {
+      name: 'scroll',
+      props: [
+        {
+          name: 'x',
+          setter: 'numberSetter',
+        },
+        {
+          name: 'y',
+          setter: 'numberSetter',
+        }
+      ],
+    }
+  ],
+}
+```
+
+### 属性的关联展示
+
+当某个属性依赖某个特定的其他属性值时，可以借助 `getVisible` 实现关联展示控制：
+
+```js
+{
+  name: 'Button',
+  props: [
+    {
+      name: 'shape',
+    },
+    {
+      name: 'buttonType',
+      getVisible: (form) => {
+        // 配置项 buttonType 仅在配置项 shape 的值为 button 时才展示
+        return form.getValue('shape') === 'button';
+      },
+    },
+  ];
+}
+```
+
+### 动态属性设置
+
+当组件需要依据某个属性值进行动态设置其他属性时，可以借助 `getProp` 实现控制：
+
+```js
+{
+  name: 'FormItem',
+  props: [
+    {
+      name: 'component',
+      title: '控件类型',
+    },
+    {
+      name: 'componentProps',
+      title: '子组件属性',
+      getProp(form) {
+        const type = form.getValue('component');
+        const proto = { ...componentMap[type] };
+        const props = omitProps(proto.props, [
+          'placeholder',
+          'options',
+          'onChange',
+          'defaultValue',
+          'value',
+        ]);
+        return {
+          title: proto.title + '属性',
+          props,
+        };
+      },
+    }
+  ],
+}
+```
+
+### 属性的输入提示
+
+当某个属性在输入时需要进行输入提示时，例如某个函数属性需要提示其签名的模版，则可以借助属性输入提示实现:
+
+```js
+{
+  name: 'TableColumn',
+  props: [
+    {
+      name: 'render',
+      setter: 'expressionSetter',
+      autoCompleteOptions: ['(value, record, index) => { return null; }'],
+    }
+  ],
+}
+```
+
+![img](https://p5.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/18917075100/9569/09fa/bc62/c418d3de8694ce93977450fb725bb524.gif)
+
+## 组件拖拽规则 ComponentDndRulesType
+
+<TypesTable name="ComponentDndRulesType" />
+
+### canDrag/canDrop
+
+在 onDragStart 的时候执行。
+
+```js
+export const Page = {
+  name: 'Page',
+  rules: {
+    canDrag() {
+      return false;
+    },
+  },
+};
+```
+
+### canMoveIn/canMoveOut
+
+在 onDragEnter 的时候执行。
+
+```js
+export const Modal = {
+  name: 'Modal',
+  rules: {
+    canMoveIn(incomingName) {
+      return !(incomingName === Modal.name);
+    },
+  },
+};
+```

@@ -499,7 +499,7 @@ export interface CodeSandboxProps {
   eventHandlers?: EventHandlers;
   onFileChange?: (files: IFiles, sandpack: ISandpackContext) => void;
   onMessage?: (data: any) => void;
-  onLoad?: () => void;
+  onLoad?: (frame: HTMLIFrameElement) => void;
   fileResolver?: {
     isFile: (path: string) => Promise<boolean>;
     readFile: (path: string) => Promise<string>;

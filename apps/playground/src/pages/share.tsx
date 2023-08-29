@@ -54,7 +54,7 @@ const SnippetSuccessResult: ComponentPrototypeType = {
   title: '成功结果',
   icon: 'icon-tupian',
   type: 'snippet',
-  package: '@music/tango-cms',
+  package: '@music163/antd',
   initChildren: sampleBlockCode,
   relatedImports: ['Section', 'Result', 'Button'],
 };
@@ -64,7 +64,7 @@ const Snippet2ColumnLayout: ComponentPrototypeType = {
   title: '两列布局',
   icon: 'icon-columns',
   type: 'snippet',
-  package: '@music/tango-cms',
+  package: '@music163/antd',
   initChildren: `
   <Columns columns={12}>
     <Column colSpan={6}></Column>
@@ -79,7 +79,7 @@ const Snippet3ColumnLayout: ComponentPrototypeType = {
   title: '三列布局',
   icon: 'icon-column3',
   type: 'snippet',
-  package: '@music/tango-cms',
+  package: '@music163/antd',
   initChildren: `
   <Columns columns={12}>
     <Column colSpan={4}></Column>
@@ -95,7 +95,7 @@ const SnippetButtonGroup: ComponentPrototypeType = {
   title: '按钮组',
   icon: 'icon-anniuzu',
   type: 'snippet',
-  package: '@music/tango-cms',
+  package: '@music163/antd',
   initChildren: `
   <Space>
     <Button type="primary">按钮1</Button>

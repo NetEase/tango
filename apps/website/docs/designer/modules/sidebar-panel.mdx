@@ -1,0 +1,38 @@
+# SidebarPanel 侧边栏面板
+
+侧边栏面板提供了一个简单易用的主操作面板，可以将一些高频操作和核心部件放置到侧边栏面板中，方便用户快速操作。
+
+## 属性列表
+
+import TypesTable from '@site/src/components/TypesTable';
+
+<TypesTable name="SidebarPanelProps" />
+
+## 创建浮动面板
+
+借助 `isFloat` 和 `width` 属性可以创建浮动自定义宽度面板，脱离框架对侧边栏的宽度限制。
+
+```jsx
+<SidebarPanel.Item key="history" isFloat width="40vw" />
+```
+
+## 徽标提示
+
+`showBadge` 属性可以设置工具栏是否显示徽标提示，用于某些面板需要对外展现需要被用户注意的时机。
+
+<img
+  alt="img"
+  src="https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/18224398190/2847/b86d/df55/c817e86a0b1b3a6b08f7cc98362caec5.png"
+  width="300px"
+/>
+
+```jsx
+<SidebarPanel.Item
+  key="info"
+  label="消息"
+  title="消息列表"
+  icon={<NotificationOutlined />}
+  showBadge={{ count: 2 }}>
+  <Box>info panel</Box>
+</SidebarPanel.Item>
+```

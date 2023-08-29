@@ -1,0 +1,92 @@
+# tango.config.json
+
+`tango.config.json` 是 Tango 项目的核心配置文件，当您的项目使用 Tango 设计器在线开发时会读取该文件进行线上开发环境的初始化。
+
+## entry
+
+非必填。`entry` 是项目的入口文件，用于在线设计器的初始化，默认取值为 `/src/index.js`。
+
+## sandbox
+
+必填。`sandbox` 是在线沙箱的配置。起子配置项包括：
+
+## packages
+
+项目使用的 npm 包依赖信息，用于定义依赖的类型以及外置依赖资源。该配置项为一个 map，key 为对应的 npm 包名，value 为该依赖的配置信息。
+
+依赖的类型 `type` 可以是 `baseDependency` 即项目的基础依赖，用于获取项目基础物料列表的信息；也可以是 `bizDependency` 即业务组件依赖，用于获取合并到物料面板业务组件菜单中的业务组件列表；也可以是 `depenency` 即项目的其他依赖，只用于提供 external 信息与版本信息等，不会和物料面板产生关系。
+
+当配置了外置依赖资源 `resources` 与其对应的全局变量 `library` 时，当这些依赖被 import 时，相关资源不会被打包到 bundle 中，而是在运行时再去外部获取这些扩展依赖，其等效于之前的 `sandbox.externalResources` 与 `sandbox.externals` 配置项。此外，可以将 `resource` 中的版本号替换为 `{{version}}`，其会在平台上构建时替换为版本号。特殊的，可以定义 `designerResources` 用于适配平台的设计器视图。
+
+该配置项同时生效于沙箱与构建产物（需要 `@music/chitu-tango-plugin@^1.5.0`），配置后可同时优化平台设计器与线上运行的加载时间。
+
+```json
+{
+  "react": {
+    "version": "17.0.2",
+    "library": "React",
+    "type": "dependency",
+    "resources": ["https://unpkg.com/react@{{version}}/umd/react.development.js"]
+  },
+  "react-dom": {
+    "version": "17.0.2",
+    "library": "ReactDOM",
+    "type": "dependency",
+    "resources": ["https://unpkg.com/react-dom@{{version}}/umd/react-dom.development.js"]
+  },
+  "@music163/tango-boot": {
+    "version": "0.1.3",
+    "library": "TangoBoot",
+    "type": "baseDependency",
+    "resources": ["https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js"],
+    "description": "云音乐低代码运行时框架"
+  },
+  "@music163/antd": {
+    "version": "1.27.29",
+    "library": "TangoCMS",
+    "type": "baseDependency",
+    "resources": [
+      "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/index.js",
+      "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/index.css"
+    ],
+    "description": "云音乐低代码中后台应用基础物料",
+    "designerResources": [
+      "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/designer.js",
+      "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/index.css"
+    ]
+  },
+  "@music163/biz-comp": {
+    "type": "bizDependency",
+    "version": "0.0.2"
+  }
+}
+```
+
+:::tip 注意依赖的先后顺序
+由于依赖是按照定义的先后顺序注入至沙箱内，因此需要确保 `packages` 内依赖的先后顺序，否则可能会导致应用加载依赖失败（例如将 `react` 放置在组件包之后，会导致组件包无法正常加载）。
+:::
+
+## externalResources
+
+除了上述 `packages` 定义的外置依赖资源外，在这里可以定义沙箱启动时引入的非 npm 包的外置依赖资源列表，可以是 `js` 或 `css` 等静态文件。例如：
+
+```json
+{
+  "externalResources": ["https://tango.netease.io/script.js"]
+}
+```
+
+## proxy
+
+非必填。项目的代理规则。
+
+```json
+{
+  "proxy": {
+    "/api/pms": {
+      "target": "http://cms.qa.igame.163.com",
+      "changeOrigin": true
+    }
+  }
+}
+```

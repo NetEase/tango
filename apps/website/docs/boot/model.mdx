@@ -1,0 +1,66 @@
+# 双向绑定
+
+TangoBoot 支持快捷实现组件与视图双向绑定。
+
+## 借助 `withModel` 实现双向绑定
+
+`withModel` 是 TangoBoot 内置的模型绑定 HOC，支持将组件的内部状态同步到某个 store 定义的状态中。基本的用法如下：
+
+```jsx
+class Input extends React.Component {
+  foo() {}
+
+  render() {
+    return <input {...this.props} />;
+  }
+}
+
+const ModelInput = withModel({
+  // 设置从组件同步到 store 中的状态值
+  getValueFromEvent(e: any) {
+    return e.target.value;
+  },
+})(Input);
+```
+
+现在 `ModelInput` 获取了双向绑定的能力，其 `value` 变化后的值将会通过 `onChange` 事件同步给绑定的模型变量
+
+```jsx
+const Store = defineStore(
+  {
+    name: 'alice',
+  },
+  'user'
+);
+
+const ModelApp = defineView((props) => {
+  return (
+    <div>
+      <ModelInput model="user.name" />
+    </div>
+  );
+});
+```
+
+## 配置选项
+
+`withModel` 的定义如下：
+
+```jsx
+withModel(options)(Component);
+```
+
+其中 options 的配置如下：
+
+| 属性名            | 类型               | 默认值     | 说明                       |
+| ----------------- | ------------------ | ---------- | -------------------------- |
+| name              | string             |            | 组件的 displayName         |
+| valuePropName     | string             | "value"    | 组件的受控值               |
+| trigger           | string             | "onChange" | 组件值变化时的回调函数     |
+| getValueFromEvent | `(...args) => any` |            | 从回调函数参数中的取值方法 |
+
+借助 `withModel` 增强后，Component 组件将会获得如下属性：
+
+| 属性名 | 类型   | 默认值 | 说明                     |
+| ------ | ------ | ------ | ------------------------ |
+| model  | string |        | 绑定的模型变量的变量路径 |

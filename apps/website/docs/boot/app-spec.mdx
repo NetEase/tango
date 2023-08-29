@@ -1,0 +1,38 @@
+# 目录结构
+
+## 目录结构规范
+
+在目录结构上，我们约定了一套通用的目录结构
+
+```md
+── src
+│ +── assets
+│ +── pages
+│ +── components
+│ +── services/index.js
+│ +── stores
+│ ├── routes.js // 路由配置
+│ ├── global.less // 全局样式
+| |-- index.js 应用启动配置
+└── package.json
+|---tango.config.json 设计器和 external 配置
+```
+
+## `src/components` 自定义组件
+
+该目录放置本地开发的组件，例如
+
+```jsx
+// src/components/sample.jsx
+import React from 'react';
+import { Box } from '@music163/antd';
+
+// 如果需要被搭建，使用 Box 代替 div，并且支持透出属性
+export function Sample(props) {
+  return <Box {...props}>sample component</Box>;
+}
+```
+
+:::info
+注意，如果需要 Sample 组件能够被设计器解析和搭建，则一定要使用 MusicOne 的 `Box` 组件代替普遍的 `div` 元素，你也可以使用 `<Box as="span" />` 来改变渲染的 html 元素。
+:::
