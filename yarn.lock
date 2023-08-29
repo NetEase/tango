@@ -2741,45 +2741,12 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@music163/antd@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@music163/antd/-/antd-0.1.2.tgz#15d0dd41839649d1294bb89a9c8c78eb370e06c9"
-  integrity sha512-4S7Bi3f0VWmvEdQFjPQQWlwgMrTPX1uwTIKnLMB8a4LT617kJrW748f/tZwY32kuDdooZ5tpMZCM93rmu5hEKQ==
-  dependencies:
-    "@music163/foundation" "^0.1.2"
-    "@music163/tango-boot" "^0.1.2"
-    "@music163/tango-helpers" "^0.1.1"
-    antd "4"
-    classnames "^2.3.2"
-    coral-system "^1.0.6"
-
-"@music163/foundation@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@music163/foundation/-/foundation-0.1.2.tgz#e541bee3bbfc223ca94b9e15f9ec97da4e88b495"
-  integrity sha512-vy1RFFvklwY4F0/WpSKw4XUCjVrrl9lQtKiwNaz/iUfxg01MAYAX4dUziQFNHKrdPP6ROAPmMNkAZGYxbhAhIA==
-  dependencies:
-    "@music163/tango-boot" "^0.1.2"
-    coral-system "^1.0.6"
-
-"@music163/request@^0.1.0", "@music163/request@^0.1.1":
+"@music163/request@^0.1.0":
   version "0.1.1"
   resolved "https://registry.npmjs.org/@music163/request/-/request-0.1.1.tgz"
   integrity sha512-Kr0HMSY3+GulkS4B23PB1P8Wt33nXStazRDXN1fq+ffBWyM0cz7tL8p+hMYAxRWsMwQvPAW6QTI51yW7lCDLRg==
   dependencies:
     axios "^1.4.0"
-
-"@music163/tango-boot@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@music163/tango-boot/-/tango-boot-0.1.2.tgz"
-  integrity sha512-QTTHdrY7r/ErYRekhykeRN5edtNe1+2MmtaV9GQ5x0807EPRsSsd0hmPH3H85VEp/hY8RMxPPnKqxJAh2y2wyw==
-  dependencies:
-    "@music163/request" "^0.1.1"
-    "@risingstack/react-easy-state" "^6.3.0"
-    "@types/react-router-config" "^5.0.7"
-    history "^5.3.0"
-    react-error-boundary "^4.0.11"
-    react-router "5"
-    react-router-config "5"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -3067,11 +3034,6 @@
   dependencies:
     nx "15.9.4"
 
-"@nx-js/observer-util@^4.2.2":
-  version "4.2.2"
-  resolved "https://registry.npmmirror.com/@nx-js/observer-util/-/observer-util-4.2.2.tgz"
-  integrity sha512-9OayX1xkdGjdnsDiO2YdaYJ6aMyCF7/NY4QWVgIgjSAZJ4OX2fD766Ts79hEzBscenQy2DCaSoY8VkguIMB1ZA==
-
 "@octokit/auth-token@^3.0.0":
   version "3.0.4"
   resolved "https://registry.npmmirror.com/@octokit/auth-token/-/auth-token-3.0.4.tgz"
@@ -3241,13 +3203,6 @@
     "@babel/runtime" "^7.18.0"
     classnames "^2.3.2"
     rc-util "^5.24.4"
-
-"@risingstack/react-easy-state@^6.3.0":
-  version "6.3.0"
-  resolved "https://registry.npmmirror.com/@risingstack/react-easy-state/-/react-easy-state-6.3.0.tgz"
-  integrity sha512-AGLrzvwloZL7dgagwRkxJaq7bcDsOGdHrCpHZIlMIxcFLdFr5IpD2/kcmTlC34H682pvfIl1lzNxBw72la10aA==
-  dependencies:
-    "@nx-js/observer-util" "^4.2.2"
 
 "@sideway/address@^4.1.3":
   version "4.1.4"
@@ -4715,7 +4670,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-router-config@*", "@types/react-router-config@^5.0.2", "@types/react-router-config@^5.0.6", "@types/react-router-config@^5.0.7":
+"@types/react-router-config@*", "@types/react-router-config@^5.0.2", "@types/react-router-config@^5.0.6":
   version "5.0.7"
   resolved "https://registry.npmmirror.com/@types/react-router-config/-/react-router-config-5.0.7.tgz"
   integrity sha512-pFFVXUIydHlcJP6wJm7sDii5mD/bCmmAY0wQzq+M+uX7bqS95AQqHZWP1iNMKrWVQSuHIzj5qi9BvrtLX2/T4w==
@@ -5861,7 +5816,7 @@ antd-easy-form@^1.1.3:
     "@ant-design/icons" "^4.8.0"
     react-is "^18.2.0"
 
-antd@4, antd@^4.24.2:
+antd@^4.24.2:
   version "4.24.13"
   resolved "https://registry.npmmirror.com/antd/-/antd-4.24.13.tgz"
   integrity sha512-N2odRsbomseCE3U845Whf+RdgmQbiWbKvWS6ggH/xHjXojHx951rmZXW4nMqAeSoUp66sQOASGtrP/SUsdA2oQ==
@@ -7986,7 +7941,7 @@ copyfiles@^2.4.1:
     untildify "^4.0.0"
     yargs "^16.1.0"
 
-coral-system@^1.0.5, coral-system@^1.0.6:
+coral-system@^1.0.5:
   version "1.0.6"
   resolved "https://registry.npmmirror.com/coral-system/-/coral-system-1.0.6.tgz"
   integrity sha512-H9MA64SuWrwHS4f7lEtHkJGIJFVRW38iQBJ2LKm+u8b3biuFB1f/5mlUiJubZ0OqoSt3ZlJhVuEwDiLXASS/rw==
@@ -10914,7 +10869,7 @@ history-with-query@4.10.4:
     tiny-warning "^1.0.0"
     value-equal "^1.0.1"
 
-history@*, history@^5.3.0:
+history@*:
   version "5.3.0"
   resolved "https://registry.npmmirror.com/history/-/history-5.3.0.tgz"
   integrity sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==
@@ -17009,13 +16964,6 @@ react-element-to-jsx-string@^14.3.4:
     is-plain-object "5.0.0"
     react-is "17.0.2"
 
-react-error-boundary@^4.0.11:
-  version "4.0.11"
-  resolved "https://registry.npmmirror.com/react-error-boundary/-/react-error-boundary-4.0.11.tgz"
-  integrity sha512-U13ul67aP5DOSPNSCWQ/eO0AQEYzEFkVljULQIjMV0KlffTAhxuDoBKdO0pb/JZ8mDhMKFZ9NZi0BmLGUiNphw==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-
 react-error-overlay@^6.0.11:
   version "6.0.11"
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz"
@@ -17116,7 +17064,7 @@ react-resizable@^3.0.5:
     prop-types "15.x"
     react-draggable "^4.0.3"
 
-react-router-config@5, react-router-config@5.1.1, react-router-config@^5.1.1:
+react-router-config@5.1.1, react-router-config@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmmirror.com/react-router-config/-/react-router-config-5.1.1.tgz"
   integrity sha512-DuanZjaD8mQp1ppHjgnnUnyOlqYXZVjnov/JzFhjLEwd3Z4dYjMSnqrEzzGThH47vpCOqPPwJM2FtthLeJ8Pbg==
@@ -17149,21 +17097,6 @@ react-router-dom@^5.3.3:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router@5, react-router@5.3.4, react-router@^5.3.3:
-  version "5.3.4"
-  resolved "https://registry.npmjs.org/react-router/-/react-router-5.3.4.tgz"
-  integrity sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==
-  dependencies:
-    "@babel/runtime" "^7.12.13"
-    history "^4.9.0"
-    hoist-non-react-statics "^3.1.0"
-    loose-envify "^1.3.1"
-    path-to-regexp "^1.7.0"
-    prop-types "^15.6.2"
-    react-is "^16.6.0"
-    tiny-invariant "^1.0.2"
-    tiny-warning "^1.0.0"
-
 react-router@5.2.0:
   version "5.2.0"
   resolved "https://registry.npmmirror.com/react-router/-/react-router-5.2.0.tgz"
@@ -17174,6 +17107,21 @@ react-router@5.2.0:
     hoist-non-react-statics "^3.1.0"
     loose-envify "^1.3.1"
     mini-create-react-context "^0.4.0"
+    path-to-regexp "^1.7.0"
+    prop-types "^15.6.2"
+    react-is "^16.6.0"
+    tiny-invariant "^1.0.2"
+    tiny-warning "^1.0.0"
+
+react-router@5.3.4, react-router@^5.3.3:
+  version "5.3.4"
+  resolved "https://registry.npmjs.org/react-router/-/react-router-5.3.4.tgz"
+  integrity sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==
+  dependencies:
+    "@babel/runtime" "^7.12.13"
+    history "^4.9.0"
+    hoist-non-react-statics "^3.1.0"
+    loose-envify "^1.3.1"
     path-to-regexp "^1.7.0"
     prop-types "^15.6.2"
     react-is "^16.6.0"

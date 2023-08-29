@@ -149,7 +149,7 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
 
         // 执行沙箱页面加载后的回调函数
         if (this.props.onLoad) {
-          this.props.onLoad();
+          this.props.onLoad(el);
         }
 
         // 注册监听函数

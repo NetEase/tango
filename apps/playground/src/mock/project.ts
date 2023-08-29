@@ -52,7 +52,7 @@ const tangoJson = {
       description: '云音乐低代码运行时框架',
     },
     '@music163/antd': {
-      version: '0.1.1',
+      version: '0.1.2',
       library: 'TangoAntd',
       type: 'baseDependency',
       resources: [
@@ -61,7 +61,8 @@ const tangoJson = {
       ],
       description: '云音乐低代码中后台应用基础物料',
       designerResources: [
-        'https://unpkg.com/@music163/antd@{{version}}/dist/designer.js',
+        // 'https://unpkg.com/@music163/antd@{{version}}/dist/designer.js',
+        'http://localhost:9002/designer.js',
         'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
     },

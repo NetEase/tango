@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Designer,
   DesignerPanel,
@@ -13,18 +13,14 @@ import {
   ComponentsView,
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
-import { prototypes, menuData } from '@music163/antd/lib/esm/designer';
 import { Logo, ProjectDetail } from './share';
 import { sampleFiles } from '../mock/project';
 import './index.less';
-
-console.log(prototypes, menuData);
 
 // 1. 实例化工作区
 const workspace = new Workspace({
   entry: '/src/index.js',
   files: sampleFiles,
-  prototypes: prototypes as any,
 });
 
 // 2. 引擎初始化
@@ -40,11 +36,11 @@ const sandboxQuery = new DndQuery({
 });
 
 /**
- * 3. 平台初始化
- * 默认使用 CodeSandbox https://local.netease.com:6006/
- * 如果使用 ViteSandbox https://local.netease.com:6006?moduleType=esm
+ * 3. 平台初始化，访问 https://local.netease.com:6006/
  */
 export default function App() {
+  const [menuLoading, setMenuLoading] = useState(true);
+  const [menuData, setMenuData] = useState(false);
   return (
     <Designer engine={engine} sandboxQuery={sandboxQuery}>
       <DesignerPanel
@@ -60,14 +56,29 @@ export default function App() {
         <SidebarPanel>
           <SidebarPanel.Item key="outline" />
           <SidebarPanel.Item key="components">
-            <ComponentsView menuData={menuData as any} />
+            <ComponentsView menuData={menuData as any} loading={menuLoading} />
           </SidebarPanel.Item>
           <SidebarPanel.Item key="model" isFloat width={800} />
           <SidebarPanel.Item key="dataSource" isFloat width={800} />
         </SidebarPanel>
         <WorkspacePanel>
           <ViewPanel mode="design">
-            <Sandbox />
+            <Sandbox
+              onMessage={(e) => {
+                if (e.type === 'done') {
+                  const sandboxWindow: any = sandboxQuery.window;
+                  if (sandboxWindow.TangoAntd) {
+                    if (sandboxWindow.TangoAntd.menuData) {
+                      setMenuData(sandboxWindow.TangoAntd.menuData);
+                    }
+                    if (sandboxWindow.TangoAntd.prototypes) {
+                      workspace.setComponentPrototypes(sandboxWindow.TangoAntd.prototypes);
+                    }
+                  }
+                  setMenuLoading(false);
+                }
+              }}
+            />
           </ViewPanel>
           <ViewPanel mode="code">
             <CodeEditor />
