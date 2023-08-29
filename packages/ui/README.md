@@ -1,4 +1,4 @@
-# `tango-apps-ui`
+# `tango-ui`
 
 > UI Widgets of tango-apps
 

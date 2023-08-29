@@ -1,0 +1,9 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["packages/*"],
+  "entryPointStrategy": "packages",
+  "exclude": ["packages/**/tests/**/*"],
+  "pretty": true,
+  "json": "apps/website/src/components/tango-types.json",
+  "logLevel": "Verbose"
+}

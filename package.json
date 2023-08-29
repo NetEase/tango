@@ -11,6 +11,7 @@
     "start:site": "yarn workspace website start",
     "deploy:site": "yarn workspace website deploy",
     "build": "lerna run build",
+    "typedoc": "typedoc --options typedoc.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "eslint": "eslint packages/**/src/*.{ts,tsx}",
@@ -59,7 +60,7 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "styled-components": "^5.3.6",
-    "typedoc": "^0.24.7",
+    "typedoc": "^0.25.0",
     "typescript": "^5.0.4",
     "webpack": "^4.46.0",
     "webpack-cli": "^4.9.2"

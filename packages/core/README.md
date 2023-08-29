@@ -5,7 +5,7 @@
 ## 如何使用
 
 ```js
-import { createEngine } from '@music/tango-apps-core';
+import { createEngine } from '@music163/tango-core';
 
 const engine = createEngine();
 ```

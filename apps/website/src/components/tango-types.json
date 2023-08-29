@@ -1,0 +1,27 @@
+{
+	"id": 0,
+	"name": "@music163/tango-helpers",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"packageName": "@music163/tango-helpers",
+	"readme": [
+		{
+			"kind": "text",
+			"text": "# "
+		},
+		{
+			"kind": "code",
+			"text": "`@music/tango-apps-shared`"
+		},
+		{
+			"kind": "text",
+			"text": "\n\n> 提供 tango-apps 的公共类型定义和工具函数等等\n\n## Usage\n\n"
+		},
+		{
+			"kind": "code",
+			"text": "```ts\nimport { Foo } from '@music/tango-apps-shared';\n\n// TODO: DEMONSTRATE API\n```"
+		}
+	],
+	"symbolIdMap": {}
+}
