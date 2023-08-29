@@ -1,10 +1,10 @@
-# 关于 TangoBoot
+# TangoBoot
 
-TangoBoot 是一个用来构建前端应用的运行时框架，提供了标准的数据请求，状态管理，路由方案，并提供了通用的运行时工具函数，让开发者通过简单的配置即可生成单页应用。
+TangoBoot 是一个服务于 Tango 低代码应用开发体系的前端应用框架，提供了标准的数据请求，状态管理，路由方案，并提供了通用的运行时工具函数，让开发者通过简单的配置即可生成单页应用。
 
 ## 应用架构
 
-TangoBoot 的应用架构推崇 View-Model-Service 三层模型，其中模型层定义了 Observable States，视图层观察 Model 的变化而进行自动更新，服务层用来创建一组服务函数，供视图层和模型层消费。图如下图所示:
+TangoBoot 的应用架构使用的是 View-Model-Service 三层模型，其中模型层定义了 Observable States，视图层观察 Model 的变化而进行自动更新，服务层用来创建一组服务函数，供视图层和模型层消费。图如下图所示:
 
 <img
   alt="image"
@@ -37,6 +37,7 @@ const { mount, unmount, bootstrap } = runApp({
     mountElement: document.querySelector('#root'),
     qiankun: false,
   },
+
   stores: {
     home,
     counter,
@@ -135,25 +136,4 @@ export default defineServices({
     url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users?id=1',
   },
 });
-```
-
-## 构建配置
-
-构建配置使用的方案为 easy ，对应的配置文件为 easy.config.js 其提供了一套插件体系方便我们对不同应用的构建配置做封装。其中 Tango 应用的构建配置对应封装为 easy-tango-framework .
-
-```js
-// 项目根目录 easy.config.js
-module.exports = {
-  framework: ['@music/easy-tango-framework', option],
-};
-```
-
-### option 配置
-
-不传 option 默认为中后台应用配置
-
-```js
-{
-  h5: false; //默认为false，是否切换成h5构建配置
-}
 ```

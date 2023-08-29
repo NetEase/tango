@@ -12,9 +12,7 @@ const counter = defineStore({
 });
 
 // 当状态变化的时候，视图会自动刷新
-export default definePage(() => (
-  <button onClick={counter.increment}>{counter.num}</button>
-));
+export default definePage(() => <button onClick={counter.increment}>{counter.num}</button>);
 ```
 
 值得注意的是，开发者必须借助 `defineStore` 来定义状态，它会帮助你创建一个 observable 的状态对象。借助 `definePage` 来定义视图，它会帮你订一个 reactive 的视图组件，并且在自动监听状态的变化，按需进行 UI 更新。
@@ -81,12 +79,15 @@ useStore.js
 ```js
 import { store } from '@music163/tango-boot';
 
-const userStore = defineStore({
-  user: {},
-  async fetchUser() {
-    userStore.user = await fetch('/user');
+const userStore = defineStore(
+  {
+    user: {},
+    async fetchUser() {
+      userStore.user = await fetch('/user');
+    },
   },
-}, "userStore");
+  'userStore',
+);
 
 export default userStore;
 ```
@@ -97,24 +98,29 @@ recipesStore.js
 import tango, { store } from '@music163/tango-boot';
 import userStore from './userStore';
 
-const recipesStore = defineStore({
-  recipes: [],
+const recipesStore = defineStore(
+  {
+    recipes: [],
 
-  // 方式1：直接用调用
-  async fetchRecipes() {
-    recipesStore.recipes = await fetch(`/recipes?user=${userStore.user.id}`);
-  },
+    // 方式1：直接用调用
+    async fetchRecipes() {
+      recipesStore.recipes = await fetch(`/recipes?user=${userStore.user.id}`);
+    },
 
-  // 方法2：使用 this 调用，仅支持 method property，不支持箭头函数
-  async fetchRecipes2() {
-    this.recipes = await fetch(`/recipes?user=${userStore.user.id}`);
-  },
+    // 方法2：使用 this 调用，仅支持 method property，不支持箭头函数
+    async fetchRecipes2() {
+      this.recipes = await fetch(`/recipes?user=${userStore.user.id}`);
+    },
 
-  // 方法3：使用 tango 全局变量调用，你也可以使用这种方式引入其他的 store
-  async fetchRecipes3() {
-    tango.stores.recipesStore.recipes = await fetch(`/recipes?user=${tango.stores.userStore.user.id}`);
+    // 方法3：使用 tango 全局变量调用，你也可以使用这种方式引入其他的 store
+    async fetchRecipes3() {
+      tango.stores.recipesStore.recipes = await fetch(
+        `/recipes?user=${tango.stores.userStore.user.id}`,
+      );
+    },
   },
-}, "recipesStore");
+  'recipesStore',
+);
 
 export default recipesStore;
 ```
@@ -193,7 +199,7 @@ defineStore(
   {
     name: 'alice',
   },
-  'user'
+  'user',
 );
 
 // 双向绑定验证

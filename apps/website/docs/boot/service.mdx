@@ -77,49 +77,6 @@ export default defineServices({
 `application/x-www-form-urlencoded` 数据被编码成以 '&' 分隔的键 - 值对，同时以 '=' 分隔键和值。非字母或数字的字符会被 [percent-encoding](https://developer.mozilla.org/zh-CN/docs/Glossary/percent-encoding): 这也就是为什么这种类型不支持二进制数据 (应使用 multipart/form-data 代替).
 :::
 
-:::warning 配置参数失效
-如果启用了加密请求，则 axios 的常用配置参数可能会失效，具体以加密请求配置为准。
-:::
-
-## 使用加密请求
-
-如果你的业务场景有加密需求，可以通过 `encryptFetch` 属性切换到加密请求方案，开启后将通过 [encrypt-fetch](https://music-cms.hz.netease.com/encrypt-fetch-doc/guide) 进行请求的发起。
-
-```js
-import { defineServices } from '@music163/tango-boot';
-
-export default defineServices({
-  list: {
-    url: '/api/users',
-    encryptFetch: {
-      encrypt: true,
-      // 这里你也可以传入 encrypt-fetch 的其他配置，参考 https://music-cms.hz.netease.com/encrypt-fetch-doc/api
-    },
-  },
-});
-```
-
-或者为所有的请求统一开启加密设置
-
-```js
-import { defineServices } from '@music163/tango-boot';
-
-export default defineServices(
-  {
-    list: {
-      url: '/api/users',
-    },
-    create: {
-      url: '/api/create',
-    },
-  },
-  {
-    encryptFetch: {
-      // 这里你也可以传入 encrypt-fetch 的其他配置，参考 https://music-cms.hz.netease.com/encrypt-fetch-doc/api
-    },
-  }
-);
-```
 
 ## 配置错误消息展示
 

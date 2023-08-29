@@ -2,167 +2,13 @@
 
 `tango.config.json` 是 Tango 项目的核心配置文件，当您的项目使用 Tango 设计器在线开发时会读取该文件进行线上开发环境的初始化。
 
-## type
-
-必填。`type` 指定项目的应用类型。可用的取值包括：
-
-- `tango-web` 中后台项目
-- `tango-h5` H5 项目
-- ...
-
-若需要新增类型，则需要到 Tango 平台进行注册，否则不识别。
-
 ## entry
 
 非必填。`entry` 是项目的入口文件，用于在线设计器的初始化，默认取值为 `/src/index.js`。
 
-## i18n
-
-非必填。`i18n` 是项目的多语言配置。其子配置项包括：
-
-- language 语言，例如 `zh-CN`
-- appId 前语平台的应用 ID
-- preModule
-
 ## sandbox
 
 必填。`sandbox` 是在线沙箱的配置。起子配置项包括：
-
-### ~~externals~~ (废弃)
-
-:::warning  已废弃  
-该配置项已废弃，仅作旧配置文件参考。新配置请参见 `packages` 配置项。  
-:::
-
-在线沙箱的外置扩展，用于避免将某些 `import` 的包打包到 bundle 中，而是在运行时再去外部获取这些扩展依赖。外置依赖的扩展可以借助 `externalResources` 引入关联的资源。
-
-例如：
-
-```json
-{
-  "sandbox": {
-    "externals": {
-      "react": "React",
-      "react-dom": "ReactDOM",
-      "styled-components": "styled"
-    }
-  }
-}
-```
-
-### ~~externalResources~~ (废弃)
-
-:::warning  已废弃  
-该配置项已废弃，仅作旧配置文件参考。新配置请参见 `packages` 与 `externalResources` 配置项。  
-:::
-
-沙箱启动时引入的外置依赖资源列表，可以是 `js` 或 `css` 等静态文件。例如：
-
-```json
-{
-  "sandbox": {
-    "externalResources": [
-      "https://g.alicdn.com/code/lib/react/17.0.2/umd/react.development.js",
-      "https://g.alicdn.com/code/lib/react-dom/17.0.2/umd/react-dom.development.js",
-      "https://g.alicdn.com/code/lib/react-is/16.13.1/umd/react-is.production.min.js",
-      "https://g.alicdn.com/code/lib/styled-components/5.3.5/styled-components.min.js"
-    ]
-  }
-}
-```
-
-### ~~sandboxId~~ (废弃)
-
-:::warning  已废弃  
-该配置项已废弃，仅作旧配置文件参考。该配置原先由平台直接写入配置文件，目前由引擎接管自动生成。  
-:::
-
-沙箱 ID，自动生成。
-
-### evaluateJavaScript (不推荐)
-
-:::warning  不推荐使用  
-该配置项不推荐使用，其只在沙箱内有效，生产环境内无效，仅作旧配置文件参考。该配置原先由平台直接写入配置文件，目前由引擎接管自动生成。  
-:::
-
-沙箱启动后额外执行的 JavaScript 脚本代码。例如
-
-```json
-{
-  "sandbox": {
-    "evaluateJavaScript": "console.log('hello world');"
-  }
-}
-```
-
-### ~~npmUrlMap~~ (废弃)
-
-:::warning  已废弃  
-该配置项已废弃，仅作旧配置文件参考。目前沙箱仅支持 `codesandbox`，因此该配置项无效。
-:::
-
-WIP
-
-## dataSource
-
-非必填。项目绑定的数据源信息。
-
-### ox
-
-项目关联的云音乐后端 Java 应用列表。当用户在在线设计器调用相关应用的接口后，会读取该文件，并自动匹配到相应的应用环境中，进行接口的访问。
-
-单个应用的配置项包括：
-
-- app 后端应用名
-- branch 后端应用的关联分枝（访问该分枝部署到特定环境的接口）
-- ~~functions 导入项目的函数列表~~ **已废弃，如不提供需要升级到 tango-boot@1.12.0 以上版本**
-
-例如：
-
-```json
-{
-  "dataSource": {
-    "ox": [
-      {
-        "app": "music-clientversion-control-manager",
-        "branch": "master"
-      },
-      {
-        "app": "glook-finance",
-        "branch": "master"
-      }
-    ]
-  }
-}
-```
-
-## ~~baseDependencies~~ (废弃)
-
-:::warning  已废弃  
-该配置项已废弃，仅作旧配置文件参考。新配置请参见 `packages` 配置项。  
-:::
-
-非必填。项目的基础依赖，用于获取项目基础物料列表的信息。如未提供，其默认值为 `@music163/antd`, `@music163/tango-boot`。你可以添加更多的基础依赖，前提是在 Tango 平台进行了基础依赖的注册。
-
-```json
-{
-  "baseDependencies": ["@music163/antd", "@music163/tango-boot"]
-}
-```
-
-## ~~bizDependencies~~ (废弃)
-
-:::warning  已废弃  
-该配置项已废弃，仅作旧配置文件参考。新配置请参见 `packages` 配置项。  
-:::
-
-非必填。合并到物料面板业务组件菜单中的业务组件列表。
-
-```json
-{
-  "bizDependencies": ["@music/ct-input", "@music/ct-custom-date-picker"]
-}
-```
 
 ## packages
 
@@ -180,25 +26,19 @@ WIP
     "version": "17.0.2",
     "library": "React",
     "type": "dependency",
-    "resources": [
-      "https://g.alicdn.com/code/lib/react/{{version}}/umd/react.development.js"
-    ]
+    "resources": ["https://unpkg.com/react@{{version}}/umd/react.development.js"]
   },
   "react-dom": {
     "version": "17.0.2",
     "library": "ReactDOM",
     "type": "dependency",
-    "resources": [
-      "https://g.alicdn.com/code/lib/react-dom/{{version}}/umd/react-dom.development.js"
-    ]
+    "resources": ["https://unpkg.com/react-dom@{{version}}/umd/react-dom.development.js"]
   },
   "@music163/tango-boot": {
-    "version": "1.18.5",
+    "version": "0.1.3",
     "library": "TangoBoot",
     "type": "baseDependency",
-    "resources": [
-      "https://s9.music.126.net/musicst/npm/@music163/tango-boot/{{version}}/boot.js"
-    ],
+    "resources": ["https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js"],
     "description": "云音乐低代码运行时框架"
   },
   "@music163/antd": {
@@ -215,15 +55,15 @@ WIP
       "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/index.css"
     ]
   },
-  "@music/ct-pc-json-editor": {
+  "@music163/biz-comp": {
     "type": "bizDependency",
     "version": "0.0.2"
   }
 }
 ```
 
-:::tip 注意依赖的先后顺序  
-由于依赖是按照定义的先后顺序注入至沙箱内，因此需要确保 `packages` 内依赖的先后顺序，否则可能会导致应用加载依赖失败（例如将 `react` 放置在组件包之后，会导致组件包无法正常加载）。  
+:::tip 注意依赖的先后顺序
+由于依赖是按照定义的先后顺序注入至沙箱内，因此需要确保 `packages` 内依赖的先后顺序，否则可能会导致应用加载依赖失败（例如将 `react` 放置在组件包之后，会导致组件包无法正常加载）。
 :::
 
 ## externalResources
@@ -232,15 +72,9 @@ WIP
 
 ```json
 {
-  "externalResources": [
-    "https://nos.netease.com/watermark/nis.wm.js",
-    "https://s8.music.126.net/5c89f5f14c9417d67a64ff3d_5c89f5f14c9417d67a64ff3f_0/react-native-web0.15.8.js",
-    "https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-transition-group/4.4.2/react-transition-group.min.js"
-  ]
+  "externalResources": ["https://tango.netease.io/script.js"]
 }
 ```
-
-该配置项同时生效于沙箱与构建产物（需要 `@music/chitu-tango-plugin@^1.5.0`），配置后可同时优化平台设计器与线上运行的加载时间。
 
 ## proxy
 
@@ -256,27 +90,3 @@ WIP
   }
 }
 ```
-
-## engine
-
-非必填。在线设计器的配置。其子配置项包括：
-
-### defaultActiveRoute
-
-设计器启动后默认激活的路由。若不提供，默认取值为 `/`。
-
-### autoRemoveUnusedImports
-
-在 Web IDE 中保存代码后，是否自动移除未使用的引入。默认不启用。
-
-## platform
-
-非必填。在线平台的关联配置。其子配置项包括：
-
-### autoDeploy
-
-是否在每次推送代码后自动触发 Febase 的环境部署。默认不启用。
-
-### upgradeAutoPush
-
-是否在升级依赖后自动触发一次推送。默认不启用。
