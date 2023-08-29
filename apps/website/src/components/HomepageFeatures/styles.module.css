@@ -1,6 +1,5 @@
 .features {
   border-top: 1px solid var(--ifm-color-emphasis-300);
-  background-color: var(--ifm-color-emphasis-200);
   display: flex;
   align-items: center;
   padding: 5rem 0;

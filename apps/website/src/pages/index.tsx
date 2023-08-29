@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomepageTimeline from '@site/src/components/Timeline';
 
 import styles from './index.module.css';
 import { Alert } from '../components/Alert';
@@ -44,6 +45,7 @@ export default function Home(): JSX.Element {
     <Layout title={siteConfig.title} description="Description will go into a meta tag in <head />">
       <HomepageHeader />
       <main>
+        <HomepageTimeline />
         <HomepageFeatures />
       </main>
     </Layout>
