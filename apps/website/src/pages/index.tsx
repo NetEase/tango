@@ -15,16 +15,18 @@ function HomepageHeader() {
     <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
         <div className="margin-bottom--lg">
-          <Alert type="info">🏗 当前版本为测试版，请谨慎使用，正式版将于 2023年12月31日发布！</Alert>
+          <Alert type="primary">
+            🏗 当前版本为测试版，请暂时不要用于生产环境，正式版将于2023年Q4发布！
+          </Alert>
         </div>
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link className="button button--primary button--lg" to="/docs/intro">
-            快速开始
+          <Link className="button button--primary button--lg" to="https://github.com/netease/tango">
+            Github
           </Link>
-          <Link className="button button--link button--lg" to="https://github.com/netease/tango">
-            查看代码
+          <Link className="button button--secondary button--lg" to="/docs/intro">
+            使用文档
           </Link>
         </div>
         <div className={styles.heroImageBox}>
