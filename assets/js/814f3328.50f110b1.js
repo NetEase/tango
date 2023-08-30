@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[2535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Tango LowCode Builder Released!","permalink":"/tango/blog/2023/08/30/welcome"}]}')}}]);
