@@ -1,6 +1,6 @@
 import React from 'react';
-// @ts-ignore
-import data from './tango-types';
+// import data from './tango-types.json';
+const data: any = {};
 
 const typeMap = {};
 if (data && data.children) {
