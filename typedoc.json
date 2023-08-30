@@ -4,7 +4,6 @@
   "entryPoints": ["packages/core", "packages/designer", "packages/helpers"],
   "entryPointStrategy": "packages",
   "exclude": ["packages/**/tests/**/*"],
-  "pretty": true,
-  "json": "apps/website/src/components/tango-types.json",
+  "out": "apps/docs",
   "logLevel": "Verbose"
 }

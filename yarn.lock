@@ -19548,7 +19548,7 @@ typedarray@^0.0.6:
 
 typedoc@^0.25.0:
   version "0.25.0"
-  resolved "https://registry.npmmirror.com/typedoc/-/typedoc-0.25.0.tgz#287f83d01c1c2186766884f4e04d698820d68115"
+  resolved "https://registry.npmmirror.com/typedoc/-/typedoc-0.25.0.tgz"
   integrity sha512-FvCYWhO1n5jACE0C32qg6b3dSfQ8f2VzExnnRboowHtqUD6ARzM2r8YJeZFYXhcm2hI4C2oCRDgNPk/yaQUN9g==
   dependencies:
     lunr "^2.3.9"
