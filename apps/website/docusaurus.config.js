@@ -87,6 +87,11 @@ const config = {
           },
           { to: '/blog', label: 'Blog', position: 'right' },
           {
+            href: 'https://tango-demo.musicfe.com/designer/',
+            label: 'Playground',
+            position: 'right',
+          },
+          {
             href: 'https://github.com/netease/tango',
             label: 'GitHub',
             position: 'right',
