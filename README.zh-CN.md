@@ -16,6 +16,13 @@
 
 简体中文 | [English](/README.md)
 
+## 📄 文档
+
+可以通过下面的链接查看详细的使用指南：
+
+- 官方文档站点: <https://netease.github.io/tango/>
+- 演示应用: <https://tango-demo.musicfe.com/designer/>
+
 ## ✨ 特性
 
 - 经历网易云音乐内网生产环境的实际检验，可灵活集成应用于低代码平台，本地开发工具等

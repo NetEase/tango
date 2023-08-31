@@ -16,6 +16,13 @@ A source code based low-code designer from the NetEase Cloud Music Develop Team.
 
 English | [简体中文](/README.zh-CN.md)
 
+## 📄 Documentation
+
+You can view the detailed usage guide through the following links:
+
+- Document site: <https://netease.github.io/tango/>
+- Playground application: <https://tango-demo.musicfe.com/designer/>
+
 ## ✨ Features
 
 - Tested in the production environment of NetEase Cloud Music, can be flexibly integrated into low-code platforms, local development tools, etc.
