@@ -8,12 +8,12 @@
   "scripts": {
     "start": "yarn workspace playground start",
     "start:story": "yarn workspace storybook storybook",
-    "start:docs": "yarn typedoc && open apps/docs/index.html",
     "start:site": "yarn workspace website start",
     "deploy:site": "yarn workspace website deploy",
     "build": "lerna run build",
     "build:site": "yarn workspace website build",
     "typedoc": "typedoc --options typedoc.json",
+    "docs": "yarn typedoc && open docs/index.html",
     "test": "jest",
     "test:watch": "jest --watch",
     "eslint": "eslint packages/**/src/*.{ts,tsx}",

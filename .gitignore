@@ -3,6 +3,8 @@ dist/
 lib/
 coverage/
 
+/docs
+
 .umi/
 .umi-production/
 .log
