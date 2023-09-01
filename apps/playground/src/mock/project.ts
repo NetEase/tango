@@ -145,10 +145,11 @@ import {
   Input,
   FormilyForm,
 } from "@music163/antd";
+import store from "../stores/app.js";
 class App extends React.Component {
   render() {
     return (
-      <Page title="页面标题">
+      <Page title={store.title}>
        <Section>
        </Section>
        <Section>
@@ -167,7 +168,7 @@ import { defineStore } from '@music163/tango-boot';
 
 export default defineStore({
 
-  title: 'hello world',
+  title: '页面标题',
 
   array: [1, 2, 3],
 }, 'app');
