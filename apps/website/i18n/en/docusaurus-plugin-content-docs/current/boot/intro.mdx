@@ -1,0 +1,138 @@
+# TangoBoot
+
+TangoBoot is a frontend application framework that serves the Tango low-code application development system. It provides standard data requests, state management, and routing solutions, as well as generic runtime utility functions, allowing developers to generate single-page applications through simple configuration.
+
+## Application Architecture
+
+The application architecture of TangoBoot uses the View-Model-Service three-layer model. The model layer defines Observable States, the view layer observes the changes of the model and updates automatically, and the service layer is used to create a set of service functions for the consumption of the view layer and the model layer. The diagram is shown in the figure below:
+
+<img
+  alt="image"
+  width="600px"
+  src="https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/13760951704/985c/9706/7f18/be713816a143d3a054f51c9d1fc59b36.png"
+/>
+
+## Core API
+
+- `runApp` create the app entry
+- `definePage` define reactive views
+- `defineStore` define observable states
+- `defineServices` define async service functions
+
+### Create app entry
+
+The `index.js` is the app entry file，a simple example is:
+
+```jsx
+import { runApp } from '@music163/tango-boot';
+import routes from './routes';
+import services from './services';
+import home from './stores/home';
+import counter from './stores/counter';
+import './global.less';
+
+const { mount, unmount, bootstrap } = runApp({
+  boot: {
+    mountElement: document.querySelector('#root'),
+    qiankun: false,
+  },
+
+  stores: {
+    home,
+    counter,
+  },
+
+  services,
+
+  router: {
+    type: 'browser',
+    config: routes,
+  },
+});
+
+export { mount, unmount, bootstrap };
+```
+
+### Create Observable States
+
+Defining a view model through defineStore is very simple, simply declare the state and actions.
+
+```jsx
+import { defineStore } from '@music163/tango-boot';
+
+const counter = defineStore({
+  num: 0,
+
+  get() {},
+
+  decrement: function () {
+    counter.num--;
+  },
+
+  increment: () => counter.num++,
+});
+
+export default counter;
+```
+
+### Create Reactive Views
+
+If the view layer needs to listen for state changes, it only needs to wrap the view component with `definePage`.
+
+```jsx
+import React from 'react';
+import tango, { definePage } from '@music163/tango-boot';
+
+class App extends React.Component {
+  increment = () => {
+    tango.stores.counter.increment();
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>Counter: {tango.stores.counter.num}</h1>
+        <button type="primary" onClick={this.increment}>
+          +1
+        </button>
+      </div>
+    );
+  }
+}
+
+export default definePage(App);
+```
+
+### Create Service Functions
+
+Use `defineServices` to define your remote apis as service functions.
+
+```jsx
+import { defineServices } from '@music163/tango-boot';
+
+export default defineServices({
+  list: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+    formatter: (res) => {
+      const { data, message } = res;
+      return {
+        code: 200,
+        list: data,
+        total: data.length,
+        message,
+      };
+    },
+  },
+  add: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+    method: 'post',
+  },
+  update: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
+    method: 'post',
+  },
+  delete: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users?id=1',
+  },
+});
+```

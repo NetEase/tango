@@ -1,11 +1,11 @@
 <p align="center">
-  <img width="200" src="https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/27987950370/5db0/e2e8/5388/3fc184017c2c176642c4a67de45ce766.png" />
+  <img width="200" src="https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/30218210645/b186/3974/338b/2ddfa3cd042cf988ca452686552f8462.png" />
 </p>
 
-<h1 align="center">Tango LowCode Designer</h1>
+<h1 align="center">Tango LowCode Builder</h1>
 <div align="center">
 
-A source code based low-code designer from the NetEase Cloud Music Develop Team.
+A source code based low-code builder from NetEase Cloud Music Develop Team.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/NetEase/tango/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@music163/tango-designer.svg?style=flat-square)](http://npmjs.org/package/@music163/tango-designer)

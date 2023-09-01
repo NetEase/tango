@@ -1,0 +1,87 @@
+# Global Variable
+
+TangoBoot provides a global singleton mode by default, which means that you can always use this global singleton to access necessary application runtime information in your project.
+
+:::tip
+Singleton means a single instance, also called "singleton pattern," which is a common design pattern. It limits the number of times a class can be instantiated to only once, so that a class has only one instance and provides a global access point to it. In the context of TangoBoot, "singleton" means that your application will always have only one instance of TangoBoot, and you can consistently obtain application-to-runtime information through this single instance.
+:::
+
+## Get the global variable
+
+```js
+// case1: get from package
+import tango from '@music163/tango-boot';
+
+// case2: get from window
+window.tango;
+
+// both are the same
+console.log(tango === window.tango); // true
+```
+
+### Get data from the global `tango` variable
+
+```js
+// tango
+{
+  // custom configs
+  config: {},
+
+  // custom helper functions
+  helpers: {},
+
+  // History
+  history: History;
+
+  // service functions
+  services: {},
+
+  // store instances
+  stores: {},
+
+  // builtin helpers
+  closeModal: Function;
+  openModal: Function;
+  setStoreValue: Function;
+  getStoreValue: Function;
+  // ...
+}
+```
+
+## Usage Guide
+
+### Use in store
+
+```jsx
+import tango, { defineModel } from '@music163/tango-boot';
+
+export default defineModel(
+  {
+    title: 'hello',
+
+    async listUsers() {
+      const data = await tango.services.listUsers();
+      this.title = data;
+    },
+  },
+  'app'
+);
+```
+
+### Use in page runtime
+
+```jsx
+import tango, { definePage } from '@music163/tango-boot';
+
+function App() {
+  return (
+    <Box>
+      {tango.stores.app.title}
+
+      <Button onClick={tango.services.list}>request</Button>
+    </Box>
+  );
+}
+
+export default definePage(App);
+```

@@ -1,0 +1,30 @@
+{
+  "logo.alt": {
+    "message": "Tango Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.引擎文档": {
+    "message": "Builder",
+    "description": "Navbar item with label 接入文档"
+  },
+  "item.label.应用框架": {
+    "message": "Boot",
+    "description": "Navbar item with label 应用框架"
+  },
+  "item.label.协议": {
+    "message": "Protocol",
+    "description": "Navbar item with label 协议"
+  },
+  "item.label.博客": {
+    "message": "Blog",
+    "description": "Navbar item with label 博客"
+  },
+  "item.label.演示应用": {
+    "message": "Playground",
+    "description": "Navbar item with label 演示应用"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

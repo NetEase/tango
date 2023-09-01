@@ -1,0 +1,41 @@
+# Pages
+
+TangoBoot 内置提供了一个创建 reactive 视图的模型，用户无需关注复杂的依赖关系，只需要将视图组件使用 `definePage` 包裹即可。
+
+## definePage
+
+基于传递进来的组件创建一个 reactive 视图。reactive 视图会根据 store 数据的变化来自动触发视图重新渲染。例如
+
+```jsx
+import React from 'react';
+import { definePage, defineStore } from '@music163/tango-boot';
+
+const user = defineStore({ name: 'Bob' });
+
+export default definePage(() => <div>Hello {user.name}!</div>);
+```
+
+`definePage` 内部为被包裹的组件实现了一个最佳的 `shouldComponentUpdate` 或 `memo`。
+
+使用 `definePage` 包裹后的组件还会默认接收一些额外的属性，以便于开发者便捷的获取部分状态信息。具体包括：
+
+- `routerData` 路由数据：包括 `params` 路由参数，`query` 查询参数，`pathname` 路径名
+- `stores` 模型索引
+- `services` 服务索引
+
+## defineView
+
+`defineView` 是一个更加轻量的实现 reactive 视图的包裹器，推荐所有在视图中使用的本地组件都使用它来进行包裹。与 `definePage` 不同的是，他没有额外的属性透传进来。
+
+```jsx
+export default defineView(() => (
+  <div>
+    <div>Hello {user.name}!</div>
+    <div>Your first post is: {timeline.posts[0]}</div>
+  </div>
+));
+```
+
+:::info
+`defineView` 的实现依赖了 [react-easy-state](https://github.com/RisingStack/react-easy-state#creating-reactive-views)，感兴趣的同学可以访问对应的链接了解更详细的内容。
+:::

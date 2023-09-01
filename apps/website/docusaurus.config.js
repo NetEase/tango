@@ -26,7 +26,7 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'zh-CN',
-    locales: ['zh-CN'],
+    locales: ['zh-CN', 'en'],
   },
 
   presets: [
@@ -64,36 +64,40 @@ const config = {
         title: '',
         logo: {
           alt: 'Tango Logo',
-          src: 'https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/27987950370/5db0/e2e8/5388/3fc184017c2c176642c4a67de45ce766.png',
+          src: 'img/logo.png',
         },
         items: [
           {
             type: 'docSidebar',
             sidebarId: 'designer',
             position: 'left',
-            label: 'Designer',
+            label: '引擎文档',
           },
           {
             type: 'docSidebar',
             sidebarId: 'boot',
             position: 'left',
-            label: 'Boot',
+            label: '应用框架',
           },
           {
             type: 'docSidebar',
             sidebarId: 'protocol',
             position: 'left',
-            label: 'Protocol',
+            label: '协议',
           },
-          { to: '/blog', label: 'Blog', position: 'right' },
+          { to: '/blog', label: '博客', position: 'right' },
           {
             href: 'https://tango-demo.musicfe.com/designer/',
-            label: 'Playground',
+            label: '演示应用',
             position: 'right',
           },
           {
             href: 'https://github.com/netease/tango',
             label: 'GitHub',
+            position: 'right',
+          },
+          {
+            type: 'localeDropdown',
             position: 'right',
           },
         ],
@@ -102,16 +106,16 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: '文档',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: '快速开始',
+                to: '/docs/designer/quick-start',
               },
             ],
           },
           {
-            title: 'Community',
+            title: '社区',
             items: [
               {
                 label: 'Stack Overflow',
@@ -124,10 +128,10 @@ const config = {
             ],
           },
           {
-            title: 'More',
+            title: '更多',
             items: [
               {
-                label: 'Blog',
+                label: '博客',
                 to: '/blog',
               },
               {

@@ -1,0 +1,37 @@
+# Directory Structure
+
+## Specification
+
+在目录结构上，我们约定了一套通用的目录结构
+
+```md
+── src
+│ +── assets
+│ +── pages
+│ +── components
+│ +── services/index.js
+│ +── stores
+│ ├── routes.js // route config
+│ ├── global.less // global styles
+| |-- index.js // app entry
+└── package.json
+|---tango.config.json // config for low-code engine
+```
+
+## Custom Components
+
+This directory is used to store locally developed components, such as:
+
+```jsx
+// src/components/sample.jsx
+import React from 'react';
+import { Box } from '@music163/antd';
+
+export function Sample(props) {
+  return <Box {...props}>sample component</Box>;
+}
+```
+
+:::info
+Note that if you want the Sample component to be parsed and built by the designer, you must use MusicOne's `Box` component instead of the common `div` element. You can also use `<Box as="span" />` to change the rendered HTML element.
+:::

@@ -6,10 +6,6 @@
 
 非必填。`entry` 是项目的入口文件，用于在线设计器的初始化，默认取值为 `/src/index.js`。
 
-## sandbox
-
-必填。`sandbox` 是在线沙箱的配置。起子配置项包括：
-
 ## packages
 
 项目使用的 npm 包依赖信息，用于定义依赖的类型以及外置依赖资源。该配置项为一个 map，key 为对应的 npm 包名，value 为该依赖的配置信息。
@@ -18,7 +14,6 @@
 
 当配置了外置依赖资源 `resources` 与其对应的全局变量 `library` 时，当这些依赖被 import 时，相关资源不会被打包到 bundle 中，而是在运行时再去外部获取这些扩展依赖，其等效于之前的 `sandbox.externalResources` 与 `sandbox.externals` 配置项。此外，可以将 `resource` 中的版本号替换为 `{{version}}`，其会在平台上构建时替换为版本号。特殊的，可以定义 `designerResources` 用于适配平台的设计器视图。
 
-该配置项同时生效于沙箱与构建产物（需要 `@music/chitu-tango-plugin@^1.5.0`），配置后可同时优化平台设计器与线上运行的加载时间。
 
 ```json
 {
@@ -42,17 +37,17 @@
     "description": "云音乐低代码运行时框架"
   },
   "@music163/antd": {
-    "version": "1.27.29",
-    "library": "TangoCMS",
+    "version": "0.1.2",
+    "library": "TangoAntd",
     "type": "baseDependency",
     "resources": [
-      "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/index.js",
-      "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/index.css"
+      "https://unpkg.com/@music163/antd/{{version}}/dist/index.js",
+      "https://unpkg.com/@music163/antd/{{version}}/dist/index.css"
     ],
     "description": "云音乐低代码中后台应用基础物料",
     "designerResources": [
-      "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/designer.js",
-      "https://s9.music.126.net/musicst/npm/@music163/antd/{{version}}/umd/index.css"
+      "https://unpkg.com/@music163/antd/{{version}}/dist/designer.js",
+      "https://unpkg.com/@music163/antd/{{version}}/dist/index.css"
     ]
   },
   "@music163/biz-comp": {

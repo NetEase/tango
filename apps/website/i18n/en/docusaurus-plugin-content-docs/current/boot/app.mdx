@@ -1,0 +1,134 @@
+# App Entry
+
+The framework creates and renders the entire application through `runApp`, and global configurations of the application can be passed in during the creation of the application.
+
+## Configuration
+
+Configure the application globally through `src/index.js`, set up routes, runtime environment, service functions, state models, and more.
+
+```js
+import { runApp, tangoBootConfig } from '@music163/tango-boot';
+import { message } from '@music163/antd';
+
+// Configure the default display method for error messages that occur during requests, using the message component to display the message overlay.
+tangoBootConfig.toast = message;
+
+runApp({
+  // boot config
+  boot: {},
+
+  // container components
+  providers: [],
+
+  // store instances
+  stores: {},
+
+  // service functions
+  services: {},
+
+  // route config
+  router: {},
+});
+```
+
+## App Boot
+
+The `boot` configuration item is used for the startup configuration of the application.
+
+```js
+runApp({
+  boot: {
+    // react-dom mount element
+    mountElement: document.querySelector('#root'),
+
+    // enable qiankun micro-app support, `qiankun: { appName: string }`
+    qiankun: false,
+  },
+});
+```
+
+## Route Config
+
+`router` configuration item is used to configure the front-end routing of the application, which is implemented based on `react-router`.
+
+```js
+import routes from './routes';
+
+runApp({
+  router: {
+    // 路由类型: hash | browser
+    type: 'hash',
+
+    // 路由配置信息
+    config: routes,
+
+    // basename,
+  },
+});
+```
+
+TangoBoot uses the [Static Routing Configuration Scheme](https://github.com/remix-run/react-router/tree/v5/packages/react-router-config) of ReactRouter. The specific routing configuration file is as follows:
+
+```js
+// routes.js
+import Index from './pages/index';
+import About from './pages/about';
+
+const routes = [
+  {
+    path: '/',
+    exact: true,
+    component: Index,
+  },
+  {
+    path: '/about',
+    component: About,
+  },
+  {
+    path: '/user/:id',
+    component: About,
+  },
+];
+
+export default routes;
+```
+
+## Container Components
+
+Sometimes, you may want to wrap the root component with specific container components such as multi-language configuration, state container, etc. Since `runApp` encapsulates the rendering logic of the root component, you can use the `providers` configuration option.
+
+```js
+runApp({
+  // Wrap the instance of the providers component in the order in which it is passed in.
+  providers: [<ConfigProvider />, <LocaleProvider />],
+});
+```
+
+## Environment Variables {#env}
+
+Sometimes you may need to customize some environment variables to quickly determine when the application is running in different environments. You can use `tango.env` to quickly obtain the application's environment information. It should be noted that by default there will be no environment information, and you can set the desired environment variables by passing `getEnv` in `runApp` when needed.
+
+For example:
+
+```js
+runApp({
+  // You can return an object with the environment information of the custom application.
+  getEnv() {
+    if (location.origin.includes('tango')) {
+      // tango designer
+      return 'development';
+    }
+    if (location.origin.includes('localhost')) {
+      // local environment
+      return 'local';
+    }
+    return 'production';
+  },
+});
+```
+
+Consume environment variables anywhere, for example:
+
+```jsx
+<Box isRender={tango.env === 'development'}>A box only render in development environment</Box>
+```
