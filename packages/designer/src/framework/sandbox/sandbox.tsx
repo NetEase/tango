@@ -410,9 +410,6 @@ function normalizeFiles(files: object, entry = '/src/index.js') {
 }
 
 function mergeTangoConfigJson(code: string, isPreview: boolean, config?: { [x: string]: any }) {
-  if (isPreview) {
-    code = code.replaceAll('/umd/designer.', '/umd/index.').replaceAll('/es/designer?', '?');
-  }
   let json;
   try {
     json = JSON.parse(code);

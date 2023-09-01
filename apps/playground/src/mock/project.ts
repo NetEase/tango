@@ -61,8 +61,8 @@ const tangoJson = {
       ],
       description: '云音乐低代码中后台应用基础物料',
       designerResources: [
-        // 'https://unpkg.com/@music163/antd@{{version}}/dist/designer.js',
-        'http://localhost:9002/designer.js',
+        'https://unpkg.com/@music163/antd@{{version}}/dist/designer.js',
+        // 'http://localhost:9002/designer.js',
         'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
     },

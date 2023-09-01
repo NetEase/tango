@@ -26,8 +26,8 @@ import {
 } from '@ant-design/icons';
 import { useBoolean } from '@music163/tango-helpers';
 import { isUndefined } from 'lodash-es';
-import { useRemoteServices, useSandboxQuery } from '../../../context';
 import { Workspace } from '@music163/tango-core';
+import { useRemoteServices, useSandboxQuery } from '../../../context';
 
 const { Option } = Select;
 
@@ -609,11 +609,11 @@ function AddDependencyModal({
     });
   };
 
-  const onValuesChange = ({ type, name }: { type: DependencyItemType; name: string }) => {
-    if (type) {
+  const onValuesChange = ({ type: depType, name }: { type: DependencyItemType; name: string }) => {
+    if (depType) {
       // type 变更触发
       form.resetFields(['name', 'version']);
-      setType(type);
+      setType(depType);
     }
     if (name) {
       // 如果已经获取过了，不重复请求
