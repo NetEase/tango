@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[2482],{2245:e=>{e.exports=JSON.parse('{"label":"open-source","permalink":"/tango/en/blog/tags/open-source","allTagsPath":"/tango/en/blog/tags","count":1}')}}]);
