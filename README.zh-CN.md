@@ -119,6 +119,10 @@ yarn start
 - 合并修改 git rebase master
 - 发起 Pull Request
 
+## Tango使用量趋势
+
+[Tango使用量趋势](https://npm-compare.com/@music163/tango-helpers,@music163/tango-context,@music163/tango-core,@music163/tango-setting-form,@music163/tango-sandbox,@music163/tango-ui,@music163/tango-designer)
+
 ## 💗 致谢
 
 感谢网易云音乐公共技术团队，大前端团队，直播技术团队，以及所有参与过 Tango 项目的同学们。
