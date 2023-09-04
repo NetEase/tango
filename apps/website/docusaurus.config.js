@@ -3,7 +3,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '基于 Tango 开发低代码生产力工具',
+  title: '使用 Tango 构建你的低代码生产力工具',
   tagline: '基于源代码 AST 实现可视化搭建操作，支持实时出码，不受私有 DSL 和协议限制',
   favicon: 'img/favicon.ico',
 
@@ -28,6 +28,8 @@ const config = {
     defaultLocale: 'zh-CN',
     locales: ['zh-CN', 'en'],
   },
+
+  // scripts: [{ src: 'https://buttons.github.io/buttons.js', async: true, defer: true }],
 
   presets: [
     [
@@ -60,6 +62,13 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
+      announcementBar: {
+        id: 'notion_alert',
+        content: '🏗 当前版本为测试版，请暂时不要用于生产环境，正式版将于2023年Q4发布！',
+        backgroundColor: 'var(--ifm-color-primary-contrast-background)',
+        textColor: 'var(--ifm-color-primary-contrast-foreground)',
+        isCloseable: false,
+      },
       navbar: {
         title: '',
         logo: {
@@ -85,15 +94,15 @@ const config = {
             position: 'left',
             label: '协议',
           },
-          { to: '/blog', label: '博客', position: 'right' },
+          { to: '/blog', label: '博客', position: 'left' },
+          {
+            type: 'html',
+            position: 'right',
+            value: `<a class="navbar__link github-button" href="https://github.com/netease/tango" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star netease/tango on GitHub">Github</a><script async defer src="https://buttons.github.io/buttons.js"></script>`,
+          },
           {
             href: 'https://tango-demo.musicfe.com/designer/',
             label: '演示应用',
-            position: 'right',
-          },
-          {
-            href: 'https://github.com/netease/tango',
-            label: 'GitHub',
             position: 'right',
           },
           {

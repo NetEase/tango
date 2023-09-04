@@ -5,23 +5,23 @@
   },
   "item.label.引擎文档": {
     "message": "Builder",
-    "description": "Navbar item with label 接入文档"
+    "description": "Navbar item with label builder"
   },
   "item.label.应用框架": {
     "message": "Boot",
-    "description": "Navbar item with label 应用框架"
+    "description": "Navbar item with label framework"
   },
   "item.label.协议": {
     "message": "Protocol",
-    "description": "Navbar item with label 协议"
+    "description": "Navbar item with label protocol"
   },
   "item.label.博客": {
     "message": "Blog",
-    "description": "Navbar item with label 博客"
+    "description": "Navbar item with label blog"
   },
   "item.label.演示应用": {
     "message": "Playground",
-    "description": "Navbar item with label 演示应用"
+    "description": "Navbar item with label playground"
   },
   "item.label.GitHub": {
     "message": "GitHub",
