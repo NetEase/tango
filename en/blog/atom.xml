@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://netease.github.io/tango/en/blog</id>
-    <title>基于 Tango 开发低代码生产力工具 Blog</title>
+    <title>使用 Tango 构建你的低代码生产力工具 Blog</title>
     <updated>2023-08-30T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://netease.github.io/tango/en/blog"/>
-    <subtitle>基于 Tango 开发低代码生产力工具 Blog</subtitle>
+    <subtitle>使用 Tango 构建你的低代码生产力工具 Blog</subtitle>
     <icon>https://netease.github.io/tango/en/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[Tango LowCode Builder Released!]]></title>
