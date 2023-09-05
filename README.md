@@ -118,6 +118,10 @@ Please read the [github contribution guide](https://docs.github.com/en/get-start
 - Commit and push your code
 - Open a Pull Request
 
+## Usage Trends of Tango
+
+[Usage Trends of Tango Packages](https://npm-compare.com/@music163/tango-helpers,@music163/tango-context,@music163/tango-core,@music163/tango-setting-form,@music163/tango-sandbox,@music163/tango-ui,@music163/tango-designer)
+
 ## 💗 Acknowledgments
 
 Thanks to the NetEase Cloud Music Front-end team, Public Technology team, Live Broadcasting Technology team, and all the colleagues who participated in the Tango project.
