@@ -16,7 +16,7 @@
     "docs": "yarn typedoc && open docs/index.html",
     "test": "jest",
     "test:watch": "jest --watch",
-    "eslint": "eslint packages/**/src/*.{ts,tsx}",
+    "eslint": "eslint packages/**/src/*.{ts,tsx} --cache",
     "publish": "lerna publish",
     "ver": "lerna version --no-private",
     "release": "yarn eslint && yarn build && yarn run ver && lerna publish from-git",
