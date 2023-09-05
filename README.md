@@ -109,6 +109,12 @@ yarn
 yarn start
 ```
 
+## 💬 Community
+
+Join NetEase Tango Community to share your ideas, suggestions, or questions and connect with other users and contributors.
+
+- Discord: <https://discord.gg/B6hkGTe4Rz>
+
 ## 🤝 Contributing
 
 Please read the [github contribution guide](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) first。
@@ -127,3 +133,7 @@ Please read the [github contribution guide](https://docs.github.com/en/get-start
 Thanks to the NetEase Cloud Music Front-end team, Public Technology team, Live Broadcasting Technology team, and all the colleagues who participated in the Tango project.
 
 Thank you to CodeSandbox for providing the [Sandpack](https://sandpack.codesandbox.io/) project, which provides powerful online code execution capabilities for Tango.
+
+## 📄 License
+
+This project is licensed under the terms of the [MIT license](./LICENSE)

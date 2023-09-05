@@ -61,7 +61,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/social-card.png',
       announcementBar: {
         id: 'notion_alert',
         content: '🏗 当前版本为测试版，请暂时不要用于生产环境，正式版将于2023年Q4发布！',
