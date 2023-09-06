@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import {
   Designer,
   DesignerPanel,
-  SidebarPanel,
   SettingPanel,
-  ToolbarPanel,
+  Sidebar,
+  Toolbar,
   WorkspacePanel,
+  ComponentsPanel,
   ViewPanel,
   CodeEditor,
   Sandbox,
   DndQuery,
-  ComponentsView,
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
 import { Logo, ProjectDetail } from './share';
@@ -47,20 +47,20 @@ export default function App() {
         logo={<Logo />}
         description={<ProjectDetail />}
         actions={
-          <ToolbarPanel>
-            <ToolbarPanel.Item key="modeSwitch" placement="right" />
-            <ToolbarPanel.Item key="togglePanel" placement="right" />
-          </ToolbarPanel>
+          <Toolbar>
+            <Toolbar.Item key="modeSwitch" placement="right" />
+            <Toolbar.Item key="togglePanel" placement="right" />
+          </Toolbar>
         }
       >
-        <SidebarPanel>
-          <SidebarPanel.Item key="outline" />
-          <SidebarPanel.Item key="components">
-            <ComponentsView menuData={menuData as any} loading={menuLoading} />
-          </SidebarPanel.Item>
-          <SidebarPanel.Item key="model" isFloat width={800} />
-          <SidebarPanel.Item key="dataSource" isFloat width={800} />
-        </SidebarPanel>
+        <Sidebar>
+          <Sidebar.Item key="outline" />
+          <Sidebar.Item key="components">
+            <ComponentsPanel menuData={menuData as any} loading={menuLoading} />
+          </Sidebar.Item>
+          <Sidebar.Item key="model" isFloat width={800} />
+          <Sidebar.Item key="dataSource" isFloat width={800} />
+        </Sidebar>
         <WorkspacePanel>
           <ViewPanel mode="design">
             <Sandbox

@@ -1,13 +1,12 @@
+import * as t from '@babel/types';
 import {
   ComponentPropType,
   ComponentPrototypeType,
-  TangoSchemaTreeNodeType,
   isNil,
   isVariableString,
   logger,
   uuid,
 } from '@music163/tango-helpers';
-import * as t from '@babel/types';
 import { getRelativePath, isFilepath } from './string';
 import type { ImportDeclarationPayloadType } from '../types';
 import { code2expression } from './ast';
@@ -138,26 +137,4 @@ export function prototype2code(prototype: ComponentPrototypeType) {
 export function prototype2jsxElement(prototype: ComponentPrototypeType) {
   const code = prototype2code(prototype);
   return code2expression(code) as t.JSXElement;
-}
-
-export function prototype2schemaNode(prototype: ComponentPrototypeType) {
-  const node: TangoSchemaTreeNodeType = {
-    id: uuid(`${prototype.name}:`),
-    component: prototype.name,
-    props: {},
-  };
-  prototype.props.forEach((prop) => {
-    if ('initValue' in prop) {
-      node.props[prop.name] = prop.initValue;
-    }
-  });
-  if (prototype.initChildren) {
-    try {
-      const children = JSON.parse(prototype.initChildren);
-      node.children = children;
-    } catch (err) {
-      // do nothing
-    }
-  }
-  return node;
 }
