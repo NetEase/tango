@@ -5,7 +5,7 @@
 <h1 align="center">Tango LowCode Builder</h1>
 <div align="center">
 
-A source code based low-code builder from NetEase Cloud Music Develop Team.
+A source code based low-code builder, developed by NetEase Cloud Music Develop Team.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/NetEase/tango/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@music163/tango-designer.svg?style=flat-square)](http://npmjs.org/package/@music163/tango-designer)
@@ -50,41 +50,6 @@ gantt
     1.0 RC               :         des3, after des2, 40d
     1.0 version              :         des4, after des3, 21d
 ```
-
-## 📄 Usage
-
-Install the low-code designer
-
-```bash
-npm install @music163/tango-designer
-```
-
-Initialize the low-code designer engine
-
-```js
-import { createEngine } form '@music163/tango-designer';
-
-// init designer engine
-const engine = createEngine({
-  entry: '/src/index.js',
-  files: sampleFiles,
-  componentPrototypes: prototypes as any,
-});
-```
-
-Initialize the drag-and-drop engine
-
-```js
-import { DndQuery } form '@music163/tango-designer';
-
-const sandboxQuery = new DndQuery({
-  context: 'iframe',
-});
-```
-
-Initialize the designer layout (WIP)
-
-Find details from [Documentation Site](https://netease.github.io/tango/)。
 
 ## 💻 Development
 

@@ -1,5 +1,5 @@
 import { createContext, TangoRemoteServicesType } from '@music163/tango-helpers';
-import type { DndQuery } from './framework';
+import type { DndQuery } from './dnd';
 
 /**
  * TODO: 是不是直接合并到 Context 中

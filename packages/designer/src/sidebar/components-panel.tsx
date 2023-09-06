@@ -16,7 +16,6 @@ import { getDragGhostElement } from '../helpers';
 type MenuKeyType = 'common' | 'atom' | 'snippet' | 'block' | 'bizComp';
 type MenuValueType = Array<{ title: string; items: string[] }>;
 export type MenuDataType = PartialRecord<MenuKeyType, MenuValueType>;
-type AddBizDependencyHandlerType = (data: { name: string; version: string; detail: any }) => void;
 
 export interface ComponentsPanelProps {
   /**
@@ -35,10 +34,6 @@ export interface ComponentsPanelProps {
    * 动态加载物料 loading，避免未加载完成用户点击空列表
    */
   loading?: boolean;
-  /**
-   * 安装依赖后回调
-   */
-  onBizDependencyAdd?: AddBizDependencyHandlerType;
   /**
    * 设置业务组件调用名
    * @param name

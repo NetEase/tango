@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { observer, useWorkspace } from '@music163/tango-context';
 import {
   Button,
@@ -10,7 +10,6 @@ import {
   Popconfirm,
   Radio,
   Select,
-  Space,
   message,
   Tag,
 } from 'antd';
@@ -18,17 +17,11 @@ import { Box, Text } from 'coral-system';
 import semverLt from 'semver/functions/lt';
 import semverValid from 'semver/functions/valid';
 import { ConfigGroup, ConfigItem } from '@music163/tango-ui';
-import {
-  BookOutlined,
-  GitlabOutlined,
-  PlusOutlined,
-  QuestionCircleOutlined,
-} from '@ant-design/icons';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useBoolean } from '@music163/tango-helpers';
 import { isUndefined } from 'lodash-es';
 import { Workspace } from '@music163/tango-core';
-
-const { Option } = Select;
+import { useSandboxQuery } from '../context';
 
 enum DependencyItemType {
   基础包 = 'base',
@@ -54,19 +47,11 @@ export const DependencyPanel = observer(
       >
     >();
     const workspace = useWorkspace();
-    // const remoteServices = useRemoteServices();
     const dependencies = workspace?.listDependencies();
     const packages = workspace?.tangoConfigJson?.getValue('packages');
     const packageNames = useMemo(() => Object.keys(packages || {}), [packages]);
     const bizDependencies = workspace?.bizComps;
     const baseDependencies = workspace?.baseComps;
-
-    // useEffect(() => {
-    //   if (!workspace?.tangoConfigJson.getValue('type')) return;
-    //   remoteServices?.DependencyService?.listBaseDependencies({
-    //     type: workspace?.tangoConfigJson.getValue('type'),
-    //   }).then((data: any) => setTemplateBaseDependencies(data));
-    // }, [workspace, remoteServices]);
 
     // 其他依赖
     const otherDeps = useMemo(
@@ -138,37 +123,6 @@ export const DependencyPanel = observer(
               type={DependencyItemType.基础包}
               dependencies={baseDeps}
               onUpgrade={onBaseDependencyAdd}
-            />
-          </ConfigItem>
-        </ConfigGroup>
-        <ConfigGroup
-          title={
-            <>
-              业务组件&nbsp;
-              <Tooltip
-                title={
-                  <>
-                    - 组件来源：
-                    <a target="_blank" href="https://redstone.fn.netease.com/" rel="noreferrer">
-                      红石平台
-                    </a>
-                    <br />
-                    - 安装成功后，可到【组件 - 业务组件】面板进行拖拽
-                    <br />- 升级默认升级到最新版本
-                  </>
-                }
-              >
-                <QuestionCircleOutlined />
-              </Tooltip>
-            </>
-          }
-          key={DependencyItemType.业务组件}
-        >
-          <ConfigItem layoutDirection="column">
-            <DependencyList
-              type={DependencyItemType.业务组件}
-              dependencies={bizDeps}
-              onUpgrade={onBizDependencyAdd}
             />
           </ConfigItem>
         </ConfigGroup>
@@ -501,44 +455,20 @@ function AddDependencyModal({
   onBaseDependencyAdd,
 }: DependencyModalProps) {
   // 依赖类型
-  const [type, setType] = useState<DependencyItemType>(DependencyItemType.业务组件);
-  // 业务（红石）组件列表
-  const [bizList, setBizList] = useState();
+  const [type, setType] = useState<DependencyItemType>(DependencyItemType.其他依赖);
   const [open, { on, off }] = useBoolean();
-  // 组件版本列表
-  const [versions, setVersions] = useState({});
 
   const [form] = Form.useForm();
   const workspace = useWorkspace();
-  // const sandbox = useSandboxQuery();
-  // const remoteServices = useRemoteServices();
+  const sandbox = useSandboxQuery();
 
-  // useEffect(() => {
-  //   if (!remoteServices?.DependencyService || !workspace) return;
-  //   const bizDeps = workspace?.bizComps;
-  //   if (type === DependencyItemType.业务组件) {
-  //     remoteServices?.DependencyService?.listBizDependencies().then((data: any) =>
-  //       setBizList(data?.filter((item: any) => !bizDeps?.includes(item.packageName))),
-  //     );
-  //   }
-  // }, [type, remoteServices, workspace]);
-
-  // 基础包列表
-  const baseDependencies: string[] = useMemo(() => {
-    if (!templateBaseDependencies || !workspace?.tangoConfigJson) return [];
-    const baseDeps = workspace?.baseComps;
-    return (Object.keys(templateBaseDependencies) || []).filter(
-      (dep: string) => !baseDeps?.includes(dep),
-    );
-  }, [templateBaseDependencies, workspace]);
-
-  // const onFinishCallback = (name?: string) => {
-  //   name && message.success(`${name} 添加成功`);
-  //   // FIXME: 修复沙箱添加组件后 HMR 失效的 bug，添加完刷新
-  //   sandbox.reload();
-  //   off();
-  //   form.resetFields();
-  // };
+  const onFinishCallback = (name?: string) => {
+    name && message.success(`${name} 添加成功`);
+    // FIXME: 修复沙箱添加组件后 HMR 失效的 bug，添加完刷新
+    sandbox.reload();
+    off();
+    form.resetFields();
+  };
 
   const onOk = () => {
     form.validateFields().then((values) => {
@@ -551,17 +481,17 @@ function AddDependencyModal({
           workspace.updateDependency(name, version);
           break;
         }
-        case DependencyItemType.业务组件: {
-          const targetBizInfo = (bizList as any)?.find(
-            (biz: { packageName: string }) => biz.packageName === name,
-          );
-          onBizDependencyAdd &&
-            onBizDependencyAdd({
-              ...values,
-              detail: targetBizInfo,
-            });
-          break;
-        }
+        // case DependencyItemType.业务组件: {
+        //   const targetBizInfo = (bizList as any)?.find(
+        //     (biz: { packageName: string }) => biz.packageName === name,
+        //   );
+        //   onBizDependencyAdd &&
+        //     onBizDependencyAdd({
+        //       ...values,
+        //       detail: targetBizInfo,
+        //     });
+        //   break;
+        // }
         case DependencyItemType.基础包: {
           const basePackage = templateBaseDependencies[name];
           // 添加 package.json
@@ -606,26 +536,15 @@ function AddDependencyModal({
         default:
           break;
       }
-      // onFinishCallback(values?.name);
+      onFinishCallback(values?.name);
     });
   };
 
-  const onValuesChange = ({ type: depType, name }: { type: DependencyItemType; name: string }) => {
+  const onValuesChange = ({ type: depType }: { type: DependencyItemType; name: string }) => {
     if (depType) {
       // type 变更触发
       form.resetFields(['name', 'version']);
       setType(depType);
-    }
-    if (name) {
-      // 如果已经获取过了，不重复请求
-      if ((versions || {})[name]) return;
-      // name 变更触发包名请求
-      //   remoteServices?.DependencyService.listPackageVersions({ packageName: name }).then((data) => {
-      //     setVersions((preVersions) => {
-      //       preVersions[name] = data || [];
-      //       return Object.assign({}, preVersions);
-      //     });
-      //   });
     }
   };
 
@@ -657,75 +576,21 @@ function AddDependencyModal({
         >
           <Form.Item label="依赖类型" name="type">
             <Radio.Group value={type}>
-              <Radio.Button value={DependencyItemType.业务组件}>业务组件</Radio.Button>
+              {/* <Radio.Button value={DependencyItemType.业务组件}>业务组件</Radio.Button> */}
               <Radio.Button value={DependencyItemType.基础包}>基础包</Radio.Button>
               <Radio.Button value={DependencyItemType.其他依赖}>其他依赖</Radio.Button>
             </Radio.Group>
           </Form.Item>
-          <Form.Item
-            label={
-              type === DependencyItemType.其他依赖
-                ? 'npm包名'
-                : type === DependencyItemType.业务组件
-                ? '组件名称'
-                : '基础包名'
-            }
-            name="name"
-            tooltip={
-              type === DependencyItemType.基础包 &&
-              '基础包与模板相关联，可以联系管理员进行新增基础包操作'
-            }
-            rules={[{ required: true }]}
-          >
-            {type === DependencyItemType.其他依赖 ? (
-              <Input placeholder="输入依赖名" />
-            ) : type === DependencyItemType.业务组件 ? (
-              <Select showSearch placeholder="请选择业务组件" optionFilterProp="value">
-                {(bizList || []).map((biz) => (
-                  <Option key={biz.packageName} value={biz.packageName}>
-                    <Box display={'flex'} justifyContent={'space-between'}>
-                      <Box>
-                        {biz.packageName}
-                        <Text ml={'4px'} fontSize="10px" color={'rgba(0, 0, 0, 0.45)'}>
-                          {biz?.aliasCN || ''}
-                        </Text>
-                      </Box>
-                      <Space>
-                        <a target={'_blank'} href={biz.docAddress} rel="noreferrer">
-                          <BookOutlined />
-                        </a>
-                        <a target={'_blank'} href={biz.gitAddress} rel="noreferrer">
-                          <GitlabOutlined />
-                        </a>
-                      </Space>
-                    </Box>
-                  </Option>
-                ))}
-              </Select>
-            ) : (
-              <Select
-                placeholder="请选择基础包"
-                options={baseDependencies.map((name) => ({ label: name, value: name }))}
-              />
-            )}
+          <Form.Item label="npm包名" name="name" rules={[{ required: true }]}>
+            <Input placeholder="输入依赖名" />
           </Form.Item>
-          {type !== DependencyItemType.基础包 && (
-            <Form.Item
-              label="版本号"
-              name="version"
-              rules={[{ required: true, message: '请输入依赖的版本号' }]}
-            >
-              <Select
-                showSearch
-                placeholder="请选择版本号"
-                options={(versions[form.getFieldValue('name')] || []).map((v: string) => ({
-                  label: v,
-                  value: v,
-                }))}
-                optionFilterProp="value"
-              />
-            </Form.Item>
-          )}
+          <Form.Item
+            label="版本号"
+            name="version"
+            rules={[{ required: true, message: '请输入依赖的版本号' }]}
+          >
+            <Input placeholder="输入版本号" />
+          </Form.Item>
         </Form>
       </Modal>
     </Box>

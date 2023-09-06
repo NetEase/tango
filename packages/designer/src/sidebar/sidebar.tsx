@@ -98,7 +98,7 @@ const INTERNAL_SIDEBAR_PANEL_MAP: Record<string, SidebarPanelItemProps> = {
     icon: <ClusterOutlined />,
     children: <DependencyPanel />,
   },
-  model: {
+  variables: {
     label: '变量',
     title: '变量管理',
     icon: <FunctionOutlined />,

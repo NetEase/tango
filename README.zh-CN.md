@@ -51,41 +51,6 @@ gantt
     1.0 version              :         des4, after des3, 21d
 ```
 
-## 📄 如何使用
-
-安装设计器
-
-```bash
-npm install @music163/tango-designer
-```
-
-初始化设计器内核
-
-```js
-import { createEngine } form '@music163/tango-designer';
-
-// 引擎初始化
-const engine = createEngine({
-  entry: '/src/index.js',
-  files: sampleFiles,
-  componentPrototypes: prototypes as any,
-});
-```
-
-初始化拖拽引擎
-
-```js
-import { DndQuery } form '@music163/tango-designer';
-
-const sandboxQuery = new DndQuery({
-  context: 'iframe',
-});
-```
-
-设计器框架初始化(WIP)
-
-详细使用方法请参考 [使用文档](https://netease.github.io/tango/)。
-
 ## 💻 开发
 
 ### 推荐开发环境
