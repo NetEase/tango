@@ -126,6 +126,7 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * appJson.json 文件
+   * FIXME: 是否保留 ???
    */
   appJson: TangoJsonFile;
 
@@ -379,7 +380,7 @@ export class Workspace extends EventTarget implements IWorkspace {
           module = new TangoStoreEntryModule(this, props);
           this.storeEntryModule = module;
           break;
-        case FileType.RouteModule:
+        case FileType.RouteModule: {
           module = new TangoRouteModule(this, props);
           this.routeModule = module;
           // check if activeRoute exists
@@ -388,6 +389,7 @@ export class Workspace extends EventTarget implements IWorkspace {
             this.setActiveRoute(module.routes[0]?.path);
           }
           break;
+        }
         case FileType.JsxViewModule:
           module = new TangoViewModule(this, props);
           break;
@@ -398,7 +400,7 @@ export class Workspace extends EventTarget implements IWorkspace {
         case FileType.StoreModule:
           module = new TangoStoreModule(this, props);
           break;
-        case FileType.BlockEntryModule:
+        case FileType.BlockEntryModule: {
           const blockName = getBlockNameByFilename(props.filename);
           const prototype: ComponentPrototypeType = {
             name: blockName,
@@ -410,6 +412,7 @@ export class Workspace extends EventTarget implements IWorkspace {
           this.componentPrototypes.set(blockName, prototype);
           module = new TangoViewModule(this, props);
           break;
+        }
         case FileType.Module:
           module = new TangoJsModule(this, props);
           break;
@@ -620,7 +623,6 @@ export class Workspace extends EventTarget implements IWorkspace {
     if (file instanceof TangoViewModule) {
       return file.getNode(id);
     }
-    return;
   }
 
   /**
@@ -1111,7 +1113,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
 
     // TODO: 这里需要一个额外的信息，DropTarget 的最近容器节点，用于判断目标元素是否可以被置入容器中
-    let dragSourcePrototype = dragSource.prototype;
+    const dragSourcePrototype = dragSource.prototype;
 
     let newNode;
     if (dragSource.id) {

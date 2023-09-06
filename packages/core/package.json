@@ -24,10 +24,10 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/generator": "^7.21.3",
-    "@babel/parser": "^7.21.3",
-    "@babel/traverse": "^7.21.3",
-    "@babel/types": "^7.21.3",
+    "@babel/generator": "^7.22.15",
+    "@babel/parser": "^7.22.15",
+    "@babel/traverse": "^7.22.15",
+    "@babel/types": "^7.22.15",
     "@music163/tango-helpers": "^0.1.1",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.3",

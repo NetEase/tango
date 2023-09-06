@@ -11,7 +11,6 @@ import {
   traverseStoreEntryFile,
   addStoreToEntryFile,
   updateServiceConfigToServiceFile,
-  toTreeData,
   removeJSXElement,
   insertSiblingAfterJSXElement,
   getModuleNameByFilename,
@@ -382,7 +381,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       this._nodes.set(cur.id, node);
     });
 
-    this._nodesTree = toTreeData(nodes);
+    this._nodesTree = nodeListToTreeData(nodes);
   }
 
   /**
@@ -578,6 +577,33 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     });
     return map;
   }
+}
+
+/**
+ * 将节点列表转换为 tree data 嵌套数组
+ * @param list
+ */
+export function nodeListToTreeData(list: TangoViewNodeDataType[]) {
+  const map: Record<string, TangoViewNodeDataType> = {};
+
+  list.forEach((item) => {
+    // 如果不存在，则初始化
+    if (!map[item.id]) {
+      map[item.id] = {
+        ...item,
+        children: [],
+      };
+    }
+
+    // 是否找到父节点，找到则塞进去
+    if (item.parentId && map[item.parentId]) {
+      map[item.parentId].children.push(map[item.id]);
+    }
+  });
+
+  // 保留根节点
+  const ret = Object.values(map).filter((item) => !item.parentId);
+  return ret;
 }
 
 /**

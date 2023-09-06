@@ -5,9 +5,7 @@ import {
   value2node,
   value2code,
   expression2code,
-  upperCamelCase,
   expressionCode2ast,
-  typeOf,
   isPathnameMatchRoute,
   namesToImportDeclarations,
   getBlockNameByFilename,
@@ -16,10 +14,8 @@ import {
   isValidComponentName,
   getFilepath,
   getPrivilegeCode,
-  isPlainObject,
   getJSXElementAttributes,
   inferFileType,
-  camelCase,
   deepCloneNode,
 } from '../src/helpers';
 import { FileType } from '../src/types';
@@ -130,15 +126,6 @@ describe('helpers', () => {
 });
 
 describe('string helpers', () => {
-  it('camelCase', () => {
-    expect(camelCase('foo')).toEqual('foo');
-    expect(camelCase('foo-bar')).toEqual('fooBar');
-  });
-
-  it('upperCamelCase', () => {
-    expect(upperCamelCase('foo')).toEqual('Foo');
-    expect(upperCamelCase('foo-bar')).toEqual('FooBar');
-  });
 
   it('value2code: empty array', () => {
     expect(value2code([])).toEqual('[]');
@@ -150,15 +137,6 @@ describe('string helpers', () => {
 
   it('value2code: object', () => {
     expect(value2code({ width: 200 })).toEqual('{ width: 200 }');
-  });
-
-  it('typeOf', () => {
-    expect(typeOf()).toBe('undefined');
-    expect(typeOf('')).toBe('string');
-    expect(typeOf('hello')).toBe('string');
-    expect(typeOf(5)).toBe('number');
-    expect(typeOf({})).toBe('object');
-    expect(typeOf([])).toBe('array');
   });
 
   it('isPathnameMatchRoute', () => {
@@ -221,24 +199,6 @@ describe('string helpers', () => {
     expect(isValidComponentName('Button.Group')).toBeTruthy();
   });
 
-  it('upperCamelCase', () => {
-    expect(upperCamelCase('about')).toBe('About');
-    expect(upperCamelCase('not-found')).toBe('NotFound');
-    expect(upperCamelCase('@music/input')).toBe('MusicInput');
-    expect(upperCamelCase('@music/ct-input')).toBe('MusicCtInput');
-    // TODO: FIXME
-    // expect(upperCamelCase('-not-found')).toBe('NotFound');
-    // expect(upperCamelCase('not_found')).toBe('NotFound');
-    // expect(upperCamelCase('_not_found')).toBe('NotFound');
-  });
-
-  it('isPlainObject', () => {
-    expect(isPlainObject({})).toBeTruthy();
-    expect(isPlainObject({ foo: 'foo' })).toBeTruthy();
-    expect(isPlainObject(null)).toBeFalsy();
-    expect(isPlainObject(undefined)).toBeFalsy();
-  });
-
   it('inferFileType', () => {
     expect(inferFileType('/src/pages/template.js')).toBe(FileType.JsxViewModule);
     expect(inferFileType('/src/pages/template.jsx')).toBe(FileType.JsxViewModule);
@@ -274,7 +234,6 @@ describe('schema helpers', () => {
     ],
   };
   const cloned = deepCloneNode(schema);
-  console.log(cloned);
   expect(cloned.props.id).toBe(schema.props.id);
   expect(cloned.children[0].props.id).toBe(schema.children[0].props.id);
 

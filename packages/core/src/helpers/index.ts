@@ -1,4 +1,3 @@
-export * from './array';
 export * from './ast';
 export * from './assert';
 export * from './string';

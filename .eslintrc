@@ -2,8 +2,9 @@
   "extends": ["eslint-config-ali/typescript/react", "prettier"],
   "ignorePatterns": ["**/dist/**/*", "**/lib/**/*", "**/node_modules/**/*", "scripts/**/*"],
   "rules": {
-    "import/no-cycle": "off",
     "@typescript-eslint/dot-notation": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "import/no-cycle": "off",
     "no-nested-ternary": "off"
   }
 }

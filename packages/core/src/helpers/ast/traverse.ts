@@ -11,6 +11,7 @@ import {
   StringOrNumber,
   Dict,
   parseDndId,
+  upperCamelCase
 } from '@music163/tango-helpers';
 import {
   keyNode2value,
@@ -28,7 +29,7 @@ import {
   code2expression,
   object2node,
 } from './parse';
-import { upperCamelCase, isValidComponentName } from '../string';
+import { isValidComponentName } from '../string';
 import { isDefineService, isDefineStore } from '../assert';
 import type {
   RouteDataType,

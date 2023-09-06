@@ -1,12 +1,25 @@
 /**
- * @example camelCase('button') -> Button
- * @example camelCase('date-picker') -> DatePicker
+ * 转为驼峰 (lowerCamelCase)
+ * @example foo -> foo
+ * @example foo-bar -> fooBar
+ * @param str
+ * @returns
  */
-export function camelCase(str = '') {
-  return str.split('-').reduce((prev, cur) => {
-    const word = cur.charAt(0).toUpperCase() + cur.slice(1);
-    return `${prev}${word}`;
-  }, '');
+export function camelCase(str: string) {
+  return str.replace(/\W+(.)/g, (match, chr) => {
+    return chr.toUpperCase();
+  });
+}
+
+/**
+ * 将输入字符串转换为大驼峰格式(PascalCase)
+ * @example about -> About
+ * @example not-found -> NotFound
+ * @param str
+ */
+export function upperCamelCase(str: string) {
+  const text = camelCase(str.toLowerCase());
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 /**
@@ -258,5 +271,4 @@ export function getCodeBlockFormMarkdown(markdown: string) {
   if (match && match.length) {
     return match[2];
   }
-  return;
 }

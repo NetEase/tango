@@ -108,15 +108,15 @@ export class TangoJsonFile extends TangoFile {
 
     if (isNil(code)) {
       // 基于最新的 json 同步代码
-      let code = JSON.stringify(this._object);
+      let newCode = JSON.stringify(this._object);
       try {
-        code = formatCode(code, 'json');
+        newCode = formatCode(newCode, 'json');
       } catch (err) {
         logger.error(err);
         return;
       }
-      this._code = code;
-      this._cleanCode = code;
+      this._code = newCode;
+      this._cleanCode = newCode;
     } else {
       try {
         // 基于传入的代码，同步 json 对象

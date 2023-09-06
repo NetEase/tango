@@ -8,13 +8,20 @@ import {
   parseDndId,
   isValidUrl,
   getCodeBlockFormMarkdown,
+  upperCamelCase,
 } from '../src/helpers';
 
 describe('string', () => {
   it('camelCase', () => {
-    expect(camelCase('-button')).toBe('Button');
-    expect(camelCase('button')).toBe('Button');
-    expect(camelCase('date-picker')).toBe('DatePicker');
+    expect(camelCase('foo')).toEqual('foo');
+    expect(camelCase('foo-bar')).toEqual('fooBar');
+  });
+
+  it('upperCamelCase', () => {
+    expect(upperCamelCase('about')).toBe('About');
+    expect(upperCamelCase('not-found')).toBe('NotFound');
+    expect(upperCamelCase('@music/input')).toBe('MusicInput');
+    expect(upperCamelCase('@music/ct-input')).toBe('MusicCtInput');
   });
 
   it('isValidUrl', () => {

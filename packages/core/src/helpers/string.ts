@@ -1,4 +1,5 @@
 import path from 'path';
+import { camelCase, upperCamelCase } from '@music163/tango-helpers';
 import { value2node, expression2code } from './ast';
 import { FileType } from './../types';
 
@@ -87,30 +88,6 @@ export function isValidComponentName(name: string) {
 
   const firstChar = name.charAt(0);
   return firstChar === firstChar.toUpperCase();
-}
-
-/**
- * 转为驼峰
- * @example foo -> foo
- * @example foo-bar -> fooBar
- * @param str
- * @returns
- */
-export function camelCase(str: string) {
-  return str.replace(/\W+(.)/g, (match, chr) => {
-    return chr.toUpperCase();
-  });
-}
-
-/**
- * 将输入字符串转换为大驼峰格式
- * @example about -> About
- * @example not-found -> NotFound
- * @param str
- */
-export function upperCamelCase(str: string) {
-  const text = camelCase(str.toLowerCase());
-  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 /**

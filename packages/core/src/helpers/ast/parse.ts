@@ -8,8 +8,8 @@ import {
   isValidObjectString,
   isVariableString,
   getVariableContent,
+  isPlainObject,
 } from '@music163/tango-helpers';
-import { isPlainObject } from '../object';
 
 // @see https://babeljs.io/docs/en/babel-parser#pluginss
 const babelParserConfig: ParserOptions = {
