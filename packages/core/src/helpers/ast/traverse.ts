@@ -23,7 +23,6 @@ import {
 import {
   value2jsxAttributeValueNode,
   value2jsxChildrenValueNode,
-  code2ast,
   value2node,
   makeJSXAttribute,
   code2expression,
@@ -927,19 +926,30 @@ export function updateServiceConfigToServiceFile(
       const calleeName = keyNode2value(path.node.callee) as string;
       if (isDefineService(calleeName) && path.node.arguments.length) {
         const configNode = path.node.arguments[0];
+
         if (t.isObjectExpression(configNode)) {
-          const originConfig = node2value(configNode, false);
-          const newConfig = {
-            ...originConfig,
-            ...config,
-          };
-          const propertiesNode = Object.keys(newConfig).reduce((properties, key) => {
-            const serviceConfig = newConfig[key];
+          const newPropertiesNodeMap = Object.keys(config).reduce((properties, key) => {
+            const serviceConfig = config[key];
             const property = t.objectProperty(t.identifier(key), serviceConfig2Node(serviceConfig));
-            properties.push(property);
+            properties[key] = property;
             return properties;
-          }, []);
-          configNode.properties = propertiesNode;
+          }, {});
+
+          Object.keys(newPropertiesNodeMap).forEach((nodeKey) => {
+            // 如果已存在, 找到原来的 propertyNode 进行替换
+            const targetIndex = configNode.properties.findIndex((propNode) => {
+              if (t.isObjectProperty(propNode)) {
+                return keyNode2value(propNode.key) === nodeKey;
+              }
+              return false;
+            });
+            if (targetIndex !== -1) {
+              configNode.properties[targetIndex] = newPropertiesNodeMap[nodeKey];
+            } else {
+              // 不存在，直接塞到最后边
+              configNode.properties.push(newPropertiesNodeMap[nodeKey]);
+            }
+          });
         }
         path.stop();
       }
@@ -969,7 +979,7 @@ export function updateBaseConfigToServiceFile(ast: t.File, configName: string, c
           case 1:
             path.node.arguments.push(value2node({ [configName]: configValue }));
             break;
-          case 2:
+          case 2: {
             const baseConfigNode = path.node.arguments[1];
             if (t.isObjectExpression(baseConfigNode)) {
               let found = false;
@@ -986,6 +996,7 @@ export function updateBaseConfigToServiceFile(ast: t.File, configName: string, c
               }
             }
             break;
+          }
           default:
             break;
         }
@@ -1229,34 +1240,4 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
     importedModules,
     variables,
   };
-}
-
-/**
- * 更新视图文件中的 state 定义
- * @param ast
- */
-export function updateStateCodeOfViewFile(ast: t.File, stateCode: string) {
-  const getValueNode = () => {
-    const ast = code2ast(stateCode);
-    const node = ast.program.body[0];
-    // TODO: 这段逻辑需要重写，只需要变更右侧的表达式即可
-    // TODO: 需要复用一下逻辑，和 module 里有重叠
-    // e.g. "state = {\n  visible: false\n};" --> {\n  visible: false\n}
-    if (node.type === 'ExpressionStatement' && node.expression.type === 'AssignmentExpression') {
-      return node.expression.right;
-    }
-    return;
-  };
-
-  traverse(ast, {
-    ClassProperty(path) {
-      const propName = keyNode2value(path.node.key);
-      if (propName === 'state') {
-        path.node.value = getValueNode();
-        path.stop();
-      }
-    },
-  });
-
-  return ast;
 }

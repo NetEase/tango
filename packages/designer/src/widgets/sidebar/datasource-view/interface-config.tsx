@@ -85,14 +85,6 @@ const detailFormStyle = css`
   }
 `;
 
-const buttonGroupStyle = css`
-  width: 100%;
-
-  button {
-    width: 50%;
-  }
-`;
-
 const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewProps) => {
   const [serviceKey, setServiceKey] = useState<string>();
   const [keyword, setKeyword] = useState<string>();
@@ -102,6 +94,9 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
 
   const serviceMap = workspace.serviceModule.serviceFunctions;
   const serviceItems = useMemo(() => {
+    if (!serviceMap) {
+      return [];
+    }
     let list = Object.keys(serviceMap).map((key) => ({
       key,
       label: key,
@@ -114,7 +109,7 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
     }
     return list;
   }, [serviceMap, keyword]);
-  const serviceData = serviceMap[serviceKey];
+  const serviceData = serviceMap?.[serviceKey];
   const isAddMode = !serviceKey;
 
   return (
@@ -192,8 +187,8 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
                   setVisible(null);
                 }}
                 onSubmit={(values, mode: ESFOperationType) => {
-                  function shapeServiceValues(values: any) {
-                    const shapeValues = { ...values };
+                  function shapeServiceValues(val: any) {
+                    const shapeValues = { ...val };
                     delete shapeValues.type;
                     // 兼容旧版，如果 formatter 包裹了 {} 则删掉首尾
                     if (shapeValues.formatter && isVariableString(shapeValues.formatter)) {

@@ -33,7 +33,8 @@ export function inferFileType(filename: string): FileType {
     return FileType.JsonViewModule;
   }
 
-  if (/\/services\/.+\.js$/.test(filename)) {
+  // FIXME: 暂时写死，后续要支持多 services 文件解析
+  if (/\/services\/index.js$/.test(filename)) {
     return FileType.ServiceModule;
   }
 

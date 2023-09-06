@@ -3,6 +3,7 @@
   "ignorePatterns": ["**/dist/**/*", "**/lib/**/*", "**/node_modules/**/*", "scripts/**/*"],
   "rules": {
     "import/no-cycle": "off",
+    "@typescript-eslint/dot-notation": "off",
     "no-nested-ternary": "off"
   }
 }
