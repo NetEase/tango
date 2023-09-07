@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/netease/tango/compare/@music163/tango-designer@0.1.2...@music163/tango-designer@0.1.3) (2023-09-07)
+
+### Bug Fixes
+
+- add WorkspaceView ([5ecf444](https://github.com/netease/tango/commit/5ecf444fc3563a1bf8e533136e93c1a1355d39dc))
+
 ## 0.1.2 (2023-09-06)
 
 ### Bug Fixes
