@@ -3,7 +3,7 @@ import { Box } from 'coral-system';
 import { observer, useDesigner } from '@music163/tango-context';
 import { DesignerViewType } from '@music163/tango-core';
 
-export interface ViewPanelProps {
+export interface WorkspaceViewProps {
   /**
    * 视图面板模式，对应 Workspace 的模式
    */
@@ -11,7 +11,7 @@ export interface ViewPanelProps {
   children: React.ReactNode;
 }
 
-export const ViewPanel = observer((props: ViewPanelProps) => {
+export const WorkspaceView = observer((props: WorkspaceViewProps) => {
   const { mode = 'design', children } = props;
   const designer = useDesigner();
   const display = mode !== designer.activeView ? 'none' : 'block';

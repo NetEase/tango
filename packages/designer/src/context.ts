@@ -1,9 +1,6 @@
-import { createContext, TangoRemoteServicesType } from '@music163/tango-helpers';
+import { createContext } from '@music163/tango-helpers';
 import type { DndQuery } from './dnd';
 
-/**
- * TODO: 是不是直接合并到 Context 中
- */
 export interface IDesignerContext {
   /**
    * 沙箱查询实例
@@ -12,7 +9,7 @@ export interface IDesignerContext {
   /**
    * 远程服务
    */
-  remoteServices?: TangoRemoteServicesType;
+  remoteServices?: Record<string, object>;
 }
 
 const [DesignerProvider, useDesigner] = createContext<IDesignerContext>({

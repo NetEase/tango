@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Box } from 'coral-system';
+import { Button, Space } from 'antd';
 import {
   Designer,
   DesignerPanel,
@@ -6,8 +8,8 @@ import {
   Sidebar,
   Toolbar,
   WorkspacePanel,
+  WorkspaceView,
   ComponentsPanel,
-  ViewPanel,
   CodeEditor,
   Sandbox,
   DndQuery,
@@ -16,8 +18,6 @@ import { createEngine, Workspace } from '@music163/tango-core';
 import { Logo, ProjectDetail } from './share';
 import { sampleFiles } from '../mock/project';
 import './index.less';
-import { Box } from 'coral-system';
-import { Button, Space } from 'antd';
 
 // 1. 实例化工作区
 const workspace = new Workspace({
@@ -74,7 +74,7 @@ export default function App() {
           <Sidebar.Item key="dependency" isFloat width={800} />
         </Sidebar>
         <WorkspacePanel>
-          <ViewPanel mode="design">
+          <WorkspaceView mode="design">
             <Sandbox
               onMessage={(e) => {
                 if (e.type === 'done') {
@@ -91,10 +91,10 @@ export default function App() {
                 }
               }}
             />
-          </ViewPanel>
-          <ViewPanel mode="code">
+          </WorkspaceView>
+          <WorkspaceView mode="code">
             <CodeEditor />
-          </ViewPanel>
+          </WorkspaceView>
         </WorkspacePanel>
         <SettingPanel />
       </DesignerPanel>

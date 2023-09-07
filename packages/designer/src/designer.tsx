@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { SystemProvider } from 'coral-system';
+import React, { useEffect, useMemo } from 'react';
+import { SystemProvider, extendTheme } from 'coral-system';
 import { ConfigProvider } from 'antd';
-import zhCN from 'antd/lib/locale/zh_CN';
 import { TangoEngineProvider, ITangoEngineContext } from '@music163/tango-context';
+import { createFromIconfontCN } from '@ant-design/icons';
 import { DesignerProvider, IDesignerContext } from './context';
 import { theme as baseTheme } from './theme';
-import { createFromIconfontCN } from '@ant-design/icons';
+import zhCN from 'antd/lib/locale/zh_CN';
 
 export interface DesignerProps extends IDesignerContext, ITangoEngineContext {
   /**
@@ -33,7 +33,7 @@ export function Designer(props: DesignerProps) {
     iconfontScriptUrl = '//at.alicdn.com/t/c/font_2891794_lzc7rtwuzf.js',
     children,
   } = props;
-  const theme = themeProp ?? baseTheme;
+  const theme = useMemo(() => extendTheme(themeProp, baseTheme), [themeProp]);
   useEffect(() => {
     createFromIconfontCN({
       scriptUrl: iconfontScriptUrl,
