@@ -175,8 +175,8 @@ export function ColorSetter(props: FormItemComponentProps<string>) {
   const colorPanel = (
     <SketchPicker
       color={color}
-      onChangeComplete={(color: any) => {
-        const nextValue = color.rgb.a === 1 ? color.hex : rgbaObjectToString(color.rgb);
+      onChangeComplete={(newColor: any) => {
+        const nextValue = newColor.rgb.a === 1 ? newColor.hex : rgbaObjectToString(newColor.rgb);
         if (typeof onChange === 'function') {
           onChange(nextValue);
         }
@@ -353,19 +353,19 @@ export function BorderSetter({ value, onChange }: FormItemComponentProps<string>
   const [width, setWidth] = useState<number>(Number(getPxValue(valueParts[0])) || 0);
   const [color, setColor] = useState<string>(valueParts[2] || '#000');
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = (key: string, val: any) => {
     let ret: any[];
     switch (key) {
       case 'style': {
-        ret = [width, value, color];
+        ret = [width, val, color];
         break;
       }
       case 'width': {
-        ret = [`${value}px`, style, color];
+        ret = [`${val}px`, style, color];
         break;
       }
       case 'color': {
-        ret = [width, style, value];
+        ret = [width, style, val];
         break;
       }
       default:

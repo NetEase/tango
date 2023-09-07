@@ -184,17 +184,17 @@ export function EditableVariableTree({
         </Box>
         <VariableTree
           dataSource={treeData}
-          onSelect={(node) => {
-            setNode(node);
+          onSelect={(item) => {
+            setNode(item);
             mode === 'add' && setMode(defaultMode);
-            onSelect(node);
+            onSelect(item);
           }}
-          onAdd={(node) => {
-            setNode(node);
+          onAdd={(item) => {
+            setNode(item);
             setMode('add');
           }}
-          onRemove={(node) => {
-            const [type, storeName] = node.key.split('.');
+          onRemove={(item) => {
+            const [type, storeName] = item.key.split('.');
             setNode(null);
             onDeleteStore(storeName);
           }}
@@ -257,8 +257,8 @@ export function EditableVariableTree({
             <NodeDefineForm
               node={node}
               onSave={onSave}
-              onDelete={(node) => {
-                const [type, storeName, stateName] = node.key.split('.');
+              onDelete={(item) => {
+                const [type, storeName, stateName] = item.key.split('.');
                 onDeleteVariable(storeName, stateName);
                 setNode(null);
               }}
@@ -470,7 +470,7 @@ function NodeDefineForm({ node, onSave = noop, onDelete = noop }: NodeDefineProp
       <InputCode
         shape="inset"
         value={node.raw}
-        onChange={(value) => setValue(value)}
+        onChange={(nextValue) => setValue(nextValue)}
         editable={editable}
         onBlur={() => {
           if (!isValidExpressionCode(value)) {

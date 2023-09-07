@@ -231,13 +231,13 @@ export function ExpressionModal({
               // height={400}
               dataSource={dataSource || expressionVariables}
               onUse={(node) => {
-                let exp;
+                let str;
                 if (/^(stores|services)\./.test(node.key)) {
-                  exp = `{tango.${node.key.replaceAll('.', '?.')}}`;
+                  str = `{tango.${node.key.replaceAll('.', '?.')}}`;
                 } else {
-                  exp = `{${node.key}}`;
+                  str = `{${node.key}}`;
                 }
-                setExp(exp);
+                setExp(str);
               }}
               onAddVariable={(storeName, data) => {
                 onAction('addStoreState', [storeName, data.name, data.initialValue]);

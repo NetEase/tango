@@ -99,25 +99,25 @@ const OneInputKV = (props: any) => {
     !newData.length && setValidate(false);
   };
 
-  const handleInput = (name: string, index: number, value: string) => {
+  const handleInput = (name: string, index: number, val: string) => {
     const newData = [...data];
 
     if (!newData[index]) return;
 
     // 更新值
-    newData[index][name] = value;
+    newData[index][name] = val;
 
     _updateData(newData);
   };
 
   const _updateData = (values: Array<Record<string, string>>) => {
     const omit = ({ index, ...rest }: any) => rest;
-    let value = formatValue({ data: values, format });
+    let nextValue = formatValue({ data: values, format });
 
-    Array.isArray(value) && (value = value.map((item) => omit(item)));
+    Array.isArray(nextValue) && (nextValue = nextValue .map((item) => omit(item)));
 
     setData(values);
-    onChange?.(value);
+    onChange?.(nextValue);
   };
 
   // render

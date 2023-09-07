@@ -80,9 +80,9 @@ export function EventSetter(props: EventSetterProps) {
         defaultValue={inputValue}
         visible={expModalVisible}
         onCancel={() => setExpModalVisible(false)}
-        onOk={(value) => {
+        onOk={(nextValue) => {
           setExpModalVisible(false);
-          handleChange(value);
+          handleChange(nextValue);
         }}
         dataSource={actionVariables}
       />
