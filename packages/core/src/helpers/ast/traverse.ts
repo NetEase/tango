@@ -1216,9 +1216,10 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
 
       // parentId 用于追溯上下游关系
       let parentId;
-      const parentNode = path.parentPath.node;
-      if (t.isJSXElement(parentNode)) {
-        const parentAttributes = getJSXElementAttributes(parentNode);
+      const parentNode = path.findParent((p) => p.isJSXElement());
+
+      if (t.isJSXElement(parentNode?.node)) {
+        const parentAttributes = getJSXElementAttributes(parentNode.node);
         parentId = parentAttributes[SLOT.dnd];
       }
 
