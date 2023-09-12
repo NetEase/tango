@@ -7,6 +7,11 @@ import { PreviewTool } from './preview';
 import { RouteSwitchTool } from './route-switch';
 import { TogglePanelTool } from './toggle-panel';
 
+export interface ToolbarProps {
+  children?: React.ReactElement | React.ReactElement[];
+  builtinToolMap?: Record<string, React.ReactNode>;
+}
+
 const builtinToolsMap = {
   history: <HistoryTool />,
   modeSwitch: <ModeSwitchTool />,
@@ -15,11 +20,7 @@ const builtinToolsMap = {
   togglePanel: <TogglePanelTool />,
 };
 
-interface ToolbarProps {
-  children?: React.ReactElement | React.ReactElement[];
-}
-
-export function Toolbar({ children }: ToolbarProps) {
+export function Toolbar({ children, builtinToolMap = builtinToolsMap }: ToolbarProps) {
   const [leftTools, centerTools, rightTools] = useMemo(() => {
     const left: React.ReactNode[] = [];
     const center: React.ReactNode[] = [];
@@ -27,7 +28,7 @@ export function Toolbar({ children }: ToolbarProps) {
 
     let prevPlacement: string;
     React.Children.forEach(children, (child: React.ReactElement, index) => {
-      let node = child.props.children || builtinToolsMap[child.key];
+      let node = child.props.children || builtinToolMap[child.key];
       if (!node) {
         node = child; // separator
       }
@@ -71,7 +72,7 @@ export function Toolbar({ children }: ToolbarProps) {
   );
 }
 
-interface ToolbarItemProps extends ReactComponentProps {
+export interface ToolbarItemProps extends ReactComponentProps {
   placement?: 'left' | 'center' | 'right';
   children?: React.ReactElement;
 }

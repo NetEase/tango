@@ -5,7 +5,7 @@ import type { IconFontProps } from '@ant-design/icons/es/components/IconFont';
 /**
  * 只能在 Designer 里面用，其他地方用不了，依赖 iconfont 脚本提前载入
  */
-export const IconFont = React.forwardRef<HTMLSpanElement, IconFontProps<string>>((props, ref) => {
+export function IconFont(props: IconFontProps<string>) {
   const { type, children, ...restProps } = props;
 
   // children > type
@@ -16,12 +16,7 @@ export const IconFont = React.forwardRef<HTMLSpanElement, IconFontProps<string>>
   if (children) {
     content = children;
   }
-  return (
-    // @ts-ignore
-    <Icon {...restProps} ref={ref}>
-      {content}
-    </Icon>
-  );
-});
+  return <Icon {...(restProps as any)}>{content}</Icon>;
+}
 
 IconFont.displayName = 'IconFont';

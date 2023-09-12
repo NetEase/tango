@@ -19,6 +19,7 @@ type SandboxEventHandlerConfig = {
 export type SandboxProps = Omit<CodeSandboxProps, 'files' | 'eventHandlers' | 'onMessage'> & {
   isPreview?: boolean;
   selectionTools?: SelectionToolsProps['actions'];
+  builtinSelectionMenuMap?: SelectionToolsProps['builtinActionMap'];
   sandboxType?: 'design' | 'preview';
   mode?: 'single' | 'combined';
   injectScript?: string;
@@ -275,6 +276,7 @@ export const Sandbox = observer(
   ({
     isPreview: isPreviewProp,
     selectionTools,
+    builtinSelectionMenuMap,
     bundlerURL,
     mode = 'combined',
     ...props
@@ -345,7 +347,7 @@ export const Sandbox = observer(
           }}
         />
         <Simulator>
-          <Viewport selectionTools={selectionTools}>
+          <Viewport selectionTools={selectionTools} builtinActionMap={builtinSelectionMenuMap}>
             {mode === 'single' && (
               <DesignSandbox
                 ref={sandboxRef}

@@ -51,6 +51,7 @@ export interface SidebarProps extends ReactComponentProps {
    * 底部附加内容
    */
   footer?: React.ReactNode;
+  builtinPanelMap?: Record<string, SidebarPanelItemProps>;
 }
 
 export interface SidebarPanelItemProps
@@ -114,13 +115,13 @@ const INTERNAL_SIDEBAR_PANEL_MAP: Record<string, SidebarPanelItemProps> = {
   },
 };
 
-function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, footer, children }: SidebarProps) {
+function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, builtinPanelMap = INTERNAL_SIDEBAR_PANEL_MAP, footer, children }: SidebarProps) {
   const items = useMemo(() => {
     const ret: Record<React.Key, SidebarPanelItemProps> = {};
     React.Children.forEach(children, (child) => {
       if (child && React.isValidElement(child)) {
         ret[child.key] = {
-          ...INTERNAL_SIDEBAR_PANEL_MAP[child.key],
+          ...builtinPanelMap[child.key],
           ...child.props,
         };
       }

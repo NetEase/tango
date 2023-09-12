@@ -1,7 +1,7 @@
 import { createContext } from '@music163/tango-helpers';
 import type { DndQuery } from './dnd';
 
-export interface IDesignerContext {
+export interface IDesignerContext<S = any> {
   /**
    * 沙箱查询实例
    */
@@ -9,7 +9,7 @@ export interface IDesignerContext {
   /**
    * 远程服务
    */
-  remoteServices?: Record<string, object>;
+  remoteServices?: Record<string, S>;
 }
 
 const [DesignerProvider, useDesigner] = createContext<IDesignerContext>({

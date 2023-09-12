@@ -15,7 +15,7 @@ type SelectionHelperAlignType = 'top-right' | 'top-left' | 'inner-top-right';
 
 const boundingOffset = 100; // 检测选中模块的工具栏是否溢出的偏移值
 
-const internalSelectionTools = {
+const internalSelectionToolsMap = {
   source: <ViewSourceAction />,
   copy: <CopyNodeAction />,
   delete: <DeleteNodeAction />,
@@ -28,16 +28,20 @@ export interface SelectionToolsProps {
    * 动作列表，内置的动作列表有 source-定位到源码, block-创建区块, copy-复制节点, delete-删除节点
    */
   actions?: Array<string | React.ReactElement>;
+  builtinActionMap?: Record<string, React.ReactElement>;
 }
 
 export const SelectionTools = observer(
-  ({ actions: actionsProp = INTERNAL_SELECTION_TOOLS }: SelectionToolsProps) => {
+  ({
+    actions: actionsProp = INTERNAL_SELECTION_TOOLS,
+    builtinActionMap = internalSelectionToolsMap,
+  }: SelectionToolsProps) => {
     const workspace = useWorkspace();
     const selectSource = workspace.selectSource;
     const actions = actionsProp.map((item) => {
       if (isString(item)) {
-        return internalSelectionTools[item]
-          ? React.cloneElement(internalSelectionTools[item], { key: item })
+        return builtinActionMap[item]
+          ? React.cloneElement(builtinActionMap[item], { key: item })
           : null;
       }
       return item;
