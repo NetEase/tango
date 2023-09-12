@@ -13,7 +13,6 @@ import { IconFont, ToggleButton } from '@music163/tango-ui';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputProps, Tooltip } from 'antd';
 import { INTERNAL_SETTERS } from './setters';
-import { ExpressionSetter } from './setters/expression-setter';
 import { useFormModel, useFormVariable } from './context';
 import { FormControl, FormControlProps } from './form-ui';
 
@@ -30,15 +29,15 @@ export interface FormItemComponentProps<T = any> {
   [prop: string]: any;
 }
 
-export interface FormItemCreateOptionsType {
+export interface IFormItemCreateOptions {
   /**
    * 设置器调用名
    */
   name: string;
   /**
-   * 别名
+   * 别名列表
    */
-  alias?: string;
+  alias?: string[];
   /**
    * 渲染的组件
    */
@@ -66,8 +65,8 @@ export interface FormItemCreateOptionsType {
 }
 
 function normalizeCreateOptions(
-  options: FormItemCreateOptionsType,
-): Required<Omit<FormItemCreateOptionsType, 'component' | 'alias'>> {
+  options: IFormItemCreateOptions,
+): Required<Omit<IFormItemCreateOptions, 'component' | 'alias'>> {
   const render = options.render ?? ((props: any) => React.createElement(options.component, props));
   return {
     name: options.name,
@@ -82,7 +81,7 @@ function normalizeCreateOptions(
 const defaultGetSetterProps = () => ({});
 const defaultGetVisible = () => true;
 
-export function createFormItem(options: FormItemCreateOptionsType) {
+export function createFormItem(options: IFormItemCreateOptions) {
   const _options = normalizeCreateOptions(options);
 
   function FormItem({
@@ -130,6 +129,8 @@ export function createFormItem(options: FormItemCreateOptionsType) {
     ) as FormItemComponentProps;
 
     let expProps = {};
+
+    // FIXME: 重新考虑这段代码的位置
     if (['expressionSetter', 'actionSetter', 'eventSetter'].includes(setter) || isVariable) {
       expProps = {
         modalTitle: title,
@@ -139,6 +140,7 @@ export function createFormItem(options: FormItemCreateOptionsType) {
     }
 
     const getSetterProps = getSetterPropsProp || defaultGetSetterProps;
+    const ExpressionSetter = SETTERS_DICT['expressionSetter'];
 
     const setterNode = isVariable ? (
       <ExpressionSetter {...expProps} {...baseComponentProps} />
@@ -198,18 +200,18 @@ export function createFormItem(options: FormItemCreateOptionsType) {
 // setter 查找表
 const SETTERS_DICT: Record<string, React.FunctionComponent<any>> = {};
 // setter 校验函数查找表
-const SETTERS_VALIDATE_DICT: Record<string, FormItemCreateOptionsType['validate']> = {};
+const SETTERS_VALIDATE_DICT: Record<string, IFormItemCreateOptions['validate']> = {};
 
-INTERNAL_SETTERS.forEach((item) => {
-  SETTERS_DICT[item.name] = createFormItem(item);
-  if (item.alias) {
-    SETTERS_DICT[item.alias] = SETTERS_DICT[item.name];
-  }
-  if (item.validate) {
-    SETTERS_VALIDATE_DICT[item.name] = item.validate;
-    if (item.alias) {
-      SETTERS_VALIDATE_DICT[item.alias] = SETTERS_VALIDATE_DICT[item.name];
-    }
+INTERNAL_SETTERS.forEach((config) => {
+  const ret = createFormItem(config);
+  const names = [config.name, ...(config.alias ?? [])];
+  names.forEach((name) => {
+    SETTERS_DICT[name] = ret;
+  });
+  if (config.validate) {
+    names.forEach((name) => {
+      SETTERS_VALIDATE_DICT[name] = config.validate;
+    });
   }
 });
 
@@ -240,7 +242,7 @@ export function SettingFormItem(props: FormItemProps) {
  * Setter 注册
  * @param options
  */
-export function register(options: FormItemCreateOptionsType) {
+export function register(options: IFormItemCreateOptions) {
   if (SETTERS_DICT[options.name]) {
     logger.log(`Internal setter override: <${options.name}>`);
   }

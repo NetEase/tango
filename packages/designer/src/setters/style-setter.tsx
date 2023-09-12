@@ -5,9 +5,8 @@ import { SketchPicker } from 'react-color';
 import Color from 'color';
 import { BgColorsOutlined, FileImageOutlined } from '@ant-design/icons';
 import { SingleMonacoEditor, IconFont } from '@music163/tango-ui';
-import { FormItemComponentProps } from '../form-item';
-import { ImageSetter } from './image-setter';
-import { ChoiceSetter } from './choice-setter';
+import { FormItemComponentProps, ChoiceSetter, TextSetter } from '@music163/tango-setting-form';
+// import { ImageSetter } from './image-setter';
 
 function getRawCssValue(value: string) {
   if (value && value.startsWith('{css`')) {
@@ -238,7 +237,7 @@ export function BgSetter({ value, onChange }: FormItemComponentProps<string>) {
       <Box mt="m">
         {mode === 'color' && <ColorSetter value={value} onChange={onChange} />}
         {mode === 'image' && (
-          <ImageSetter
+          <TextSetter
             value={getImageUrl(value)}
             onChange={(imgUrl) => {
               onChange(imgUrl ? `url(${imgUrl})` : undefined);

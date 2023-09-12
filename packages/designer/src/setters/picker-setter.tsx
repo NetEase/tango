@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Select } from 'antd';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { ListStore, OptionType } from '@music163/tango-helpers';
 
 const style = {

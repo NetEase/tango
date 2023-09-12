@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { css, Box } from 'coral-system';
 import { Form, Input, Button, Popover } from 'antd';
 import { DeleteOutlined, EditOutlined, HolderOutlined } from '@ant-design/icons';
-import { Box } from 'coral-system';
-import { FormItemComponentProps } from '../form-item';
-import { css } from 'styled-components';
-import { DragBox } from '../components/index';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { DragBox } from '../components';
 
 function copyWithoutUndefined(source: Record<string, any>) {
   const ret = {};
@@ -254,7 +253,7 @@ function NewOptionForm({ fields = [], initialValues = {}, onSubmit }: NewOptionF
   );
 }
 
-type ListSetterProps = FormItemComponentProps<any[]> & {
+interface ListSetterProps extends FormItemComponentProps<any[]> {
   listItemFormFields: ListSetterItemProps['formFields'];
   newItemDefaultValues?: AddListItemButtonProps['formInitialValues'];
   getNewItemDefaultValues?: AddListItemButtonProps['getFormInitialValues'];

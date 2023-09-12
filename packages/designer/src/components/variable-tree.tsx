@@ -33,7 +33,7 @@ import {
 } from '@music163/tango-ui';
 import { isValidExpressionCode } from '@music163/tango-core';
 
-export type VariableTreeNodeType = {
+export interface IVariableTreeNode {
   /**
    * 唯一标识符
    */
@@ -65,9 +65,9 @@ export type VariableTreeNodeType = {
   /**
    * 子结点
    */
-  children?: VariableTreeNodeType[];
+  children?: IVariableTreeNode[];
   [key: string]: any;
-};
+}
 
 type VariableModelType = 'preview' | 'define' | 'add';
 
@@ -91,15 +91,15 @@ export interface EditableVariableTreeProps {
   /**
    * 预览值取值函数
    */
-  getPreviewValue?: (node: VariableTreeNodeType) => unknown;
+  getPreviewValue?: (node: IVariableTreeNode) => unknown;
   /**
    * 选择列表项时的回调
    */
-  onSelect?: (data: VariableTreeNodeType) => void;
+  onSelect?: (data: IVariableTreeNode) => void;
   /**
    * 点击使用此变量按钮时的回调
    */
-  onUse?: (data: VariableTreeNodeType) => void;
+  onUse?: (data: IVariableTreeNode) => void;
   /**
    * 保存结点定义的回调
    */
@@ -152,7 +152,7 @@ export function EditableVariableTree({
   showPreviewAlert = true,
 }: EditableVariableTreeProps) {
   const [keyword, setKeyword] = useState('');
-  const [node, setNode] = useState<VariableTreeNodeType>();
+  const [node, setNode] = useState<IVariableTreeNode>();
   const [mode, setMode] = useState<EditableVariableTreeProps['defaultMode']>(defaultMode);
   const hasPanelSwitch = modes.includes('define') && modes.includes('preview');
 
@@ -301,7 +301,7 @@ export function EditableVariableTreeModal({
   onSelect = noop,
   ...rest
 }: EditableVariableTreeModalProps) {
-  const [node, setNode] = useState<VariableTreeNodeType>();
+  const [node, setNode] = useState<IVariableTreeNode>();
   const [visible, { on, off }] = useBoolean(false);
   return (
     <Box>
@@ -348,10 +348,10 @@ const varTreeStyle = css`
 `;
 
 interface VariableTreeProps {
-  dataSource?: VariableTreeNodeType[];
-  onSelect?: (data: VariableTreeNodeType) => void;
-  onAdd?: (data: VariableTreeNodeType) => void;
-  onRemove?: (data: VariableTreeNodeType) => void;
+  dataSource?: IVariableTreeNode[];
+  onSelect?: (data: IVariableTreeNode) => void;
+  onAdd?: (data: IVariableTreeNode) => void;
+  onRemove?: (data: IVariableTreeNode) => void;
 }
 
 function VariableTree({
@@ -450,9 +450,9 @@ export function ValuePreview({ value, onSelect }: NodePreviewProps) {
 }
 
 interface NodeDefineProps {
-  node: VariableTreeNodeType;
-  onSave?: (code: string, node: VariableTreeNodeType) => void;
-  onDelete?: (node: VariableTreeNodeType) => void;
+  node: IVariableTreeNode;
+  onSave?: (code: string, node: IVariableTreeNode) => void;
+  onDelete?: (node: IVariableTreeNode) => void;
 }
 
 /**
@@ -527,7 +527,7 @@ function NodeDefineForm({ node, onSave = noop, onDelete = noop }: NodeDefineProp
 }
 
 interface AddNodeFormProps {
-  parentNode: VariableTreeNodeType;
+  parentNode: IVariableTreeNode;
   onCancel?: React.MouseEventHandler<HTMLButtonElement>;
   onSubmit?: (storeName: string, data: { name: string; initialValue: string }) => void;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Box, css } from 'coral-system';
 import { Alert, Modal, Tabs } from 'antd';
 import { value2code, isValidExpressionCode } from '@music163/tango-core';
@@ -11,9 +11,10 @@ import {
 } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { IconButton, Panel, InputCode, ChatInput } from '@music163/tango-ui';
-import { FormItemComponentProps } from '../form-item';
-import { EditableVariableTree, VariableTreeNodeType } from '../components';
-import { useFormVariable } from '../context';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
+import { EditableVariableTree, IVariableTreeNode } from '../components';
+import { useRemoteServices, useSandboxQuery } from '../context';
 
 export const expressionValueValidate = (value: string) => {
   if (isVariableString(value)) {
@@ -91,7 +92,8 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
   const [inputValue, setInputValue] = useState(() => {
     return getInputValue(valueProp);
   });
-  const { evaluateContext } = useFormVariable();
+  const sandbox = useSandboxQuery();
+  const evaluateContext = sandbox.window;
 
   // when receive new value, sync state
   useEffect(() => {
@@ -122,7 +124,11 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
                 }}
               />
             )}
-            <IconButton tooltip="打开表达式变量选择面板" icon={<ExpandAltOutlined />} onClick={on} />
+            <IconButton
+              tooltip="打开表达式变量选择面板"
+              icon={<ExpandAltOutlined />}
+              onClick={on}
+            />
           </Box>
         }
         value={inputValue}
@@ -160,7 +166,7 @@ export interface ExpressionModalProps {
   defaultValue?: string;
   onCancel?: () => void;
   onOk?: (value: string) => void;
-  dataSource?: VariableTreeNodeType[];
+  dataSource?: IVariableTreeNode[];
   autoCompleteOptions?: string[];
 }
 
@@ -176,8 +182,19 @@ export function ExpressionModal({
   autoCompleteOptions,
 }: ExpressionModalProps) {
   const [exp, setExp] = useState(defaultValue);
-  const { expressionVariables, evaluateContext, onAction, remoteServices } = useFormVariable();
+  const workspace = useWorkspace();
+  const onAction = useCallback(
+    (action: string, args: unknown[]) => {
+      workspace[action]?.(...args);
+    },
+    [workspace],
+  );
+  const sandbox = useSandboxQuery();
+  const remoteServices = useRemoteServices();
+  const { expressionVariables } = useWorkspaceData();
+  const evaluateContext = sandbox.window;
   const gptService = remoteServices?.GptService;
+
   const handleExpInputChange = (val: string) => {
     setExp(val?.trim());
   };
@@ -278,7 +295,7 @@ export function ExpressionModal({
                     frequencyPenalty: 0,
                     mode: 'chat',
                   })
-                  .then((res) => {
+                  .then((res: any) => {
                     return res?.detail?.choices?.[0]?.text;
                   })
               }

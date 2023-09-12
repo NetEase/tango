@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch } from 'antd';
 import { Box } from 'coral-system';
 import { FieldStringOutlined } from '@ant-design/icons';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { ListSetter, NewOptionFormFieldType } from './list-setter';
 
 const defaultNewOptionValue = {
@@ -37,7 +37,7 @@ const renderSetterItem = (item: any) => {
 export function ColumnSetter(props: FormItemComponentProps<any[]>) {
   return (
     <ListSetter
-      getListItemKey={(item) => item.key || item.dataIndex}
+      getListItemKey={(item: any) => item.key || item.dataIndex}
       addBtnText="添加新列"
       listItemFormFields={optionFormFields}
       newItemDefaultValues={defaultNewOptionValue}

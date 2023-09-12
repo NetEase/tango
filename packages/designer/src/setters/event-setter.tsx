@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { css } from 'styled-components';
-import { Box } from 'coral-system';
+import { css, Box } from 'coral-system';
 import { AutoComplete } from 'antd';
 import { ActionSelect } from '@music163/tango-ui';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { ExpressionModal, getInputValue } from './expression-setter';
-import { FormItemComponentProps } from '../form-item';
-import { useFormVariable } from '../context';
 
 enum EventAction {
   NoAction = 'noAction',
@@ -42,7 +41,9 @@ export function EventSetter(props: EventSetterProps) {
   const [temp, setTemp] = useState(''); // 二级暂存值
   const [expModalVisible, setExpModalVisible] = useState(false); // 弹窗是否显示
 
-  const { actionVariables, routeOptions, modalOptions } = useFormVariable();
+  const { actionVariables, routeOptions } = useWorkspaceData();
+  const workspace = useWorkspace();
+  const modalOptions = workspace.listModals() || [];
 
   const handleChange = useCallback<FormItemComponentProps['onChange']>(
     (nextValue: any, ...args) => {

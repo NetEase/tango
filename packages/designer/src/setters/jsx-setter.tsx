@@ -1,7 +1,7 @@
 import React from 'react';
 import { isPlainString } from '@music163/tango-helpers';
 import { ActionSelect } from '@music163/tango-ui';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 
 const options = [
   { label: '取消自定义', value: '' },

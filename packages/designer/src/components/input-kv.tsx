@@ -3,7 +3,6 @@ import { Input } from 'antd';
 import { css } from 'styled-components';
 import { Box } from 'coral-system';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { formatValue, compareValue } from './util';
 
 const rowCss = css`
   display: flex;
@@ -114,7 +113,7 @@ const OneInputKV = (props: any) => {
     const omit = ({ index, ...rest }: any) => rest;
     let nextValue = formatValue({ data: values, format });
 
-    Array.isArray(nextValue) && (nextValue = nextValue .map((item) => omit(item)));
+    Array.isArray(nextValue) && (nextValue = nextValue.map((item) => omit(item)));
 
     setData(values);
     onChange?.(nextValue);
@@ -166,3 +165,57 @@ const OneInputKV = (props: any) => {
 };
 
 export const InputKV = memo(OneInputKV, (prev, next) => prev.value === next.value);
+
+interface IFormatValueConfig {
+  format: 'simple' | 'original';
+  data?: Record<string, string> | Array<Record<string, string>>;
+}
+
+const formatData = (data?: Array<Record<string, string>>) => {
+  const result: Record<string, string> = {};
+
+  // 遍历数据
+  data?.forEach((item) => {
+    item.key && !(item.key in result) && (result[item.key] = item.value);
+  });
+
+  return result;
+};
+
+// 格式化value
+const formatValue = ({ format, data }: IFormatValueConfig) => {
+  if (format === 'original') {
+    if (!data) return [{ index: 0 }];
+
+    const list = Array.isArray(data)
+      ? data
+      : Object.keys(data).map((key) => ({ key, value: data[key] }));
+
+    return list.map((item, idx) => ({ ...item, index: idx - list.length - 1 }));
+  } else {
+    if (!data) return {};
+
+    return Array.isArray(data) ? formatData(data) : data;
+  }
+};
+
+const compareValue = (origin: Array<any>, data: Array<any>) => {
+  const resolve = (list: Array<any>) => {
+    let keyStr = '';
+    let valueStr = '';
+
+    list.forEach((item) => {
+      const { key, value } = item;
+
+      keyStr += key || '$';
+      valueStr += value || '$';
+    });
+
+    return { keyStr, valueStr };
+  };
+
+  const oldRes = resolve(origin);
+  const newRes = resolve(data);
+
+  return oldRes.keyStr === newRes.keyStr && oldRes.valueStr === newRes.valueStr;
+};

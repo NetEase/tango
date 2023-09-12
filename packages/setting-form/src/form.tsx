@@ -10,7 +10,7 @@ import {
 } from '@music163/tango-helpers';
 import { Search, Tabs } from '@music163/tango-ui';
 import { SettingFormItem, register } from './form-item';
-import { FormModelProvider, FormVariableProvider, FormVariableContextType } from './context';
+import { FormModelProvider, FormVariableProvider } from './context';
 import { FormModel, FormModelOptionsType } from './form-model';
 import { SettingFormObject } from './form-object';
 import { isValidNestProps } from './helpers';
@@ -53,19 +53,19 @@ const formStyle = css`
   }
 `;
 
-type GroupOptionType = {
+interface IFormTabsGroupOption {
   label: string;
   value: string;
-};
+}
 
-const internalGroups: GroupOptionType[] = [
+const internalGroups: IFormTabsGroupOption[] = [
   { label: '常用', value: 'basic' },
   { label: '事件', value: 'event' },
   { label: '样式', value: 'style' },
   { label: '高级', value: 'advanced' },
 ];
 
-export interface SettingFormProps extends FormVariableContextType {
+export interface SettingFormProps {
   /**
    * 表单状态管理模型实例
    */
@@ -85,24 +85,19 @@ export interface SettingFormProps extends FormVariableContextType {
   /**
    * 选项分组信息
    */
-  groupOptions?: GroupOptionType[];
+  groupOptions?: IFormTabsGroupOption[];
+  /**
+   * 是否允许表单项切换到表达式设置器
+   */
+  disableSwitchExpressionSetter?: boolean;
 }
 
 export function SettingForm({
   prototype,
   disableSwitchExpressionSetter,
-  modelVariables = [],
-  actionVariables = [],
-  expressionVariables = [],
-  routeOptions = [],
-  modalOptions = [],
-  formFieldsOptions = [],
-  evaluateContext,
   model: modelProp,
   defaultValue,
   onChange = noop,
-  onAction = noop,
-  remoteServices,
   groupOptions = internalGroups,
 }: SettingFormProps) {
   const [keyword, setKeyword] = useState('');
@@ -155,21 +150,8 @@ export function SettingForm({
     }
   }, [modelProp]);
 
-  const formVariable = {
-    disableSwitchExpressionSetter,
-    onAction,
-    modelVariables,
-    actionVariables,
-    expressionVariables,
-    routeOptions,
-    modalOptions,
-    formFieldsOptions,
-    evaluateContext,
-    remoteServices,
-  };
-
   return (
-    <FormVariableProvider value={formVariable}>
+    <FormVariableProvider value={{ disableSwitchExpressionSetter }}>
       <FormModelProvider value={model}>
         <Box className="SettingForm" mb="xl" css={formStyle}>
           <Box className="SettingFormHeader" position="sticky" top="0" bg="white" zIndex="2">

@@ -1,7 +1,7 @@
 import React from 'react';
-import { SingleMonacoEditor } from '@music163/tango-ui';
 import { Box } from 'coral-system';
-import { FormItemComponentProps } from '../form-item';
+import { SingleMonacoEditor } from '@music163/tango-ui';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 
 /**
  * 废弃掉，直接使用 ExpressionSetter 代替

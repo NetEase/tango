@@ -1,10 +1,9 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Box } from 'coral-system';
 import { SettingForm, FormModel, SettingFormProps } from '@music163/tango-setting-form';
 import { Panel } from '@music163/tango-ui';
 import { clone } from '@music163/tango-helpers';
-import { observer, useDesigner, useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { useSandboxQuery } from './context';
+import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 
 export interface SettingPanelProps extends SettingFormProps {
   title?: React.ReactNode;
@@ -15,17 +14,8 @@ const headerProps = {
 };
 
 export const SettingPanel = observer(({ title = '设置面板', ...props }: SettingPanelProps) => {
-  const sandbox = useSandboxQuery();
   const workspace = useWorkspace();
   const designer = useDesigner();
-  const { modelVariables, actionVariables, expressionVariables, routeOptions } = useWorkspaceData();
-
-  const onAction = useCallback(
-    (action: string, args: unknown[]) => {
-      workspace[action]?.(...args);
-    },
-    [workspace],
-  );
 
   if (!designer.showRightPanel) {
     return <Box className="SettingPanel" />;
@@ -74,7 +64,10 @@ export const SettingPanel = observer(({ title = '设置面板', ...props }: Sett
         });
       } else if (!field.error) {
         // 针对 Form.Item 变化的情况
-        workspace.updateSelectedNodeAttributes({ [firstName]: realValue }, field.detail?.relatedImports);
+        workspace.updateSelectedNodeAttributes(
+          { [firstName]: realValue },
+          field.detail?.relatedImports,
+        );
       }
     },
   });
@@ -99,13 +92,6 @@ export const SettingPanel = observer(({ title = '设置面板', ...props }: Sett
             key={workspace.selectSource.first.id}
             model={formModel}
             prototype={prototype}
-            modelVariables={modelVariables}
-            actionVariables={actionVariables}
-            expressionVariables={expressionVariables}
-            modalOptions={workspace.listModals() || []}
-            routeOptions={routeOptions}
-            onAction={onAction}
-            evaluateContext={sandbox.window}
             {...props}
           />
         ) : (

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Box } from 'coral-system';
 import { Input, Radio } from 'antd';
 import { isValidUrl } from '@music163/tango-helpers';
-import { useFormVariable } from '../context';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { useWorkspaceData } from '@music163/tango-context';
 import { PickerSetter } from './picker-setter';
 
 export function RouterSetter(props: FormItemComponentProps) {
@@ -11,7 +11,7 @@ export function RouterSetter(props: FormItemComponentProps) {
     return isValidUrl(props.value) ? 'input' : 'select';
   });
   const [input, setInput] = useState<string>(props.value);
-  const { routeOptions } = useFormVariable();
+  const { routeOptions } = useWorkspaceData();
   return (
     <Box>
       <Box mb="m">

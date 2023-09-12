@@ -1,6 +1,6 @@
 import { uuid } from '@music163/tango-helpers';
 import React from 'react';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { ListSetter, NewOptionFormFieldType } from './list-setter';
 
 const optionFormFields: NewOptionFormFieldType[] = [

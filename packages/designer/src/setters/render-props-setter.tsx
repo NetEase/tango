@@ -1,18 +1,18 @@
 import React, { useCallback, useMemo } from 'react';
 import { ActionSelect } from '@music163/tango-ui';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 
-type RenderOptionType = {
+interface IRenderOption {
   label: string;
   value: string;
   render?: string;
   relatedImports?: string[];
-};
+}
 
 export interface RenderSetterProps {
   text?: string;
-  options?: RenderOptionType[];
-  fallbackOption?: RenderOptionType;
+  options?: IRenderOption[];
+  fallbackOption?: IRenderOption;
 }
 
 /**

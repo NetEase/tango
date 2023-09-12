@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select } from 'antd';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { ListSetter, NewOptionFormFieldType } from './list-setter';
 
 const defaultNewOptionValue = {
@@ -28,7 +28,11 @@ const optionFormFields: NewOptionFormFieldType[] = [
   { label: 'key', name: 'key', required: true },
   { label: '文本', name: 'label', required: true },
   { label: '外观', name: 'shape', component: <Select placeholder="请选择" options={shapes} /> },
-  { label: '按钮类型', name: 'buttonType', component: <Select placeholder="请选择" options={buttonTypes} /> },
+  {
+    label: '按钮类型',
+    name: 'buttonType',
+    component: <Select placeholder="请选择" options={buttonTypes} />,
+  },
   { label: '类型', name: 'actionType', component: <Select placeholder="请选择" options={types} /> },
   { label: '确认气泡内容', name: 'confirmContent' },
 ];

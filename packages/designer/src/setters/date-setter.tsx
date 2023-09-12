@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { DatePicker, TimePicker } from 'antd';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 
 function toMoment(value: any, format: string) {
   let ret: moment.Moment;

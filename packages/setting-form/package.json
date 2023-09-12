@@ -32,17 +32,9 @@
     "@music163/tango-helpers": "^0.1.2",
     "@music163/tango-ui": "^0.1.2",
     "antd": "^4.24.2",
-    "color": "^4.2.3",
     "coral-system": "^1.0.5",
-    "cssjson": "^2.1.3",
     "mobx": "6.9.0",
-    "mobx-react-lite": "4.0.2",
-    "moment": "^2.29.3",
-    "react-color": "^2.19.3"
-  },
-  "devDependencies": {
-    "@types/color": "^3.0.3",
-    "@types/react-color": "^3.0.6"
+    "mobx-react-lite": "4.0.2"
   },
   "publishConfig": {
     "access": "public",

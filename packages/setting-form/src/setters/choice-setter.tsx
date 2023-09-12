@@ -9,14 +9,6 @@ interface ChoiceSetterProps {
   options?: OptionType[];
 }
 
-function RadioButton({ tip, ...rest }: RadioProps & { tip?: string }) {
-  let ret = <Radio.Button {...rest} />;
-  if (tip) {
-    ret = <Tooltip title={tip}>{ret}</Tooltip>;
-  }
-  return ret;
-}
-
 export function ChoiceSetter({
   options,
   mode = 'text',
@@ -44,4 +36,12 @@ export function ChoiceSetter({
       ))}
     </Radio.Group>
   );
+}
+
+function RadioButton({ tip, ...rest }: RadioProps & { tip?: string }) {
+  let ret = <Radio.Button {...rest} />;
+  if (tip) {
+    ret = <Tooltip title={tip}>{ret}</Tooltip>;
+  }
+  return ret;
 }

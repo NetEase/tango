@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box } from 'coral-system';
 import { Input, Tooltip } from 'antd';
 import { getValue, isFunction } from '@music163/tango-helpers';
-import { useFormVariable } from '../context';
-import { FormItemComponentProps } from '../form-item';
-import { EditableVariableTreeModal } from '../components';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { MenuOutlined } from '@ant-design/icons';
+import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
+import { EditableVariableTreeModal } from '../components';
+import { useSandboxQuery } from '../context';
 
 function object2treeData(
   val: any,
@@ -53,7 +54,15 @@ function traverseTreeData(val: any, callback: (val: any) => void) {
 
 export function ModelSetter({ value, onChange }: FormItemComponentProps) {
   const [inputValue, setInputValue] = useState(value);
-  const { onAction, modelVariables, evaluateContext = {} } = useFormVariable();
+  const { modelVariables } = useWorkspaceData();
+  const evaluateContext = useSandboxQuery().window || {};
+  const workspace = useWorkspace();
+  const onAction = useCallback(
+    (action: string, args: unknown[]) => {
+      workspace[action]?.(...args);
+    },
+    [workspace],
+  );
   const definedVariables = useMemo(() => {
     const map = new Map();
     traverseTreeData(modelVariables, (node) => {

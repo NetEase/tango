@@ -4,10 +4,10 @@ import { FormItemComponentProps } from '../form-item';
 
 const noop = () => {};
 
-type TextSetterProps = {
+interface TextSetterProps extends Omit<InputProps, 'onChange' | 'value'> {
   value?: string;
   onChange?: (value: string) => void;
-} & Omit<InputProps, 'onChange' | 'value'>;
+}
 
 export function TextSetter({
   value: valueProp,
