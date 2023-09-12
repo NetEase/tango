@@ -5,6 +5,7 @@ import {
   clone,
   ComponentPropType,
   isVariableString,
+  logger,
   SetterOnChangeDetailType,
   useBoolean,
 } from '@music163/tango-helpers';
@@ -241,7 +242,7 @@ export function SettingFormItem(props: FormItemProps) {
  */
 export function register(options: FormItemCreateOptionsType) {
   if (SETTERS_DICT[options.name]) {
-    throw Error(`Duplicate setter name: <${options.name}>`);
+    logger.log(`Internal setter override: <${options.name}>`);
   }
   SETTERS_DICT[options.name] = createFormItem(options);
 }

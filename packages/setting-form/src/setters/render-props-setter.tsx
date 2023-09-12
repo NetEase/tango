@@ -97,24 +97,10 @@ const tableExpandableOptions: RenderSetterProps['options'] = [
   { label: '取消可展开行', value: '' },
 ];
 
-const xtoolbarOptions: RenderSetterProps['options'] = [
-  {
-    label: '配置左侧区域',
-    value: 'Box',
-    render: getRender('<Box display="flex"></Box>'),
-    relatedImports: ['Box'],
-  },
-  { label: '取消左侧区域', value: undefined },
-];
-
 export function TableCellSetter(props: FormItemComponentProps) {
   return <RenderSetter options={tableCellOptions} {...props} />;
 }
 
 export function TableExpandableSetter(props: FormItemComponentProps) {
   return <RenderSetter options={tableExpandableOptions} text="配置表格可展开行" {...props} />;
-}
-
-export function XToolbarSetter(props: FormItemComponentProps) {
-  return <RenderSetter options={xtoolbarOptions} text="配置工具栏左侧区域" {...props} />;
 }

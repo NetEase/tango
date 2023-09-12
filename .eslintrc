@@ -6,6 +6,8 @@
     "@typescript-eslint/no-unused-vars": "warn",
     "import/no-cycle": "off",
     "no-nested-ternary": "off",
-    "no-useless-return":"off"
+    "no-useless-return":"off",
+    "no-param-reassign": "off",
+    "prefer-destructuring": "off"
   }
 }

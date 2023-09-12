@@ -5,7 +5,6 @@ import { PickerSetter } from './picker-setter';
 import { ChoiceSetter } from './choice-setter';
 import { FormItemCreateOptionsType } from '../form-item';
 import { ListSetter } from './list-setter';
-import { IconSetter } from './icon-setter';
 import { ColumnSetter } from './column-setter';
 import { NumberSetter, SliderSetter } from './number-setter';
 import { ExpressionSetter, expressionValueValidate, jsonValueValidate } from './expression-setter';
@@ -25,16 +24,8 @@ import {
   FlexDirectionSetter,
 } from './style-setter';
 import { CssSetter } from './css-setter';
-import { ListenerSetter } from './listener-setter';
-import { RuleSetter } from './rule-setter';
 import { ModelSetter } from './model-setter';
-import {
-  RenderSetter,
-  TableCellSetter,
-  TableExpandableSetter,
-  XToolbarSetter,
-} from './render-props-setter';
-import { ImageSetter } from './image-setter';
+import { RenderSetter, TableCellSetter, TableExpandableSetter } from './render-props-setter';
 import { RouterSetter } from './router-setter';
 import { BoolSetter } from './bool-setter';
 
@@ -123,10 +114,6 @@ export const INTERNAL_SETTERS: FormItemCreateOptionsType[] = [
     component: ChoiceSetter,
   },
   {
-    name: 'iconSetter',
-    component: IconSetter,
-  },
-  {
     name: 'optionSetter',
     component: OptionSetter,
   },
@@ -182,14 +169,6 @@ export const INTERNAL_SETTERS: FormItemCreateOptionsType[] = [
     component: ColumnSetter,
   },
   {
-    name: 'listenerSetter',
-    component: ListenerSetter,
-  },
-  {
-    name: 'ruleSetter',
-    component: RuleSetter,
-  },
-  {
     name: 'renderPropsSetter',
     component: RenderSetter,
   },
@@ -200,14 +179,6 @@ export const INTERNAL_SETTERS: FormItemCreateOptionsType[] = [
   {
     name: 'tableExpandableSetter',
     component: TableExpandableSetter,
-  },
-  {
-    name: 'xtoolbarSetter',
-    component: XToolbarSetter,
-  },
-  {
-    name: 'imageSetter',
-    component: ImageSetter,
   },
   {
     name: 'routerSetter',

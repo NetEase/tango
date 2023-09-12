@@ -9,23 +9,27 @@ import { DndQuery, useDnd } from '../dnd';
 import { Navigator } from './navigator';
 import { SelectionToolsProps } from '../simulator/selection';
 
-type SandboxEventHandlerConfig = {
+interface ISandboxEventHandlerConfig {
   sandboxQuery?: DndQuery;
   sandboxType?: 'design' | 'preview';
   isActive: boolean;
   [x: string]: any;
-};
+}
 
 export type SandboxProps = Omit<CodeSandboxProps, 'files' | 'eventHandlers' | 'onMessage'> & {
   isPreview?: boolean;
   selectionTools?: SelectionToolsProps['actions'];
   builtinSelectionMenuMap?: SelectionToolsProps['builtinActionMap'];
+  /**
+   * tangoConfigJson 处理器
+   */
+  configFormatter?: IMergeTangoConfigJsonConfig['formatter'];
   sandboxType?: 'design' | 'preview';
   mode?: 'single' | 'combined';
   injectScript?: string;
-  onViewChange?: (data: any, config?: SandboxEventHandlerConfig) => void;
-  onMessage?: (data: any, config?: SandboxEventHandlerConfig) => void;
-  onLoad?: (config?: SandboxEventHandlerConfig) => void;
+  onViewChange?: (data: any, config?: ISandboxEventHandlerConfig) => void;
+  onMessage?: (data: any, config?: ISandboxEventHandlerConfig) => void;
+  onLoad?: (config?: ISandboxEventHandlerConfig) => void;
 };
 
 export type CombinedSandboxRef = {
@@ -37,6 +41,7 @@ const LANDING_PAGE_PATH = '/__background_landing_page__';
 
 function useSandbox({
   isPreview: isPreviewProp,
+  configFormatter,
   onViewChange,
   onMessage: onMessageProp,
   onLoad: onLoadProp,
@@ -70,12 +75,12 @@ function useSandbox({
   let files = Array.from(workspace.files.keys()).reduce((prev, filename) => {
     let code = workspace.getFile(filename).code;
     if (filename === '/tango.config.json') {
-      code = mergeTangoConfigJson(code, isPreview, { injectScript });
+      code = mergeTangoConfigJson(code, { isPreview, injectScript, formatter: configFormatter });
     }
     prev[filename] = { code };
     return prev;
   }, {});
-  files = normalizeFiles(files, workspace.entry);
+  files = fixSandboxFiles(files, workspace.entry);
 
   const onMessage = (data: any) => onMessageProp && onMessageProp(data, getSandboxConfig());
   const onLoad = () => onLoadProp && onLoadProp(getSandboxConfig());
@@ -188,7 +193,7 @@ export const CombinedSandbox = observer(
     const activeSandbox = useRef<string>();
     const [startRoute, setStartRoute] = useState(workspace.activeRoute);
 
-    const onViewChange = (data: any, config: SandboxEventHandlerConfig) => {
+    const onViewChange = (data: any, config: ISandboxEventHandlerConfig) => {
       if (config.isActive) {
         const curPath = data?.pathname + data?.search;
         const isSandboxChanged = config.sandboxType !== activeSandbox.current;
@@ -296,7 +301,7 @@ export const Sandbox = observer(
         : combinedSandboxRef.current?.designSandbox;
     }
 
-    const onViewChange = (data: any, { isActive }: SandboxEventHandlerConfig) => {
+    const onViewChange = (data: any, { isActive }: ISandboxEventHandlerConfig) => {
       if (isActive) {
         navigatorRef.current.changeRelativeUrl(data?.pathname + data?.search);
       }
@@ -380,7 +385,7 @@ export const Sandbox = observer(
 );
 
 // 兼容 tango.config.json，转成 sandbox.config.json
-function normalizeFiles(files: object, entry = '/src/index.js') {
+function fixSandboxFiles(files: Record<string, { code: string }>, entry = '/src/index.js') {
   if (files['/tango.config.json']) {
     const tangConfigJsonStr = files['/tango.config.json'].code;
     const tangConfigJson = JSON.parse(tangConfigJsonStr);
@@ -388,6 +393,7 @@ function normalizeFiles(files: object, entry = '/src/index.js') {
       code: JSON.stringify(tangConfigJson.sandbox, null, 2),
     };
   }
+
   if (!files['/index.html']) {
     files['/index.html'] = {
       code: `
@@ -407,43 +413,36 @@ function normalizeFiles(files: object, entry = '/src/index.js') {
       `,
     };
   }
-
   return files;
 }
 
-function mergeTangoConfigJson(code: string, isPreview: boolean, config?: { [x: string]: any }) {
+interface IMergeTangoConfigJsonConfig {
+  isPreview?: boolean;
+  injectScript?: string;
+  formatter?: (json: object) => object;
+}
+
+function mergeTangoConfigJson(
+  code: string,
+  { isPreview, injectScript, formatter }: IMergeTangoConfigJsonConfig = {},
+) {
   let json;
   try {
     json = JSON.parse(code);
   } catch (err) {
-    logger.error(err);
+    logger.error('Json parse failed!', err);
     return code;
   }
 
-  const ox = getValue(json, 'dataSource.ox');
   const userJs = getValue(json, 'sandbox.evaluateJavaScript') || '';
   let mergedUserJs = userJs;
-  const { injectScript } = config || {};
 
-  if (ox) {
-    // TIP: 自动拼装 __tango_ox__ 注入到沙箱中
-    mergedUserJs = `window.__tango_ox__=${JSON.stringify(ox)};${mergedUserJs}`;
-  }
   if (injectScript) {
     mergedUserJs = `${mergedUserJs};${injectScript}`;
   }
 
   if (userJs !== mergedUserJs) {
     setValue(json, 'sandbox.evaluateJavaScript', mergedUserJs);
-  }
-
-  const i18n = getValue(json, 'i18n');
-  if (i18n) {
-    // TIP: 合并 i18n 配置到沙箱配置中
-    setValue(json, 'sandbox.i18n', {
-      id: i18n.appId,
-      preModule: i18n.preModule,
-    });
   }
 
   // 合并 packages 内的信息至 sandbox
@@ -491,6 +490,8 @@ function mergeTangoConfigJson(code: string, isPreview: boolean, config?: { [x: s
   }
   setValue(json, 'sandbox.externals', externals);
   setValue(json, 'sandbox.externalResources', [...new Set(externalResources)]);
+
+  json = formatter?.(json);
 
   return JSON.stringify(json);
 }
