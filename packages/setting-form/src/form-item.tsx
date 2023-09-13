@@ -5,7 +5,6 @@ import {
   clone,
   ComponentPropType,
   isVariableString,
-  logger,
   SetterOnChangeDetailType,
   useBoolean,
 } from '@music163/tango-helpers';
@@ -50,10 +49,6 @@ export interface IFormItemCreateOptions {
    * 是否禁用变量设置器
    */
   disableVariableSetter?: boolean;
-  /**
-   * 子表单是否默认折叠
-   */
-  defaultCollapsed?: boolean;
   /**
    * 默认的表单值校验逻辑
    */
@@ -141,7 +136,6 @@ export function createFormItem(options: IFormItemCreateOptions) {
     return (
       <FormControl
         visible={getVisible(model)}
-        defaultCollapsed={options.defaultCollapsed}
         label={title}
         note={name}
         tip={tip}

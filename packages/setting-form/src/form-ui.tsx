@@ -6,68 +6,36 @@ import { CollapsePanel } from '@music163/tango-ui';
 import { isNil, isString } from '@music163/tango-helpers';
 
 export interface FormControlProps extends Omit<FormLabelProps, 'type'> {
-  /**
-   * @deprecated 废弃 subForm 使用 FormObject 代替
-   */
-  type?: 'formItem' | 'subForm';
-  /**
-   * 默认是否折叠，仅适用于 subForm 类型
-   */
-  defaultCollapsed?: boolean;
   visible: boolean;
   extra?: React.ReactNode;
   error?: string;
   children?: React.ReactNode;
 }
 
-export function FormControl(props: FormControlProps) {
-  const {
-    type,
-    defaultCollapsed = true,
-    visible,
-    label,
-    note,
-    tip,
-    docs,
-    extra,
-    error,
-    children,
-    ...rest
-  } = props;
-
-  if (type === 'formItem') {
-    return (
-      <Box className="FormControl" display={visible ? 'block' : 'none'} {...rest}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb="s">
-          <FormLabel label={label} note={note} tip={tip} docs={docs} />
-          {extra}
-        </Box>
-        <Box>{children}</Box>
-        {!!error && (
-          <Box mt="m" color="red">
-            {error}
-          </Box>
-        )}
-      </Box>
-    );
-  }
-
-  // else type === 'subForm'
+export function FormControl({
+  visible,
+  label,
+  note,
+  tip,
+  docs,
+  extra,
+  error,
+  children,
+  ...rest
+}: FormControlProps) {
   return (
-    <CollapsePanel
-      title={<FormLabel label={label} note={note} tip={tip} docs={docs} />}
-      extra={
-        <Box flex="1" textAlign="right">
-          {extra}
+    <Box className="FormControl" display={visible ? 'block' : 'none'} {...rest}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb="s">
+        <FormLabel label={label} note={note} tip={tip} docs={docs} />
+        {extra}
+      </Box>
+      <Box>{children}</Box>
+      {!!error && (
+        <Box mt="m" color="red">
+          {error}
         </Box>
-      }
-      defaultCollapsed={defaultCollapsed}
-      borderTop="solid"
-      borderTopColor="line.normal"
-    >
-      <Box bg="#f9f9f9">{children}</Box>
-      <Box color="red">{error}</Box>
-    </CollapsePanel>
+      )}
+    </Box>
   );
 }
 
