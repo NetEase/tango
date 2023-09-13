@@ -40,6 +40,17 @@ const filedNames = {
   children: 'children',
 };
 
+const getNodeKeys = (data: TangoViewNodeDataType[]) => {
+  const ids: string[] = [];
+  data?.forEach((node) => {
+    ids.push(node.id);
+    if (node.children) {
+      ids.push(...getNodeKeys(node.children));
+    }
+  });
+  return ids;
+};
+
 const OutlineTreeNode: React.FC<any> = observer(({ node }: { node: TangoViewNodeDataType }) => {
   const workspace = useWorkspace();
   const sandboxQuery = useSandboxQuery();
@@ -124,7 +135,7 @@ export const ComponentsTree = observer(() => {
         }}
         blockNode
         autoExpandParent
-        defaultExpandAll
+        expandedKeys={getNodeKeys(nodesTree)}
         draggable
         onDragStart={(data) => {
           const prototype = workspace.componentPrototypes.get(data.node.component);
