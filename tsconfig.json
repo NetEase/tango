@@ -11,6 +11,7 @@
       "@music163/tango-setting-form": ["packages/setting-form/src/index.ts"],
       "@music163/tango-helpers": ["packages/helpers/src/index.ts"],
       "@music163/tango": ["packages/designer/src/index.ts"],
+      "@music163/tango-ui": ["packages/ui/src/index.ts"],
     }
   }
 }
