@@ -1,7 +1,7 @@
 import React, { useImperativeHandle, ForwardedRef, useRef, useState, useEffect } from 'react';
 import { Box } from 'coral-system';
 import { CodeSandbox, CodeSandboxProps } from '@music163/tango-sandbox';
-import { getValue, logger, pick, setValue } from '@music163/tango-helpers';
+import { getValue, isFunction, logger, pick, setValue } from '@music163/tango-helpers';
 import { observer, useWorkspace, useDesigner } from '@music163/tango-context';
 import { Simulator, Viewport } from '../simulator';
 import { useSandboxQuery } from '../context';
@@ -491,7 +491,9 @@ function mergeTangoConfigJson(
   setValue(json, 'sandbox.externals', externals);
   setValue(json, 'sandbox.externalResources', [...new Set(externalResources)]);
 
-  json = formatter?.(json);
+  if (isFunction(formatter)) {
+    json = formatter?.(json);
+  }
 
   return JSON.stringify(json);
 }

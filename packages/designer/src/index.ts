@@ -12,4 +12,6 @@ export * from './sidebar';
 export * from './toolbar';
 export * from './selection-menu';
 
-export { register as registerSetter, FormItemComponentProps, FormItemCreateOptionsType } from '@music163/tango-setting-form';
+export { register as registerSetter } from '@music163/tango-setting-form';
+
+export type { FormItemComponentProps, IFormItemCreateOptions } from '@music163/tango-setting-form';

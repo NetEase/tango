@@ -14,7 +14,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputProps, Tooltip } from 'antd';
 import { INTERNAL_SETTERS } from './setters';
 import { useFormModel, useFormVariable } from './context';
-import { FormControl, FormControlProps } from './form-ui';
+import { FormControl } from './form-ui';
 
 export interface FormItemProps extends ComponentPropType {
   extra?: React.ReactNode;
@@ -51,10 +51,6 @@ export interface IFormItemCreateOptions {
    */
   disableVariableSetter?: boolean;
   /**
-   * 表单项类型
-   */
-  type?: FormControlProps['type'];
-  /**
    * 子表单是否默认折叠
    */
   defaultCollapsed?: boolean;
@@ -64,25 +60,12 @@ export interface IFormItemCreateOptions {
   validate?: (value: string) => string | Promise<any>;
 }
 
-function normalizeCreateOptions(
-  options: IFormItemCreateOptions,
-): Required<Omit<IFormItemCreateOptions, 'component' | 'alias'>> {
-  const render = options.render ?? ((props: any) => React.createElement(options.component, props));
-  return {
-    name: options.name,
-    render,
-    disableVariableSetter: options.disableVariableSetter ?? false,
-    type: options.type || 'formItem',
-    defaultCollapsed: options.defaultCollapsed ?? true,
-    validate: options.validate,
-  };
-}
-
 const defaultGetSetterProps = () => ({});
 const defaultGetVisible = () => true;
 
 export function createFormItem(options: IFormItemCreateOptions) {
-  const _options = normalizeCreateOptions(options);
+  const renderSetter =
+    options.render ?? ((props: any) => React.createElement(options.component, props));
 
   function FormItem({
     name,
@@ -95,7 +78,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     setterProps,
     defaultValue,
     options: setterOptions,
-    disableVariableSetter: disableVariableSetterProp,
+    disableVariableSetter: disableVariableSetterProp = options.disableVariableSetter,
     getVisible: getVisibleProp,
     getSetterProps: getSetterPropsProp,
     extra,
@@ -104,16 +87,15 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const model = useFormModel();
     const field = model.getField(name);
     const value = toJS(field.value ?? defaultValue);
-    const disableVariableSetter =
-      disableSwitchExpressionSetter || disableVariableSetterProp || _options.disableVariableSetter;
+    const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp;
     const [isVariable, { toggle: toggleIsVariable }] = useBoolean(
       () => !disableVariableSetter && isVariableString(value),
     );
 
     const setterName = isVariable ? 'expressionSetter' : setter;
-    const validate = SETTERS_VALIDATE_DICT[setterName];
+
     field.setConfig({
-      validate,
+      validate: options.validate,
     });
 
     const baseComponentProps = clone(
@@ -140,12 +122,13 @@ export function createFormItem(options: IFormItemCreateOptions) {
     }
 
     const getSetterProps = getSetterPropsProp || defaultGetSetterProps;
-    const ExpressionSetter = SETTERS_DICT['expressionSetter'];
+    // 从注册表中获取 expSetter
+    const ExpressionSetter = REGISTERED_FORM_ITEM_MAP['expressionSetter']?.config?.component;
 
     const setterNode = isVariable ? (
       <ExpressionSetter {...expProps} {...baseComponentProps} />
     ) : (
-      _options.render({
+      renderSetter({
         ...expProps,
         ...baseComponentProps,
         ...setterProps, // setterProps 优先级大于快捷属性
@@ -158,8 +141,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     return (
       <FormControl
         visible={getVisible(model)}
-        type={_options.type}
-        defaultCollapsed={_options.defaultCollapsed}
+        defaultCollapsed={options.defaultCollapsed}
         label={title}
         note={name}
         tip={tip}
@@ -192,28 +174,27 @@ export function createFormItem(options: IFormItemCreateOptions) {
     );
   }
 
-  FormItem.displayName = `FormItem_${_options.name}`;
+  FormItem.displayName = `FormItem_${options.name}`;
+  FormItem.config = options;
 
   return observer(FormItem);
 }
 
-// setter 查找表
-const SETTERS_DICT: Record<string, React.FunctionComponent<any>> = {};
-// setter 校验函数查找表
-const SETTERS_VALIDATE_DICT: Record<string, IFormItemCreateOptions['validate']> = {};
+// 已注册的 setter 查找表
+const REGISTERED_FORM_ITEM_MAP: Record<string, ReturnType<typeof createFormItem>> = {};
 
-INTERNAL_SETTERS.forEach((config) => {
-  const ret = createFormItem(config);
+/**
+ * Setter 注册
+ * @param config 注册选项
+ */
+export function register(config: IFormItemCreateOptions) {
   const names = [config.name, ...(config.alias ?? [])];
   names.forEach((name) => {
-    SETTERS_DICT[name] = ret;
+    REGISTERED_FORM_ITEM_MAP[name] = createFormItem(config);
   });
-  if (config.validate) {
-    names.forEach((name) => {
-      SETTERS_VALIDATE_DICT[name] = config.validate;
-    });
-  }
-});
+}
+
+INTERNAL_SETTERS.forEach(register);
 
 const iconStyle = {
   color: 'red',
@@ -221,9 +202,9 @@ const iconStyle = {
 
 export function SettingFormItem(props: FormItemProps) {
   const { setter } = props;
-  const Comp = SETTERS_DICT[setter];
+  const Comp = REGISTERED_FORM_ITEM_MAP[setter];
   if (Comp == null) {
-    const Fallback = SETTERS_DICT.expressionSetter;
+    const Fallback = REGISTERED_FORM_ITEM_MAP.expressionSetter;
     return (
       <Fallback
         {...props}
@@ -236,15 +217,4 @@ export function SettingFormItem(props: FormItemProps) {
     );
   }
   return React.createElement(Comp, props);
-}
-
-/**
- * Setter 注册
- * @param options
- */
-export function register(options: IFormItemCreateOptions) {
-  if (SETTERS_DICT[options.name]) {
-    logger.log(`Internal setter override: <${options.name}>`);
-  }
-  SETTERS_DICT[options.name] = createFormItem(options);
 }

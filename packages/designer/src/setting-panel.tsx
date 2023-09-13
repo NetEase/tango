@@ -4,6 +4,7 @@ import { SettingForm, FormModel, SettingFormProps } from '@music163/tango-settin
 import { Panel } from '@music163/tango-ui';
 import { clone } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
+import './setters';
 
 export interface SettingPanelProps extends SettingFormProps {
   title?: React.ReactNode;

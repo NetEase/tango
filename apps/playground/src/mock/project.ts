@@ -11,7 +11,7 @@ const packageJson = {
   },
 };
 
-const tangoJson = {
+const tangoConfigJson = {
   packages: {
     react: {
       version: '17.0.2',
@@ -221,7 +221,7 @@ p {
 export const sampleFiles = [
   { filename: '/package.json', code: JSON.stringify(packageJson) },
   { filename: '/appJson.json', code: JSON.stringify(appJson) },
-  { filename: '/tango.config.json', code: JSON.stringify(tangoJson) },
+  { filename: '/tango.config.json', code: JSON.stringify(tangoConfigJson) },
   { filename: '/README.md', code: '# readme' },
   { filename: '/src/index.less', code: lessCode },
   { filename: '/src/style.css', code: cssCode },

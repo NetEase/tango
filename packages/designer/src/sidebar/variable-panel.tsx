@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Space } from 'antd';
-import { EditableVariableTree, EditableVariableTreeProps } from '@music163/tango-setting-form';
 import { useBoolean } from '@music163/tango-helpers';
 import { Panel, Form, IconButton } from '@music163/tango-ui';
 import { FileAddOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
+import { EditableVariableTree, EditableVariableTreeProps } from '../components';
 
 export interface VariablePanelProps extends EditableVariableTreeProps {
   wrapperHeight?: number | string;

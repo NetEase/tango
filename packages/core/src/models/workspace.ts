@@ -43,7 +43,7 @@ import { IWorkspace } from './interfaces';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
 
-export type WorkspaceOptionsType = {
+export interface IWorkspaceOptions {
   /**
    * 入口文件
    */
@@ -225,7 +225,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     return Object.keys(this.localBlocks);
   }
 
-  constructor(options?: WorkspaceOptionsType) {
+  constructor(options?: IWorkspaceOptions) {
     super();
     this.history = new TangoHistory(this);
     this.selectSource = new SelectSource(this);

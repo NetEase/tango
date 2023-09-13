@@ -4,8 +4,7 @@ import { SingleMonacoEditor } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 
 /**
- * 废弃掉，直接使用 ExpressionSetter 代替
- * @deprecated
+ * JSON Setter
  */
 export function JSONSetter({ value, onChange }: FormItemComponentProps) {
   return (
