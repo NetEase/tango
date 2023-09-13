@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { observer, useWorkspace } from '@music163/tango-context';
-import { Box, Link, css } from 'coral-system';
+import { Box, css } from 'coral-system';
 import { Button, FormProps, Empty, Space, Dropdown } from 'antd';
 import { PlayCircleOutlined } from '@ant-design/icons';
 import { Form, InputCode, Menu, Panel, JsonView, Search } from '@music163/tango-ui';
@@ -12,13 +12,37 @@ import {
   logger,
   code2object,
 } from '@music163/tango-helpers';
-import {
-  ESFDataSourceType,
-  ESFOperationType,
-  ESFHTTPMethodType,
-  ESFHTTRequestType,
-} from '@music163/tango-core';
 import { useSandboxQuery } from '../../context';
+
+/*
+ * 服务函数的操作类型
+ */
+enum ServiceFunctionOperationModeType {
+  ADD = 'add',
+  UPDATE = 'update',
+  DELETE = 'delete',
+}
+
+/**
+ * 服务函数 HTTP Type
+ * 云音乐网关只支持 get 和 post
+ */
+enum ServiceFunctionMethodType {
+  GET = 'GET',
+  // PUT = 'PUT',
+  POST = 'POST',
+  // PATCH = 'PATCH',
+  // DELETE = 'DELETE',
+}
+
+/**
+ * requestType
+ * headers: Content-Type
+ */
+enum ESFHTTRequestType {
+  'application/json' = 'json',
+  'application/x-www-form-urlencoded' = 'x-www-form-urlencoded',
+}
 
 /**
  * 将 api 路径转换为默认的驼峰方法名
@@ -47,28 +71,8 @@ type DataServiceViewProps = {
   onDelete?: (values: Record<string, string>) => void;
 };
 
-// 判断是不是一个完整的 url 请求
-const VALID_REQUEST_URL_REG = /((http|https):)?\/\/([\w.]+\/?)\S*/;
-
-/**
- * 根据 url 类型推断方法类型
- */
-export function inferServiceType(url?: string) {
-  // 删除的时候，也会走一下这个逻辑，兼容
-  if (!url) return ESFDataSourceType.Custom;
-  // 如果是完整的，是 custom
-  if (VALID_REQUEST_URL_REG.test(url)) return ESFDataSourceType.Custom;
-  // 如果是 / 开头的，认为是 ox 的
-  if (url.startsWith('/')) return ESFDataSourceType.OvermindX;
-  /**
-   * 这里预留出数据平台 fastX 的
-   */
-  // 默认是 ox 的
-  return ESFDataSourceType.OvermindX;
-}
-
 // http 方法类型
-const httpMethods = Object.keys(ESFHTTPMethodType).map((key) => ({
+const httpMethods = Object.keys(ServiceFunctionMethodType).map((key) => ({
   label: key,
   value: key,
 }));
@@ -113,13 +117,7 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
   const isAddMode = !serviceKey;
 
   return (
-    <Box
-      className="DataSourceView"
-      display="flex"
-      borderTopColor="line.normal"
-      height="100%"
-      overflow="hidden"
-    >
+    <Box className="ServiceFunctionList" display="flex" borderTopColor="line.normal">
       <Box width="35%" overflow="auto" borderRight="solid" borderColor="line.normal">
         <Panel
           height="100%"
@@ -174,11 +172,10 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
                 serviceKeys={Object.keys(serviceMap)}
                 initialValues={
                   isAddMode
-                    ? { type: ESFDataSourceType.OvermindX }
+                    ? {}
                     : {
                         name: serviceKey,
                         method: 'get',
-                        type: inferServiceType(serviceData?.url),
                         ...serviceData,
                       }
                 }
@@ -186,7 +183,7 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
                   setServiceKey(undefined);
                   setVisible(null);
                 }}
-                onSubmit={(values, mode: ESFOperationType) => {
+                onSubmit={(values, mode: ServiceFunctionOperationModeType) => {
                   function shapeServiceValues(val: any) {
                     const shapeValues = { ...val };
                     delete shapeValues.type;
@@ -198,10 +195,10 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
                   }
                   // 移除掉不必要的属性
                   const data = shapeServiceValues(values);
-                  if (mode === ESFOperationType.ADD) {
+                  if (mode === ServiceFunctionOperationModeType.ADD) {
                     workspace.addServiceFunction(data);
                     onAdd && onAdd(values);
-                  } else if (mode === ESFOperationType.UPDATE) {
+                  } else if (mode === ServiceFunctionOperationModeType.UPDATE) {
                     workspace.updateServiceFunction(data);
                     onUpdate && onUpdate(values);
                   }
@@ -231,7 +228,7 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
 interface ServiceDetailFormProps extends FormProps {
   serviceKeys?: string[];
   onCancel?: () => void;
-  onSubmit?: (values: any, mode: ESFOperationType) => void;
+  onSubmit?: (values: any, mode: ServiceFunctionOperationModeType) => void;
 }
 
 function ServiceDetailForm({
@@ -267,7 +264,12 @@ function ServiceDetailForm({
       layout="horizontal"
       initialValues={initialValues}
       onFinish={(values) => {
-        onSubmit(values, isModifyMode ? ESFOperationType.UPDATE : ESFOperationType.ADD);
+        onSubmit(
+          values,
+          isModifyMode
+            ? ServiceFunctionOperationModeType.UPDATE
+            : ServiceFunctionOperationModeType.ADD,
+        );
         setDisabled(true);
       }}
       {...formProps}
@@ -345,18 +347,7 @@ function ServiceDetailForm({
       <Form.Item
         label="格式化响应"
         name="formatter"
-        tooltip={
-          <Box>
-            提供格式化函数，对结果进行格式化。请参考
-            <Link
-              href="https://music-doc.st.netease.com/st/tango-docs/docs/guide/basic/services#%E6%8E%A5%E5%8F%A3%E8%BF%94%E5%9B%9E%E5%80%BC%E8%A7%84%E8%8C%83"
-              target="_blank"
-            >
-              云音乐接口规范
-            </Link>
-            。
-          </Box>
-        }
+        tooltip="提供格式化函数，对结果进行格式化"
         validateTrigger="onBlur"
         rules={[
           {

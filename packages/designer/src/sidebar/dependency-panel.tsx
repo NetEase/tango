@@ -372,7 +372,7 @@ function RenderItem({
               </Popconfirm>,
             ]
           : [
-              <Text color={'rgba(0, 0, 0, 0.45)'}>
+              <Text key="latest" color={'rgba(0, 0, 0, 0.45)'}>
                 {!isUndefined(baseNeedUpgrade) && '已是最新'}
               </Text>,
             ]

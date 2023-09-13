@@ -132,44 +132,6 @@ export type StorePropertyType = {
     | 'object';
 };
 
-/*
- * 服务函数的操作类型
- */
-export enum ESFOperationType {
-  ADD = 'add',
-  UPDATE = 'update',
-  DELETE = 'delete',
-}
-
-/**
- * 服务函数数据源类型
- */
-export enum ESFDataSourceType {
-  OvermindX = 'ox',
-  Custom = 'custom',
-}
-
-/**
- * 服务函数 HTTP Type
- * 云音乐网关只支持 get 和 post
- */
-export enum ESFHTTPMethodType {
-  GET = 'GET',
-  // PUT = 'PUT',
-  POST = 'POST',
-  // PATCH = 'PATCH',
-  // DELETE = 'DELETE',
-}
-
-/**
- * requestType
- * headers: Content-Type
- */
-export enum ESFHTTRequestType {
-  'application/json' = 'json',
-  'application/x-www-form-urlencoded' = 'x-www-form-urlencoded',
-}
-
 /**
  * 路由解析数据
  */

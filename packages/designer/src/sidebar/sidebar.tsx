@@ -115,7 +115,12 @@ const INTERNAL_SIDEBAR_PANEL_MAP: Record<string, SidebarPanelItemProps> = {
   },
 };
 
-function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, builtinPanelMap = INTERNAL_SIDEBAR_PANEL_MAP, footer, children }: SidebarProps) {
+function BaseSidebarPanel({
+  panelWidth: defaultPanelWidth = 280,
+  builtinPanelMap = INTERNAL_SIDEBAR_PANEL_MAP,
+  footer,
+  children,
+}: SidebarProps) {
   const items = useMemo(() => {
     const ret: Record<React.Key, SidebarPanelItemProps> = {};
     React.Children.forEach(children, (child) => {
@@ -273,11 +278,10 @@ function SidebarPanelBarItem({
 const expandPanelStyle = css`
   flex: 1;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   background-color: var(--tango-colors-white);
   border-left: 1px solid var(--tango-colors-line-normal);
   position: relative;
+  overflow-y: auto;
 
   &.isFloat {
     position: absolute;
