@@ -4,7 +4,7 @@ import { Box, css } from 'coral-system';
 import { IconFont } from '@music163/tango-ui';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { observer, useWorkspace } from '@music163/tango-context';
-import { DropMethod, TangoViewNodeDataType } from '@music163/tango-core';
+import { DropMethod, ITangoViewNodeData } from '@music163/tango-core';
 import { parseDndId } from '@music163/tango-helpers';
 import { useSandboxQuery } from '../../context';
 import { buildQueryBySlotId } from '../../helpers';
@@ -40,7 +40,7 @@ const filedNames = {
   children: 'children',
 };
 
-const getNodeKeys = (data: TangoViewNodeDataType[]) => {
+const getNodeKeys = (data: ITangoViewNodeData[]) => {
   const ids: string[] = [];
   data?.forEach((node) => {
     ids.push(node.id);
@@ -51,7 +51,7 @@ const getNodeKeys = (data: TangoViewNodeDataType[]) => {
   return ids;
 };
 
-const OutlineTreeNode: React.FC<any> = observer(({ node }: { node: TangoViewNodeDataType }) => {
+const OutlineTreeNode: React.FC<any> = observer(({ node }: { node: ITangoViewNodeData }) => {
   const workspace = useWorkspace();
   const sandboxQuery = useSandboxQuery();
   const [visible, setVisible] = useState(true);
@@ -98,7 +98,7 @@ export const ComponentsTree = observer(() => {
     workspace.selectSource.selected.map((item) => item.id),
   );
   const file = workspace.activeViewModule;
-  const nodesTree = file.nodesTree as TangoViewNodeDataType[];
+  const nodesTree = file.nodesTree as ITangoViewNodeData[];
 
   useEffect(() => {
     setSelectedKeys(workspace.selectSource.selected.map((item) => item.id));

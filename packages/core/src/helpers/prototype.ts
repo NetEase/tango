@@ -8,7 +8,7 @@ import {
   uuid,
 } from '@music163/tango-helpers';
 import { getRelativePath, isFilepath } from './string';
-import type { ImportDeclarationPayloadType } from '../types';
+import type { IImportDeclarationPayload } from '../types';
 import { code2expression } from './ast';
 
 /**
@@ -17,7 +17,7 @@ import { code2expression } from './ast';
 export function getImportDeclarationPayloadByPrototype(
   prototype: ComponentPrototypeType,
   relativeFilepath?: string,
-): ImportDeclarationPayloadType {
+): IImportDeclarationPayload {
   let defaultSpecifier;
   let specifiers;
 

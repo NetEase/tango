@@ -32,12 +32,12 @@ import {
 import { isValidComponentName } from '../string';
 import { isDefineService, isDefineStore } from '../assert';
 import type {
-  RouteDataType,
-  StorePropertyType,
-  ClassPropertyNodeType,
-  TangoViewNodeDataType,
-  ImportDeclarationPayloadType,
-  ServiceFunctionPayloadType,
+  IRouteData,
+  IStorePropertyData,
+  IClassPropertyNodeData,
+  ITangoViewNodeData,
+  IImportDeclarationPayload,
+  IServiceFunctionPayload,
   InsertChildPositionType,
 } from '../../types';
 import { IdGenerator } from '../id-generator';
@@ -459,7 +459,7 @@ function getLastExportDeclarationIndex(node: t.Program) {
  * @param importedSourcePath
  * @returns
  */
-export function makeImportDeclaration(importedModule: ImportDeclarationPayloadType) {
+export function makeImportDeclaration(importedModule: IImportDeclarationPayload) {
   const specifierNodes =
     importedModule.specifiers?.map((localName) =>
       t.importSpecifier(t.identifier(localName), t.identifier(localName)),
@@ -474,7 +474,7 @@ export function makeImportDeclaration(importedModule: ImportDeclarationPayloadTy
   return t.importDeclaration(newSpecifierNodes, t.stringLiteral(importedModule.sourcePath));
 }
 
-function getImportDeclarationData(node: t.ImportDeclaration): ImportDeclarationPayloadType {
+function getImportDeclarationData(node: t.ImportDeclaration): IImportDeclarationPayload {
   const sourcePath = node2value(node.source);
   let defaultSpecifier;
   const specifiers: string[] = [];
@@ -499,7 +499,7 @@ function getImportDeclarationData(node: t.ImportDeclaration): ImportDeclarationP
  * @param importedSourcePath
  * @returns
  */
-export function addImportDeclaration(ast: t.File, importedModule: ImportDeclarationPayloadType) {
+export function addImportDeclaration(ast: t.File, importedModule: IImportDeclarationPayload) {
   traverse(ast, {
     Program(path) {
       const lastIndex = getLastImportDeclarationIndex(path.node);
@@ -518,7 +518,7 @@ export function addImportDeclaration(ast: t.File, importedModule: ImportDeclarat
  * @param importedSourcePath
  * @returns
  */
-export function updateImportDeclaration(ast: t.File, importedModule: ImportDeclarationPayloadType) {
+export function updateImportDeclaration(ast: t.File, importedModule: IImportDeclarationPayload) {
   traverse(ast, {
     ImportDeclaration(path) {
       const currentSourcePath = node2value(path.node.source);
@@ -656,7 +656,7 @@ export function removeRouteFromRouteFile(ast: t.File, routePath: string, importP
 }
 
 export function traverseRouteFile(ast: t.File) {
-  const routes: RouteDataType[] = [];
+  const routes: IRouteData[] = [];
   const importMap: Dict<string> = {};
 
   traverse(ast, {
@@ -819,8 +819,8 @@ export function updateStoreState(ast: t.File, stateName: string, code: string) {
 
 export function traverseStoreFile(ast: t.File) {
   let namespace: string;
-  const actions: StorePropertyType[] = [];
-  const states: StorePropertyType[] = [];
+  const actions: IStorePropertyData[] = [];
+  const states: IStorePropertyData[] = [];
 
   traverse(ast, {
     CallExpression(path) {
@@ -909,7 +909,7 @@ export function deleteServiceConfigFromServiceFile(ast: t.File, serviceFunctionN
  * @param payload
  * @returns
  */
-export function serviceConfig2Node(payload: ServiceFunctionPayloadType) {
+export function serviceConfig2Node(payload: IServiceFunctionPayload) {
   return object2node(payload, (value, key) => {
     if (key === 'formatter' && value) {
       return code2expression(value);
@@ -920,7 +920,7 @@ export function serviceConfig2Node(payload: ServiceFunctionPayloadType) {
 
 export function updateServiceConfigToServiceFile(
   ast: t.File,
-  config: { [key: string]: ServiceFunctionPayloadType },
+  config: { [key: string]: IServiceFunctionPayload },
 ) {
   traverse(ast, {
     CallExpression(path) {
@@ -1133,11 +1133,11 @@ export function cloneJSXElementWithoutTrackingData(node: t.JSXElement) {
 }
 
 export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
-  const importedModules: Dict<ImportDeclarationPayloadType | ImportDeclarationPayloadType[]> = {};
-  const classProperties: Dict<ClassPropertyNodeType> = {};
+  const importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]> = {};
+  const classProperties: Dict<IClassPropertyNodeData> = {};
   let stateProperties: string[] = [];
   let stateCode = '';
-  const nodes: Array<TangoViewNodeDataType<t.JSXElement>> = [];
+  const nodes: Array<ITangoViewNodeData<t.JSXElement>> = [];
   const cloneAst = t.cloneNode(ast, true, true);
   const cleanAst = removeTrackingDataFromViewAst(cloneAst);
   const variables: string[] = []; // 使用的 tango 变量

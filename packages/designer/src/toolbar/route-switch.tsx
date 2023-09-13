@@ -3,7 +3,7 @@ import { Button, Popconfirm, Modal, ModalProps } from 'antd';
 import { Box, css, Group, Text } from 'coral-system';
 import { FileOutlined, DeleteOutlined, CopyOutlined, SettingOutlined } from '@ant-design/icons';
 import { array2object, callAll } from '@music163/tango-helpers';
-import { PageConfigType } from '@music163/tango-core';
+import { IPageConfigData } from '@music163/tango-core';
 import { Form, ToggleButton } from '@music163/tango-ui';
 import { observer, useWorkspace } from '@music163/tango-context';
 
@@ -108,12 +108,12 @@ const pageListStyle = css`
 
 interface PageListProps {
   activeKey?: string;
-  items?: PageConfigType[];
+  items?: IPageConfigData[];
   onAction?: (key: 'delete' | 'copy' | 'update', e: React.MouseEvent) => void;
   onSelect?: (key: string) => void;
   onRemove?: (key: string) => void;
-  onCopy?: (sourcePath: string, newPageData: PageConfigType) => void;
-  onUpdate?: (sourcePath: string, newPageData: PageConfigType) => void;
+  onCopy?: (sourcePath: string, newPageData: IPageConfigData) => void;
+  onUpdate?: (sourcePath: string, newPageData: IPageConfigData) => void;
 }
 
 // 表单编辑模式
@@ -128,7 +128,7 @@ function PageList({
   onCopy,
   onAction,
 }: PageListProps) {
-  const [current, setCurrent] = useState<PageConfigType>(null);
+  const [current, setCurrent] = useState<IPageConfigData>(null);
   const [type, setType] = useState<FormEditType>();
   return (
     <Box as="ul" bg="white" boxShadow="lowDown" borderRadius="m" css={pageListStyle}>
@@ -219,10 +219,10 @@ function PageList({
 interface CopyViewModalFormProps {
   title?: string;
   visible?: boolean;
-  onOk?: (sourceRoute: string, targetRouteConfig: PageConfigType) => void;
+  onOk?: (sourceRoute: string, targetRouteConfig: IPageConfigData) => void;
   onCancel?: ModalProps['onCancel'];
-  current?: PageConfigType;
-  items?: PageConfigType[];
+  current?: IPageConfigData;
+  items?: IPageConfigData[];
   editType?: FormEditType;
 }
 

@@ -1,4 +1,4 @@
-import { ImportDeclarationPayloadType } from '../types';
+import { IImportDeclarationPayload } from '../types';
 
 /**
  * 导入列表解析为导入声明对象
@@ -20,7 +20,7 @@ export function namesToImportDeclarations(
   return Object.keys(map).map((sourcePath) => ({
     sourcePath,
     ...map[sourcePath],
-  })) as ImportDeclarationPayloadType[];
+  })) as IImportDeclarationPayload[];
 }
 
 function updateMod(

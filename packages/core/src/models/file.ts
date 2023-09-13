@@ -1,8 +1,8 @@
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
 import { getValue, isNil, logger, setValue } from '@music163/tango-helpers';
-import type { FileType, ModulePropsType } from '../types';
-import { formatCode } from '../helpers';
+import type { FileType, IFileConfig } from '../types';
 import { IWorkspace } from './interfaces';
+import { formatCode } from '../helpers';
 
 /**
  * 普通文件，不进行 AST 解析
@@ -35,7 +35,7 @@ export class TangoFile {
     return this._cleanCode;
   }
 
-  constructor(workspace: IWorkspace, props: ModulePropsType, isSyncCode = true) {
+  constructor(workspace: IWorkspace, props: IFileConfig, isSyncCode = true) {
     this.workspace = workspace;
     this.filename = props.filename;
     this.type = props.type;
@@ -60,7 +60,7 @@ export class TangoFile {
 }
 
 export class TangoLessFile extends TangoFile {
-  constructor(workspace: IWorkspace, props: ModulePropsType) {
+  constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code);
     makeObservable(this, {
@@ -87,7 +87,7 @@ export class TangoJsonFile extends TangoFile {
     return toJS(this._object);
   }
 
-  constructor(workspace: IWorkspace, props: ModulePropsType) {
+  constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code);
     makeObservable(this, {

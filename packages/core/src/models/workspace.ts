@@ -31,15 +31,15 @@ import {
   TangoJsModule,
 } from './module';
 import { TangoFile, TangoJsonFile, TangoLessFile } from './file';
-import {
-  FileItemType,
-  FileType,
-  PackageConfigType,
-  PageConfigType,
-  ProjectDataType,
-  ServiceFunctionPayloadType,
-} from '../types';
 import { IWorkspace } from './interfaces';
+import {
+  IFileConfig,
+  FileType,
+  ITangoConfigPackages,
+  IPageConfigData,
+  IProjectData,
+  IServiceFunctionPayload,
+} from '../types';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
 
@@ -51,7 +51,7 @@ export interface IWorkspaceOptions {
   /**
    * 初始化文件列表
    */
-  files?: FileItemType[];
+  files?: IFileConfig[];
   /**
    * 默认的激活的路由
    */
@@ -60,7 +60,7 @@ export interface IWorkspaceOptions {
    * 组件描述列表
    */
   prototypes?: Record<string, ComponentPrototypeType>;
-};
+}
 
 /**
  * 工作区
@@ -180,7 +180,7 @@ export class Workspace extends EventTarget implements IWorkspace {
   get pages() {
     const appJsonPages = this.appJson?.getValue('pages');
     const pagesMap = array2object(appJsonPages || [], (item) => item.path);
-    const ret: PageConfigType[] = [];
+    const ret: IPageConfigData[] = [];
     this.routeModule?.routes.forEach((item) => {
       const data = pagesMap[item.path];
       if (item.path !== '*') {
@@ -292,7 +292,7 @@ export class Workspace extends EventTarget implements IWorkspace {
         functions: Object.keys(this.serviceModule.serviceFunctions),
       },
     };
-    const data: ProjectDataType = {
+    const data: IProjectData = {
       pages,
       stores,
       services,
@@ -353,7 +353,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 添加一组文件到工作区
    * @param files
    */
-  addFiles(files: FileItemType[] = []) {
+  addFiles(files: IFileConfig[] = []) {
     files.forEach((file) => {
       this.addFile(file.filename, file.code, file.type);
     });
@@ -540,7 +540,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     // remove appJson page
     this.appJson
       ?.setValue('pages', (pages) => {
-        return (pages as PageConfigType[]).filter((page) => page.path !== routePath);
+        return (pages as IPageConfigData[]).filter((page) => page.path !== routePath);
       })
       .update();
     this.removeFile(filename);
@@ -552,7 +552,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param route 视图名
    * @param code 视图代码
    */
-  addViewPage(routeConfig: string | PageConfigType, code: string) {
+  addViewPage(routeConfig: string | IPageConfigData, code: string) {
     const config =
       typeof routeConfig === 'string'
         ? {
@@ -569,11 +569,11 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 添加新的路由
    */
-  addRoute(routeData: PageConfigType, importFilePath: string) {
+  addRoute(routeData: IPageConfigData, importFilePath: string) {
     this.routeModule?.addRoute(routeData.path, importFilePath).update();
     this.appJson
       ?.setValue('pages', (pages) => {
-        (pages as PageConfigType[]).push({
+        (pages as IPageConfigData[]).push({
           name: routeData.name || routeData.path,
           path: routeData.path,
           privilegeCode: getPrivilegeCode(this.packageJson?.getValue('name'), routeData.path),
@@ -588,13 +588,13 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param sourceRoutePath
    * @param targetPageData
    */
-  updateRoute(sourceRoutePath: string, targetPageData: PageConfigType) {
+  updateRoute(sourceRoutePath: string, targetPageData: IPageConfigData) {
     if (sourceRoutePath !== targetPageData.path) {
       this.routeModule?.updateRoute(sourceRoutePath, targetPageData.path).update();
     }
     this.appJson
       ?.setValue('pages', (pages) => {
-        for (const page of pages as PageConfigType[]) {
+        for (const page of pages as IPageConfigData[]) {
           if (page.path === sourceRoutePath) {
             page.path = targetPageData.path;
             page.name = targetPageData.name;
@@ -611,7 +611,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param sourceRoute
    * @param targetRouteConfig
    */
-  copyViewPage(sourceRoutePath: string, targetPageData: PageConfigType) {
+  copyViewPage(sourceRoutePath: string, targetPageData: IPageConfigData) {
     const sourceFilePath = this.getRealViewFilePath(this.getFilenameByRoutePath(sourceRoutePath));
     const targetFilePath = getFilepath(targetPageData.path, '/src/pages');
     this.copyFiles(sourceFilePath, targetFilePath);
@@ -771,7 +771,7 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 新增服务函数，支持批量添加
    */
-  addServiceFunction(payload: ServiceFunctionPayloadType | ServiceFunctionPayloadType[]) {
+  addServiceFunction(payload: IServiceFunctionPayload | IServiceFunctionPayload[]) {
     if (Array.isArray(payload)) {
       this.serviceModule.addServiceFunctions(payload).update();
     } else {
@@ -811,7 +811,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     name: string,
     version: string,
     options?: {
-      package?: PackageConfigType;
+      package?: ITangoConfigPackages;
       [x: string]: any;
     },
   ) {
@@ -906,7 +906,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     name: string,
     version: string,
     options?: {
-      package?: PackageConfigType;
+      package?: ITangoConfigPackages;
       [x: string]: any;
     },
   ) {

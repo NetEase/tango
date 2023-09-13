@@ -3,15 +3,15 @@ import { TangoHistory } from './history';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
 import {
-  FileItemType,
+  IFileConfig,
   FileType,
-  ImportDeclarationPayloadType,
+  IImportDeclarationPayload,
   InsertChildPositionType,
-  PackageConfigType,
-  PageConfigType,
-  ProjectDataType,
-  ServiceFunctionPayloadType,
-} from '../types/types';
+  ITangoConfigPackages,
+  IPageConfigData,
+  IProjectData,
+  IServiceFunctionPayload,
+} from '../types';
 import { TangoFile, TangoJsonFile } from './file';
 import { TangoRouteModule, TangoServiceModule, TangoStoreModule } from './module';
 
@@ -38,17 +38,41 @@ export interface IViewFile {
     sourcePrototype?: string | ComponentPrototypeType,
   ) => IViewFile;
 
-  insertAfter: (targetNodeId: string, newNode: any, sourcePrototype?: string | ComponentPrototypeType) => IViewFile;
+  insertAfter: (
+    targetNodeId: string,
+    newNode: any,
+    sourcePrototype?: string | ComponentPrototypeType,
+  ) => IViewFile;
 
-  insertBefore: (targetNodeId: string, newNode: any, sourcePrototype?: string | ComponentPrototypeType) => IViewFile;
+  insertBefore: (
+    targetNodeId: string,
+    newNode: any,
+    sourcePrototype?: string | ComponentPrototypeType,
+  ) => IViewFile;
 
-  replaceNode: (targetNodeId: string, newNode: any, sourcePrototype?: string | ComponentPrototypeType) => IViewFile;
+  replaceNode: (
+    targetNodeId: string,
+    newNode: any,
+    sourcePrototype?: string | ComponentPrototypeType,
+  ) => IViewFile;
 
-  replaceViewChildren: (rawNodes: any[], importDeclarations?: ImportDeclarationPayloadType[]) => IViewFile;
+  replaceViewChildren: (
+    rawNodes: any[],
+    importDeclarations?: IImportDeclarationPayload[],
+  ) => IViewFile;
 
-  updateNodeAttribute: (nodeId: string, attrName: string, attrValue?: any, relatedImports?: string[]) => IViewFile;
+  updateNodeAttribute: (
+    nodeId: string,
+    attrName: string,
+    attrValue?: any,
+    relatedImports?: string[],
+  ) => IViewFile;
 
-  updateNodeAttributes: (nodeId: string, config: Record<string, any>, relatedImports?: string[]) => IViewFile;
+  updateNodeAttributes: (
+    nodeId: string,
+    config: Record<string, any>,
+    relatedImports?: string[],
+  ) => IViewFile;
 
   get code(): string;
   get nodes(): Map<string, IViewNode>;
@@ -129,7 +153,7 @@ export interface IWorkspace {
   /**
    * 获取项目数据
    */
-  getProjectData?: () => ProjectDataType;
+  getProjectData?: () => IProjectData;
 
   /**
    * 查询节点
@@ -142,7 +166,7 @@ export interface IWorkspace {
   listForms?: () => Record<string, string[]>;
 
   addFile: (filename: string, code: string, fileType?: FileType) => void;
-  addFiles: (files: FileItemType[]) => void;
+  addFiles: (files: IFileConfig[]) => void;
   updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
   removeFile: (filename: string) => void;
   renameFile: (oldFilename: string, newFilename: string) => void;
@@ -163,11 +187,20 @@ export interface IWorkspace {
 
   dropNode: () => void;
 
-  insertToNode: (targetNodeId: string, sourceNameOrPrototype: string | ComponentPrototypeType) => void;
+  insertToNode: (
+    targetNodeId: string,
+    sourceNameOrPrototype: string | ComponentPrototypeType,
+  ) => void;
 
-  replaceNode: (targetNodeId: string, sourceNameOrPrototype: string | ComponentPrototypeType) => void;
+  replaceNode: (
+    targetNodeId: string,
+    sourceNameOrPrototype: string | ComponentPrototypeType,
+  ) => void;
 
-  updateSelectedNodeAttributes: (attributes: Record<string, any>, relatedImports?: string[]) => void;
+  updateSelectedNodeAttributes: (
+    attributes: Record<string, any>,
+    relatedImports?: string[],
+  ) => void;
 
   addBlock?: (files: object, name: string) => void;
 
@@ -175,7 +208,7 @@ export interface IWorkspace {
 
   removeServiceFunction?: (serviceName: string) => void;
 
-  addServiceFunction?: (payload: ServiceFunctionPayloadType | ServiceFunctionPayloadType[]) => void;
+  addServiceFunction?: (payload: IServiceFunctionPayload | IServiceFunctionPayload[]) => void;
 
   updateServiceFunction?: (payload: any) => void;
 
@@ -195,9 +228,9 @@ export interface IWorkspace {
 
   removeViewModule: (routePath: string) => void;
 
-  copyViewPage: (sourceRoutePath: string, targetPageData: PageConfigType) => void;
+  copyViewPage: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
 
-  updateRoute: (sourceRoutePath: string, targetPageData: PageConfigType) => void;
+  updateRoute: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
 
   listDependencies?: () => any;
 
@@ -205,7 +238,7 @@ export interface IWorkspace {
     name: string,
     version: string,
     options?: {
-      package?: PackageConfigType;
+      package?: ITangoConfigPackages;
       [x: string]: any;
     },
   ) => void;
@@ -216,7 +249,7 @@ export interface IWorkspace {
     name: string,
     version: string,
     options?: {
-      package?: PackageConfigType;
+      package?: ITangoConfigPackages;
       [x: string]: any;
     },
   ) => void;

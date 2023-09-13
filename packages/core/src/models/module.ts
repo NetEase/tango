@@ -38,13 +38,13 @@ import {
 import { TangoNode } from './node';
 import { TangoFile } from './file';
 import {
-  RouteDataType,
-  ModulePropsType,
-  ClassPropertyNodeType,
-  ServiceFunctionPayloadType,
-  TangoViewNodeDataType,
-  StorePropertyType,
-  ImportDeclarationPayloadType,
+  IRouteData,
+  IFileConfig,
+  IClassPropertyNodeData,
+  IServiceFunctionPayload,
+  ITangoViewNodeData,
+  IStorePropertyData,
+  IImportDeclarationPayload,
   InsertChildPositionType,
 } from '../types';
 import { IViewFile, IWorkspace } from './interfaces';
@@ -57,7 +57,7 @@ import { IViewFile, IWorkspace } from './interfaces';
 class TangoModule extends TangoFile {
   ast: t.File;
 
-  constructor(workspace: IWorkspace, props: ModulePropsType, isSyncCode = true) {
+  constructor(workspace: IWorkspace, props: IFileConfig, isSyncCode = true) {
     super(workspace, props, isSyncCode);
   }
 
@@ -119,7 +119,7 @@ class TangoModule extends TangoFile {
  * 普通 JS 文件
  */
 export class TangoJsModule extends TangoModule {
-  constructor(workspace: IWorkspace, props: ModulePropsType) {
+  constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code, false, false);
 
@@ -143,7 +143,7 @@ export class TangoStoreEntryModule extends TangoModule {
     return toJS(this._stores);
   }
 
-  constructor(workspace: IWorkspace, props: ModulePropsType) {
+  constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code, true, false);
 
@@ -185,13 +185,13 @@ export class TangoStoreEntryModule extends TangoModule {
  * 路由配置模块
  */
 export class TangoRouteModule extends TangoModule {
-  _routes: RouteDataType[];
+  _routes: IRouteData[];
 
   get routes() {
     return toJS(this._routes);
   }
 
-  constructor(workspace: IWorkspace, props: ModulePropsType) {
+  constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code, true, false);
 
@@ -264,7 +264,7 @@ export class TangoRouteModule extends TangoModule {
  */
 export class TangoViewModule extends TangoModule implements IViewFile {
   // 解析为树结构的 jsxNodes 数组
-  _nodesTree: TangoViewNodeDataType[];
+  _nodesTree: ITangoViewNodeData[];
   /**
    * 通过导入组件名查找组件来自的包
    */
@@ -282,12 +282,12 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   /**
    * 导入的模块
    */
-  private _importedModules: Dict<ImportDeclarationPayloadType | ImportDeclarationPayloadType[]>;
+  private _importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>;
   /**
    * 类属性
    * @deprecated
    */
-  private _classProperties: Dict<ClassPropertyNodeType>;
+  private _classProperties: Dict<IClassPropertyNodeData>;
   /**
    * 状态属性
    */
@@ -325,7 +325,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     return this.ast;
   }
 
-  constructor(workspace: IWorkspace, props: ModulePropsType) {
+  constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this._nodes = new Map();
     this._idGenerator = new IdGenerator({ prefix: props.filename });
@@ -401,7 +401,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   /**
    * 更新导入的变量（新版）
    */
-  updateImportSpecifiers(importDeclaration: ImportDeclarationPayloadType) {
+  updateImportSpecifiers(importDeclaration: IImportDeclarationPayload) {
     const mods = this._importedModules[importDeclaration.sourcePath];
     let ast;
     // 如果模块已存在，需要去重
@@ -540,7 +540,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    */
   replaceViewChildren(
     childrenNodes: t.JSXElement[],
-    importDeclarations?: ImportDeclarationPayloadType[],
+    importDeclarations?: IImportDeclarationPayload[],
   ) {
     if (childrenNodes.length) {
       this.ast = replaceRootJSXElementChildren(this.ast, childrenNodes);
@@ -556,7 +556,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   }
 
   private buildImportMap(
-    importedModules: Dict<ImportDeclarationPayloadType | ImportDeclarationPayloadType[]>,
+    importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>,
   ) {
     const map = {};
     Object.keys(importedModules).forEach((modName) => {
@@ -583,8 +583,8 @@ export class TangoViewModule extends TangoModule implements IViewFile {
  * 将节点列表转换为 tree data 嵌套数组
  * @param list
  */
-export function nodeListToTreeData(list: TangoViewNodeDataType[]) {
-  const map: Record<string, TangoViewNodeDataType> = {};
+export function nodeListToTreeData(list: ITangoViewNodeData[]) {
+  const map: Record<string, ITangoViewNodeData> = {};
 
   list.forEach((item) => {
     // 如果不存在，则初始化
@@ -627,7 +627,7 @@ export class TangoServiceModule extends TangoModule {
     return toJS(this._baseConfig);
   }
 
-  constructor(workspace: IWorkspace, props: ModulePropsType) {
+  constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.name = getModuleNameByFilename(props.filename);
     this.update(props.code, true, false);
@@ -651,13 +651,13 @@ export class TangoServiceModule extends TangoModule {
     this._baseConfig = baseConfig;
   }
 
-  addServiceFunction(payload: ServiceFunctionPayloadType) {
+  addServiceFunction(payload: IServiceFunctionPayload) {
     const { name, ...rest } = payload;
     this.ast = updateServiceConfigToServiceFile(this.ast, { [name]: clone(rest, false) });
     return this;
   }
 
-  addServiceFunctions(payloads: ServiceFunctionPayloadType[]) {
+  addServiceFunctions(payloads: IServiceFunctionPayload[]) {
     const config = payloads.reduce((acc, cur) => {
       const { name, ...rest } = cur;
       acc[name] = clone(rest, false);
@@ -667,7 +667,7 @@ export class TangoServiceModule extends TangoModule {
     return this;
   }
 
-  updateServiceFunction(payload: ServiceFunctionPayloadType) {
+  updateServiceFunction(payload: IServiceFunctionPayload) {
     const { name, ...rest } = payload;
     this.ast = updateServiceConfigToServiceFile(this.ast, { [name]: clone(rest, false) });
     return this;
@@ -702,11 +702,11 @@ export class TangoStoreModule extends TangoModule {
 
   namespace: string;
 
-  states: StorePropertyType[];
+  states: IStorePropertyData[];
 
-  actions: StorePropertyType[];
+  actions: IStorePropertyData[];
 
-  constructor(workspace: IWorkspace, props: ModulePropsType) {
+  constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.name = getModuleNameByFilename(props.filename);
     this.update(props.code, true, false);

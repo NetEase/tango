@@ -1,10 +1,10 @@
 import { JSXElement, SourceLocation } from '@babel/types';
 import { cloneJSXElementWithoutTrackingData, getJSXElementAttributes } from '../helpers';
-import { TangoViewNodeDataType } from '../types';
+import { ITangoViewNodeData } from '../types';
 import { TangoViewModule } from './module';
 import { IViewNode } from './interfaces';
 
-type TangoNodeConstructorPropsType = TangoViewNodeDataType & {
+type TangoNodeConstructorPropsType = ITangoViewNodeData & {
   file: TangoViewModule;
 };
 

@@ -27,7 +27,7 @@ export enum FileType {
   Scss = 'scss',
 }
 
-export type FileItemType = {
+export interface IFileConfig {
   /**
    * 文件名
    */
@@ -40,14 +40,12 @@ export type FileItemType = {
    * 文件类型
    */
   type?: FileType;
-};
-
-export type ModulePropsType = FileItemType;
+}
 
 /**
  * 视图节点数据类型
  */
-export type TangoViewNodeDataType<T = JSXElement> = {
+export interface ITangoViewNodeData<T = JSXElement> {
   /**
    * 节点 ID
    */
@@ -71,39 +69,39 @@ export type TangoViewNodeDataType<T = JSXElement> = {
   /**
    * 子节点列表
    */
-  children?: Array<TangoViewNodeDataType<T>>;
-};
+  children?: Array<ITangoViewNodeData<T>>;
+}
 
 /**
  * 模块导入的参数类型
  */
-export type ImportDeclarationPayloadType = {
+export interface IImportDeclarationPayload {
   defaultSpecifier?: string;
   specifiers?: string[];
   sourcePath: string;
-};
+}
 
-export type ClassPropertyNodeType = {
+export interface IClassPropertyNodeData {
   reference: string;
   propertyName: string;
   propertyBody: string;
-};
+}
 
 /**
  * 服务函数参数类型
  */
-export type ServiceFunctionPayloadType = {
+export interface IServiceFunctionPayload {
   [key: string]: any;
   /**
    * 服务函数名
    */
   name: string;
-};
+}
 
 /**
  * Store 属性类型
  */
-export type StorePropertyType = {
+export interface IStorePropertyData {
   /**
    * 属性名
    */
@@ -130,12 +128,12 @@ export type StorePropertyType = {
     | 'type'
     | 'variable'
     | 'object';
-};
+}
 
 /**
  * 路由解析数据
  */
-export type RouteDataType = {
+export interface IRouteData {
   /**
    * 路由
    */
@@ -149,12 +147,12 @@ export type RouteDataType = {
    */
   importPath?: string;
   [key: string]: any;
-};
+}
 
 /**
  * 页面配置数据
  */
-export type PageConfigType = {
+export interface IPageConfigData {
   /**
    * 路由
    */
@@ -171,12 +169,12 @@ export type PageConfigType = {
    * PMS 权限码
    */
   privilegeCode?: string;
-};
+}
 
 /**
  * 项目数据
  */
-export type ProjectDataType = {
+export interface IProjectData {
   /**
    * 页面列表
    */
@@ -203,14 +201,14 @@ export type ProjectDataType = {
       functions: string[];
     };
   };
-};
+}
 
 export type InsertChildPositionType = 'first' | 'last';
 
 /**
  * tango.config.json 中 packages 定义
  */
-export type PackageConfigType = {
+export interface ITangoConfigPackages {
   /**
    * 依赖类型
    */
@@ -235,4 +233,4 @@ export type PackageConfigType = {
    * 设计态 umd 资源
    */
   designerResources?: string[];
-};
+}
