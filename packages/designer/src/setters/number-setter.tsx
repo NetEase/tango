@@ -1,6 +1,6 @@
 import React from 'react';
 import { InputNumber, InputNumberProps, Slider } from 'antd';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 
 const style = {
   width: '100%',

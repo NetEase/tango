@@ -2,7 +2,7 @@ import React from 'react';
 import { Radio, RadioProps, Tooltip } from 'antd';
 import { IconFont } from '@music163/tango-ui';
 import type { OptionType } from '@music163/tango-helpers';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 
 interface ChoiceSetterProps {
   mode?: 'text' | 'icon';

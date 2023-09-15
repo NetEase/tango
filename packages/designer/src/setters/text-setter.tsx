@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Input, InputProps } from 'antd';
-import { FormItemComponentProps } from '../form-item';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
 
 const noop = () => {};
 

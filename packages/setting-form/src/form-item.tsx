@@ -11,7 +11,6 @@ import {
 import { IconFont, ToggleButton } from '@music163/tango-ui';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputProps, Tooltip } from 'antd';
-import { INTERNAL_SETTERS } from './setters';
 import { useFormModel, useFormVariable } from './context';
 import { FormControl } from './form-ui';
 
@@ -187,8 +186,6 @@ export function register(config: IFormItemCreateOptions) {
     REGISTERED_FORM_ITEM_MAP[name] = createFormItem(config);
   });
 }
-
-INTERNAL_SETTERS.forEach(register);
 
 const iconStyle = {
   color: 'red',
