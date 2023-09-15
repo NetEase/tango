@@ -283,31 +283,12 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * 导入的模块
    */
   private _importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>;
-  /**
-   * 类属性
-   * @deprecated
-   */
-  private _classProperties: Dict<IClassPropertyNodeData>;
-  /**
-   * 状态属性
-   */
-  private _stateProperties: string[];
-  /**
-   * 状态代码
-   */
-  private _stateCode: string;
+
   /**
    * ID 生成器
    */
   private _idGenerator: IdGenerator;
 
-  get classProperties() {
-    return this._classProperties;
-  }
-
-  get stateProperties() {
-    return this._stateProperties;
-  }
 
   get nodes() {
     return this._nodes;
@@ -315,10 +296,6 @@ export class TangoViewModule extends TangoModule implements IViewFile {
 
   get nodesTree() {
     return toJS(this._nodesTree);
-  }
-
-  get stateCode() {
-    return this._stateCode;
   }
 
   get tree() {
@@ -352,9 +329,6 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       ast: newAst,
       cleanAst,
       nodes,
-      stateCode,
-      stateProperties,
-      classProperties,
       importedModules,
       variables,
     } = traverseViewFile(this.ast, this._idGenerator);
@@ -363,10 +337,6 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     this._code = ast2code(newAst);
     this._cleanCode = ast2code(cleanAst);
 
-    this._stateCode = stateCode;
-
-    this._stateProperties = stateProperties;
-    this._classProperties = classProperties;
     this._importedModules = importedModules;
     this.importMap = this.buildImportMap(importedModules);
     this.variables = variables;
