@@ -170,6 +170,7 @@ export interface IWorkspace {
   updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
   removeFile: (filename: string) => void;
   renameFile: (oldFilename: string, newFilename: string) => void;
+  renameFolder: (oldFoldername: string, newFoldername: string) => void;
   getFile: (filename: string) => TangoFile;
   listFiles: () => Record<string, string>;
 
