@@ -17,8 +17,6 @@ import {
   keyNode2value,
   jsxAttributeValueNode2value,
   node2value,
-  ast2code,
-  expression2code,
   node2code,
 } from './generate';
 import {
@@ -1134,9 +1132,6 @@ export function cloneJSXElementWithoutTrackingData(node: t.JSXElement) {
 
 export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
   const importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]> = {};
-  const classProperties: Dict<IClassPropertyNodeData> = {};
-  let stateProperties: string[] = [];
-  let stateCode = '';
   const nodes: Array<ITangoViewNodeData<t.JSXElement>> = [];
   const cloneAst = t.cloneNode(ast, true, true);
   const cleanAst = removeTrackingDataFromViewAst(cloneAst);
@@ -1163,30 +1158,6 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
         !variables.includes(variable)
       ) {
         variables.push(variable);
-      }
-    },
-
-    ClassProperty(path) {
-      const propName = keyNode2value(path.node.key) as string;
-      if (!propName) {
-        return;
-      }
-
-      const reference = `this.${propName}`;
-      if (['defaultProps', 'propTypes', 'constructor'].includes(propName)) {
-        return;
-      }
-
-      if (propName === 'state') {
-        stateProperties = Object.keys(node2value(path.node.value));
-        stateCode = ast2code(path.node);
-      } else {
-        // TODO: 这里需要完善下，并不是所有的都是 arrowFunction
-        classProperties[reference] = {
-          reference,
-          propertyName: propName,
-          propertyBody: expression2code(path.node.value),
-        };
       }
     },
 
@@ -1236,9 +1207,6 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
     ast,
     cleanAst,
     nodes,
-    stateCode,
-    classProperties,
-    stateProperties,
     importedModules,
     variables,
   };

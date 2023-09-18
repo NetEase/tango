@@ -5,7 +5,9 @@ import { SketchPicker } from 'react-color';
 import Color from 'color';
 import { BgColorsOutlined, FileImageOutlined } from '@ant-design/icons';
 import { SingleMonacoEditor, IconFont } from '@music163/tango-ui';
-import { FormItemComponentProps, ChoiceSetter, TextSetter } from '@music163/tango-setting-form';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { ChoiceSetter } from './choice-setter';
+import { TextSetter } from './text-setter';
 // import { ImageSetter } from './image-setter';
 
 function getRawCssValue(value: string) {

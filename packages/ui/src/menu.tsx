@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { Box, coral, Text } from 'coral-system';
-import { css } from 'styled-components';
+import { css, Box, coral, Text } from 'coral-system';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { noop } from '@music163/tango-helpers';
 import { Popconfirm } from 'antd';

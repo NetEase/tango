@@ -232,6 +232,7 @@ export const sampleFiles = [
   { filename: '/src/stores/app.js', code: storeApp },
   { filename: '/src/stores/counter.js', code: storeCounter },
   { filename: '/src/services/index.js', code: serviceCode },
+  { filename: '/src/utils/index.js', code: `export function foo() {}` },
 ];
 
 export const genDefaultPage = (index: number) => ({

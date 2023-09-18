@@ -3,7 +3,8 @@ import { Box } from 'coral-system';
 // @ts-ignore
 import { toJSON } from 'cssjson';
 import { InputNumber, Space } from 'antd';
-import { FormItemComponentProps, SliderSetter } from '@music163/tango-setting-form';
+import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { SliderSetter } from './number-setter';
 import {
   BgSetter,
   BorderSetter,

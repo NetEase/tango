@@ -483,8 +483,24 @@ export class Workspace extends EventTarget implements IWorkspace {
    */
   renameFile(oldFilename: string, newFilename: string) {
     const file = this.files.get(oldFilename);
-    this.removeFile(oldFilename);
-    this.addFile(newFilename, file.code);
+    if (file) {
+      this.removeFile(oldFilename);
+      this.addFile(newFilename, file.code);
+    }
+  }
+
+  /**
+   * 重命名文件夹
+   * @param oldFoldername 旧文件夹名
+   * @param newFoldername 新文件夹名
+   */
+  renameFolder(oldFoldername: string, newFoldername: string) {
+    Array.from(this.files.keys()).forEach((key) => {
+      if (key.startsWith(`${oldFoldername}/`)) {
+        const newKey = key.replace(oldFoldername, newFoldername);
+        this.renameFile(key, newKey);
+      }
+    });
   }
 
   /**

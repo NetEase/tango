@@ -28,7 +28,7 @@
     "prepublishOnly": "yarn build"
   },
   "peerDependencies": {
-    "react": ">= 16.8.0"
+    "react": ">= 16.8"
   },
   "dependencies": {
     "@music163/tango-core": "^0.1.3",

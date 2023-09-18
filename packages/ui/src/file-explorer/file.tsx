@@ -1,6 +1,5 @@
 import React from 'react';
-import { css } from 'styled-components';
-import { Box } from 'coral-system';
+import { css, Box } from 'coral-system';
 import { FolderOpenOutlined, FolderOutlined, FileOutlined } from '@ant-design/icons';
 
 export interface Props {

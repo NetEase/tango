@@ -69,14 +69,6 @@ export const CodeEditor = observer(
       [workspace, autoRemoveUnusedImports, activeFile, files],
     );
 
-    const handleRenameFile = useCallback(
-      (oldFilename: string, newFilename: string) => {
-        workspace.renameFile(oldFilename, newFilename);
-        workspace.setActiveFile(newFilename);
-      },
-      [workspace],
-    );
-
     const handleFileChange = useCallback(
       (type: string, info: any) => {
         switch (type) {
@@ -88,7 +80,12 @@ export const CodeEditor = observer(
             workspace.removeFile(info.path);
             break;
           case 'renameFile':
+            workspace.renameFile(info.path, info.newpath);
+            workspace.setActiveFile(info.newpath);
+            break;
           case 'renameFolder':
+            workspace.renameFolder(info.path, info.newpath);
+            break;
           case 'addFolder':
           default:
             break;
@@ -114,7 +111,6 @@ export const CodeEditor = observer(
           }}
           ideConfig={ideConfig}
           onFileSave={fileSave}
-          onRenameFile={handleRenameFile}
           onPathChange={handlePathChange}
           onFileChange={handleFileChange}
           defaultPath={activeFile}
