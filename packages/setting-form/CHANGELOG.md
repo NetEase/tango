@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/netease/tango/compare/@music163/tango-setting-form@0.2.0...@music163/tango-setting-form@0.2.1) (2023-09-18)
+
+### Bug Fixes
+
+- remove useless codes ([813eb83](https://github.com/netease/tango/commit/813eb83ebb9ced891636f2653f25b6281386c18d))
+
 # [0.2.0](https://github.com/netease/tango/compare/@music163/tango-setting-form@0.1.3...@music163/tango-setting-form@0.2.0) (2023-09-13)
 
 ### Bug Fixes
