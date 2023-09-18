@@ -34,6 +34,9 @@
     "mobx": "6.9.0",
     "path-browserify": "^1.0.1"
   },
+  "peerDependencies": {
+    "mobx": "6.9.0"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

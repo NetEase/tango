@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, HTMLCoralProps } from 'coral-system';
-import { css } from 'styled-components';
+import { css, Box, HTMLCoralProps } from 'coral-system';
 import { observer, useDesigner } from '@music163/tango-context';
 
 export interface SimulatorProps {

@@ -24,8 +24,8 @@
     "prepublishOnly": "yarn build"
   },
   "peerDependencies": {
-    "react": ">= 16.8.0",
-    "react-dom": ">= 16.8.0"
+    "react": ">= 16.8",
+    "styled-components": ">= 4"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",

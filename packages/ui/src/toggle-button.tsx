@@ -1,7 +1,6 @@
 import React from 'react';
-import { css } from 'styled-components';
 import cx from 'classnames';
-import { Button, HTMLCoralProps } from 'coral-system';
+import { css, Button, HTMLCoralProps } from 'coral-system';
 import { DropDownProps, Dropdown, MenuProps, Tooltip, TooltipProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 

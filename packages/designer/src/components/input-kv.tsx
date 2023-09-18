@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, memo } from 'react';
 import { Input } from 'antd';
-import { css } from 'styled-components';
-import { Box } from 'coral-system';
+import { css, Box } from 'coral-system';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 
 const rowCss = css`

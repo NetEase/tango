@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import cx from 'classnames';
-import { css } from 'styled-components';
-import { Box, Text, HTMLCoralProps } from 'coral-system';
+import { css, Box, Text, HTMLCoralProps } from 'coral-system';
 import { merge } from '@music163/tango-helpers';
 
 export interface PanelProps extends Omit<HTMLCoralProps<'div'>, 'title'> {

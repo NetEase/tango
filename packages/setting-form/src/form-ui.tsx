@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { css } from 'styled-components';
+import { css, Box, HTMLCoralProps, Text } from 'coral-system';
 import { Checkbox, Tooltip } from 'antd';
-import { Box, HTMLCoralProps, Text } from 'coral-system';
 import { CollapsePanel } from '@music163/tango-ui';
 import { isNil, isString } from '@music163/tango-helpers';
 
