@@ -352,13 +352,15 @@ interface VariableTreeProps {
   onSelect?: (data: IVariableTreeNode) => void;
   onAdd?: (data: IVariableTreeNode) => void;
   onRemove?: (data: IVariableTreeNode) => void;
+  deletable?: boolean;
 }
 
-function VariableTree({
+export function VariableTree({
   dataSource = [],
   onSelect = noop,
   onAdd = noop,
   onRemove = noop,
+  deletable = false,
 }: VariableTreeProps) {
   return (
     <Box className="VariableTree" css={varTreeStyle}>
@@ -370,12 +372,15 @@ function VariableTree({
           onSelect(detail.node);
         }}
         titleRender={(node) => {
-          if (node.showAddChildIcon || node.showRemoveIcon) {
+          // 只有叶子结点支持删除
+          const showRemoveIcon = (!node.children && node.showDeleteIcon) ?? deletable;
+          const showAddIcon = node.showAddChildIcon ?? false;
+          if (showRemoveIcon || showAddIcon) {
             return (
               <Box display="flex" justifyContent="space-between" alignItems="center" pr="l">
                 <Text>{node.title}</Text>
                 <Box>
-                  {node.showAddChildIcon && (
+                  {showAddIcon && (
                     <Tooltip title={`向 ${node.title} 中添加变量`}>
                       <Button
                         type="text"
@@ -388,7 +393,7 @@ function VariableTree({
                       />
                     </Tooltip>
                   )}
-                  {node.showRemoveIcon && (
+                  {showRemoveIcon && (
                     <Popconfirm
                       title="确认删除吗？该操作会导致引用此模型的代码报错，请谨慎操作！"
                       onConfirm={() => onRemove(node)}

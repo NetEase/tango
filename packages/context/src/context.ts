@@ -53,7 +53,7 @@ export const useWorkspaceData = () => {
   const storeVariables: any[] = []; // 模型中的所有变量
   const serviceVariables: any[] = []; // 服务中的所有变量
 
-  workspace.listStoreModules?.().forEach((file) => {
+  Object.values(workspace.storeModules).forEach((file) => {
     const prefix = `stores.${file.name}`;
     const states = file.states.map((item) => ({
       title: item.name,
@@ -91,11 +91,17 @@ export const useWorkspaceData = () => {
     });
   });
 
-  Object.keys(workspace.serviceModule?.serviceFunctions || {}).forEach((key) => {
+  Object.values(workspace.serviceModules).forEach((file) => {
+    const prefix = file.name !== 'index' ? `services.${file.name}` : 'services';
     serviceVariables.push({
-      title: key,
-      key: `services.${key}`,
-      type: 'function',
+      title: file.name,
+      key: prefix,
+      selectable: false,
+      children: Object.keys(file.serviceFunctions || {}).map((key) => ({
+        title: key,
+        key: [prefix, key].join('.'),
+        type: 'function',
+      })),
     });
   });
 
@@ -113,6 +119,7 @@ export const useWorkspaceData = () => {
       buildVariableOptions('工具函数', 'helpers', builtinHelpers),
     ],
     storeVariables,
+    serviceVariables,
     expressionVariables: [
       buildVariableOptions('数据模型', 'stores', storeVariables),
       buildVariableOptions('服务函数', 'services', serviceVariables),

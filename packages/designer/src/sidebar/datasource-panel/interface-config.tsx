@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { observer, useWorkspace } from '@music163/tango-context';
+import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { Box, css } from 'coral-system';
 import { Button, FormProps, Empty, Space, Dropdown } from 'antd';
 import { PlayCircleOutlined } from '@ant-design/icons';
-import { Form, InputCode, Menu, Panel, JsonView, Search } from '@music163/tango-ui';
+import { Form, InputCode, Panel, JsonView, Search } from '@music163/tango-ui';
 import {
   isNil,
   isVariableString,
@@ -11,8 +11,10 @@ import {
   isValidFunctionCode,
   logger,
   code2object,
+  filterTreeData,
 } from '@music163/tango-helpers';
 import { useSandboxQuery } from '../../context';
+import { VariableTree } from '../../components';
 
 /*
  * 服务函数的操作类型
@@ -39,7 +41,7 @@ enum ServiceFunctionMethodType {
  * requestType
  * headers: Content-Type
  */
-enum ESFHTTRequestType {
+enum DataServiceRequestType {
   'application/json' = 'json',
   'application/x-www-form-urlencoded' = 'x-www-form-urlencoded',
 }
@@ -78,9 +80,9 @@ const httpMethods = Object.keys(ServiceFunctionMethodType).map((key) => ({
 }));
 
 // requestType 类型
-const requestTypes = Object.keys(ESFHTTRequestType).map((key) => ({
+const requestTypes = Object.keys(DataServiceRequestType).map((key) => ({
   label: key,
-  value: ESFHTTRequestType[key],
+  value: DataServiceRequestType[key],
 }));
 
 const detailFormStyle = css`
@@ -90,31 +92,32 @@ const detailFormStyle = css`
 `;
 
 const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewProps) => {
-  const [serviceKey, setServiceKey] = useState<string>();
+  const [serviceData, setServiceData] = useState<any>();
   const [keyword, setKeyword] = useState<string>();
-  const [visible, setVisible] = useState(null);
   const workspace = useWorkspace();
   const sandbox = useSandboxQuery();
+  const { serviceVariables } = useWorkspaceData();
+  const serviceModules = Object.keys(workspace.serviceModules).map((key) => ({
+    label: key === 'index' ? '默认模块' : key,
+    value: key,
+  }));
+  const serviceFunctions = serviceVariables.reduce((acc, cur) => {
+    acc = acc.concat(cur.children.map((item: any) => item.key));
+    return acc;
+  }, []);
+  const dataSource = useMemo(() => {
+    if (!keyword) {
+      return serviceVariables;
+    }
+    return filterTreeData(
+      serviceVariables,
+      (leaf) => leaf.title.includes(keyword),
+      'children',
+      true,
+    );
+  }, [serviceVariables, keyword]);
 
-  const serviceMap = workspace.serviceModule.serviceFunctions;
-  const serviceItems = useMemo(() => {
-    if (!serviceMap) {
-      return [];
-    }
-    let list = Object.keys(serviceMap).map((key) => ({
-      key,
-      label: key,
-      note: serviceMap[key].app || 'http',
-      deletable: true,
-      deletableConfirm: '确定删除此服务函数吗？',
-    }));
-    if (keyword) {
-      list = list.filter((item) => item.label.includes(keyword));
-    }
-    return list;
-  }, [serviceMap, keyword]);
-  const serviceData = serviceMap?.[serviceKey];
-  const isAddMode = !serviceKey;
+  const isAddMode = serviceData && !serviceData.name;
 
   return (
     <Box className="ServiceFunctionList" display="flex" borderTopColor="line.normal">
@@ -136,52 +139,48 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
             <Button
               block
               onClick={() => {
-                setServiceKey(undefined);
-                setVisible('detail');
+                setServiceData({});
               }}
             >
               新建服务函数
             </Button>
             <Search placeholder="搜索服务函数" onChange={setKeyword} />
           </Box>
-          <Menu
-            activeKey={serviceKey}
-            items={serviceItems}
-            onItemClick={(key) => {
-              setServiceKey(key);
-              setVisible('detail');
+          <VariableTree
+            dataSource={dataSource}
+            deletable
+            onSelect={(item) => {
+              setServiceData({ key: item.key, ...workspace.getServiceFunction(item.key) });
             }}
-            onDelete={(key) => {
-              const values = {
-                name: key,
-                ...workspace.serviceModule.serviceFunctions[key],
-              };
-              workspace.removeServiceFunction(key);
-              onDelete && onDelete(values);
-              setVisible(null);
+            onRemove={(item) => {
+              workspace.removeServiceFunction(item.key);
+              onDelete?.(item);
             }}
           />
         </Panel>
       </Box>
       <Box width="65%" overflow="auto" css={detailFormStyle}>
-        {visible === 'detail' && (
+        {serviceData && (
           <>
             <Panel title={isAddMode ? '新建服务函数' : '服务函数详情'}>
               <ServiceDetailForm
-                key={serviceKey || 'createSF'}
-                serviceKeys={Object.keys(serviceMap)}
+                key={serviceData.key || 'createSF'}
+                serviceModules={serviceModules}
+                serviceKeys={serviceFunctions}
                 initialValues={
                   isAddMode
-                    ? {}
+                    ? {
+                        moduleName: 'index',
+                      }
                     : {
-                        name: serviceKey,
+                        name: serviceData.name,
+                        moduleName: serviceData.moduleName,
                         method: 'get',
-                        ...serviceData,
+                        ...serviceData.config,
                       }
                 }
                 onCancel={() => {
-                  setServiceKey(undefined);
-                  setVisible(null);
+                  setServiceData(undefined);
                 }}
                 onSubmit={(values, mode: ServiceFunctionOperationModeType) => {
                   function shapeServiceValues(val: any) {
@@ -194,28 +193,27 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
                     return shapeValues;
                   }
                   // 移除掉不必要的属性
-                  const data = shapeServiceValues(values);
+                  const { moduleName, ...data } = shapeServiceValues(values);
                   if (mode === ServiceFunctionOperationModeType.ADD) {
-                    workspace.addServiceFunction(data);
+                    workspace.addServiceFunction(data, moduleName);
                     onAdd && onAdd(values);
                   } else if (mode === ServiceFunctionOperationModeType.UPDATE) {
-                    workspace.updateServiceFunction(data);
+                    workspace.updateServiceFunction(data, moduleName);
                     onUpdate && onUpdate(values);
                   }
-                  setServiceKey(values.name);
                 }}
               />
             </Panel>
-            {serviceKey ? (
+            {serviceData?.key ? (
               <ServiceFunctionPreview
-                key={serviceKey}
+                key={serviceData.key}
                 appContext={sandbox?.window['tango']}
-                functionName={serviceKey}
+                functionName={serviceData.key}
               />
             ) : null}
           </>
         )}
-        {!visible && (
+        {!serviceData && (
           <Box py="xxl">
             <Empty description="请从左侧选择数据服务函数或新建数据服务函数" />
           </Box>
@@ -227,12 +225,14 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
 
 interface ServiceDetailFormProps extends FormProps {
   serviceKeys?: string[];
+  serviceModules?: any[];
   onCancel?: () => void;
   onSubmit?: (values: any, mode: ServiceFunctionOperationModeType) => void;
 }
 
 function ServiceDetailForm({
   serviceKeys = [],
+  serviceModules = [],
   onCancel,
   onSubmit,
   initialValues,
@@ -275,6 +275,20 @@ function ServiceDetailForm({
       {...formProps}
     >
       <Form.Item
+        label="所属模块"
+        name="moduleName"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+        component="select"
+        componentProps={{
+          options: serviceModules,
+          disabled: disabled || isModifyMode,
+        }}
+      />
+      <Form.Item
         label="方法名"
         name="name"
         rules={[
@@ -282,7 +296,9 @@ function ServiceDetailForm({
           { pattern: /^[a-z]\w+$/, message: '请输入合法的方法名称' },
           !isModifyMode && {
             validator(_, value) {
-              const isExist = serviceKeys.includes(value);
+              const isExist = serviceKeys.includes(
+                ['services', form.getFieldValue('moduleName'), value].join('.'),
+              );
               return isExist
                 ? Promise.reject(new Error('重复的方法名，请换一个！'))
                 : Promise.resolve();

@@ -37,7 +37,6 @@ import {
   FileType,
   ITangoConfigPackages,
   IPageConfigData,
-  IProjectData,
   IServiceFunctionPayload,
 } from '../types';
 import { SelectSource } from './select-source';
@@ -96,13 +95,9 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * 本地区块 { [blockName]: filePath }
+   * FIXME: 修正类型 Record<string, TangoBlockModule>
    */
   localBlocks: Record<string, string>;
-
-  /**
-   * service 模块
-   */
-  serviceModule: TangoServiceModule;
 
   /**
    * 路由配置模块
@@ -113,6 +108,10 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 模型入口配置模块
    */
   storeEntryModule: TangoStoreEntryModule;
+
+  storeModules: Record<string, TangoStoreModule> = {};
+
+  serviceModules: Record<string, TangoServiceModule> = {};
 
   /**
    * package.json 文件
@@ -162,20 +161,8 @@ export class Workspace extends EventTarget implements IWorkspace {
   }
 
   /**
-   * store 模块列表
-   */
-  get storeModules() {
-    const mods: TangoStoreModule[] = [];
-    this.files.forEach((file) => {
-      if (file instanceof TangoStoreModule) {
-        mods.push(file);
-      }
-    });
-    return mods;
-  }
-
-  /**
    * 获取页面列表
+   * FIXME: 是不是直接挪到 context 里去计算
    */
   get pages() {
     const appJsonPages = this.appJson?.getValue('pages');
@@ -268,36 +255,6 @@ export class Workspace extends EventTarget implements IWorkspace {
       return this.componentPrototypes.get(name);
     }
     return name as ComponentPrototypeType;
-  }
-
-  getProjectData() {
-    const pages = this.pages.map((item) => {
-      const filename = this.getFilenameByRoutePath(item.path);
-      return {
-        title: item.name,
-        path: item.path,
-        filename,
-        includes: {
-          variables: (this.getFile(filename) as TangoViewModule).variables,
-        },
-      };
-    });
-    const stores = this.storeModules.reduce((acc, item) => {
-      acc[item.name] = { filename: item.filename };
-      return acc;
-    }, {});
-    const services = {
-      index: {
-        filename: this.serviceModule?.filename,
-        functions: Object.keys(this.serviceModule.serviceFunctions),
-      },
-    };
-    const data: IProjectData = {
-      pages,
-      stores,
-      services,
-    };
-    return data;
   }
 
   /**
@@ -395,10 +352,11 @@ export class Workspace extends EventTarget implements IWorkspace {
           break;
         case FileType.ServiceModule:
           module = new TangoServiceModule(this, props);
-          this.serviceModule = module; // 仅支持单个 service 文件
+          this.serviceModules[module.name] = module;
           break;
         case FileType.StoreModule:
           module = new TangoStoreModule(this, props);
+          this.storeModules[module.name] = module;
           break;
         case FileType.BlockEntryModule: {
           const blockName = getBlockNameByFilename(props.filename);
@@ -522,24 +480,6 @@ export class Workspace extends EventTarget implements IWorkspace {
       ret[file.filename] = file.cleanCode;
     });
     return ret;
-  }
-
-  listStoreModules() {
-    return Array.from(this.files.values()).filter(
-      (file) => file instanceof TangoStoreModule,
-    ) as TangoStoreModule[];
-  }
-
-  getStoreModuleByName(storeName: string) {
-    let mod;
-    const files = this.files.values();
-    for (const file of files) {
-      if (file instanceof TangoStoreModule && file.name === storeName) {
-        mod = file;
-        break;
-      }
-    }
-    return mod;
   }
 
   /**
@@ -752,7 +692,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param initValue
    */
   addStoreState(storeName: string, stateName: string, initValue: string) {
-    this.getStoreModuleByName(storeName).addState(stateName, initValue).update();
+    this.storeModules[storeName]?.addState(stateName, initValue).update();
   }
 
   /**
@@ -761,7 +701,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param stateName
    */
   removeStoreState(storeName: string, stateName: string) {
-    this.getStoreModuleByName(storeName).removeState(stateName).update();
+    this.storeModules[storeName]?.removeState(stateName).update();
   }
 
   /**
@@ -773,25 +713,46 @@ export class Workspace extends EventTarget implements IWorkspace {
   updateModuleCodeByVariablePath(variablePath: string, code: string) {
     if (/^stores\.\w+\.\w+$/.test(variablePath)) {
       const [type, storeName, stateName] = variablePath.split('.');
-      this.getStoreModuleByName(storeName).updateState(stateName, code).update();
+      this.storeModules[storeName]?.updateState(stateName, code).update();
     }
+  }
+
+  /**
+   * 获取服务函数的详情
+   * @param serviceKey `services.list` 或 `services.sub.list`
+   * @returns
+   */
+  getServiceFunction(serviceKey: string) {
+    const { name, moduleName } = this.parseServiceKey(serviceKey);
+    if (!name) {
+      return;
+    }
+
+    return {
+      name,
+      moduleName,
+      config: this.serviceModules[moduleName]?.serviceFunctions[name],
+    };
   }
 
   /**
    * 更新服务函数
    */
-  updateServiceFunction(payload: any) {
-    this.serviceModule.updateServiceFunction(payload).update();
+  updateServiceFunction(payload: IServiceFunctionPayload, moduleName = 'index') {
+    this.serviceModules[moduleName].updateServiceFunction(payload).update();
   }
 
   /**
    * 新增服务函数，支持批量添加
    */
-  addServiceFunction(payload: IServiceFunctionPayload | IServiceFunctionPayload[]) {
+  addServiceFunction(
+    payload: IServiceFunctionPayload | IServiceFunctionPayload[],
+    moduleName = 'index',
+  ) {
     if (Array.isArray(payload)) {
-      this.serviceModule.addServiceFunctions(payload).update();
+      this.serviceModules[moduleName]?.addServiceFunctions(payload).update();
     } else {
-      this.serviceModule.addServiceFunction(payload).update();
+      this.serviceModules[moduleName]?.addServiceFunction(payload).update();
     }
   }
 
@@ -799,15 +760,15 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 删除服务函数
    * @param name
    */
-  removeServiceFunction(name: string) {
-    this.serviceModule.deleteServiceFunction(name).update();
+  removeServiceFunction(name: string, moduleName = 'index') {
+    this.serviceModules[moduleName]?.deleteServiceFunction(name).update();
   }
 
   /**
    * 更新服务的基础配置
    */
-  updateServiceBaseConfig(name: string, value: any) {
-    this.serviceModule.updateBaseConfig(name, value).update();
+  updateServiceBaseConfig(config: object, moduleName = 'index') {
+    this.serviceModules[moduleName]?.updateBaseConfig(config).update();
   }
 
   /**
@@ -1294,5 +1255,41 @@ export class Workspace extends EventTarget implements IWorkspace {
     } else {
       logger.error('copyFiles failed, source: %s, target: %s', sourceFilePath, targetFilePath);
     }
+  }
+
+  /**
+   * 解析 serviceKey
+   * @param serviceKey
+   * @returns
+   *
+   * @example services.list => { moduleName: 'index', name: 'list' }
+   * @example services.sub.list => { moduleName: 'sub', name: 'list' }
+   * @example foo => undefined
+   */
+  private parseServiceKey(serviceKey: string) {
+    const parts = serviceKey.split('.');
+    if (parts[0] !== 'services') {
+      return {};
+    }
+
+    let moduleName = 'index';
+    let name = '';
+    switch (parts.length) {
+      case 2: {
+        name = parts[1];
+        break;
+      }
+      case 3: {
+        moduleName = parts[1];
+        name = parts[2];
+        break;
+      }
+      default:
+        break;
+    }
+    return {
+      moduleName,
+      name,
+    };
   }
 }

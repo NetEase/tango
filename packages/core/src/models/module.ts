@@ -289,7 +289,6 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    */
   private _idGenerator: IdGenerator;
 
-
   get nodes() {
     return this._nodes;
   }
@@ -619,6 +618,9 @@ export class TangoServiceModule extends TangoModule {
     const { services, baseConfig } = traverseServiceFile(this.ast);
     this._serviceFunctions = services;
     this._baseConfig = baseConfig;
+    if (baseConfig.namespace) {
+      this.name = baseConfig.namespace;
+    }
   }
 
   addServiceFunction(payload: IServiceFunctionPayload) {
@@ -655,8 +657,8 @@ export class TangoServiceModule extends TangoModule {
   /**
    * 更新服务的基础配置
    */
-  updateBaseConfig(optionName: string, optionValue: any) {
-    this.ast = updateBaseConfigToServiceFile(this.ast, optionName, optionValue);
+  updateBaseConfig(data: object) {
+    this.ast = updateBaseConfigToServiceFile(this.ast, data);
     return this;
   }
 }

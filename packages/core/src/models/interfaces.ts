@@ -9,7 +9,6 @@ import {
   InsertChildPositionType,
   ITangoConfigPackages,
   IPageConfigData,
-  IProjectData,
   IServiceFunctionPayload,
 } from '../types';
 import { TangoFile, TangoJsonFile } from './file';
@@ -139,7 +138,8 @@ export interface IWorkspace {
 
   tangoConfigJson: TangoJsonFile;
   routeModule?: TangoRouteModule;
-  serviceModule?: TangoServiceModule;
+  storeModules?: Record<string, TangoStoreModule>;
+  serviceModules?: Record<string, TangoServiceModule>;
 
   refresh: (names: string[]) => void;
   ready: () => void;
@@ -149,11 +149,6 @@ export interface IWorkspace {
 
   setComponentPrototypes: (prototypes: Record<string, ComponentPrototypeType>) => void;
   getPrototype: (name: string | ComponentPrototypeType) => ComponentPrototypeType;
-
-  /**
-   * 获取项目数据
-   */
-  getProjectData?: () => IProjectData;
 
   /**
    * 查询节点
@@ -207,15 +202,18 @@ export interface IWorkspace {
 
   generateBlockFilesBySelectedNode?: () => Record<string, string>;
 
-  removeServiceFunction?: (serviceName: string) => void;
+  getServiceFunction?: (serviceKey: string) => object;
 
-  addServiceFunction?: (payload: IServiceFunctionPayload | IServiceFunctionPayload[]) => void;
+  removeServiceFunction?: (serviceName: string, modName?: string) => void;
 
-  updateServiceFunction?: (payload: any) => void;
+  addServiceFunction?: (
+    payload: IServiceFunctionPayload | IServiceFunctionPayload[],
+    modName?: string,
+  ) => void;
 
-  updateServiceBaseConfig?: (name: string, value: any) => void;
+  updateServiceFunction?: (payload: IServiceFunctionPayload, modName?: string) => void;
 
-  listStoreModules?: () => TangoStoreModule[];
+  updateServiceBaseConfig?: (IServiceFunctionPayload: object, modName?: string) => void;
 
   addStoreModule?: (storeName: string, code: string) => void;
 
@@ -258,14 +256,10 @@ export interface IWorkspace {
   removeBizComp?: (name: string) => void;
 
   get activeViewModule(): IViewFile;
-  // TODO: -> getStoreModules
-  get storeModules(): TangoStoreModule[];
-  // TODO: -> getPages
+
+  // FIXME: 是否移除下面的
   get pages(): any[];
-  // TODO: getBizComps
   get bizComps(): string[];
-  // TODO: getBaseComps
   get baseComps(): string[];
-  // TODO: getBlocks
   get blocks(): any[];
 }
