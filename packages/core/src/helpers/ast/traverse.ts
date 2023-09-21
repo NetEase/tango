@@ -11,14 +11,9 @@ import {
   StringOrNumber,
   Dict,
   parseDndId,
-  upperCamelCase
+  upperCamelCase,
 } from '@music163/tango-helpers';
-import {
-  keyNode2value,
-  jsxAttributeValueNode2value,
-  node2value,
-  node2code,
-} from './generate';
+import { keyNode2value, jsxAttributeValueNode2value, node2value, node2code } from './generate';
 import {
   value2jsxAttributeValueNode,
   value2jsxChildrenValueNode,
@@ -957,42 +952,22 @@ export function updateServiceConfigToServiceFile(
   return ast;
 }
 
-function visitObjectProperties(
-  node: t.ObjectExpression,
-  visitor: (propName: string, node: t.ObjectProperty) => void,
-) {
-  for (const propNode of node.properties) {
-    if (t.isObjectProperty(propNode)) {
-      const propName = keyNode2value(propNode.key);
-      visitor?.(propName as string, propNode);
-    }
-  }
-}
-
-export function updateBaseConfigToServiceFile(ast: t.File, configName: string, configValue: any) {
+export function updateBaseConfigToServiceFile(ast: t.File, config: object) {
   traverse(ast, {
     CallExpression(path) {
       const calleeName = keyNode2value(path.node.callee) as string;
       if (isDefineService(calleeName)) {
         switch (path.node.arguments.length) {
           case 1:
-            path.node.arguments.push(value2node({ [configName]: configValue }));
+            // 没有 baseConfig，直接创建新的参数即可
+            path.node.arguments.push(value2node(config));
             break;
           case 2: {
+            // 已存在 baseConfig，需要进行参数的合并
             const baseConfigNode = path.node.arguments[1];
             if (t.isObjectExpression(baseConfigNode)) {
-              let found = false;
-              visitObjectProperties(baseConfigNode, (propName, propNode) => {
-                if (propName === configName) {
-                  found = true;
-                  propNode.value = value2node(configValue);
-                }
-              });
-              if (!found) {
-                baseConfigNode.properties.push(
-                  t.objectProperty(t.identifier(configName), value2node(configValue)),
-                );
-              }
+              const baseConfig = node2value(baseConfigNode);
+              path.node.arguments[1] = value2node({ ...baseConfig, ...config });
             }
             break;
           }
@@ -1020,6 +995,7 @@ export function traverseServiceFile(ast: t.File) {
           if (path.node.arguments[1]) {
             const config = node2value(path.node.arguments[1]);
             baseConfig.encryptFetch = !!config.encryptFetch;
+            baseConfig.namespace = config.namespace || 'index';
           }
         }
         path.stop();

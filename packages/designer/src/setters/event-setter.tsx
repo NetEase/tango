@@ -43,7 +43,7 @@ export function EventSetter(props: EventSetterProps) {
 
   const { actionVariables, routeOptions } = useWorkspaceData();
   const workspace = useWorkspace();
-  const modalOptions = workspace.listModals() || [];
+  const modalOptions = workspace.activeViewModule.listModals() || [];
 
   const handleChange = useCallback<FormItemComponentProps['onChange']>(
     (nextValue: any, ...args) => {

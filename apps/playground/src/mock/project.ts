@@ -44,7 +44,7 @@ const tangoConfigJson = {
       resources: ['https://unpkg.com/moment@{{version}}/moment.js'],
     },
     '@music163/tango-boot': {
-      version: '0.1.3',
+      version: '0.2.0',
       library: 'TangoBoot',
       type: 'baseDependency',
       resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],
@@ -175,6 +175,7 @@ export default defineStore({
 
 const serviceCode = `
 import { defineServices } from '@music163/tango-boot';
+import './sub';
 
 export default defineServices({
   get: {
@@ -198,6 +199,18 @@ export default defineServices({
   delete: {
     url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users?id=1',
   },
+});
+`;
+
+const subServiceCode = `
+import { defineServices } from '@music163/tango-boot';
+
+export default defineServices({
+  list: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/anchor-list-normal',
+  },
+}, {
+  namespace: 'sub',
 });
 `;
 
@@ -232,6 +245,7 @@ export const sampleFiles = [
   { filename: '/src/stores/app.js', code: storeApp },
   { filename: '/src/stores/counter.js', code: storeCounter },
   { filename: '/src/services/index.js', code: serviceCode },
+  { filename: '/src/services/sub.js', code: subServiceCode },
   { filename: '/src/utils/index.js', code: `export function foo() {}` },
 ];
 

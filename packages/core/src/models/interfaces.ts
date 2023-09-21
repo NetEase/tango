@@ -9,11 +9,12 @@ import {
   InsertChildPositionType,
   ITangoConfigPackages,
   IPageConfigData,
-  IProjectData,
   IServiceFunctionPayload,
 } from '../types';
 import { TangoFile, TangoJsonFile } from './file';
-import { TangoRouteModule, TangoServiceModule, TangoStoreModule } from './module';
+import { TangoRouteModule } from './route-module';
+import { TangoStoreModule } from './store-module';
+import { TangoServiceModule } from './service-module';
 
 export interface IViewFile {
   readonly workspace: IWorkspace;
@@ -24,6 +25,9 @@ export interface IViewFile {
    * 通过导入组件名查找组件来自的包
    */
   importMap?: Dict<{ package: string; isDefault?: boolean }>;
+
+  listModals?: () => Array<{ label: string; value: string }>;
+  listForms?: () => Record<string, string[]>;
 
   update: (code?: string, isFormatCode?: boolean, refreshWorkspace?: boolean) => void;
 
@@ -139,7 +143,8 @@ export interface IWorkspace {
 
   tangoConfigJson: TangoJsonFile;
   routeModule?: TangoRouteModule;
-  serviceModule?: TangoServiceModule;
+  storeModules?: Record<string, TangoStoreModule>;
+  serviceModules?: Record<string, TangoServiceModule>;
 
   refresh: (names: string[]) => void;
   ready: () => void;
@@ -151,84 +156,60 @@ export interface IWorkspace {
   getPrototype: (name: string | ComponentPrototypeType) => ComponentPrototypeType;
 
   /**
-   * 获取项目数据
-   */
-  getProjectData?: () => IProjectData;
-
-  /**
    * 查询节点
    * @param id 节点 ID
    * @param module 节点所在的模块名
    * @returns 返回节点对象
    */
   getNode: (id: string, module?: string) => IViewNode;
-  listModals?: () => Array<{ label: string; value: string }>;
-  listForms?: () => Record<string, string[]>;
 
+  getFile: (filename: string) => TangoFile;
+  listFiles: () => Record<string, string>;
   addFile: (filename: string, code: string, fileType?: FileType) => void;
   addFiles: (files: IFileConfig[]) => void;
   updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
   removeFile: (filename: string) => void;
   renameFile: (oldFilename: string, newFilename: string) => void;
   renameFolder: (oldFoldername: string, newFoldername: string) => void;
-  getFile: (filename: string) => TangoFile;
-  listFiles: () => Record<string, string>;
-
-  addViewPage: (name: string, code: string) => void;
 
   removeSelectedNode: () => void;
-
   cloneSelectedNode: () => void;
-
   copySelectedNode: () => void;
-
   pasteSelectedNode: () => void;
-
   insertToSelectedNode: (childNameOrPrototype: string | ComponentPrototypeType) => void;
-
   dropNode: () => void;
-
   insertToNode: (
     targetNodeId: string,
     sourceNameOrPrototype: string | ComponentPrototypeType,
   ) => void;
-
   replaceNode: (
     targetNodeId: string,
     sourceNameOrPrototype: string | ComponentPrototypeType,
   ) => void;
-
   updateSelectedNodeAttributes: (
     attributes: Record<string, any>,
     relatedImports?: string[],
   ) => void;
 
-  addBlock?: (files: object, name: string) => void;
-
-  generateBlockFilesBySelectedNode?: () => Record<string, string>;
-
-  removeServiceFunction?: (serviceName: string) => void;
-
-  addServiceFunction?: (payload: IServiceFunctionPayload | IServiceFunctionPayload[]) => void;
-
-  updateServiceFunction?: (payload: any) => void;
-
-  updateServiceBaseConfig?: (name: string, value: any) => void;
-
-  listStoreModules?: () => TangoStoreModule[];
+  getServiceFunction?: (serviceKey: string) => object;
+  removeServiceFunction?: (serviceName: string, modName?: string) => void;
+  addServiceFunction?: (
+    payload: IServiceFunctionPayload | IServiceFunctionPayload[],
+    modName?: string,
+  ) => void;
+  updateServiceFunction?: (payload: IServiceFunctionPayload, modName?: string) => void;
+  updateServiceBaseConfig?: (IServiceFunctionPayload: object, modName?: string) => void;
 
   addStoreModule?: (storeName: string, code: string) => void;
-
   removeStoreModule?: (storeName: string) => void;
-
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;
-
   removeStoreState?: (storeName: string, stateName: string) => void;
 
   updateModuleCodeByVariablePath?: (variablePath: string, code: string) => void;
 
+  // TODO: 是否需要，和 addFile 有啥区别 ???
+  addViewPage: (name: string, code: string) => void;
   removeViewModule: (routePath: string) => void;
-
   copyViewPage: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
 
   updateRoute: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
@@ -258,14 +239,8 @@ export interface IWorkspace {
   removeBizComp?: (name: string) => void;
 
   get activeViewModule(): IViewFile;
-  // TODO: -> getStoreModules
-  get storeModules(): TangoStoreModule[];
-  // TODO: -> getPages
   get pages(): any[];
-  // TODO: getBizComps
   get bizComps(): string[];
-  // TODO: getBaseComps
   get baseComps(): string[];
-  // TODO: getBlocks
   get blocks(): any[];
 }
