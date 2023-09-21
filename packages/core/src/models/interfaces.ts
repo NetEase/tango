@@ -140,11 +140,14 @@ export interface IWorkspace {
   routeModule?: TangoRouteModule;
   storeModules?: Record<string, TangoStoreModule>;
   serviceModules?: Record<string, TangoServiceModule>;
+  // viewModules
 
   refresh: (names: string[]) => void;
   ready: () => void;
 
+  // TODO: 移到 designer
   setActiveRoute: (path: string) => void;
+  // TODO: 移到 designer
   setActiveFile: (filename: string) => void;
 
   setComponentPrototypes: (prototypes: Record<string, ComponentPrototypeType>) => void;
@@ -157,76 +160,66 @@ export interface IWorkspace {
    * @returns 返回节点对象
    */
   getNode: (id: string, module?: string) => IViewNode;
+
+  // TODO: 移动到 viewModules 中，通过 activeViewModule.listModals 获取
   listModals?: () => Array<{ label: string; value: string }>;
+  // TODO: 移动到 viewModules 中，通过 activeViewModule.listForms 获取
   listForms?: () => Record<string, string[]>;
 
+  getFile: (filename: string) => TangoFile;
+  listFiles: () => Record<string, string>;
   addFile: (filename: string, code: string, fileType?: FileType) => void;
   addFiles: (files: IFileConfig[]) => void;
   updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
   removeFile: (filename: string) => void;
   renameFile: (oldFilename: string, newFilename: string) => void;
   renameFolder: (oldFoldername: string, newFoldername: string) => void;
-  getFile: (filename: string) => TangoFile;
-  listFiles: () => Record<string, string>;
-
-  addViewPage: (name: string, code: string) => void;
 
   removeSelectedNode: () => void;
-
   cloneSelectedNode: () => void;
-
   copySelectedNode: () => void;
-
   pasteSelectedNode: () => void;
-
   insertToSelectedNode: (childNameOrPrototype: string | ComponentPrototypeType) => void;
-
   dropNode: () => void;
-
   insertToNode: (
     targetNodeId: string,
     sourceNameOrPrototype: string | ComponentPrototypeType,
   ) => void;
-
   replaceNode: (
     targetNodeId: string,
     sourceNameOrPrototype: string | ComponentPrototypeType,
   ) => void;
-
   updateSelectedNodeAttributes: (
     attributes: Record<string, any>,
     relatedImports?: string[],
   ) => void;
 
+  // TODO: 是否需要
   addBlock?: (files: object, name: string) => void;
 
+  // TODO: 是否需要
   generateBlockFilesBySelectedNode?: () => Record<string, string>;
 
   getServiceFunction?: (serviceKey: string) => object;
-
   removeServiceFunction?: (serviceName: string, modName?: string) => void;
-
   addServiceFunction?: (
     payload: IServiceFunctionPayload | IServiceFunctionPayload[],
     modName?: string,
   ) => void;
-
   updateServiceFunction?: (payload: IServiceFunctionPayload, modName?: string) => void;
-
   updateServiceBaseConfig?: (IServiceFunctionPayload: object, modName?: string) => void;
 
   addStoreModule?: (storeName: string, code: string) => void;
-
   removeStoreModule?: (storeName: string) => void;
-
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;
-
   removeStoreState?: (storeName: string, stateName: string) => void;
 
+  // TODO: 是否需要
   updateModuleCodeByVariablePath?: (variablePath: string, code: string) => void;
 
+  // TODO: 是否需要，和 addFile 有啥区别 ???
+  addViewPage: (name: string, code: string) => void;
   removeViewModule: (routePath: string) => void;
-
   copyViewPage: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
 
   updateRoute: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
@@ -244,6 +237,7 @@ export interface IWorkspace {
 
   removeDependency?: (name: string) => void;
 
+  // TODO: 是否需要
   addBizComp?: (
     name: string,
     version: string,
@@ -253,6 +247,7 @@ export interface IWorkspace {
     },
   ) => void;
 
+  // TODO: 是否需要
   removeBizComp?: (name: string) => void;
 
   get activeViewModule(): IViewFile;

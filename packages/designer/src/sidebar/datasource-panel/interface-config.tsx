@@ -67,11 +67,11 @@ export const getApiDefaultName = (url: string) =>
     // 方法名以数字开头，添加 api 前缀
     .replace(/^\d/, (str) => `api${str}`);
 
-type DataServiceViewProps = {
+interface DataServiceViewProps {
   onAdd?: (values: Record<string, string> | Array<Record<string, string>>) => void;
   onUpdate?: (values: Record<string, string>) => void;
   onDelete?: (values: Record<string, string>) => void;
-};
+}
 
 // http 方法类型
 const httpMethods = Object.keys(ServiceFunctionMethodType).map((key) => ({
