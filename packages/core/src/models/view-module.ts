@@ -16,6 +16,7 @@ import {
   replaceRootJSXElementChildren,
   IdGenerator,
   updateJSXAttributes,
+  queryXFormItemFields,
 } from '../helpers';
 import { TangoNode } from './node';
 import {
@@ -119,6 +120,43 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     });
 
     this._nodesTree = nodeListToTreeData(nodes);
+  }
+
+  /**
+   * 弹窗列表
+   */
+  listModals() {
+    const modals: Array<{ label: string; value: string }> = [];
+    const activeViewNodes = this.nodes || new Map();
+
+    Array.from(activeViewNodes.values()).forEach((node) => {
+      if (['Modal', 'Drawer'].includes(node.component) && node.props.id) {
+        modals.push({
+          label: `${node.component}(${node.props.id})`,
+          value: node.props.id,
+        });
+      }
+    });
+
+    return modals;
+  }
+
+  /**
+   * 表单列表
+   */
+  listForms() {
+    const forms: Record<string, string[]> = {};
+    const activeViewNodes = this.nodes;
+    Array.from(activeViewNodes.values()).forEach((node) => {
+      if (
+        ['XAction', 'XColumnAction', 'XForm', 'XStepForm', 'XSearchForm', 'XFormList'].includes(
+          node.component,
+        )
+      ) {
+        forms[node.id] = queryXFormItemFields(node.rawNode);
+      }
+    });
+    return forms;
   }
 
   /**

@@ -16,7 +16,6 @@ import {
   getJSXElementChildrenNames,
   namesToImportDeclarations,
   getBlockNameByFilename,
-  queryXFormItemFields,
   getPrivilegeCode,
 } from '../helpers';
 import { DropMethod } from './drop-target';
@@ -159,7 +158,6 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * 获取页面列表
-   * FIXME: 是不是直接挪到 context 里去计算
    */
   get pages() {
     const appJsonPages = this.appJson?.getValue('pages');
@@ -579,45 +577,6 @@ export class Workspace extends EventTarget implements IWorkspace {
   }
 
   /**
-   * TODO: 仅获取当前视图即可
-   * 获取当前视图的弹窗列表
-   * @returns
-   */
-  listModals() {
-    const modals: Array<{ label: string; value: string }> = [];
-    const activeViewNodes = this.activeViewModule?.nodes || new Map();
-
-    Array.from(activeViewNodes.values()).forEach((node) => {
-      if (['Modal', 'Drawer'].includes(node.component) && node.props.id) {
-        modals.push({
-          label: `${node.component}(${node.props.id})`,
-          value: node.props.id,
-        });
-      }
-    });
-
-    return modals;
-  }
-
-  /**
-   * TODO: 获取当前视图的表单列表
-   */
-  listForms() {
-    const forms: Record<string, string[]> = {};
-    const activeViewNodes = this.activeViewModule?.nodes;
-    Array.from(activeViewNodes.values()).forEach((node) => {
-      if (
-        ['XAction', 'XColumnAction', 'XForm', 'XStepForm', 'XSearchForm', 'XFormList'].includes(
-          node.component,
-        )
-      ) {
-        forms[node.id] = queryXFormItemFields(node.rawNode);
-      }
-    });
-    return forms;
-  }
-
-  /**
    * 应用代码初始化完成
    */
   ready() {
@@ -631,34 +590,6 @@ export class Workspace extends EventTarget implements IWorkspace {
         },
       });
     }
-  }
-
-  /**
-   * 添加区块文件
-   * @param files 文件
-   * @param name 区块文件名
-   */
-  addBlock(files: Object, name: string) {
-    const blockFiles = {};
-    Object.keys(files).forEach((path) => {
-      if (!path.includes('/src')) return;
-      blockFiles[path.replace('/src/', '')] = files[path];
-    });
-    this.addFiles(
-      Object.keys(blockFiles).map((filepath) => ({
-        filename: `/src/blocks/${name}/${filepath}`,
-        code: blockFiles[filepath],
-      })),
-    );
-    const { dependencies } = JSON.parse(files['/package.json']);
-    Object.keys(dependencies).forEach((pkg) => {
-      this.packageJson?.setValue('dependencies', (deps) => {
-        if (!deps[pkg]) {
-          deps[pkg] = dependencies[pkg];
-        }
-        return deps;
-      });
-    });
   }
 
   /**

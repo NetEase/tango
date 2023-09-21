@@ -26,6 +26,9 @@ export interface IViewFile {
    */
   importMap?: Dict<{ package: string; isDefault?: boolean }>;
 
+  listModals?: () => Array<{ label: string; value: string }>;
+  listForms?: () => Record<string, string[]>;
+
   update: (code?: string, isFormatCode?: boolean, refreshWorkspace?: boolean) => void;
 
   getNode: (targetNodeId: string) => IViewNode;
@@ -142,14 +145,11 @@ export interface IWorkspace {
   routeModule?: TangoRouteModule;
   storeModules?: Record<string, TangoStoreModule>;
   serviceModules?: Record<string, TangoServiceModule>;
-  // viewModules
 
   refresh: (names: string[]) => void;
   ready: () => void;
 
-  // TODO: 移到 designer
   setActiveRoute: (path: string) => void;
-  // TODO: 移到 designer
   setActiveFile: (filename: string) => void;
 
   setComponentPrototypes: (prototypes: Record<string, ComponentPrototypeType>) => void;
@@ -162,11 +162,6 @@ export interface IWorkspace {
    * @returns 返回节点对象
    */
   getNode: (id: string, module?: string) => IViewNode;
-
-  // TODO: 移动到 viewModules 中，通过 activeViewModule.listModals 获取
-  listModals?: () => Array<{ label: string; value: string }>;
-  // TODO: 移动到 viewModules 中，通过 activeViewModule.listForms 获取
-  listForms?: () => Record<string, string[]>;
 
   getFile: (filename: string) => TangoFile;
   listFiles: () => Record<string, string>;
@@ -196,12 +191,6 @@ export interface IWorkspace {
     relatedImports?: string[],
   ) => void;
 
-  // TODO: 是否需要
-  addBlock?: (files: object, name: string) => void;
-
-  // TODO: 是否需要
-  generateBlockFilesBySelectedNode?: () => Record<string, string>;
-
   getServiceFunction?: (serviceKey: string) => object;
   removeServiceFunction?: (serviceName: string, modName?: string) => void;
   addServiceFunction?: (
@@ -216,7 +205,6 @@ export interface IWorkspace {
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;
   removeStoreState?: (storeName: string, stateName: string) => void;
 
-  // TODO: 是否需要
   updateModuleCodeByVariablePath?: (variablePath: string, code: string) => void;
 
   // TODO: 是否需要，和 addFile 有啥区别 ???
@@ -239,7 +227,6 @@ export interface IWorkspace {
 
   removeDependency?: (name: string) => void;
 
-  // TODO: 是否需要
   addBizComp?: (
     name: string,
     version: string,
@@ -249,12 +236,9 @@ export interface IWorkspace {
     },
   ) => void;
 
-  // TODO: 是否需要
   removeBizComp?: (name: string) => void;
 
   get activeViewModule(): IViewFile;
-
-  // FIXME: 是否移除下面的
   get pages(): any[];
   get bizComps(): string[];
   get baseComps(): string[];
