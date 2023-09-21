@@ -12,7 +12,9 @@ import {
   IServiceFunctionPayload,
 } from '../types';
 import { TangoFile, TangoJsonFile } from './file';
-import { TangoRouteModule, TangoServiceModule, TangoStoreModule } from './module';
+import { TangoRouteModule } from './route-module';
+import { TangoStoreModule } from './store-module';
+import { TangoServiceModule } from './service-module';
 
 export interface IViewFile {
   readonly workspace: IWorkspace;

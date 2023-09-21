@@ -22,14 +22,7 @@ import {
 import { DropMethod } from './drop-target';
 import { HistoryMessage, TangoHistory } from './history';
 import { TangoNode } from './node';
-import {
-  TangoStoreEntryModule,
-  TangoRouteModule,
-  TangoServiceModule,
-  TangoStoreModule,
-  TangoViewModule,
-  TangoJsModule,
-} from './module';
+import { TangoJsModule } from './module';
 import { TangoFile, TangoJsonFile, TangoLessFile } from './file';
 import { IWorkspace } from './interfaces';
 import {
@@ -41,6 +34,10 @@ import {
 } from '../types';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
+import { TangoRouteModule } from './route-module';
+import { TangoStoreEntryModule, TangoStoreModule } from './store-module';
+import { TangoServiceModule } from './service-module';
+import { TangoViewModule } from './view-module';
 
 export interface IWorkspaceOptions {
   /**
@@ -712,7 +709,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    */
   updateModuleCodeByVariablePath(variablePath: string, code: string) {
     if (/^stores\.\w+\.\w+$/.test(variablePath)) {
-      const [type, storeName, stateName] = variablePath.split('.');
+      const [, storeName, stateName] = variablePath.split('.');
       this.storeModules[storeName]?.updateState(stateName, code).update();
     }
   }
