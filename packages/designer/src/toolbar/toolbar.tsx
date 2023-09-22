@@ -1,26 +1,13 @@
 import React, { useMemo } from 'react';
 import { Box, Group } from 'coral-system';
 import { ReactComponentProps } from '@music163/tango-helpers';
-import { HistoryTool } from './history';
-import { ModeSwitchTool } from './mode-switch';
-import { PreviewTool } from './preview';
-import { RouteSwitchTool } from './route-switch';
-import { TogglePanelTool } from './toggle-panel';
+import { getWidget } from '../widgets';
 
 export interface ToolbarProps {
   children?: React.ReactElement | React.ReactElement[];
-  builtinToolMap?: Record<string, React.ReactNode>;
 }
 
-const builtinToolsMap = {
-  history: <HistoryTool />,
-  modeSwitch: <ModeSwitchTool />,
-  preview: <PreviewTool />,
-  routeSwitch: <RouteSwitchTool />,
-  togglePanel: <TogglePanelTool />,
-};
-
-export function Toolbar({ children, builtinToolMap = builtinToolsMap }: ToolbarProps) {
+export function Toolbar({ children }: ToolbarProps) {
   const [leftTools, centerTools, rightTools] = useMemo(() => {
     const left: React.ReactNode[] = [];
     const center: React.ReactNode[] = [];
@@ -28,7 +15,15 @@ export function Toolbar({ children, builtinToolMap = builtinToolsMap }: ToolbarP
 
     let prevPlacement: string;
     React.Children.forEach(children, (child: React.ReactElement, index) => {
-      let node = child.props.children || builtinToolMap[child.key];
+      let fallbackNode;
+      if (child.key) {
+        const Widget = getWidget(['toolbar', child.key].join('.'));
+        if (Widget) {
+          fallbackNode = React.createElement(Widget, child.props.widgetProps);
+        }
+      }
+
+      let node = child.props.children ?? fallbackNode ?? null;
       if (!node) {
         node = child; // separator
       }
@@ -75,9 +70,13 @@ export function Toolbar({ children, builtinToolMap = builtinToolsMap }: ToolbarP
 export interface ToolbarItemProps extends ReactComponentProps {
   placement?: 'left' | 'center' | 'right';
   children?: React.ReactElement;
+  /**
+   * 如果 key 匹配到内置组件的话，传递给子节点的属性
+   */
+  widgetProps?: object;
 }
 
-function ToolbarItem({ placement, children }: ToolbarItemProps) {
+function ToolbarItem({ placement, widgetProps, children }: ToolbarItemProps) {
   return <div>{children}</div>;
 }
 

@@ -1,21 +1,11 @@
 import React, { useMemo } from 'react';
 import cx from 'classnames';
 import { Box, Text, css, HTMLCoralProps } from 'coral-system';
-import {
-  ClusterOutlined,
-  FunctionOutlined,
-  ApiOutlined,
-  AppstoreOutlined,
-  BuildOutlined,
-} from '@ant-design/icons';
 import { Badge } from 'antd';
 import { ReactComponentProps } from '@music163/tango-helpers';
 import { observer, useDesigner } from '@music163/tango-context';
 import { ResizableBox } from './resizable-box';
-import { OutlinePanel } from './outline-panel';
-import { DependencyPanel } from './dependency-panel';
-import { VariablePanel } from './variable-panel';
-import { DataSourcePanel } from './datasource-panel';
+import { getWidget } from '../widgets';
 
 const sidebarStyle = css`
   position: relative;
@@ -51,7 +41,6 @@ export interface SidebarProps extends ReactComponentProps {
    * 底部附加内容
    */
   footer?: React.ReactNode;
-  builtinPanelMap?: Record<string, SidebarPanelItemProps>;
 }
 
 export interface SidebarPanelItemProps
@@ -79,54 +68,21 @@ export interface SidebarPanelItemProps
    * 面板宽度
    */
   width?: number;
+  /**
+   * 如果 key 匹配到内置组件的话，传递给子节点的属性
+   */
+  widgetProps?: object;
 }
 
-const INTERNAL_SIDEBAR_PANEL_MAP: Record<string, SidebarPanelItemProps> = {
-  components: {
-    label: '组件',
-    title: '组件列表',
-    icon: <AppstoreOutlined />,
-  },
-  outline: {
-    label: '结构',
-    title: '结构',
-    icon: <BuildOutlined />,
-    children: <OutlinePanel />,
-  },
-  dependency: {
-    label: '依赖',
-    title: '项目依赖',
-    icon: <ClusterOutlined />,
-    children: <DependencyPanel />,
-  },
-  variables: {
-    label: '变量',
-    title: '变量管理',
-    icon: <FunctionOutlined />,
-    children: <VariablePanel />,
-    width: 440,
-  },
-  dataSource: {
-    label: '接口',
-    title: '数据源与接口',
-    icon: <ApiOutlined />,
-    children: <DataSourcePanel />,
-    width: 600,
-  },
-};
-
-function BaseSidebarPanel({
-  panelWidth: defaultPanelWidth = 280,
-  builtinPanelMap = INTERNAL_SIDEBAR_PANEL_MAP,
-  footer,
-  children,
-}: SidebarProps) {
+function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, footer, children }: SidebarProps) {
   const items = useMemo(() => {
     const ret: Record<React.Key, SidebarPanelItemProps> = {};
     React.Children.forEach(children, (child) => {
       if (child && React.isValidElement(child)) {
+        const widget = getWidget(['sidebar', child.key].join('.'));
+        const fallbackNode = widget ? React.createElement(widget, child.props.widgetProps) : null;
         ret[child.key] = {
-          ...builtinPanelMap[child.key],
+          children: fallbackNode,
           ...child.props,
         };
       }
@@ -203,7 +159,14 @@ function BaseSidebarPanel({
   );
 }
 
-BaseSidebarPanel.Item = function ({ key, title, doc, isFloat, width }: SidebarPanelItemProps) {
+BaseSidebarPanel.Item = function ({
+  key,
+  title,
+  doc,
+  isFloat,
+  width,
+  widgetProps,
+}: SidebarPanelItemProps) {
   return <></>;
 };
 
