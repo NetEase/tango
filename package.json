@@ -22,7 +22,7 @@
     "release": "yarn eslint && yarn build && yarn run ver && lerna publish from-git",
     "release:beta": "yarn eslint && yarn build && yarn run ver && lerna publish from-package --dist-tag beta",
     "up": "yarn upgrade-interactive --latest",
-    "postinstall": "husky install"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.19.3",
