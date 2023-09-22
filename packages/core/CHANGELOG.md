@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/netease/tango/compare/@music163/tango-core@0.2.0...@music163/tango-core@0.2.1) (2023-09-22)
+
+### Bug Fixes
+
+- add listServiceFunctions ([09a1e21](https://github.com/netease/tango/commit/09a1e2135a1f51b0a5f6c0a507ba42d2e6355c24))
+
 # [0.2.0](https://github.com/netease/tango/compare/@music163/tango-core@0.1.4...@music163/tango-core@0.2.0) (2023-09-21)
 
 ### Features

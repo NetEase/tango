@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/netease/tango/compare/@music163/tango-designer@0.3.0...@music163/tango-designer@0.4.0) (2023-09-22)
+
+### Bug Fixes
+
+- remove useless api ([226d71c](https://github.com/netease/tango/commit/226d71c704f41a756ee777d6de4627a7eb7b4259))
+
+### Features
+
+- add global widget map ([1c72ee6](https://github.com/netease/tango/commit/1c72ee6ac287c1b6fb5eb3806a68b877f3749405))
+
 # [0.3.0](https://github.com/netease/tango/compare/@music163/tango-designer@0.2.1...@music163/tango-designer@0.3.0) (2023-09-21)
 
 ### Features
