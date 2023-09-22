@@ -19,7 +19,6 @@ interface ISandboxEventHandlerConfig {
 export type SandboxProps = Omit<CodeSandboxProps, 'files' | 'eventHandlers' | 'onMessage'> & {
   isPreview?: boolean;
   selectionTools?: SelectionToolsProps['actions'];
-  builtinSelectionMenuMap?: SelectionToolsProps['builtinActionMap'];
   /**
    * tangoConfigJson 处理器
    */
@@ -32,10 +31,10 @@ export type SandboxProps = Omit<CodeSandboxProps, 'files' | 'eventHandlers' | 'o
   onLoad?: (config?: ISandboxEventHandlerConfig) => void;
 };
 
-export type CombinedSandboxRef = {
+export interface CombinedSandboxRef {
   designSandbox: CodeSandbox;
   previewSandbox: CodeSandbox;
-};
+}
 
 const LANDING_PAGE_PATH = '/__background_landing_page__';
 
@@ -281,7 +280,6 @@ export const Sandbox = observer(
   ({
     isPreview: isPreviewProp,
     selectionTools,
-    builtinSelectionMenuMap,
     bundlerURL,
     mode = 'combined',
     ...props
@@ -352,7 +350,7 @@ export const Sandbox = observer(
           }}
         />
         <Simulator>
-          <Viewport selectionTools={selectionTools} builtinActionMap={builtinSelectionMenuMap}>
+          <Viewport selectionTools={selectionTools}>
             {mode === 'single' && (
               <DesignSandbox
                 ref={sandboxRef}

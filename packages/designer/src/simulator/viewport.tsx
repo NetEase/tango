@@ -10,21 +10,14 @@ import { DraggingMask } from './mask';
 
 export interface ViewportProps extends HTMLCoralProps<'div'> {
   selectionTools?: SelectionToolsProps['actions'];
-  builtinActionMap?: SelectionToolsProps['builtinActionMap'];
 }
 
-export function Viewport({
-  selectionTools,
-  builtinActionMap,
-  children,
-  className,
-  ...rest
-}: ViewportProps) {
+export function Viewport({ selectionTools, children, className, ...rest }: ViewportProps) {
   return (
     <Box position="relative" height="100%" className={cx('Viewport', className)} {...rest}>
       <ViewportBody>{children}</ViewportBody>
       <div className="AuxTools">
-        <SelectionTools actions={selectionTools} builtinActionMap={builtinActionMap} />
+        <SelectionTools actions={selectionTools} />
         <InsertionPrompt />
         <DraggingMask />
       </div>
