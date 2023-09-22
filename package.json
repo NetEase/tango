@@ -21,7 +21,8 @@
     "ver": "lerna version --no-private --conventional-commits",
     "release": "yarn eslint && yarn build && yarn run ver && lerna publish from-git",
     "release:beta": "yarn eslint && yarn build && yarn run ver && lerna publish from-package --dist-tag beta",
-    "up": "yarn upgrade-interactive --latest"
+    "up": "yarn upgrade-interactive --latest",
+    "postinstall": "husky install"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.19.3",
@@ -49,11 +50,11 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "http-server": "^14.1.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.3",
     "jest": "^29.1.1",
     "jest-environment-jsdom": "^29.1.1",
     "lerna": "^6.6.1",
-    "lint-staged": "^13.1.0",
+    "lint-staged": "^14.0.1",
     "prettier": "^2.8.7",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
@@ -63,5 +64,11 @@
   },
   "resolutions": {
     "@yarnpkg/parsers": "3.0.0-rc.48.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
