@@ -647,6 +647,7 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * 获取服务函数的详情
+   * TODO: 不要 services 前缀
    * @param serviceKey `services.list` 或 `services.sub.list`
    * @returns
    */
@@ -661,6 +662,23 @@ export class Workspace extends EventTarget implements IWorkspace {
       moduleName,
       config: this.serviceModules[moduleName]?.serviceFunctions[name],
     };
+  }
+
+  /**
+   * 获取服务函数的列表
+   */
+  listServiceFunctions() {
+    const ret: Record<string, object> = {};
+    Object.values(this.serviceModules).forEach((module) => {
+      Object.keys(module.serviceFunctions).forEach((name) => {
+        const serviceKey =
+          module.baseConfig.namespace !== 'index'
+            ? name
+            : [module.baseConfig.namespace, name].join('.');
+        ret[serviceKey] = module.serviceFunctions[name];
+      });
+    });
+    return ret;
   }
 
   /**

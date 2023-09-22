@@ -192,6 +192,7 @@ export interface IWorkspace {
   ) => void;
 
   getServiceFunction?: (serviceKey: string) => object;
+  listServiceFunctions?: () => Record<string, object>;
   removeServiceFunction?: (serviceName: string, modName?: string) => void;
   addServiceFunction?: (
     payload: IServiceFunctionPayload | IServiceFunctionPayload[],

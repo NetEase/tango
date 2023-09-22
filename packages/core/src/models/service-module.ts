@@ -16,12 +16,19 @@ import { TangoModule } from './module';
  */
 export class TangoServiceModule extends TangoModule {
   /**
-   * 模块名
+   * 服务函数的模块名，默认为 index
    */
   name: string;
 
+  /**
+   * 原始注册的服务函数
+   * @example { get: {}, list: {} }
+   */
   _serviceFunctions: Dict;
 
+  /**
+   * 原始的基础配置
+   */
   _baseConfig: Dict;
 
   get serviceFunctions() {
