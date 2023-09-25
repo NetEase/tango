@@ -11,7 +11,11 @@ export const PreviewTool = observer(() => {
       shape="ghost"
       selected={designer.isPreview}
       onClick={() => {
-        designer.toggleIsPreview(!designer.isPreview);
+        const nextIsPreview = !designer.isPreview;
+        designer.toggleIsPreview(nextIsPreview);
+        if (nextIsPreview) {
+          designer.setActiveView('design');
+        }
       }}
       tip="预览"
     >
