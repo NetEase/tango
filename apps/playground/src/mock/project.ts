@@ -44,7 +44,7 @@ const tangoConfigJson = {
       resources: ['https://unpkg.com/moment@{{version}}/moment.js'],
     },
     '@music163/tango-boot': {
-      version: '0.2.0',
+      version: '0.2.1',
       library: 'TangoBoot',
       type: 'baseDependency',
       resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],

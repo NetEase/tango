@@ -18,7 +18,7 @@ export function Tabs({
   const tabBarStyle = useMemo(() => {
     let ret = centered ? centerTabBarStyle : defaultTabBarStyle;
     if (isTabBarSticky) {
-      ret = { ...ret, position: 'sticky', top: tabBarStickyOffset, zIndex: 1, background: '#fff' };
+      ret = { ...ret, position: 'sticky', top: tabBarStickyOffset, zIndex: 2, background: '#fff' };
     }
     return ret;
   }, [centered, isTabBarSticky, tabBarStickyOffset]);
