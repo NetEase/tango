@@ -11,6 +11,7 @@ export * from './sandbox';
 export * from './sidebar';
 export * from './toolbar';
 export * from './selection-menu';
+export * from './widgets';
 
 export { register as registerSetter } from '@music163/tango-setting-form';
 

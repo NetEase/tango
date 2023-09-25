@@ -133,7 +133,7 @@ export function ProjectDetail() {
   return (
     <Box display="flex" alignItems="center" columnGap="l">
       <Box className="ProjectName" fontSize="18px" fontWeight="bold">
-        lc-online-test
+        community-test
       </Box>
       <Box className="BranchName" as="code" fontSize="14px">
         <BranchesOutlined /> feature/list

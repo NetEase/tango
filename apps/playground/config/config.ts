@@ -14,7 +14,7 @@ export default {
   ],
   devServer: {
     host: 'local.netease.com',
-    port: 7007,
+    port: 8008,
     https: {
       key: path.resolve(__dirname, 'local.netease.com-key.pem'),
       cert: path.resolve(__dirname, 'local.netease.com.pem'),
