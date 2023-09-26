@@ -319,8 +319,8 @@ function RenderItem({
     const hasUmd = !!resources?.length;
     const unsafeUmd =
       hasUmd && resources.some((e: string) => /\/\/unpkg\.f[nt]\.netease\.com\//.test(e));
-    const packageJsonOnly = dependencies?.[name] && !packageInfo;
-    const tangoConfigJsonOnly = !dependencies?.[name] && packageInfo;
+    const packageJsonIncluded = !!dependencies?.[name];
+    const tangoConfigJsonIncluded = !!packageInfo;
 
     return [
       hasUmd && (
@@ -337,14 +337,14 @@ function RenderItem({
           </Tag>
         </Tooltip>
       ),
-      packageJsonOnly && (
-        <Tooltip title="此依赖只在 package.json 中存在">
-          <Tag key="packageJsonOnly">package.json</Tag>
+      packageJsonIncluded && (
+        <Tooltip title="此依赖在 package.json 中存在">
+          <Tag key="packageJson">package</Tag>
         </Tooltip>
       ),
-      tangoConfigJsonOnly && (
-        <Tooltip title="此依赖只在 tango.config.json 中存在">
-          <Tag key="packageJsonOnly">tango.config.json</Tag>
+      tangoConfigJsonIncluded && (
+        <Tooltip title="此依赖在 tango.config.json 中存在">
+          <Tag key="tangoConfigJson">tango.config</Tag>
         </Tooltip>
       ),
     ].filter((e) => e);
