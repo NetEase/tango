@@ -317,8 +317,6 @@ function RenderItem({
     const { resources } = packageInfo || {};
     const dependencies = workspace.packageJson?.getValue('dependencies');
     const hasUmd = !!resources?.length;
-    const unsafeUmd =
-      hasUmd && resources.some((e: string) => /\/\/unpkg\.f[nt]\.netease\.com\//.test(e));
     const packageJsonIncluded = !!dependencies?.[name];
     const tangoConfigJsonIncluded = !!packageInfo;
 
@@ -327,13 +325,6 @@ function RenderItem({
         <Tooltip title="该依赖拥有 UMD 资源，可优化加载速度">
           <Tag key="hasUmd" color="green">
             UMD
-          </Tag>
-        </Tooltip>
-      ),
-      unsafeUmd && (
-        <Tooltip title="该依赖的 UMD 资源来自自建 unpkg 服务，稳定性不可靠，建议修改 tango.config.json 更换为正式 cdn 资源地址">
-          <Tag key="unsafeUmd" color="orange">
-            非 CDN
           </Tag>
         </Tooltip>
       ),
