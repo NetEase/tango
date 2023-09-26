@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { observer, useWorkspace } from '@music163/tango-context';
 import {
   Button,
@@ -13,6 +13,7 @@ import {
   message,
   Tag,
   Checkbox,
+  ModalProps,
 } from 'antd';
 import { FormListProps } from 'antd/lib/form';
 import { Box, Text } from 'coral-system';
@@ -21,7 +22,7 @@ import semverValid from 'semver/functions/valid';
 import { ConfigGroup, ConfigItem } from '@music163/tango-ui';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useBoolean } from '@music163/tango-helpers';
-import { isUndefined } from 'lodash-es';
+import { isUndefined, rest } from 'lodash-es';
 import { Workspace } from '@music163/tango-core';
 import { useSandboxQuery } from '../context';
 
@@ -179,18 +180,9 @@ function RenderItem({
   onUpgrade,
   showTags = true,
 }: RenderItemProps) {
-  const [version, setVersion] = useState<string>();
-  const [versionList, setVersionList] = useState<Array<{ label: string; value: string }>>([]);
   const [open, { on, off }] = useBoolean(false);
 
   const workspace = useWorkspace() as Workspace;
-  // const remoteServices = useRemoteServices();
-
-  // useEffect(() => {
-  //   remoteServices?.DependencyService?.listPackageVersions({ packageName: record.name }).then(
-  //     (data: any) => setVersionList((data || []).map((v: string) => ({ label: v, value: v }))),
-  //   );
-  // }, [remoteServices, record]);
 
   const basePackage = useMemo(() => {
     if (type !== DependencyItemType.基础包 || !templateBaseDependencies) return undefined;
@@ -200,9 +192,29 @@ function RenderItem({
   /**
    * 处理依赖升级的逻辑
    */
-  function onDepUpgrade() {
+  function onDepUpgrade(values: Record<string, any>) {
     // 根据是否有 packages 字段，判断是否已升级为新的规范
     const hasUpgraded = !!workspace.tangoConfigJson?.getValue('packages');
+    const { version, umd, library, resources, designerResources } = values || {};
+
+    let packageConfig = record?.package;
+    if (umd === false && packageConfig) {
+      packageConfig = {
+        ...packageConfig,
+        version,
+        library: undefined,
+        resources: undefined,
+        designerResources: undefined,
+      };
+    } else {
+      packageConfig = {
+        ...packageConfig,
+        version,
+        library,
+        resources,
+        designerResources,
+      };
+    }
 
     switch (type) {
       case DependencyItemType.业务组件:
@@ -212,7 +224,7 @@ function RenderItem({
           version,
           hasUpgraded
             ? {
-                package: record?.package,
+                package: packageConfig,
               }
             : {},
         );
@@ -227,7 +239,7 @@ function RenderItem({
           basePackage?.version || 'latest',
           hasUpgraded
             ? {
-                package: record?.package,
+                package: packageConfig,
               }
             : {},
         );
@@ -297,7 +309,6 @@ function RenderItem({
   }
 
   function onCloseModal() {
-    setVersion(undefined);
     off();
   }
 
@@ -359,7 +370,7 @@ function RenderItem({
           ? [
               <Popconfirm
                 title={`确认升级 ${record.name} 到 ${basePackage.version} 吗？`}
-                onConfirm={onDepUpgrade}
+                onConfirm={() => onDepUpgrade({ version: basePackage.version })}
               >
                 <a key="upgrade">升级</a>
               </Popconfirm>,
@@ -387,28 +398,12 @@ function RenderItem({
           />
         }
       />
-      <Modal
+      <DependencyConfigModal
         open={open}
-        title={`修改依赖：${record.name}`}
+        record={record}
         onCancel={onCloseModal}
-        onOk={onDepUpgrade}
-      >
-        <Text mr="6px">
-          选择依赖版本号&nbsp;
-          <Tooltip title="只提供正式版本列表，Beta版本依赖需要手动升级">
-            <QuestionCircleOutlined />
-          </Tooltip>
-        </Text>
-        <Select
-          style={{ width: 160 }}
-          showSearch
-          defaultValue={record.version}
-          options={versionList || []}
-          onChange={(value: string) => setVersion(value)}
-          placeholder="请选择要切换的版本号"
-          optionFilterProp="value"
-        />
-      </Modal>
+        onOk={(event, { values }) => onDepUpgrade(values)}
+      />
     </List.Item>
   );
 }
@@ -440,21 +435,21 @@ interface DependencyModalProps {
   templateBaseDependencies: Record<string, any>;
   onBizDependencyAdd: Function;
   onBaseDependencyAdd: Function;
+  record?: Record<string, any>;
 }
 
 function AddDependencyModal({
   templateBaseDependencies,
   onBizDependencyAdd,
   onBaseDependencyAdd,
-}: DependencyModalProps) {
+  record,
+  ...restProps
+}: DependencyModalProps & ModalProps) {
   // 依赖类型
-  const [type, setType] = useState<DependencyItemType>(DependencyItemType.其他依赖);
   const [open, { on, off }] = useBoolean();
 
-  const [form] = Form.useForm();
   const workspace = useWorkspace();
   const sandbox = useSandboxQuery();
-  // 根据是否有 packages 字段，判断是否已升级为新的规范
   const hasUpgraded = !!workspace.tangoConfigJson?.getValue('packages');
 
   const onFinishCallback = (name?: string) => {
@@ -462,88 +457,165 @@ function AddDependencyModal({
     // FIXME: 修复沙箱添加组件后 HMR 失效的 bug，添加完刷新
     sandbox.reload();
     off();
-    form.resetFields();
   };
 
-  const onOk = () => {
-    form.validateFields().then((values) => {
-      const { name, version, umd, library, resources, designerResources } = values;
+  const onOk: DependencyConfigModalProps['onOk'] = (event, { values }) => {
+    const { type, name, version, umd, library, resources, designerResources } = values;
 
-      switch (type) {
-        case DependencyItemType.其他依赖: {
-          workspace.updateDependency(
-            name,
-            version,
-            umd
-              ? {
-                  package: {
-                    type: 'dependency',
-                    version,
-                    library,
-                    resources,
-                    designerResources,
-                  },
-                }
-              : {},
-          );
-          break;
-        }
-        // case DependencyItemType.业务组件: {
-        //   const targetBizInfo = (bizList as any)?.find(
-        //     (biz: { packageName: string }) => biz.packageName === name,
-        //   );
-        //   onBizDependencyAdd &&
-        //     onBizDependencyAdd({
-        //       ...values,
-        //       detail: targetBizInfo,
-        //     });
-        //   break;
-        // }
-        case DependencyItemType.基础包: {
-          const basePackage = templateBaseDependencies[name];
-          // 添加 package.json
-          workspace.updateDependency(
-            name,
-            basePackage.version || 'latest',
-            hasUpgraded
-              ? {
-                  package: basePackage.package,
-                }
-              : {},
-          );
-
-          // 配置已经合并为新版，不需要走旧的逻辑
-          if (!hasUpgraded) {
-            // 更新 tango.config.json baseDependencies
-            workspace.tangoConfigJson.setValue('baseDependencies', (targetValue) => {
-              const bases = targetValue || [];
-              (bases as string[]).push(name);
-              return bases;
-            });
-            // 更新 tango.config.json externals
-            workspace.tangoConfigJson.setValue('sandbox.externals', (targetValue) => {
-              targetValue[name] = basePackage?.global;
-              return targetValue;
-            });
-            // 更新 tango.config.json externalResources
-            workspace.tangoConfigJson
-              .setValue('sandbox.externalResources', (targetValue) => {
-                basePackage.resources.forEach((resource: string) => {
-                  (targetValue as string[]).push(
-                    resource.replace('{latest_version}', basePackage.version),
-                  );
-                });
-                return targetValue;
-              })
-              .update();
-          }
-          onBaseDependencyAdd && onBaseDependencyAdd(basePackage);
-          break;
-        }
-        default:
-          break;
+    switch (type) {
+      case DependencyItemType.其他依赖: {
+        workspace.updateDependency(
+          name,
+          version,
+          hasUpgraded && umd
+            ? {
+                package: {
+                  type: 'dependency',
+                  ...record?.package,
+                  version,
+                  library,
+                  resources,
+                  designerResources,
+                },
+              }
+            : {},
+        );
+        break;
       }
-      onFinishCallback(values?.name);
+      // case DependencyItemType.业务组件: {
+      //   const targetBizInfo = (bizList as any)?.find(
+      //     (biz: { packageName: string }) => biz.packageName === name,
+      //   );
+      //   onBizDependencyAdd &&
+      //     onBizDependencyAdd({
+      //       ...values,
+      //       detail: targetBizInfo,
+      //     });
+      //   break;
+      // }
+      case DependencyItemType.基础包: {
+        const basePackage = templateBaseDependencies[name];
+        // 添加 package.json
+        workspace.updateDependency(
+          name,
+          basePackage.version || 'latest',
+          hasUpgraded
+            ? {
+                package: basePackage.package,
+              }
+            : {},
+        );
+
+        // 配置已经合并为新版，不需要走旧的逻辑
+        if (!hasUpgraded) {
+          // 更新 tango.config.json baseDependencies
+          workspace.tangoConfigJson.setValue('baseDependencies', (targetValue) => {
+            const bases = targetValue || [];
+            (bases as string[]).push(name);
+            return bases;
+          });
+          // 更新 tango.config.json externals
+          workspace.tangoConfigJson.setValue('sandbox.externals', (targetValue) => {
+            targetValue[name] = basePackage?.global;
+            return targetValue;
+          });
+          // 更新 tango.config.json externalResources
+          workspace.tangoConfigJson
+            .setValue('sandbox.externalResources', (targetValue) => {
+              basePackage.resources.forEach((resource: string) => {
+                (targetValue as string[]).push(
+                  resource.replace('{latest_version}', basePackage.version),
+                );
+              });
+              return targetValue;
+            })
+            .update();
+        }
+        onBaseDependencyAdd && onBaseDependencyAdd(basePackage);
+        break;
+      }
+      default:
+        break;
+    }
+    onFinishCallback(values?.name);
+  };
+
+  function onCloseModal() {
+    off();
+  }
+
+  return (
+    <Box px="l" py="m">
+      <Button ghost block type="primary" onClick={on}>
+        <PlusOutlined />
+        添加依赖
+      </Button>
+      <DependencyConfigModal
+        open={open}
+        title={record ? `修改依赖：${record.name}` : '添加依赖'}
+        onOk={onOk}
+        onCancel={onCloseModal}
+        destroyOnClose
+        {...restProps}
+      />
+    </Box>
+  );
+}
+
+type DependencyConfigModalProps = Omit<ModalProps, 'onOk'> & {
+  record?: Record<string, any>;
+  onOk: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    data: {
+      values: Record<string, any>;
+      hasUpgraded: boolean;
+    },
+  ) => any;
+};
+
+function DependencyConfigModal({
+  record,
+  open,
+  onOk,
+  onCancel,
+  ...restProps
+}: DependencyConfigModalProps) {
+  // 依赖类型
+  const [type, setType] = useState<DependencyItemType>(DependencyItemType.其他依赖);
+  const [form] = Form.useForm();
+  const workspace = useWorkspace();
+  // 根据是否有 packages 字段，判断是否已升级为新的规范
+  const hasUpgraded = !!workspace.tangoConfigJson?.getValue('packages');
+  // const [versionList, setVersionList] = useState<Array<{ label: string; value: string }>>([]);
+
+  // const remoteServices = useRemoteServices();
+
+  // useEffect(() => {
+  //   remoteServices?.DependencyService?.listPackageVersions({ packageName: record.name }).then(
+  //     (data: any) => setVersionList((data || []).map((v: string) => ({ label: v, value: v }))),
+  //   );
+  // }, [remoteServices, record]);
+
+  useEffect(() => {
+    if (open && record && form) {
+      form.resetFields();
+      setType(record?.type);
+      form.setFieldsValue({
+        ...record,
+        ...record?.package,
+        umd: !!record?.package?.resources?.length,
+      });
+    }
+  }, [record, open, form]);
+
+  const onSubmit = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    form.validateFields().then((values) => {
+      if (onOk) {
+        onOk(event, {
+          values,
+          hasUpgraded,
+        });
+      }
     });
   };
 
@@ -554,11 +626,6 @@ function AddDependencyModal({
       form.setFieldValue('type', depType);
       setType(depType);
     }
-  };
-
-  const onCloseModal = () => {
-    off();
-    form.resetFields();
   };
 
   const ResourceFormList = (props: Omit<FormListProps, 'children'>) => (
@@ -599,18 +666,15 @@ function AddDependencyModal({
   );
 
   return (
-    <Box px="l" py="m">
-      <Button ghost block type="primary" onClick={on}>
-        <PlusOutlined />
-        添加依赖
-      </Button>
+    <>
       <Modal
         width={560}
         open={open}
-        title="添加依赖"
-        onOk={onOk}
-        onCancel={onCloseModal}
+        title={record ? `修改依赖：${record.name}` : '添加依赖'}
+        onOk={onSubmit}
+        onCancel={onCancel}
         destroyOnClose
+        {...restProps}
       >
         <Form
           form={form}
@@ -619,16 +683,20 @@ function AddDependencyModal({
           initialValues={{ type }}
           onValuesChange={onValuesChange}
         >
-          <Form.Item label="依赖类型" name="type">
-            <Radio.Group>
-              {/* <Radio.Button value={DependencyItemType.业务组件}>业务组件</Radio.Button> */}
-              <Radio.Button value={DependencyItemType.基础包}>基础包</Radio.Button>
-              <Radio.Button value={DependencyItemType.其他依赖}>其他依赖</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item label="npm 包名" name="name" rules={[{ required: true }]}>
-            <Input placeholder="输入依赖名" />
-          </Form.Item>
+          {!record && (
+            <>
+              <Form.Item label="依赖类型" name="type">
+                <Radio.Group>
+                  {/* <Radio.Button value={DependencyItemType.业务组件}>业务组件</Radio.Button> */}
+                  <Radio.Button value={DependencyItemType.基础包}>基础包</Radio.Button>
+                  <Radio.Button value={DependencyItemType.其他依赖}>其他依赖</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item label="npm 包名" name="name" rules={[{ required: true }]}>
+                <Input placeholder="输入依赖名" />
+              </Form.Item>
+            </>
+          )}
           <Form.Item
             label="版本号"
             name="version"
@@ -673,6 +741,6 @@ function AddDependencyModal({
           </Form.Item>
         </Form>
       </Modal>
-    </Box>
+    </>
   );
 }
