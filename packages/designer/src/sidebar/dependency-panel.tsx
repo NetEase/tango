@@ -12,12 +12,14 @@ import {
   Select,
   message,
   Tag,
+  Checkbox,
 } from 'antd';
+import { FormListProps } from 'antd/lib/form';
 import { Box, Text } from 'coral-system';
 import semverLt from 'semver/functions/lt';
 import semverValid from 'semver/functions/valid';
 import { ConfigGroup, ConfigItem } from '@music163/tango-ui';
-import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useBoolean } from '@music163/tango-helpers';
 import { isUndefined } from 'lodash-es';
 import { Workspace } from '@music163/tango-core';
@@ -347,7 +349,7 @@ function RenderItem({
         type !== DependencyItemType.基础包
           ? [
               <a key="upgrade" onClick={on}>
-                升级
+                修改
               </a>,
               <Popconfirm onConfirm={onDepDelete} title={`确认删除依赖 ${record.name}？`}>
                 <a key="delete">删除</a>
@@ -387,7 +389,7 @@ function RenderItem({
       />
       <Modal
         open={open}
-        title={`升级依赖：${record.name}`}
+        title={`修改依赖：${record.name}`}
         onCancel={onCloseModal}
         onOk={onDepUpgrade}
       >
@@ -403,7 +405,7 @@ function RenderItem({
           defaultValue={record.version}
           options={versionList || []}
           onChange={(value: string) => setVersion(value)}
-          placeholder="请选择要升级的版本号"
+          placeholder="请选择要切换的版本号"
           optionFilterProp="value"
         />
       </Modal>
@@ -452,6 +454,8 @@ function AddDependencyModal({
   const [form] = Form.useForm();
   const workspace = useWorkspace();
   const sandbox = useSandboxQuery();
+  // 根据是否有 packages 字段，判断是否已升级为新的规范
+  const hasUpgraded = !!workspace.tangoConfigJson?.getValue('packages');
 
   const onFinishCallback = (name?: string) => {
     name && message.success(`${name} 添加成功`);
@@ -463,13 +467,25 @@ function AddDependencyModal({
 
   const onOk = () => {
     form.validateFields().then((values) => {
-      const { name, version } = values;
-      // 根据是否有 packages 字段，判断是否已升级为新的规范
-      const hasUpgraded = !!workspace.tangoConfigJson?.getValue('packages');
+      const { name, version, umd, library, resources, designerResources } = values;
 
       switch (type) {
         case DependencyItemType.其他依赖: {
-          workspace.updateDependency(name, version);
+          workspace.updateDependency(
+            name,
+            version,
+            umd
+              ? {
+                  package: {
+                    type: 'dependency',
+                    version,
+                    library,
+                    resources,
+                    designerResources,
+                  },
+                }
+              : {},
+          );
           break;
         }
         // case DependencyItemType.业务组件: {
@@ -534,15 +550,53 @@ function AddDependencyModal({
   const onValuesChange = ({ type: depType }: { type: DependencyItemType; name: string }) => {
     if (depType) {
       // type 变更触发
-      form.resetFields(['name', 'version']);
+      form.resetFields();
+      form.setFieldValue('type', depType);
       setType(depType);
     }
   };
 
   const onCloseModal = () => {
     off();
-    form.resetFields(['name', 'version']);
+    form.resetFields();
   };
+
+  const ResourceFormList = (props: Omit<FormListProps, 'children'>) => (
+    <Form.List {...props}>
+      {(fields, { add, remove }, { errors }) => (
+        <>
+          {fields.map((field) => (
+            <Form.Item key={field.key}>
+              <Box display="flex" alignItems="center">
+                <Form.Item
+                  label="资源地址"
+                  {...field}
+                  rules={[{ required: true, whitespace: true, type: 'url' }]}
+                  noStyle
+                >
+                  <Input
+                    placeholder="资源地址中的版本号可用 {{version}} 替代"
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+                {fields.length > 1 && (
+                  <Box width="20px" fontSize="18px" ml="6px" textAlign="center" flex="none">
+                    <a onClick={() => remove(field.name)}>
+                      <MinusCircleOutlined />
+                    </a>
+                  </Box>
+                )}
+              </Box>
+            </Form.Item>
+          ))}
+          <Button type="dashed" onClick={() => add()} block>
+            添加
+          </Button>
+          <Form.ErrorList errors={errors} />
+        </>
+      )}
+    </Form.List>
+  );
 
   return (
     <Box px="l" py="m">
@@ -562,17 +616,17 @@ function AddDependencyModal({
           form={form}
           layout="vertical"
           autoComplete="off"
-          initialValues={{ type: DependencyItemType.业务组件 }}
+          initialValues={{ type }}
           onValuesChange={onValuesChange}
         >
           <Form.Item label="依赖类型" name="type">
-            <Radio.Group value={type}>
+            <Radio.Group>
               {/* <Radio.Button value={DependencyItemType.业务组件}>业务组件</Radio.Button> */}
               <Radio.Button value={DependencyItemType.基础包}>基础包</Radio.Button>
               <Radio.Button value={DependencyItemType.其他依赖}>其他依赖</Radio.Button>
             </Radio.Group>
           </Form.Item>
-          <Form.Item label="npm包名" name="name" rules={[{ required: true }]}>
+          <Form.Item label="npm 包名" name="name" rules={[{ required: true }]}>
             <Input placeholder="输入依赖名" />
           </Form.Item>
           <Form.Item
@@ -581,6 +635,41 @@ function AddDependencyModal({
             rules={[{ required: true, message: '请输入依赖的版本号' }]}
           >
             <Input placeholder="输入版本号" />
+          </Form.Item>
+          {hasUpgraded && (
+            <Form.Item name="umd" valuePropName="checked">
+              <Checkbox>使用预构建 UMD 资源</Checkbox>
+            </Form.Item>
+          )}
+          <Form.Item noStyle shouldUpdate>
+            {() =>
+              form.getFieldValue('umd') && (
+                <>
+                  <Form.Item label="全局变量名" name="library">
+                    <Input placeholder="输入 UMD 资源挂载在全局变量下的变量名" />
+                  </Form.Item>
+                  <Form.Item label="资源地址" required>
+                    <ResourceFormList
+                      name="resources"
+                      rules={[
+                        {
+                          validator: async (rule, value) => {
+                            if (!value?.length) {
+                              throw new Error('资源地址不能为空');
+                            }
+                          },
+                        },
+                      ]}
+                    />
+                  </Form.Item>
+                  {form.getFieldValue('type') === DependencyItemType.基础包 && (
+                    <Form.Item label="设计器资源地址">
+                      <ResourceFormList name="designerResources" />
+                    </Form.Item>
+                  )}
+                </>
+              )
+            }
           </Form.Item>
         </Form>
       </Modal>
