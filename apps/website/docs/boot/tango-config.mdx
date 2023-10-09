@@ -10,10 +10,19 @@
 
 项目使用的 npm 包依赖信息，用于定义依赖的类型以及外置依赖资源。该配置项为一个 map，key 为对应的 npm 包名，value 为该依赖的配置信息。
 
+- version 包的版本号，必选
+- library UMD 包中的全局变量名，必选
+- type 依赖的类型
+  - baseDependency 基础依赖包
+  - bizDependency 业务组件依赖包
+  - dependency 其他依赖包
+- resources 外置依赖资源列表
+- designerResources 在设计器视图载入的外置资源列表，用来需要区别加载时使用
+- description 描述信息
+
 依赖的类型 `type` 可以是 `baseDependency` 即项目的基础依赖，用于获取项目基础物料列表的信息；也可以是 `bizDependency` 即业务组件依赖，用于获取合并到物料面板业务组件菜单中的业务组件列表；也可以是 `depenency` 即项目的其他依赖，只用于提供 external 信息与版本信息等，不会和物料面板产生关系。
 
 当配置了外置依赖资源 `resources` 与其对应的全局变量 `library` 时，当这些依赖被 import 时，相关资源不会被打包到 bundle 中，而是在运行时再去外部获取这些扩展依赖，其等效于之前的 `sandbox.externalResources` 与 `sandbox.externals` 配置项。此外，可以将 `resource` 中的版本号替换为 `{{version}}`，其会在平台上构建时替换为版本号。特殊的，可以定义 `designerResources` 用于适配平台的设计器视图。
-
 
 ```json
 {
