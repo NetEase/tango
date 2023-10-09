@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/netease/tango/compare/@music163/tango-designer@0.4.0...@music163/tango-designer@0.4.1) (2023-10-09)
+
+### Bug Fixes
+
+- always switch to design mode after preview is on ([85898de](https://github.com/netease/tango/commit/85898dee19b6031016679e33a4ce9edbd1089713))
+- update export entry ([e429610](https://github.com/netease/tango/commit/e4296106066ad290ac838135fe6a57bc50ad2680))
+
 # [0.4.0](https://github.com/netease/tango/compare/@music163/tango-designer@0.3.0...@music163/tango-designer@0.4.0) (2023-09-22)
 
 ### Bug Fixes
