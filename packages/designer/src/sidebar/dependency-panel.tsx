@@ -9,7 +9,6 @@ import {
   Tooltip,
   Popconfirm,
   Radio,
-  Select,
   message,
   Tag,
   Checkbox,
@@ -22,7 +21,7 @@ import semverValid from 'semver/functions/valid';
 import { ConfigGroup, ConfigItem } from '@music163/tango-ui';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useBoolean } from '@music163/tango-helpers';
-import { isUndefined, rest } from 'lodash-es';
+import { isUndefined } from 'lodash-es';
 import { Workspace } from '@music163/tango-core';
 import { useSandboxQuery } from '../context';
 
@@ -443,7 +442,7 @@ function AddDependencyModal({
   onBizDependencyAdd,
   onBaseDependencyAdd,
   record,
-  ...restProps
+  ...rest
 }: DependencyModalProps & ModalProps) {
   // 依赖类型
   const [open, { on, off }] = useBoolean();
@@ -556,7 +555,7 @@ function AddDependencyModal({
         onOk={onOk}
         onCancel={onCloseModal}
         destroyOnClose
-        {...restProps}
+        {...rest}
       />
     </Box>
   );
@@ -573,12 +572,49 @@ type DependencyConfigModalProps = Omit<ModalProps, 'onOk'> & {
   ) => any;
 };
 
+function ResourceFormList(props: Omit<FormListProps, 'children'>) {
+  return (
+    <Form.List {...props}>
+      {(fields, { add, remove }, { errors }) => (
+        <>
+          {fields.map((field) => (
+            <Form.Item key={field.key}>
+              <Box display="flex" alignItems="center">
+                <Form.Item
+                  label="资源地址"
+                  {...field}
+                  rules={[{ required: true, whitespace: true, type: 'url' }]}
+                  noStyle
+                >
+                  <Input
+                    placeholder="资源地址中的版本号可用 {{version}} 替代"
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+                <Box width="20px" fontSize="18px" ml="6px" textAlign="center" flex="none">
+                  <a onClick={() => remove(field.name)}>
+                    <MinusCircleOutlined />
+                  </a>
+                </Box>
+              </Box>
+            </Form.Item>
+          ))}
+          <Button type="dashed" onClick={() => add()} block>
+            添加
+          </Button>
+          <Form.ErrorList errors={errors} />
+        </>
+      )}
+    </Form.List>
+  );
+}
+
 function DependencyConfigModal({
   record,
   open,
   onOk,
   onCancel,
-  ...restProps
+  ...rest
 }: DependencyConfigModalProps) {
   // 依赖类型
   const [type, setType] = useState<DependencyItemType>(DependencyItemType.其他依赖);
@@ -597,14 +633,16 @@ function DependencyConfigModal({
   // }, [remoteServices, record]);
 
   useEffect(() => {
-    if (open && record && form) {
+    if (open && form) {
       form.resetFields();
-      setType(record?.type);
-      form.setFieldsValue({
-        ...record,
-        ...record?.package,
-        umd: !!record?.package?.resources?.length,
-      });
+      if (record) {
+        setType(record?.type);
+        form.setFieldsValue({
+          ...record,
+          ...record?.package,
+          umd: !!record?.package?.resources?.length,
+        });
+      }
     }
   }, [record, open, form]);
 
@@ -628,43 +666,6 @@ function DependencyConfigModal({
     }
   };
 
-  const ResourceFormList = (props: Omit<FormListProps, 'children'>) => (
-    <Form.List {...props}>
-      {(fields, { add, remove }, { errors }) => (
-        <>
-          {fields.map((field) => (
-            <Form.Item key={field.key}>
-              <Box display="flex" alignItems="center">
-                <Form.Item
-                  label="资源地址"
-                  {...field}
-                  rules={[{ required: true, whitespace: true, type: 'url' }]}
-                  noStyle
-                >
-                  <Input
-                    placeholder="资源地址中的版本号可用 {{version}} 替代"
-                    style={{ width: '100%' }}
-                  />
-                </Form.Item>
-                {fields.length > 1 && (
-                  <Box width="20px" fontSize="18px" ml="6px" textAlign="center" flex="none">
-                    <a onClick={() => remove(field.name)}>
-                      <MinusCircleOutlined />
-                    </a>
-                  </Box>
-                )}
-              </Box>
-            </Form.Item>
-          ))}
-          <Button type="dashed" onClick={() => add()} block>
-            添加
-          </Button>
-          <Form.ErrorList errors={errors} />
-        </>
-      )}
-    </Form.List>
-  );
-
   return (
     <>
       <Modal
@@ -674,7 +675,7 @@ function DependencyConfigModal({
         onOk={onSubmit}
         onCancel={onCancel}
         destroyOnClose
-        {...restProps}
+        {...rest}
       >
         <Form
           form={form}
@@ -685,7 +686,7 @@ function DependencyConfigModal({
         >
           {!record && (
             <>
-              <Form.Item label="依赖类型" name="type">
+              <Form.Item label="依赖类型" name="type" rules={[{ required: true }]}>
                 <Radio.Group>
                   {/* <Radio.Button value={DependencyItemType.业务组件}>业务组件</Radio.Button> */}
                   <Radio.Button value={DependencyItemType.基础包}>基础包</Radio.Button>
