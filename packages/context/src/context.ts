@@ -1,11 +1,25 @@
 import type { Engine } from '@music163/tango-core';
 import { createContext } from '@music163/tango-helpers';
 
+interface CustomVariableData {
+  key: string;
+  title: string;
+  children?: CustomVariableData[];
+  [key: string]: any;
+}
+
 export interface ITangoEngineContext {
   /**
    * 低代码引擎
    */
   engine: Engine;
+  /**
+   * 自定义配置数据
+   */
+  config: {
+    customActionVariables: CustomVariableData[];
+    customExpressionVariables: CustomVariableData[];
+  };
 }
 
 const [TangoEngineProvider, useTangoEngine] = createContext<ITangoEngineContext>({
@@ -22,31 +36,8 @@ export const useDesigner = () => {
   return useTangoEngine()?.engine.designer;
 };
 
-const builtinHelpers = [
-  {
-    title: 'setStoreValue',
-    key: '() => tango.setStoreValue("variableName", "variableValue")',
-    type: 'function',
-  },
-  {
-    title: 'getStoreValue',
-    key: '() => tango.getStoreValue("variableName")',
-    type: 'function',
-  },
-  { title: 'openModal', key: '() => tango.openModal("")', type: 'function' },
-  { title: 'closeModal', key: '() => tango.closeModal("")', type: 'function' },
-  { title: 'navigateTo', key: '() => tango.navigateTo("/")', type: 'function' },
-  { title: 'showToast', key: '() => tango.showToast("hello")', type: 'function' },
-  { title: 'formatDate', key: '() => tango.formatDate("2022-12-12")', type: 'function' },
-  { title: 'formatNumber', key: '() => tango.formatDate(9999)', type: 'function' },
-  {
-    title: 'copyToClipboard',
-    key: '() => tango.copyToClipboard("hello")',
-    type: 'function',
-  },
-];
-
 export const useWorkspaceData = () => {
+  const ctx = useTangoEngine();
   const workspace = useWorkspace();
   const modelVariables: any[] = []; // 绑定变量列表
   const storeActionVariables: any[] = []; // 模型中的所有 actions
@@ -111,20 +102,29 @@ export const useWorkspaceData = () => {
     value: item.path,
   }));
 
+  let actionVariables: CustomVariableData[] = [
+    buildVariableOptions('数据模型', '$stores', storeActionVariables),
+    buildVariableOptions('服务函数', '$services', serviceVariables),
+  ];
+
+  if (ctx.config?.customActionVariables) {
+    actionVariables = actionVariables.concat(ctx.config?.customActionVariables);
+  }
+
+  let expressionVariables: CustomVariableData[] = [
+    buildVariableOptions('数据模型', '$stores', storeVariables),
+    buildVariableOptions('服务函数', '$services', serviceVariables),
+  ];
+  if (ctx.config?.customExpressionVariables) {
+    expressionVariables = expressionVariables.concat(ctx.config?.customExpressionVariables);
+  }
+
   return {
     modelVariables: [buildVariableOptions('数据模型', 'stores', modelVariables)],
-    actionVariables: [
-      buildVariableOptions('数据模型', '$stores', storeActionVariables),
-      buildVariableOptions('服务函数', '$services', serviceVariables),
-      buildVariableOptions('工具函数', '$helpers', builtinHelpers),
-    ],
+    actionVariables,
     storeVariables,
     serviceVariables,
-    expressionVariables: [
-      buildVariableOptions('数据模型', '$stores', storeVariables),
-      buildVariableOptions('服务函数', '$services', serviceVariables),
-      buildVariableOptions('工具函数', '$helpers', builtinHelpers),
-    ],
+    expressionVariables,
     routeOptions,
   };
 };
