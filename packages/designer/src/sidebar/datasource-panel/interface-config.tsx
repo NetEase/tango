@@ -148,7 +148,7 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
           </Box>
           <VariableTree
             dataSource={dataSource}
-            deletable
+            showDeleteIcon
             onSelect={(item) => {
               setServiceData({ key: item.key, ...workspace.getServiceFunction(item.key) });
             }}

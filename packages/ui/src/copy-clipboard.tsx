@@ -9,7 +9,9 @@ export interface CopyClipboardProps {
    * 拷贝成功后到回调
    */
   onCopy?: () => void;
-  children?: React.ReactNode | ((copied: boolean) => React.ReactElement);
+  children?:
+    | React.ReactNode
+    | ((data: { copied: boolean; onClick: Function }) => React.ReactElement);
 }
 
 export function CopyClipboard({ onCopy, text, children }: CopyClipboardProps) {
@@ -37,7 +39,7 @@ export function CopyClipboard({ onCopy, text, children }: CopyClipboardProps) {
   };
 
   if (typeof children === 'function') {
-    return React.cloneElement(children(copied), {
+    return React.cloneElement(children({ copied, onClick }), {
       onClick,
     });
   }

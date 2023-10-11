@@ -114,16 +114,16 @@ export const useWorkspaceData = () => {
   return {
     modelVariables: [buildVariableOptions('数据模型', 'stores', modelVariables)],
     actionVariables: [
-      buildVariableOptions('数据模型', 'stores', storeActionVariables),
-      buildVariableOptions('服务函数', 'services', serviceVariables),
-      buildVariableOptions('工具函数', 'helpers', builtinHelpers),
+      buildVariableOptions('数据模型', '$stores', storeActionVariables),
+      buildVariableOptions('服务函数', '$services', serviceVariables),
+      buildVariableOptions('工具函数', '$helpers', builtinHelpers),
     ],
     storeVariables,
     serviceVariables,
     expressionVariables: [
-      buildVariableOptions('数据模型', 'stores', storeVariables),
-      buildVariableOptions('服务函数', 'services', serviceVariables),
-      buildVariableOptions('工具函数', 'helpers', builtinHelpers),
+      buildVariableOptions('数据模型', '$stores', storeVariables),
+      buildVariableOptions('服务函数', '$services', serviceVariables),
+      buildVariableOptions('工具函数', '$helpers', builtinHelpers),
     ],
     routeOptions,
   };
