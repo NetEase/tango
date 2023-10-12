@@ -6,6 +6,36 @@ import { registerSetter } from '@music163/tango-designer';
 import type { ComponentPrototypeType } from '@music163/tango-helpers';
 import { FooSetter } from '../components';
 
+export const bootHelperVariables = [
+  {
+    key: '$helpers',
+    title: '工具函数',
+    children: [
+      {
+        title: 'setStoreValue',
+        key: '() => tango.setStoreValue("variableName", "variableValue")',
+        type: 'function',
+      },
+      {
+        title: 'getStoreValue',
+        key: '() => tango.getStoreValue("variableName")',
+        type: 'function',
+      },
+      { title: 'openModal', key: '() => tango.openModal("")', type: 'function' },
+      { title: 'closeModal', key: '() => tango.closeModal("")', type: 'function' },
+      { title: 'navigateTo', key: '() => tango.navigateTo("/")', type: 'function' },
+      { title: 'showToast', key: '() => tango.showToast("hello")', type: 'function' },
+      { title: 'formatDate', key: '() => tango.formatDate("2022-12-12")', type: 'function' },
+      { title: 'formatNumber', key: '() => tango.formatDate(9999)', type: 'function' },
+      {
+        title: 'copyToClipboard',
+        key: '() => tango.copyToClipboard("hello")',
+        type: 'function',
+      },
+    ],
+  },
+];
+
 // folder-name
 // 物料列表定义
 const bizToggleButtonPrototype: ComponentPrototypeType = {

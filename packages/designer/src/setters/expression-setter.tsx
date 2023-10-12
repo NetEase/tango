@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, css } from 'coral-system';
-import { Alert, Modal, Tabs } from 'antd';
+import { Modal } from 'antd';
 import { value2code, isValidExpressionCode } from '@music163/tango-core';
 import {
   isVariableString,
@@ -9,12 +9,12 @@ import {
   useBoolean,
   getValue,
 } from '@music163/tango-helpers';
-import { CloseCircleFilled, ExpandAltOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { IconButton, Panel, InputCode, ChatInput } from '@music163/tango-ui';
+import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
+import { IconButton, Panel, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { EditableVariableTree, IVariableTreeNode } from '../components';
-import { useRemoteServices, useSandboxQuery } from '../context';
+import { useSandboxQuery } from '../context';
 
 export const expressionValueValidate = (value: string) => {
   if (isVariableString(value)) {
@@ -190,38 +190,24 @@ export function ExpressionModal({
     [workspace],
   );
   const sandbox = useSandboxQuery();
-  const remoteServices = useRemoteServices();
   const { expressionVariables } = useWorkspaceData();
   const evaluateContext = sandbox.window;
-  const gptService = remoteServices?.GptService;
 
   const handleExpInputChange = (val: string) => {
     setExp(val?.trim());
   };
   return (
     <Modal
-      title={title}
+      closable={false}
+      destroyOnClose
       width="70%"
       open={visible}
       onCancel={onCancel}
       onOk={() => {
         onOk(exp);
       }}
-      destroyOnClose
     >
-      <Panel
-        title="绑定的表达式"
-        subTitle={subTitle}
-        extra={
-          <IconButton
-            icon={<QuestionCircleOutlined />}
-            tooltip="你可以直接编辑下面的表达式，表达式需要使用 { } 进行包裹，点击此图标可以查看详细文档。"
-            href="https://music-doc.st.netease.com/st/tango-docs/docs/guide/javascript/overview"
-          />
-        }
-        shape="solid"
-        borderRadius="m"
-      >
+      <Panel title={`将 ${title} 设置为引用变量或自定义表达式`} subTitle={subTitle} shape="solid">
         <InputCode
           shape="inset"
           minHeight="56px"
@@ -233,91 +219,49 @@ export function ExpressionModal({
           autoCompleteOptions={autoCompleteOptions}
         />
       </Panel>
-      <Box mt="m" maxHeight={400} overflow="auto">
-        <Tabs type="card" size="small">
-          <Tabs.TabPane key="list" tab="从变量列表中选择">
-            <Box my="m">
-              <Alert
-                type="info"
-                message="你可以直接从下方的列表中选择已定义的变量"
-                banner
-                closable
-              />
-            </Box>
-            <EditableVariableTree
-              // height={400}
-              dataSource={dataSource || expressionVariables}
-              onUse={(node) => {
-                let str;
-                if (/^(stores|services)\./.test(node.key)) {
-                  str = `{tango.${node.key.replaceAll('.', '?.')}}`;
-                } else {
-                  str = `{${node.key}}`;
-                }
-                setExp(str);
-              }}
-              onAddVariable={(storeName, data) => {
-                onAction('addStoreState', [storeName, data.name, data.initialValue]);
-              }}
-              onDeleteVariable={(storeName, stateName) => {
-                onAction('removeStoreState', [storeName, stateName]);
-              }}
-              onDeleteStore={(storeName) => {
-                onAction('removeStoreModule', [storeName]);
-              }}
-              onSave={(code, node) => {
-                onAction('updateModuleCodeByVariablePath', [node.key, code]);
-              }}
-              getPreviewValue={(node) => {
-                if (!node || !node.key) {
-                  return;
-                }
+      <Panel title="从变量列表中选中" shape="solid" borderTop="0" maxHeight={400} overflow="auto">
+        <EditableVariableTree
+          dataSource={dataSource || expressionVariables}
+          onSelect={(node) => {
+            if (!node.key) {
+              return;
+            }
+            if (node.key.split('.').length < 2) {
+              return;
+            }
+            let str;
+            if (/^(stores|services)\./.test(node.key)) {
+              str = `{tango.${node.key.replaceAll('.', '?.')}}`;
+            } else {
+              str = `{${node.key}}`;
+            }
+            setExp(str);
+          }}
+          onAddVariable={(storeName, data) => {
+            onAction('addStoreState', [storeName, data.name, data.initialValue]);
+          }}
+          onDeleteVariable={(storeName, stateName) => {
+            onAction('removeStoreState', [storeName, stateName]);
+          }}
+          onDeleteStore={(storeName) => {
+            onAction('removeStoreModule', [storeName]);
+          }}
+          onSave={(code, node) => {
+            onAction('updateModuleCodeByVariablePath', [node.key, code]);
+          }}
+          getPreviewValue={(node) => {
+            if (!node || !node.key) {
+              return;
+            }
 
-                if (node.type === 'function') {
-                  return node.raw;
-                }
+            if (node.type === 'function') {
+              return node.raw;
+            }
 
-                return getValue(evaluateContext['tango'], node.key);
-              }}
-            />
-          </Tabs.TabPane>
-          <Tabs.TabPane key="ai" tab="使用 AI 助手生成" disabled={!gptService?.textCompletion}>
-            <ChatInput
-              placeholder="例如：实现一个函数，从给定的数组中过滤出name为bob的数据"
-              onGenerate={(text) =>
-                gptService
-                  .textCompletion({
-                    prompt: getExpressionCode(text),
-                    model: 'gpt-3.5-turbo',
-                    temperature: 0.5,
-                    topP: 1,
-                    presencePenalty: 0,
-                    frequencyPenalty: 0,
-                    mode: 'chat',
-                  })
-                  .then((res: any) => {
-                    return res?.detail?.choices?.[0]?.text;
-                  })
-              }
-              onApply={(preview) => {
-                setExp(`{${preview}}`);
-              }}
-              showCloseIcon={false}
-            />
-          </Tabs.TabPane>
-        </Tabs>
-      </Box>
+            return getValue(evaluateContext['tango'], node.key);
+          }}
+        />
+      </Panel>
     </Modal>
   );
-}
-
-function getExpressionCode(userInput: string) {
-  return `你是一个代码生成助手。你使用的编程语言是 JavaScript。不要解释代码，只返回代码块本身，代码必须包裹在 {} 内部。
-标准的输出格式如下：
-1. {this.a}
-2. {() => {}}
-3. {tango.stores.user.name}
-
-${userInput}
-  `;
 }

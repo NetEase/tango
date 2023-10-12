@@ -123,7 +123,6 @@ export function ModelSetter({ value, onChange }: FormItemComponentProps) {
         onBlur={onInputBlur}
         suffix={
           <EditableVariableTreeModal
-            showPreviewAlert={false}
             title="同步到的变量"
             trigger={
               <Tooltip title="从模型列表选择" placement="topRight">

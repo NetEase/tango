@@ -14,7 +14,7 @@ import {
   DndQuery,
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
-import { Logo, ProjectDetail } from './share';
+import { Logo, ProjectDetail, bootHelperVariables } from './share';
 import { sampleFiles } from '../mock/project';
 import './index.less';
 import {
@@ -50,7 +50,14 @@ export default function App() {
   const [menuLoading, setMenuLoading] = useState(true);
   const [menuData, setMenuData] = useState(false);
   return (
-    <Designer engine={engine} sandboxQuery={sandboxQuery}>
+    <Designer
+      engine={engine}
+      config={{
+        customActionVariables: bootHelperVariables,
+        customExpressionVariables: bootHelperVariables,
+      }}
+      sandboxQuery={sandboxQuery}
+    >
       <DesignerPanel
         logo={<Logo />}
         description={<ProjectDetail />}

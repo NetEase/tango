@@ -11,10 +11,15 @@ import {
   Empty,
   Popconfirm,
   Tooltip,
-  Alert,
 } from 'antd';
-import { Box, Text, css, Link } from 'coral-system';
-import { PlusOutlined, FunctionOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Box, Text, css } from 'coral-system';
+import {
+  PlusOutlined,
+  FunctionOutlined,
+  DeleteOutlined,
+  CopyOutlined,
+  EyeOutlined,
+} from '@ant-design/icons';
 import {
   filterTreeData,
   isFunction,
@@ -97,10 +102,6 @@ export interface EditableVariableTreeProps {
    */
   onSelect?: (data: IVariableTreeNode) => void;
   /**
-   * 点击使用此变量按钮时的回调
-   */
-  onUse?: (data: IVariableTreeNode) => void;
-  /**
    * 保存结点定义的回调
    */
   onSave?: NodeDefineProps['onSave'];
@@ -124,10 +125,6 @@ export interface EditableVariableTreeProps {
    * 搜索框的后置结点
    */
   searchAddonAfter?: React.ReactNode;
-  /**
-   * 是否展示预览值的提示信息
-   */
-  showPreviewAlert?: boolean;
 }
 
 const previewOptions = [
@@ -145,11 +142,9 @@ export function EditableVariableTree({
   onDeleteStore = noop,
   getPreviewValue = noop,
   onSelect = noop,
-  onUse = noop,
   onSave = noop,
   modes = ['add', 'preview', 'define'],
   defaultMode = 'preview',
-  showPreviewAlert = true,
 }: EditableVariableTreeProps) {
   const [keyword, setKeyword] = useState('');
   const [node, setNode] = useState<IVariableTreeNode>();
@@ -184,10 +179,15 @@ export function EditableVariableTree({
         </Box>
         <VariableTree
           dataSource={treeData}
+          showViewIcon
           onSelect={(item) => {
             setNode(item);
             mode === 'add' && setMode(defaultMode);
             onSelect(item);
+          }}
+          onView={(item) => {
+            setNode(item);
+            mode === 'add' && setMode(defaultMode);
           }}
           onAdd={(item) => {
             setNode(item);
@@ -225,33 +225,15 @@ export function EditableVariableTree({
           borderRadius="m"
           position="sticky"
           top="0"
-          bodyProps={{ px: 'l' }}
+          bodyProps={{ px: 'm' }}
         >
           {mode === 'preview' && (
-            <>
-              <Box mb="m" display={showPreviewAlert ? 'block' : 'none'}>
-                <Alert
-                  message={
-                    <Space>
-                      <Text>
-                        <Text as="strong">变量路径：</Text>tango.{node.key}
-                      </Text>
-                      <Link onClick={() => onUse(node)}>使用此变量</Link>
-                      <CopyClipboard text={`tango.${node.key.replaceAll('.', '?.')}`}>
-                        {(copied) => <Link>{copied ? '已复制' : '复制变量路径'}</Link>}
-                      </CopyClipboard>
-                    </Space>
-                  }
-                  type="info"
-                />
-              </Box>
-              <ValuePreview
-                value={getPreviewValue(node)}
-                onSelect={(valuePath) => {
-                  return ['tango', node.key.replaceAll('.', '?.'), valuePath].join('.');
-                }}
-              />
-            </>
+            <ValuePreview
+              value={getPreviewValue(node)}
+              onSelect={(valuePath) => {
+                return ['tango', node.key.replaceAll('.', '?.'), valuePath].join('.');
+              }}
+            />
           )}
           {mode === 'define' && (
             <NodeDefineForm
@@ -308,7 +290,7 @@ export function EditableVariableTreeModal({
       {React.cloneElement(trigger, { onClick: on })}
       <Modal
         title={title}
-        visible={visible}
+        open={visible}
         onCancel={off}
         okButtonProps={{
           disabled: !node,
@@ -345,6 +327,11 @@ const varTreeStyle = css`
   .ant-tree-indent-unit {
     width: 12px;
   }
+
+  .anticon-function {
+    margin-left: 4px;
+    color: var(--tango-colors-text2);
+  }
 `;
 
 interface VariableTreeProps {
@@ -352,7 +339,10 @@ interface VariableTreeProps {
   onSelect?: (data: IVariableTreeNode) => void;
   onAdd?: (data: IVariableTreeNode) => void;
   onRemove?: (data: IVariableTreeNode) => void;
-  deletable?: boolean;
+  onCopy?: (data: IVariableTreeNode) => void;
+  onView?: (data: IVariableTreeNode) => void;
+  showDeleteIcon?: boolean;
+  showViewIcon?: boolean;
 }
 
 export function VariableTree({
@@ -360,11 +350,15 @@ export function VariableTree({
   onSelect = noop,
   onAdd = noop,
   onRemove = noop,
-  deletable = false,
+  onCopy = noop,
+  onView = noop,
+  showDeleteIcon = false,
+  showViewIcon = false,
 }: VariableTreeProps) {
   return (
     <Box className="VariableTree" css={varTreeStyle}>
-      <Tree.DirectoryTree
+      <Tree
+        blockNode
         showIcon={false}
         defaultExpandAll
         treeData={dataSource}
@@ -372,28 +366,18 @@ export function VariableTree({
           onSelect(detail.node);
         }}
         titleRender={(node) => {
-          // 只有叶子结点支持删除
-          const showRemoveIcon = (!node.children && node.showDeleteIcon) ?? deletable;
-          const showAddIcon = node.showAddChildIcon ?? false;
-          if (showRemoveIcon || showAddIcon) {
+          const isLeaf = !node.children;
+
+          if (isLeaf) {
+            const isDeletable = node.showDeleteIcon ?? showDeleteIcon;
             return (
-              <Box display="flex" justifyContent="space-between" alignItems="center" pr="l">
-                <Text>{node.title}</Text>
+              <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Text>
+                  {node.title}
+                  {node.type === 'function' && <FunctionOutlined />}
+                </Text>
                 <Box>
-                  {showAddIcon && (
-                    <Tooltip title={`向 ${node.title} 中添加变量`}>
-                      <Button
-                        type="text"
-                        size="small"
-                        icon={<PlusOutlined />}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onAdd(node);
-                        }}
-                      />
-                    </Tooltip>
-                  )}
-                  {showRemoveIcon && (
+                  {isDeletable && (
                     <Popconfirm
                       title="确认删除吗？该操作会导致引用此模型的代码报错，请谨慎操作！"
                       onConfirm={() => onRemove(node)}
@@ -408,14 +392,61 @@ export function VariableTree({
                       />
                     </Popconfirm>
                   )}
+                  <CopyClipboard text={`tango.${node.key.replaceAll('.', '?.')}`}>
+                    {({ copied, onClick }) => {
+                      const label = copied ? '已复制' : '复制变量路径';
+                      return (
+                        <Tooltip title={label}>
+                          <Button
+                            type="text"
+                            size="small"
+                            icon={<CopyOutlined />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onClick();
+                              onCopy(node);
+                            }}
+                          />
+                        </Tooltip>
+                      );
+                    }}
+                  </CopyClipboard>
+                  {showViewIcon && (
+                    <Tooltip title="查看变量详情">
+                      <Button
+                        type="text"
+                        size="small"
+                        icon={<EyeOutlined />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onView(node);
+                        }}
+                      />
+                    </Tooltip>
+                  )}
                 </Box>
               </Box>
             );
           }
+
           return (
-            <Box>
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               <Text mr="m">{node.title}</Text>
-              {node.type === 'function' && <FunctionOutlined />}
+              <Box>
+                {node.showAddChildIcon && (
+                  <Tooltip title={`向 ${node.title} 中添加变量`}>
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<PlusOutlined />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onAdd(node);
+                      }}
+                    />
+                  </Tooltip>
+                )}
+              </Box>
             </Box>
           );
         }}

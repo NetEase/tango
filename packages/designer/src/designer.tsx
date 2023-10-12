@@ -27,6 +27,7 @@ export interface DesignerProps extends IDesignerContext, ITangoEngineContext {
 export function Designer(props: DesignerProps) {
   const {
     engine,
+    config,
     theme: themeProp,
     sandboxQuery,
     remoteServices = {},
@@ -42,7 +43,7 @@ export function Designer(props: DesignerProps) {
   return (
     <SystemProvider theme={theme} prefix="--tango">
       <ConfigProvider locale={zhCN}>
-        <TangoEngineProvider value={{ engine }}>
+        <TangoEngineProvider value={{ engine, config }}>
           <DesignerProvider value={{ sandboxQuery, remoteServices }}>{children}</DesignerProvider>
         </TangoEngineProvider>
       </ConfigProvider>
