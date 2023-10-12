@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.6](https://github.com/netease/tango/compare/@music163/tango-ui@0.1.5...@music163/tango-ui@0.1.6) (2023-10-12)
+
+### Bug Fixes
+
+- refactor expSetter ([#41](https://github.com/netease/tango/issues/41)) ([d63517e](https://github.com/netease/tango/commit/d63517ecb936e4227e70c33e610664316625f4f4))
+
 ## [0.1.5](https://github.com/netease/tango/compare/@music163/tango-ui@0.1.4...@music163/tango-ui@0.1.5) (2023-10-09)
 
 ### Bug Fixes

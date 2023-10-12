@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-context",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "react context for tango-apps",
   "keywords": [
     "react",

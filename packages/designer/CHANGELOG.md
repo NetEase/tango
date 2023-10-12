@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/netease/tango/compare/@music163/tango-designer@0.4.1...@music163/tango-designer@0.5.0) (2023-10-12)
+
+### Bug Fixes
+
+- refactor expSetter ([#41](https://github.com/netease/tango/issues/41)) ([d63517e](https://github.com/netease/tango/commit/d63517ecb936e4227e70c33e610664316625f4f4))
+
+### Features
+
+- add umd resources config when modifying dependency ([#36](https://github.com/netease/tango/issues/36)) ([e1bab66](https://github.com/netease/tango/commit/e1bab66819cf9a0bd7b87b72b2962498dfd51b2c))
+
 ## [0.4.1](https://github.com/netease/tango/compare/@music163/tango-designer@0.4.0...@music163/tango-designer@0.4.1) (2023-10-09)
 
 ### Bug Fixes
