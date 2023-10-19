@@ -4,8 +4,8 @@ import { AutoComplete } from 'antd';
 import { ActionSelect } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { ExpressionModal } from './expression-setter';
 import { value2expressionCode } from '@music163/tango-core';
+import { ExpressionModal } from './expression-setter';
 
 enum EventAction {
   NoAction = 'noAction',

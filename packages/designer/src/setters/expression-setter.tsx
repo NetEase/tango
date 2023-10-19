@@ -78,18 +78,18 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
   const change = useCallback(
     (code: string) => {
       if (!code) {
-        code = undefined;
+        onChange(undefined);
+        return;
       }
-
+      if (getVariableContent(code) === value2expressionCode(valueProp)) {
+        return;
+      }
       if (!isVariableString(code)) {
         code = `{${code}}`;
       }
-
-      if (getVariableContent(code) !== value2expressionCode(valueProp)) {
-        onChange(code);
-      }
+      onChange(code);
     },
-    [valueProp],
+    [valueProp, onChange],
   );
 
   return (
