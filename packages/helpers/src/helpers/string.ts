@@ -72,7 +72,7 @@ export function parseDndTrackId(str: string) {
   return [parts[0], str];
 }
 
-type DndIdParsedType = {
+interface DndIdParsedType {
   /**
    * 完整的 ID
    */
@@ -93,7 +93,7 @@ type DndIdParsedType = {
    * 序号
    */
   index?: string;
-};
+}
 
 /**
  * 解析 dnd id
@@ -178,7 +178,7 @@ export function isValidObjectString(str: string) {
   return false;
 }
 
-const templatePattern = /^\{(.+)\}$/s;
+const templatePattern = /^{(.+)}$/s;
 
 /**
  * 判断给定字符串是否为变量字符串
@@ -191,12 +191,11 @@ const templatePattern = /^\{(.+)\}$/s;
  */
 export function isVariableString(str: string) {
   // 先检查是否是简单的对象
-  // TODO: 是不是可以忽略这个检查
   if (code2object(str)) {
     return false;
   }
 
-  // 排除简单对象后，在用正则匹配
+  // 排除简单对象后，再用正则匹配
   return templatePattern.test(str);
 }
 

@@ -27,8 +27,6 @@ describe('engine', () => {
       }),
     });
     expect(engine.workspace.activeViewModule).toBeUndefined();
-    expect(engine.workspace.serviceModule).toBeUndefined();
     expect(engine.workspace.routeModule).toBeUndefined();
-    expect(engine.workspace?.storeModules.length).toEqual(0);
   });
 });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text, css } from 'coral-system';
 import { Modal } from 'antd';
-import { value2code, isValidExpressionCode } from '@music163/tango-core';
+import { isValidExpressionCode, value2expressionCode } from '@music163/tango-core';
 import {
   isVariableString,
   getVariableContent,
@@ -36,31 +36,6 @@ export const jsonValueValidate = (value: string) => {
   }
 };
 
-// FIXME: 这里应该用原始的代码 raw value
-export const getInputValue = (val: any) => {
-  if (!val) return '';
-
-  let ret;
-
-  switch (typeof val) {
-    case 'string':
-      ret = val;
-      break;
-    case 'number':
-      ret = String(val);
-      break;
-    case 'object':
-      ret = value2code(val);
-      ret = `{${ret}}`;
-      break;
-    default:
-      ret = '';
-      break;
-  }
-
-  return ret;
-};
-
 const suffixStyle = css`
   .anticon-close-circle {
     color: rgba(0, 0, 0, 0.25);
@@ -90,25 +65,32 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
   } = props;
   const [visible, { on, off }] = useBoolean();
   const [inputValue, setInputValue] = useState(() => {
-    return getInputValue(valueProp);
+    return value2expressionCode(valueProp);
   });
   const sandbox = useSandboxQuery();
   const evaluateContext = sandbox.window;
 
   // when receive new value, sync state
   useEffect(() => {
-    setInputValue(getInputValue(valueProp));
+    setInputValue(value2expressionCode(valueProp));
   }, [valueProp]);
 
-  const change = (code: string) => {
-    if (!code) {
-      code = undefined;
-    }
+  const change = useCallback(
+    (code: string) => {
+      if (!code) {
+        code = undefined;
+      }
 
-    if (code !== valueProp) {
-      onChange(code);
-    }
-  };
+      if (!isVariableString(code)) {
+        code = `{${code}}`;
+      }
+
+      if (getVariableContent(code) !== value2expressionCode(valueProp)) {
+        onChange(code);
+      }
+    },
+    [valueProp],
+  );
 
   return (
     <Box className="ExpressionSetter">

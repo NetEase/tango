@@ -188,7 +188,6 @@ function useInputCode({
       border: 'solid',
       borderColor: status === 'error' ? 'error.60' : 'line.normal',
       borderRadius: 's',
-      px: 'm',
     };
     lineNumbers = false;
     foldGutter = false;

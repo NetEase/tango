@@ -4,7 +4,8 @@ import { AutoComplete } from 'antd';
 import { ActionSelect } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { ExpressionModal, getInputValue } from './expression-setter';
+import { ExpressionModal } from './expression-setter';
+import { value2expressionCode } from '@music163/tango-core';
 
 enum EventAction {
   NoAction = 'noAction',
@@ -71,7 +72,7 @@ export function EventSetter(props: EventSetterProps) {
   };
 
   const actionText = getActionText(type, temp, value);
-  const inputValue = getInputValue(value);
+  const inputValue = value2expressionCode(value);
 
   return (
     <Box css={wrapperStyle}>
@@ -141,7 +142,7 @@ function getActionText(type: EventAction, temp: string, value: any) {
   if (handlerMap[type]) {
     text = getExpressionValue(type, temp);
   } else if (value) {
-    text = getInputValue(value);
+    text = value2expressionCode(value);
   }
   text = text || '请选择';
   return text;
