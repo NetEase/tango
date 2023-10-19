@@ -80,7 +80,7 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'designer',
             position: 'left',
-            label: '引擎文档',
+            label: '文档',
           },
           {
             type: 'docSidebar',
