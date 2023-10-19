@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, css } from 'coral-system';
+import { Box, Text, css } from 'coral-system';
 import { Modal } from 'antd';
 import { value2code, isValidExpressionCode } from '@music163/tango-core';
 import {
@@ -182,6 +182,7 @@ export function ExpressionModal({
   autoCompleteOptions,
 }: ExpressionModalProps) {
   const [exp, setExp] = useState(defaultValue);
+  const [error, setError] = useState('');
   const workspace = useWorkspace();
   const onAction = useCallback(
     (action: string, args: unknown[]) => {
@@ -206,6 +207,12 @@ export function ExpressionModal({
       onOk={() => {
         onOk(exp);
       }}
+      okButtonProps={{
+        disabled: !!error,
+      }}
+      bodyStyle={{
+        padding: 0,
+      }}
     >
       <Panel title={`将 ${title} 设置为引用变量或自定义表达式`} subTitle={subTitle} shape="solid">
         <InputCode
@@ -215,12 +222,18 @@ export function ExpressionModal({
           value={exp}
           placeholder={placeholder}
           onChange={handleExpInputChange}
+          onBlur={() => {
+            setError(expressionValueValidate(exp));
+          }}
           autoCompleteContext={evaluateContext}
           autoCompleteOptions={autoCompleteOptions}
         />
+        {error ? <Text color="red">输入的表达式存在语法错误，请修改后再提交！</Text> : null}
+        <Text color="text2">{`使用提示：表达式需要使用 {} 进行包裹，例如 {() => { someCode; }}`}</Text>
       </Panel>
-      <Panel title="从变量列表中选中" shape="solid" borderTop="0" maxHeight={400} overflow="auto">
+      <Panel title="从变量列表中选中" shape="solid" borderTop="0">
         <EditableVariableTree
+          height={380}
           dataSource={dataSource || expressionVariables}
           onSelect={(node) => {
             if (!node.key) {
