@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
-import { javascript, javascriptLanguage } from '@codemirror/lang-javascript';
+import { javascript, javascriptLanguage, esLint } from '@codemirror/lang-javascript';
 import { CompletionContext } from '@codemirror/autocomplete';
 import { syntaxTree } from '@codemirror/language';
+import { linter, lintGutter } from '@codemirror/lint';
 import { getValue } from '@music163/tango-helpers';
 import { Box, HTMLCoralProps } from 'coral-system';
+import * as eslint from 'eslint-linter-browserify';
 
 const completePropertyAfter = ['PropertyName', '.', '?.'];
 const dontCompleteIn = [
@@ -15,13 +17,27 @@ const dontCompleteIn = [
   'PropertyDefinition',
 ];
 
+const eslintConfig = {
+  // eslint configuration
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  env: {
+    browser: true,
+  },
+  rules: {},
+};
+
 function completeProperties(from: number, object: Object) {
   const options = [];
   for (const name in object) {
-    options.push({
-      label: name,
-      type: typeof object[name] === 'function' ? 'function' : 'variable',
-    });
+    if (Object.prototype.hasOwnProperty.call(object, name)) {
+      options.push({
+        label: name,
+        type: typeof object[name] === 'function' ? 'function' : 'variable',
+      });
+    }
   }
   return {
     from,
@@ -141,7 +157,13 @@ export function InputCode({
     <Box className="InputCode" display="flex" alignItems="center" overflow="hidden" {...rootStyle}>
       <Box flex="1" overflow="auto">
         <CodeMirror
-          extensions={[javascript({ jsx: true }), globalJavaScriptCompletions]}
+          extensions={[
+            javascript({ jsx: true }),
+            globalJavaScriptCompletions,
+            lintGutter(),
+            // @ts-ignore
+            linter(esLint(new eslint.Linter(), eslintConfig)),
+          ]}
           basicSetup={codeSetup}
           {...rest}
         />
