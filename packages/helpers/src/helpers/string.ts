@@ -200,6 +200,22 @@ export function isVariableString(str: string) {
 }
 
 /**
+ * 给输入代码加上花括号
+ * @example foo -> {foo}
+ * @example "hello" => {"hello"}
+ * @example () => {} => {() => {}}
+ *
+ * @param code 输入代码
+ * @returns 加上花括号后的代码
+ */
+export function wrapCode(code: string) {
+  if (isVariableString(code)) {
+    return code;
+  }
+  return `{${code}}`;
+}
+
+/**
  * 是否为简单字符串，非变量字符串
  * @param str
  */

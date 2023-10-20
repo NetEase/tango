@@ -8,6 +8,7 @@ import {
   noop,
   useBoolean,
   getValue,
+  wrapCode,
 } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
 import { IconButton, Panel, InputCode } from '@music163/tango-ui';
@@ -58,7 +59,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     modalTitle,
     modalTip,
     autoCompleteOptions,
-    placeholder = '表达式请使用 {} 包裹',
+    placeholder = '输入JS表达式代码',
     value: valueProp,
     status,
     allowClear = true,
@@ -84,10 +85,8 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
       if (getVariableContent(code) === value2expressionCode(valueProp)) {
         return;
       }
-      if (!isVariableString(code)) {
-        code = `{${code}}`;
-      }
-      onChange(code);
+
+      onChange(wrapCode(code));
     },
     [valueProp, onChange],
   );
@@ -129,7 +128,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
         placeholder={placeholder}
         autoCompleteOptions={autoCompleteOptions}
         visible={visible}
-        defaultValue={inputValue}
+        value={inputValue}
         onCancel={() => off()}
         onOk={(value) => {
           onChange(value);
@@ -146,6 +145,7 @@ export interface ExpressionModalProps {
   placeholder?: string;
   visible?: boolean;
   defaultValue?: string;
+  value?: string;
   onCancel?: () => void;
   onOk?: (value: string) => void;
   dataSource?: IVariableTreeNode[];
@@ -160,10 +160,11 @@ export function ExpressionModal({
   onCancel = noop,
   onOk = noop,
   defaultValue,
+  value,
   dataSource,
   autoCompleteOptions,
 }: ExpressionModalProps) {
-  const [exp, setExp] = useState(defaultValue);
+  const [exp, setExp] = useState(value ?? defaultValue);
   const [error, setError] = useState('');
   const workspace = useWorkspace();
   const onAction = useCallback(
@@ -179,6 +180,11 @@ export function ExpressionModal({
   const handleExpInputChange = (val: string) => {
     setExp(val?.trim());
   };
+
+  useEffect(() => {
+    setExp(value);
+  }, [value]);
+
   return (
     <Modal
       closable={false}
@@ -211,7 +217,6 @@ export function ExpressionModal({
           autoCompleteOptions={autoCompleteOptions}
         />
         {error ? <Text color="red">输入的表达式存在语法错误，请修改后再提交！</Text> : null}
-        <Text color="text2">{`使用提示：表达式需要使用 {} 进行包裹，例如 {() => { someCode; }}`}</Text>
       </Panel>
       <Panel title="从变量列表中选中" shape="solid" borderTop="0">
         <EditableVariableTree

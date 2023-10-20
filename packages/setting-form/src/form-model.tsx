@@ -11,9 +11,9 @@ export interface IFormModel {
   onChange: (name: string, value: any, field?: Field) => void;
 }
 
-export type FormModelOptionsType = {
+export interface FormModelOptionsType {
   onChange?: IFormModel['onChange'];
-};
+}
 
 export class FormModel implements IFormModel {
   state = {};
@@ -141,21 +141,21 @@ class SubModel implements IFormModel {
   }
 }
 
-type FieldCreateOptionsType = {
+interface FieldCreateOptionsType {
   parent: IFormModel;
   name: string;
-};
+}
 
-type FieldConfigType = {
+interface FieldConfigType {
   validate?: (value: any, field: Field, trigger: string) => string | Promise<any>;
-};
+}
 
-type FieldStateType = {
+interface FieldStateType {
   error?: any;
   validating?: boolean;
   cancelValidation?: () => void;
   [key: string]: any;
-};
+}
 
 type FieldValidateTriggerType = '*' | 'blur' | 'change';
 
@@ -233,11 +233,12 @@ export class Field {
         this.state.validating = false;
         this.state.error = error;
 
-        this.parent?.onChange?.(this.name, this.value, this);
-
         if (error) {
           return error;
         }
+
+        // 校验错误，不触发 onChange
+        this.parent?.onChange?.(this.name, this.value, this);
       }),
     );
   };

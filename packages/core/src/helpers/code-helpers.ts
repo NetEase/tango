@@ -1,4 +1,4 @@
-import { isVariableString } from '@music163/tango-helpers';
+import { getVariableContent, isVariableString } from '@music163/tango-helpers';
 import { value2node, expression2code } from './ast';
 
 /**
@@ -8,6 +8,15 @@ export function value2code(value: any) {
   const node = value2node(value);
   const code = expression2code(node);
   return code;
+}
+
+/**
+ * 是否是字符串代码
+ * @param code
+ * @returns
+ */
+function isStringCode(code: string) {
+  return /^".*"$/.test(code?.trim());
 }
 
 /**
@@ -27,7 +36,13 @@ export function value2expressionCode(val: any) {
 
   switch (typeof val) {
     case 'string': {
-      ret = isVariableString(val) ? val : `"${val}"`;
+      if (isVariableString(val)) {
+        ret = getVariableContent(val);
+      } else if (isStringCode(val)) {
+        ret = val;
+      } else {
+        ret = `"${val}"`;
+      }
       break;
     }
     case 'number':
@@ -35,7 +50,6 @@ export function value2expressionCode(val: any) {
       break;
     case 'object':
       ret = value2code(val);
-      ret = `{${ret}}`;
       break;
     default:
       ret = '';
