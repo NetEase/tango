@@ -21,7 +21,8 @@ export const ModeSwitchTool = observer(() => {
         shape="ghost"
         selected={designer.activeView === 'code'}
         onClick={() => {
-          designer.setActiveView('code');
+          designer.setActiveView('code'); // 切换到源码视图
+          designer.setActiveSidebarPanel(''); // 关闭左侧面板
         }}
         tip="源码视图"
       >

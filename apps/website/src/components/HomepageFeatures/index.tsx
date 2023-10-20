@@ -3,37 +3,37 @@ import clsx from 'clsx';
 import styles from './styles.module.css';
 import Translate, { translate } from '@docusaurus/Translate';
 
-type FeatureItem = {
+interface FeatureItem {
   title: string;
   Svg: React.ComponentType<React.ComponentProps<'svg'>>;
   description: JSX.Element;
-};
+}
 
 const FeatureList: FeatureItem[] = [
   {
-    title: translate({ id: 'homepage.features.low-code', message: '可视化搭建' }),
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: translate({ id: 'homepage.features.code-driven', message: '源码驱动' }),
+    Svg: require('@site/static/img/html-d.svg').default,
     description: (
-      <Translate id="homepage.features.low-code-content">
-        提供通用低代码引擎，支持通过拖拽和配置的方式快捷创建和修改应用，轻松完成模式化应用开发。
+      <Translate id="homepage.features.code-driven-content">
+        基于项目源码提供低代码能力，提供源码级的自定义扩展能力
       </Translate>
     ),
   },
   {
-    title: translate({ id: 'homepage.features.code-driven', message: '源码驱动' }),
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: translate({ id: 'homepage.features.low-code', message: '实时出码' }),
+    Svg: require('@site/static/img/digital-content-4.svg').default,
     description: (
-      <Translate id="homepage.features.code-driven-content">
-        低代码引擎底层使用源代码驱动，无私有搭建协议和DSL，支持在线低代码和源码双模式同步开发。
+      <Translate id="homepage.features.low-code-content">
+        源码进，源码出，可视化和源码自由切换
       </Translate>
     ),
   },
   {
     title: translate({ id: 'homepage.features.outbox', message: '开箱即用' }),
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('@site/static/img/cpu-f.svg').default,
     description: (
       <Translate id="homepage.features.outbox-content">
-        提供开箱即用的低代码设计器组件，支持轻松网关，快捷构建基于低代码引擎的低代码生产力工具。
+        提供灵活易用的设计器框架，支持开发者自由扩展封装
       </Translate>
     ),
   },

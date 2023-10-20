@@ -148,7 +148,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
                 size="s"
                 shape="outline"
                 type="primary"
-                tooltip="切换为 JS 表达式"
+                tooltip={isVariable ? '关闭 JS 表达式' : '使用 JS 表达式'}
                 tooltipPlacement="left"
                 selected={isVariable}
                 onClick={() => toggleIsVariable()}

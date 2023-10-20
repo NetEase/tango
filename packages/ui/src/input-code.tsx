@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
+import { Box, HTMLCoralProps } from 'coral-system';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
-import { javascript, javascriptLanguage } from '@codemirror/lang-javascript';
+import { javascript, javascriptLanguage, esLint } from '@codemirror/lang-javascript';
 import { CompletionContext } from '@codemirror/autocomplete';
 import { syntaxTree } from '@codemirror/language';
+import { linter, lintGutter } from '@codemirror/lint';
+import * as eslint from 'eslint-linter-browserify';
 import { getValue } from '@music163/tango-helpers';
-import { Box, HTMLCoralProps } from 'coral-system';
 
 const completePropertyAfter = ['PropertyName', '.', '?.'];
 const dontCompleteIn = [
@@ -14,6 +16,17 @@ const dontCompleteIn = [
   'VariableDefinition',
   'PropertyDefinition',
 ];
+
+const eslintConfig = {
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  env: {
+    browser: true,
+  },
+  rules: {},
+};
 
 function completeProperties(from: number, object: Object) {
   const options = [];
@@ -116,6 +129,10 @@ export interface InputCodeProps extends ReactCodeMirrorProps {
    * 自定义补全的选项列表
    */
   autoCompleteOptions?: string[];
+  /**
+   * 启用 ESLint
+   */
+  enableESLint?: boolean;
 }
 
 export function InputCode({
@@ -126,6 +143,7 @@ export function InputCode({
   autoCompleteOptions,
   showLineNumbers,
   showFoldGutter,
+  enableESLint = false,
   ...rest
 }: InputCodeProps) {
   const globalJavaScriptCompletions = useMemo(() => {
@@ -136,15 +154,16 @@ export function InputCode({
     });
   }, [autoCompleteContext, autoCompleteOptions]);
   const { rootStyle, codeSetup } = useInputCode({ shape, status, showLineNumbers, showFoldGutter });
+  const extensions = [javascript({ jsx: true }), globalJavaScriptCompletions];
+  if (enableESLint) {
+    // @ts-ignore
+    extensions.push(lintGutter(), linter(esLint(new eslint.Linter(), eslintConfig)));
+  }
 
   return (
     <Box className="InputCode" display="flex" alignItems="center" overflow="hidden" {...rootStyle}>
       <Box flex="1" overflow="auto">
-        <CodeMirror
-          extensions={[javascript({ jsx: true }), globalJavaScriptCompletions]}
-          basicSetup={codeSetup}
-          {...rest}
-        />
+        <CodeMirror extensions={extensions} basicSetup={codeSetup} {...rest} />
       </Box>
       {suffix}
     </Box>
@@ -166,7 +185,6 @@ function useInputCode({
       border: 'solid',
       borderColor: status === 'error' ? 'error.60' : 'line.normal',
       borderRadius: 's',
-      px: 'm',
     };
     lineNumbers = false;
     foldGutter = false;

@@ -149,7 +149,7 @@ class App extends React.Component {
   render() {
     return (
       <Page title={tango.stores.app.title}>
-       <Section>
+       <Section title="Section Title">
        </Section>
        <Section>
           <Button>button</Button>

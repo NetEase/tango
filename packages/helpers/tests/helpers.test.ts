@@ -43,6 +43,8 @@ describe('string', () => {
     expect(isVariableString('{"hello"}')).toBeTruthy();
     expect(isVariableString('{ foo: "bar" }')).toBeFalsy();
     expect(isVariableString('{{ foo: "bar" }}')).toBeTruthy();
+    expect(isVariableString('{() => {}}')).toBeTruthy();
+    expect(isVariableString('{() => { console.log(); }}')).toBeTruthy();
   });
 
   it('getVariableContent', () => {

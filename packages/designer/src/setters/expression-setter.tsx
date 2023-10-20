@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, css } from 'coral-system';
+import { Box, Text, css } from 'coral-system';
 import { Modal } from 'antd';
-import { value2code, isValidExpressionCode } from '@music163/tango-core';
+import { isValidExpressionCode, value2expressionCode } from '@music163/tango-core';
 import {
   isVariableString,
   getVariableContent,
   noop,
   useBoolean,
   getValue,
+  wrapCode,
 } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
 import { IconButton, Panel, InputCode } from '@music163/tango-ui';
@@ -36,31 +37,6 @@ export const jsonValueValidate = (value: string) => {
   }
 };
 
-// FIXME: 这里应该用原始的代码 raw value
-export const getInputValue = (val: any) => {
-  if (!val) return '';
-
-  let ret;
-
-  switch (typeof val) {
-    case 'string':
-      ret = val;
-      break;
-    case 'number':
-      ret = String(val);
-      break;
-    case 'object':
-      ret = value2code(val);
-      ret = `{${ret}}`;
-      break;
-    default:
-      ret = '';
-      break;
-  }
-
-  return ret;
-};
-
 const suffixStyle = css`
   .anticon-close-circle {
     color: rgba(0, 0, 0, 0.25);
@@ -83,32 +59,37 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     modalTitle,
     modalTip,
     autoCompleteOptions,
-    placeholder = '表达式请使用 {} 包裹',
+    placeholder = '输入JS表达式代码',
     value: valueProp,
     status,
     allowClear = true,
   } = props;
   const [visible, { on, off }] = useBoolean();
   const [inputValue, setInputValue] = useState(() => {
-    return getInputValue(valueProp);
+    return value2expressionCode(valueProp);
   });
   const sandbox = useSandboxQuery();
   const evaluateContext = sandbox.window;
 
   // when receive new value, sync state
   useEffect(() => {
-    setInputValue(getInputValue(valueProp));
+    setInputValue(value2expressionCode(valueProp));
   }, [valueProp]);
 
-  const change = (code: string) => {
-    if (!code) {
-      code = undefined;
-    }
+  const change = useCallback(
+    (code: string) => {
+      if (!code) {
+        onChange(undefined);
+        return;
+      }
+      if (getVariableContent(code) === value2expressionCode(valueProp)) {
+        return;
+      }
 
-    if (code !== valueProp) {
-      onChange(code);
-    }
-  };
+      onChange(wrapCode(code));
+    },
+    [valueProp, onChange],
+  );
 
   return (
     <Box className="ExpressionSetter">
@@ -147,7 +128,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
         placeholder={placeholder}
         autoCompleteOptions={autoCompleteOptions}
         visible={visible}
-        defaultValue={inputValue}
+        value={inputValue}
         onCancel={() => off()}
         onOk={(value) => {
           onChange(value);
@@ -164,6 +145,7 @@ export interface ExpressionModalProps {
   placeholder?: string;
   visible?: boolean;
   defaultValue?: string;
+  value?: string;
   onCancel?: () => void;
   onOk?: (value: string) => void;
   dataSource?: IVariableTreeNode[];
@@ -178,10 +160,12 @@ export function ExpressionModal({
   onCancel = noop,
   onOk = noop,
   defaultValue,
+  value,
   dataSource,
   autoCompleteOptions,
 }: ExpressionModalProps) {
-  const [exp, setExp] = useState(defaultValue);
+  const [exp, setExp] = useState(value ?? defaultValue);
+  const [error, setError] = useState('');
   const workspace = useWorkspace();
   const onAction = useCallback(
     (action: string, args: unknown[]) => {
@@ -196,6 +180,11 @@ export function ExpressionModal({
   const handleExpInputChange = (val: string) => {
     setExp(val?.trim());
   };
+
+  useEffect(() => {
+    setExp(value);
+  }, [value]);
+
   return (
     <Modal
       closable={false}
@@ -206,6 +195,12 @@ export function ExpressionModal({
       onOk={() => {
         onOk(exp);
       }}
+      okButtonProps={{
+        disabled: !!error,
+      }}
+      bodyStyle={{
+        padding: 0,
+      }}
     >
       <Panel title={`将 ${title} 设置为引用变量或自定义表达式`} subTitle={subTitle} shape="solid">
         <InputCode
@@ -215,12 +210,17 @@ export function ExpressionModal({
           value={exp}
           placeholder={placeholder}
           onChange={handleExpInputChange}
+          onBlur={() => {
+            setError(expressionValueValidate(exp));
+          }}
           autoCompleteContext={evaluateContext}
           autoCompleteOptions={autoCompleteOptions}
         />
+        {error ? <Text color="red">输入的表达式存在语法错误，请修改后再提交！</Text> : null}
       </Panel>
-      <Panel title="从变量列表中选中" shape="solid" borderTop="0" maxHeight={400} overflow="auto">
+      <Panel title="从变量列表中选中" shape="solid" borderTop="0">
         <EditableVariableTree
+          height={380}
           dataSource={dataSource || expressionVariables}
           onSelect={(node) => {
             if (!node.key) {

@@ -1,5 +1,11 @@
 import { getValue, setValue } from '@music163/tango-helpers';
-import { ModeSwitchTool, PreviewTool, RouteSwitchTool, TogglePanelTool } from './toolbar';
+import {
+  HistoryTool,
+  ModeSwitchTool,
+  PreviewTool,
+  RouteSwitchTool,
+  TogglePanelTool,
+} from './toolbar';
 import {
   ComponentsPanel,
   DataSourcePanel,
@@ -30,6 +36,7 @@ export function getWidget(key: string) {
 
 registerWidget('toolbar.modeSwitch', ModeSwitchTool);
 registerWidget('toolbar.preview', PreviewTool);
+registerWidget('toolbar.history', HistoryTool);
 registerWidget('toolbar.routeSwitch', RouteSwitchTool);
 registerWidget('toolbar.togglePanel', TogglePanelTool);
 

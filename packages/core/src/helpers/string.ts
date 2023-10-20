@@ -1,6 +1,5 @@
 import path from 'path';
 import { camelCase, upperCamelCase } from '@music163/tango-helpers';
-import { value2node, expression2code } from './ast';
 import { FileType } from './../types';
 
 /**
@@ -138,15 +137,6 @@ export function formatCode(code: string, parser = 'babel') {
   if (prettier && prettierPlugins) {
     return prettier.format(code, { parser, plugins: prettierPlugins });
   }
-  return code;
-}
-
-/**
- * 将 js value 转换为代码字符串
- */
-export function value2code(value: any) {
-  const node = value2node(value);
-  const code = expression2code(node);
   return code;
 }
 
