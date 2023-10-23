@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/netease/tango/compare/@music163/tango-core@0.2.1...@music163/tango-core@0.2.2) (2023-10-23)
+
+### Bug Fixes
+
+- add listImportSources to viewModule ([6bbbe63](https://github.com/netease/tango/commit/6bbbe634ad52acaf06a0d776aeff450993f7b69a))
+- enhance expSetter ([#43](https://github.com/netease/tango/issues/43)) ([5ebbb42](https://github.com/netease/tango/commit/5ebbb428fb3fb786d330ab01959028443338d315))
+- update interface ([0b3e632](https://github.com/netease/tango/commit/0b3e632745e30d578268458329d5702dbd729010))
+
 ## [0.2.1](https://github.com/netease/tango/compare/@music163/tango-core@0.2.0...@music163/tango-core@0.2.1) (2023-09-22)
 
 ### Bug Fixes

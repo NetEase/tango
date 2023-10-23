@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.4](https://github.com/netease/tango/compare/@music163/tango-helpers@0.1.3...@music163/tango-helpers@0.1.4) (2023-10-23)
+
+### Bug Fixes
+
+- enhance expSetter ([#43](https://github.com/netease/tango/issues/43)) ([5ebbb42](https://github.com/netease/tango/commit/5ebbb428fb3fb786d330ab01959028443338d315))
+
 ## [0.1.3](https://github.com/netease/tango/compare/@music163/tango-helpers@0.1.2...@music163/tango-helpers@0.1.3) (2023-09-18)
 
 **Note:** Version bump only for package @music163/tango-helpers

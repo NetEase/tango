@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.0...@music163/tango-designer@0.5.1) (2023-10-23)
+
+### Bug Fixes
+
+- add url validator ([8fefa63](https://github.com/netease/tango/commit/8fefa6344fc884355c32c4e62a5f1199ef31d65c))
+- custom store template ([3f073ee](https://github.com/netease/tango/commit/3f073eeb436b7a929c9cad7af3daa15ba20e6be5))
+- enhance expSetter ([#43](https://github.com/netease/tango/issues/43)) ([5ebbb42](https://github.com/netease/tango/commit/5ebbb428fb3fb786d330ab01959028443338d315))
+
 # [0.5.0](https://github.com/netease/tango/compare/@music163/tango-designer@0.4.1...@music163/tango-designer@0.5.0) (2023-10-12)
 
 ### Bug Fixes
