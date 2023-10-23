@@ -24,6 +24,7 @@ import {
   ITangoViewNodeData,
   IImportDeclarationPayload,
   InsertChildPositionType,
+  IImportSpecifierData,
 } from '../types';
 import { IViewFile, IWorkspace } from './interfaces';
 import { TangoModule } from './module';
@@ -37,7 +38,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   /**
    * 通过导入组件名查找组件来自的包
    */
-  importMap: Dict<{ package: string; isDefault?: boolean }>;
+  importMap: Dict<IImportSpecifierData>;
 
   /**
    * 视图中依赖的 tango 变量，仅 stores 和 services
@@ -120,6 +121,13 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     });
 
     this._nodesTree = nodeListToTreeData(nodes);
+  }
+
+  /**
+   * 依赖列表
+   */
+  listImportSources() {
+    return Object.keys(this._importedModules);
   }
 
   /**
@@ -333,19 +341,19 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   private buildImportMap(
     importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>,
   ) {
-    const map = {};
+    const map: Dict<IImportSpecifierData> = {};
     Object.keys(importedModules).forEach((modName) => {
       const mod = importedModules[modName];
       (Array.isArray(mod) ? mod : [mod]).forEach((item) => {
         if (item.defaultSpecifier) {
           map[item.defaultSpecifier] = {
-            package: modName,
+            source: modName,
             isDefault: true,
           };
         }
         if (item.specifiers.length) {
           item.specifiers.forEach((spe) => {
-            map[spe] = { package: modName };
+            map[spe] = { source: modName };
           });
         }
       });

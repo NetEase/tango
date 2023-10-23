@@ -73,6 +73,14 @@ export interface ITangoViewNodeData<T = JSXElement> {
 }
 
 /**
+ * 导入变量的解析数据
+ */
+export interface IImportSpecifierData {
+  source: string;
+  isDefault?: boolean;
+}
+
+/**
  * 模块导入的参数类型
  */
 export interface IImportDeclarationPayload {

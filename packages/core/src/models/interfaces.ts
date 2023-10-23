@@ -10,6 +10,7 @@ import {
   ITangoConfigPackages,
   IPageConfigData,
   IServiceFunctionPayload,
+  IImportSpecifierData,
 } from '../types';
 import { TangoFile, TangoJsonFile } from './file';
 import { TangoRouteModule } from './route-module';
@@ -24,7 +25,7 @@ export interface IViewFile {
   /**
    * 通过导入组件名查找组件来自的包
    */
-  importMap?: Dict<{ package: string; isDefault?: boolean }>;
+  importMap?: Dict<IImportSpecifierData>;
 
   listModals?: () => Array<{ label: string; value: string }>;
   listForms?: () => Record<string, string[]>;
