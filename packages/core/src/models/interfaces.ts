@@ -27,6 +27,7 @@ export interface IViewFile {
    */
   importMap?: Dict<IImportSpecifierData>;
 
+  listImportSources?: () => string[];
   listModals?: () => Array<{ label: string; value: string }>;
   listForms?: () => Record<string, string[]>;
 
