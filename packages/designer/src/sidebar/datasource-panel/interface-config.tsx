@@ -332,7 +332,7 @@ function ServiceDetailForm({
       <Form.Item
         label="路径"
         name="url"
-        rules={[{ required: true }]}
+        rules={[{ required: true, type: 'url' }]}
         component="input"
         componentProps={{
           placeholder: '请输入数据服务调用名称',
