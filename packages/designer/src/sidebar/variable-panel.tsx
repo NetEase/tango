@@ -6,12 +6,23 @@ import { FileAddOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { EditableVariableTree, EditableVariableTreeProps } from '../components';
 
+const defaultStoreTemplate = `
+import { defineStore } from '@music163/tango-boot';
+export default defineStore({
+});
+`;
+
 export interface VariablePanelProps extends EditableVariableTreeProps {
   wrapperHeight?: number | string;
+  newStoreTemplate?: string;
 }
 
 export const VariablePanel = observer(
-  ({ wrapperHeight = '100%', ...restProps }: VariablePanelProps) => {
+  ({
+    wrapperHeight = '100%',
+    newStoreTemplate = defaultStoreTemplate,
+    ...restProps
+  }: VariablePanelProps) => {
     const [isAdd, { on, off }] = useBoolean();
     const workspace = useWorkspace();
     const { storeVariables } = useWorkspaceData();
@@ -42,7 +53,7 @@ export const VariablePanel = observer(
             existNames={storeNames}
             onCancel={off}
             onSubmit={(values) => {
-              workspace.addStoreModule(values.name, emptyStoreTemplate);
+              workspace.addStoreModule(values.name, newStoreTemplate);
               off();
             }}
           />
@@ -119,9 +130,3 @@ function AddStoreForm({ existNames = [], onCancel, onSubmit }: AddStoreFormProps
     </Panel>
   );
 }
-
-const emptyStoreTemplate = `
-import { defineStore } from '@music163/tango-boot';
-export default defineStore({
-});
-`;
