@@ -11,10 +11,9 @@
       "@music163/tango-core": ["packages/core/src/index.ts"],
       "@music163/tango-context": ["packages/context/src/index.ts"],
       "@music163/tango-ui": ["packages/ui/src/index.ts"],
-      "@music163/tango-designer": ["packages/designer/src/index.ts"],
       "@music163/tango-sandbox": ["packages/sandbox/src/index.ts"],
       "@music163/tango-setting-form": ["packages/setting-form/src/index.ts"],
-      "@music163/tango": ["packages/designer/src/index.ts"]
+      "@music163/tango-designer": ["packages/designer/src/index.ts"]
     }
   }
 }

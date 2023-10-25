@@ -16,9 +16,9 @@ export interface ITangoEngineContext {
   /**
    * 自定义配置数据
    */
-  config: {
-    customActionVariables: CustomVariableData[];
-    customExpressionVariables: CustomVariableData[];
+  config?: {
+    customActionVariables?: CustomVariableData[];
+    customExpressionVariables?: CustomVariableData[];
   };
 }
 
