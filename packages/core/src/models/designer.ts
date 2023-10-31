@@ -3,26 +3,26 @@ import { IWorkspace } from './interfaces';
 
 export type SimulatorNameType = 'desktop' | 'phone';
 
-interface SimulatorType {
+export type DesignerViewType = 'design' | 'code';
+
+interface ISimulatorType {
   name: SimulatorNameType;
   width: number;
   height: number;
 }
 
-interface ViewportBoundingType {
+interface IViewportBounding {
   width: number;
   height: number;
 }
 
-export type DesignerViewType = 'design' | 'code';
-
 interface DesignerOptionsType {
   workspace: IWorkspace;
-  simulator?: SimulatorNameType | SimulatorType;
+  simulator?: SimulatorNameType | ISimulatorType;
   activeSidebarPanel?: string;
 }
 
-const simulatorTypes: Record<string, SimulatorType> = {
+const ISimulatorTypes: Record<string, ISimulatorType> = {
   desktop: {
     name: 'desktop',
     width: 1366,
@@ -39,12 +39,12 @@ export class Designer {
   /**
    * 当前的沙箱模拟器类型
    */
-  _simulator: SimulatorType = simulatorTypes.desktop;
+  _simulator: ISimulatorType = ISimulatorTypes.desktop;
 
   /**
    * 当前的视图尺寸
    */
-  _viewport: ViewportBoundingType = {
+  _viewport: IViewportBounding = {
     width: 1366,
     height: 800,
   };
@@ -81,7 +81,7 @@ export class Designer {
 
   private readonly workspace: IWorkspace;
 
-  get simulator(): SimulatorType {
+  get simulator(): ISimulatorType {
     return toJS(this._simulator);
   }
 
@@ -150,15 +150,15 @@ export class Designer {
     });
   }
 
-  setSimulator(value: SimulatorType | SimulatorNameType) {
+  setSimulator(value: ISimulatorType | SimulatorNameType) {
     if (typeof value === 'string') {
-      this._simulator = simulatorTypes[value];
+      this._simulator = ISimulatorTypes[value];
     } else {
       this._simulator = value;
     }
   }
 
-  setViewport(value: ViewportBoundingType) {
+  setViewport(value: IViewportBounding) {
     this._viewport = value;
   }
 
