@@ -10,6 +10,10 @@ interface ICreateEngineOptions {
    * 默认的模拟器模式
    */
   defaultSimulatorMode?: SimulatorNameType;
+  /**
+   * 默认激活的侧边栏
+   */
+  defaultActiveSidebarPanel?: string;
 }
 
 /**
@@ -20,12 +24,14 @@ interface ICreateEngineOptions {
 export function createEngine({
   workspace,
   defaultSimulatorMode = 'desktop',
+  defaultActiveSidebarPanel = '',
 }: ICreateEngineOptions) {
   const engine = new Engine({
     workspace,
     designer: new Designer({
       workspace,
       simulator: defaultSimulatorMode,
+      activeSidebarPanel: defaultActiveSidebarPanel,
     }),
   });
 

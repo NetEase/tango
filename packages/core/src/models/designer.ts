@@ -3,20 +3,24 @@ import { IWorkspace } from './interfaces';
 
 export type SimulatorNameType = 'desktop' | 'phone';
 
-type SimulatorType = {
+interface SimulatorType {
   name: SimulatorNameType;
   width: number;
   height: number;
-};
+}
 
-type ViewportBoundingType = {
+interface ViewportBoundingType {
   width: number;
   height: number;
-};
+}
 
 export type DesignerViewType = 'design' | 'code';
 
-type DesignerOptionsType = { workspace: IWorkspace; simulator?: SimulatorNameType | SimulatorType };
+interface DesignerOptionsType {
+  workspace: IWorkspace;
+  simulator?: SimulatorNameType | SimulatorType;
+  activeSidebarPanel?: string;
+}
 
 const simulatorTypes: Record<string, SimulatorType> = {
   desktop: {
@@ -70,6 +74,11 @@ export class Designer {
    */
   _isPreview = false;
 
+  /**
+   * 默认展开的侧边栏
+   */
+  defaultActiveSidebarPanel?: string;
+
   private readonly workspace: IWorkspace;
 
   get simulator(): SimulatorType {
@@ -102,9 +111,19 @@ export class Designer {
 
   constructor(options: DesignerOptionsType) {
     this.workspace = options.workspace;
-    if (options.simulator) {
-      this.setSimulator(options.simulator);
+
+    const { simulator, activeSidebarPanel: defaultActiveSidebarPanel } = options;
+
+    // 默认设计器模式
+    if (simulator) {
+      this.setSimulator(simulator);
     }
+
+    // 默认展开的侧边栏
+    if (defaultActiveSidebarPanel) {
+      this.setActiveSidebarPanel(defaultActiveSidebarPanel);
+    }
+
     makeObservable(this, {
       _simulator: observable,
       _viewport: observable,
@@ -154,7 +173,6 @@ export class Designer {
       this._activeSidebarPanel = '';
     }
   }
-
   closeSidebarPanel() {
     this._activeSidebarPanel = '';
   }
