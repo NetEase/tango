@@ -34,6 +34,8 @@ const workspace = new Workspace({
 // 2. 引擎初始化
 const engine = createEngine({
   workspace,
+  // defaultActiveSidebarPanel: 'components',
+  // defaultAddComponentType: 'click'
 });
 
 // @ts-ignore

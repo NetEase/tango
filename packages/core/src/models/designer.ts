@@ -3,20 +3,27 @@ import { IWorkspace } from './interfaces';
 
 export type SimulatorNameType = 'desktop' | 'phone';
 
-type SimulatorType = {
+interface SimulatorType {
   name: SimulatorNameType;
   width: number;
   height: number;
-};
+}
 
-type ViewportBoundingType = {
+interface ViewportBoundingType {
   width: number;
   height: number;
-};
+}
 
 export type DesignerViewType = 'design' | 'code';
 
-type DesignerOptionsType = { workspace: IWorkspace; simulator?: SimulatorNameType | SimulatorType };
+export type DesignerAddComponentType = 'drag' | 'click';
+
+interface DesignerOptionsType {
+  workspace: IWorkspace;
+  simulator?: SimulatorNameType | SimulatorType;
+  addComponentType?: DesignerAddComponentType;
+  activeSidebarPanel?: string;
+}
 
 const simulatorTypes: Record<string, SimulatorType> = {
   desktop: {
@@ -61,6 +68,12 @@ export class Designer {
   _showSmartWizard = false;
 
   /**
+   * 添加组件方式
+   * 拖拽 or 点击
+   */
+  _addComponentType: DesignerAddComponentType = 'drag';
+
+  /**
    * 是否显示右侧面板
    */
   _showRightPanel = true;
@@ -69,6 +82,11 @@ export class Designer {
    * 是否预览模式
    */
   _isPreview = false;
+
+  /**
+   * 默认展开的侧边栏
+   */
+  defaultActiveSidebarPanel?: string;
 
   private readonly workspace: IWorkspace;
 
@@ -100,11 +118,30 @@ export class Designer {
     return this._showRightPanel;
   }
 
+  get addComponentType() {
+    return this._addComponentType;
+  }
+
   constructor(options: DesignerOptionsType) {
     this.workspace = options.workspace;
-    if (options.simulator) {
-      this.setSimulator(options.simulator);
+
+    const { simulator, addComponentType, activeSidebarPanel: defaultActiveSidebarPanel } = options;
+
+    // 默认设计器模式
+    if (simulator) {
+      this.setSimulator(simulator);
     }
+
+    // 添加组件方式(默认为拖拽)
+    if (addComponentType) {
+      this.setAddComponentType(addComponentType);
+    }
+
+    // 默认展开的侧边栏
+    if (defaultActiveSidebarPanel) {
+      this.setActiveSidebarPanel(defaultActiveSidebarPanel);
+    }
+
     makeObservable(this, {
       _simulator: observable,
       _viewport: observable,
@@ -113,6 +150,8 @@ export class Designer {
       _showSmartWizard: observable,
       _showRightPanel: observable,
       _isPreview: observable,
+      _addComponentType: observable,
+      addComponentType: computed,
       simulator: computed,
       viewport: computed,
       activeView: computed,
@@ -128,6 +167,7 @@ export class Designer {
       toggleRightPanel: action,
       toggleSmartWizard: action,
       toggleIsPreview: action,
+      setAddComponentType: action,
     });
   }
 
@@ -153,6 +193,10 @@ export class Designer {
     } else {
       this._activeSidebarPanel = '';
     }
+  }
+
+  setAddComponentType(value: DesignerAddComponentType) {
+    this._addComponentType = value;
   }
 
   closeSidebarPanel() {
