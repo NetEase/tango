@@ -68,12 +68,6 @@ export class Designer {
   _showSmartWizard = false;
 
   /**
-   * 添加组件方式
-   * 拖拽 or 点击
-   */
-  _addComponentType: DesignerAddComponentType = 'drag';
-
-  /**
    * 是否显示右侧面板
    */
   _showRightPanel = true;
@@ -118,23 +112,14 @@ export class Designer {
     return this._showRightPanel;
   }
 
-  get addComponentType() {
-    return this._addComponentType;
-  }
-
   constructor(options: DesignerOptionsType) {
     this.workspace = options.workspace;
 
-    const { simulator, addComponentType, activeSidebarPanel: defaultActiveSidebarPanel } = options;
+    const { simulator, activeSidebarPanel: defaultActiveSidebarPanel } = options;
 
     // 默认设计器模式
     if (simulator) {
       this.setSimulator(simulator);
-    }
-
-    // 添加组件方式(默认为拖拽)
-    if (addComponentType) {
-      this.setAddComponentType(addComponentType);
     }
 
     // 默认展开的侧边栏
@@ -150,8 +135,6 @@ export class Designer {
       _showSmartWizard: observable,
       _showRightPanel: observable,
       _isPreview: observable,
-      _addComponentType: observable,
-      addComponentType: computed,
       simulator: computed,
       viewport: computed,
       activeView: computed,
@@ -167,7 +150,6 @@ export class Designer {
       toggleRightPanel: action,
       toggleSmartWizard: action,
       toggleIsPreview: action,
-      setAddComponentType: action,
     });
   }
 
@@ -194,11 +176,6 @@ export class Designer {
       this._activeSidebarPanel = '';
     }
   }
-
-  setAddComponentType(value: DesignerAddComponentType) {
-    this._addComponentType = value;
-  }
-
   closeSidebarPanel() {
     this._activeSidebarPanel = '';
   }
