@@ -28,6 +28,10 @@ export interface CollapsePanelProps extends Omit<HTMLCoralProps<'div'>, 'title'>
    * 折叠状态变化时的回调
    */
   onCollapse?: (collapse: boolean) => void;
+  /**
+   * 是否显示底部边框线
+   */
+  showBottomBorder?: boolean;
 }
 
 const headerStyle = css`
@@ -49,6 +53,7 @@ export function CollapsePanel(props: CollapsePanelProps) {
     defaultCollapsed = false,
     onCollapse,
     stickyHeader,
+    showBottomBorder = true,
     ...rest
   } = props;
   const [collapsed, setCollapsed] = useControllableState({
@@ -70,8 +75,15 @@ export function CollapsePanel(props: CollapsePanelProps) {
       }
     : {};
 
+  const CollapsePanelBorderStyle = showBottomBorder
+    ? {
+        borderBottom: 'solid',
+        borderBottomColor: 'line2',
+      }
+    : {};
+
   return (
-    <Box className="CollapsePanel" borderBottom="solid" borderBottomColor="line2" {...rest}>
+    <Box className="CollapsePanel" {...CollapsePanelBorderStyle} {...rest}>
       <Box
         display="flex"
         alignItems="center"
