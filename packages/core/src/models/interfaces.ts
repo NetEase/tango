@@ -240,6 +240,7 @@ export interface IWorkspace {
   ) => void;
 
   removeBizComp?: (name: string) => void;
+  onFileChange?: (workspace: IWorkspace) => void;
 
   get activeViewModule(): IViewFile;
   get pages(): any[];
