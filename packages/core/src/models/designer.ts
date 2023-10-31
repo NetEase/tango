@@ -3,20 +3,23 @@ import { IWorkspace } from './interfaces';
 
 export type SimulatorNameType = 'desktop' | 'phone';
 
-type SimulatorType = {
+interface SimulatorType {
   name: SimulatorNameType;
   width: number;
   height: number;
-};
+}
 
-type ViewportBoundingType = {
+interface ViewportBoundingType {
   width: number;
   height: number;
-};
+}
 
 export type DesignerViewType = 'design' | 'code';
 
-type DesignerOptionsType = { workspace: IWorkspace; simulator?: SimulatorNameType | SimulatorType };
+interface DesignerOptionsType {
+  workspace: IWorkspace;
+  simulator?: SimulatorNameType | SimulatorType;
+}
 
 const simulatorTypes: Record<string, SimulatorType> = {
   desktop: {
@@ -54,6 +57,11 @@ export class Designer {
    * 当前选中的侧边栏面板
    */
   _activeSidebarPanel = '';
+
+  /**
+   * 受控侧边栏面板宽度 (手动触发，可以覆盖默认Panel宽度)
+   */
+  _sidebarPanelWidth: number = null;
 
   /**
    * 是否显示智能引导
@@ -100,6 +108,10 @@ export class Designer {
     return this._showRightPanel;
   }
 
+  get sidebarPanelWidth() {
+    return this._sidebarPanelWidth;
+  }
+
   constructor(options: DesignerOptionsType) {
     this.workspace = options.workspace;
     if (options.simulator) {
@@ -110,6 +122,7 @@ export class Designer {
       _viewport: observable,
       _activeView: observable,
       _activeSidebarPanel: observable,
+      _sidebarPanelWidth: observable,
       _showSmartWizard: observable,
       _showRightPanel: observable,
       _isPreview: observable,
@@ -117,6 +130,7 @@ export class Designer {
       viewport: computed,
       activeView: computed,
       activeSidebarPanel: computed,
+      sidebarPanelWidth: computed,
       isPreview: computed,
       showRightPanel: computed,
       showSmartWizard: computed,
@@ -124,6 +138,7 @@ export class Designer {
       setViewport: action,
       setActiveView: action,
       setActiveSidebarPanel: action,
+      setSidebarPanelWidth: action,
       closeSidebarPanel: action,
       toggleRightPanel: action,
       toggleSmartWizard: action,
@@ -153,6 +168,10 @@ export class Designer {
     } else {
       this._activeSidebarPanel = '';
     }
+  }
+
+  setSidebarPanelWidth(value: number) {
+    this._sidebarPanelWidth = value;
   }
 
   closeSidebarPanel() {
