@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
-    "@music163/request": "^0.1.0",
+    "@music163/request": "^0.1.2",
     "@music163/tango-context": "^0.2.3",
     "@music163/tango-core": "^0.2.2",
     "@music163/tango-helpers": "^0.1.4",
@@ -53,9 +53,9 @@
     "semver": "^7.3.8"
   },
   "devDependencies": {
-    "@types/color": "^3.0.4",
-    "@types/react-color": "^3.0.6",
-    "@types/react-resizable": "^3.0.4"
+    "@types/color": "^3.0.5",
+    "@types/react-color": "^3.0.9",
+    "@types/react-resizable": "^3.0.6"
   },
   "publishConfig": {
     "access": "public",

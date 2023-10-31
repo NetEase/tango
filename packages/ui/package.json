@@ -39,7 +39,7 @@
     "@codemirror/lint": "^6.4.2",
     "@codemirror/search": "^6.5.4",
     "@music163/tango-helpers": "^0.1.4",
-    "@uiw/react-codemirror": "^4.19.3",
+    "@uiw/react-codemirror": "^4.21.20",
     "antd": "^4.24.2",
     "antd-easy-form": "^1.1.3",
     "coral-system": "^1.0.5",

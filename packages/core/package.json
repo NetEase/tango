@@ -24,13 +24,13 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/generator": "^7.22.15",
-    "@babel/parser": "^7.22.15",
-    "@babel/traverse": "^7.22.15",
-    "@babel/types": "^7.22.15",
+    "@babel/generator": "^7.23.0",
+    "@babel/parser": "^7.23.0",
+    "@babel/traverse": "^7.23.2",
+    "@babel/types": "^7.23.0",
     "@music163/tango-helpers": "^0.1.4",
-    "@types/babel__generator": "^7.6.4",
-    "@types/babel__traverse": "^7.18.3",
+    "@types/babel__generator": "^7.6.6",
+    "@types/babel__traverse": "^7.20.3",
     "mobx": "6.9.0",
     "path-browserify": "^1.0.1"
   },
