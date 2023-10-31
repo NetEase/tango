@@ -55,6 +55,10 @@ export interface IWorkspaceOptions {
    * 组件描述列表
    */
   prototypes?: Record<string, ComponentPrototypeType>;
+  /**
+   * 工作区文件变更事件
+   */
+  onFilesChange?: (workspace: IWorkspace) => void;
 }
 
 /**
@@ -124,6 +128,11 @@ export class Workspace extends EventTarget implements IWorkspace {
    * FIXME: 是否保留 ???
    */
   appJson: TangoJsonFile;
+
+  /**
+   * 代码变更回调
+   */
+  onFilesChange?: (workspace: IWorkspace) => void;
 
   /**
    * 绑定事件
@@ -220,6 +229,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.activeViewFile = '';
     this.files = new Map();
     this.isReady = false;
+    this.onFilesChange = options?.onFilesChange;
 
     if (options?.files) {
       this.addFiles(options.files);
@@ -1124,6 +1134,7 @@ export class Workspace extends EventTarget implements IWorkspace {
         },
       }),
     );
+    this.onFilesChange?.(this);
   }
 
   /**
@@ -1185,11 +1196,11 @@ export class Workspace extends EventTarget implements IWorkspace {
     if (this.files.has(sourceFilePath)) {
       // 来源是文件
       const file = this.files.get(sourceFilePath);
-      this.addFile(targetFilePath + '.js', file.cleanCode, file.type);
-    } else if (this.files.has(sourceFilePath + '/index.js')) {
+      this.addFile(`${targetFilePath}.js`, file.cleanCode, file.type);
+    } else if (this.files.has(`${sourceFilePath}/index.js`)) {
       // 来源是目录
       Array.from(this.files.keys()).forEach((key) => {
-        if (key.startsWith(sourceFilePath + '/')) {
+        if (key.startsWith(`${sourceFilePath}/`)) {
           const sourceFile = this.getFile(key);
           this.addFile(
             targetFilePath + key.slice(sourceFilePath.length),
