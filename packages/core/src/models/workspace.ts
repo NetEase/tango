@@ -58,7 +58,7 @@ export interface IWorkspaceOptions {
   /**
    * 工作区文件变更事件
    */
-  onFileChange?: (workspace: IWorkspace) => void;
+  onFilesChange?: (workspace: IWorkspace) => void;
 }
 
 /**
@@ -132,7 +132,7 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 代码变更回调
    */
-  onFileChange?: (workspace: IWorkspace) => void;
+  onFilesChange?: (workspace: IWorkspace) => void;
 
   /**
    * 绑定事件
@@ -229,7 +229,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.activeViewFile = '';
     this.files = new Map();
     this.isReady = false;
-    this.onFileChange = options?.onFileChange;
+    this.onFilesChange = options?.onFilesChange;
 
     if (options?.files) {
       this.addFiles(options.files);
@@ -1134,7 +1134,7 @@ export class Workspace extends EventTarget implements IWorkspace {
         },
       }),
     );
-    this.onFileChange?.(this);
+    this.onFilesChange?.(this);
   }
 
   /**

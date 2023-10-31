@@ -29,8 +29,8 @@ import {
 const workspace = new Workspace({
   entry: '/src/index.js',
   files: sampleFiles,
-  onFileChange: (_workspace: IWorkspace) => {
-    console.log('onFileChange', _workspace.files);
+  onFilesChange: (_workspace: IWorkspace) => {
+    console.log('onFilesChange', _workspace.files);
   },
 });
 
