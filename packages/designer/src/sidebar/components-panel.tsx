@@ -8,9 +8,9 @@ import {
   upperCamelCase,
 } from '@music163/tango-helpers';
 import { CollapsePanel, IconFont, Search, Tabs } from '@music163/tango-ui';
-import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
+import { observer, useWorkspace } from '@music163/tango-context';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Empty, Spin, Popover, message } from 'antd';
+import { Button, Empty, Spin, Popover } from 'antd';
 import { getDragGhostElement } from '../helpers';
 
 type MenuKeyType = 'common' | 'atom' | 'snippet' | 'block' | 'bizComp';
@@ -270,9 +270,6 @@ const StyledCommonGridItem = styled.div`
 
 function MaterialGrid({ data, type }: MaterialProps) {
   const workspace = useWorkspace();
-  const designer = useDesigner();
-  const { addComponentType } = designer;
-  const isDragAddType = addComponentType === 'drag';
 
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.effectAllowed = 'move';
@@ -289,27 +286,14 @@ function MaterialGrid({ data, type }: MaterialProps) {
     workspace.dragSource.clear();
   };
 
-  // 点击方式添加
-  const handleClick = () => {
-    if (!isDragAddType) {
-      if (workspace.selectSource.isSelected) {
-        workspace.insertToSelectedNode(data);
-        message.success(`${data.name} 已添加`);
-      } else {
-        message.warning('请选择一个节点');
-      }
-    }
-  };
-
   const icon = data.icon || 'icon-placeholder';
 
   return (
     <StyledCommonGridItem
-      draggable={isDragAddType}
+      draggable
       data-name={data.name}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      onClick={handleClick}
       className={type === 'block' ? 'block-item' : null}
     >
       {icon.startsWith('icon-') ? (

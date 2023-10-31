@@ -1,4 +1,4 @@
-import { Designer, DesignerAddComponentType, Engine, SimulatorNameType } from './models';
+import { Designer, Engine, SimulatorNameType } from './models';
 import { IWorkspace } from './models/interfaces';
 
 interface ICreateEngineOptions {
@@ -10,10 +10,6 @@ interface ICreateEngineOptions {
    * 默认的模拟器模式
    */
   defaultSimulatorMode?: SimulatorNameType;
-  /**
-   * 默认的组件添加方式
-   */
-  defaultAddComponentType?: DesignerAddComponentType;
   /**
    * 默认激活的侧边栏
    */
@@ -28,7 +24,6 @@ interface ICreateEngineOptions {
 export function createEngine({
   workspace,
   defaultSimulatorMode = 'desktop',
-  defaultAddComponentType = 'drag',
   defaultActiveSidebarPanel = '',
 }: ICreateEngineOptions) {
   const engine = new Engine({
@@ -36,7 +31,6 @@ export function createEngine({
     designer: new Designer({
       workspace,
       simulator: defaultSimulatorMode,
-      addComponentType: defaultAddComponentType,
       activeSidebarPanel: defaultActiveSidebarPanel,
     }),
   });

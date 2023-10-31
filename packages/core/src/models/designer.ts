@@ -16,12 +16,9 @@ interface ViewportBoundingType {
 
 export type DesignerViewType = 'design' | 'code';
 
-export type DesignerAddComponentType = 'drag' | 'click';
-
 interface DesignerOptionsType {
   workspace: IWorkspace;
   simulator?: SimulatorNameType | SimulatorType;
-  addComponentType?: DesignerAddComponentType;
   activeSidebarPanel?: string;
 }
 
