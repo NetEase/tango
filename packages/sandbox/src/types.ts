@@ -497,7 +497,7 @@ export interface CodeSandboxProps {
   iframeId?: string;
 
   eventHandlers?: EventHandlers;
-  onFilesChange?: (files: IFiles, sandpack: ISandpackContext) => void;
+  onFileChange?: (files: IFiles, sandpack: ISandpackContext) => void;
   onMessage?: (data: any) => void;
   onLoad?: (frame: HTMLIFrameElement) => void;
   fileResolver?: {
