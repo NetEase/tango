@@ -157,13 +157,7 @@ export interface IWorkspace {
   setComponentPrototypes: (prototypes: Record<string, ComponentPrototypeType>) => void;
   getPrototype: (name: string | ComponentPrototypeType) => ComponentPrototypeType;
 
-  /**
-   * 查询节点
-   * @param id 节点 ID
-   * @param module 节点所在的模块名
-   * @returns 返回节点对象
-   */
-  getNode: (id: string, module?: string) => IViewNode;
+  onFilesChange?: (filenames: string[]) => void;
 
   getFile: (filename: string) => TangoFile;
   listFiles: () => Record<string, string>;
@@ -173,6 +167,14 @@ export interface IWorkspace {
   removeFile: (filename: string) => void;
   renameFile: (oldFilename: string, newFilename: string) => void;
   renameFolder: (oldFoldername: string, newFoldername: string) => void;
+
+  /**
+   * 查询节点
+   * @param id 节点 ID
+   * @param module 节点所在的模块名
+   * @returns 返回节点对象
+   */
+  getNode: (id: string, module?: string) => IViewNode;
 
   removeSelectedNode: () => void;
   cloneSelectedNode: () => void;
@@ -240,7 +242,6 @@ export interface IWorkspace {
   ) => void;
 
   removeBizComp?: (name: string) => void;
-  onFilesChange?: (workspace: IWorkspace) => void;
 
   get activeViewModule(): IViewFile;
   get pages(): any[];

@@ -16,7 +16,7 @@ interface IViewportBounding {
   height: number;
 }
 
-interface DesignerOptionsType {
+interface IDesignerOptions {
   workspace: IWorkspace;
   simulator?: SimulatorNameType | ISimulatorType;
   activeSidebarPanel?: string;
@@ -109,7 +109,7 @@ export class Designer {
     return this._showRightPanel;
   }
 
-  constructor(options: DesignerOptionsType) {
+  constructor(options: IDesignerOptions) {
     this.workspace = options.workspace;
 
     const { simulator, activeSidebarPanel: defaultActiveSidebarPanel } = options;

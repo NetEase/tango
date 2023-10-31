@@ -13,7 +13,7 @@ import {
   Sandbox,
   DndQuery,
 } from '@music163/tango-designer';
-import { createEngine, IWorkspace, Workspace } from '@music163/tango-core';
+import { createEngine, Workspace } from '@music163/tango-core';
 import { Logo, ProjectDetail, bootHelperVariables } from './share';
 import { sampleFiles } from '../mock/project';
 import './index.less';
@@ -29,8 +29,8 @@ import {
 const workspace = new Workspace({
   entry: '/src/index.js',
   files: sampleFiles,
-  onFilesChange: (_workspace: IWorkspace) => {
-    console.log('onFilesChange', _workspace.files);
+  onFilesChange: (filenames) => {
+    console.log('onFilesChange', filenames, workspace.files);
   },
 });
 
