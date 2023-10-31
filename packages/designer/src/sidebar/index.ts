@@ -5,3 +5,4 @@ export * from './dependency-panel';
 export * from './history-panel';
 export * from './variable-panel';
 export * from './sidebar';
+export * from './resizable-box';
