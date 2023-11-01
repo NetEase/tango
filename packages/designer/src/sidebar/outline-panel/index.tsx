@@ -13,21 +13,11 @@ export interface OutlineViewProps {
    * 是否显示切换可见状态按钮
    */
   showToggleVisibleIcon?: boolean;
-  /**
-   * 页面结构组件面板extra
-   */
-  pagesCollapsePanelExtra?: React.ReactNode;
-  /**
-   * 右侧额外panel区域内容
-   */
-  extraPanelContent?: React.ReactNode;
 }
 
 export function OutlinePanel({
   showStateView = true,
   showToggleVisibleIcon = true,
-  extraPanelContent,
-  pagesCollapsePanelExtra,
 }: OutlineViewProps) {
   return (
     <Box display="flex" height="100%" position="relative">
@@ -38,7 +28,6 @@ export function OutlinePanel({
           collapsed={!showStateView ? false : undefined}
           overflowY="auto"
           showBottomBorder={showStateView}
-          extra={pagesCollapsePanelExtra}
         >
           <ComponentsTree showToggleVisibleIcon={showToggleVisibleIcon} />
         </CollapsePanel>
@@ -48,11 +37,6 @@ export function OutlinePanel({
           </CollapsePanel>
         )}
       </Box>
-      {extraPanelContent && (
-        <Box height={'100%'} overflowY="auto" flex={1}>
-          {extraPanelContent}
-        </Box>
-      )}
     </Box>
   );
 }
