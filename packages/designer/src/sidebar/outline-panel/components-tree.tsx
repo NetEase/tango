@@ -112,6 +112,12 @@ export const ComponentsTree = observer(() => {
     );
   }
 
+  useEffect(() => {
+    setExpandedKeys(getNodeKeys(nodesTree));
+    // nodeTree 更新后重新计算expandKeys
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodesTree?.[0]?.id]);
+
   return (
     <Box css={outlineStyle}>
       <Tree
@@ -134,8 +140,8 @@ export const ComponentsTree = observer(() => {
           setSelectedKeys(keys);
         }}
         blockNode
-        autoExpandParent
-        expandedKeys={getNodeKeys(nodesTree)}
+        expandedKeys={expandedKeys}
+        onExpand={(keys) => setExpandedKeys(keys as string[])}
         draggable
         onDragStart={(data) => {
           const prototype = workspace.componentPrototypes.get(data.node.component);
