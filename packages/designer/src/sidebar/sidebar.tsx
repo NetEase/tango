@@ -103,7 +103,6 @@ function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, footer, childre
       }
     : {};
   const panelWidth = typeof panel?.width === 'number' ? panel?.width : defaultPanelWidth;
-  const controlledWidth = designer.sidebarPanelWidth;
 
   return (
     <Box display="flex" flexShrink={0} css={sidebarStyle} className="SidebarPanel">
@@ -144,11 +143,7 @@ function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, footer, childre
         </Box>
       </Box>
       {panel ? (
-        <ResizableBox
-          key={panel.label}
-          width={controlledWidth ?? panelWidth}
-          style={floatPanelStyle}
-        >
+        <ResizableBox key={panel.label} width={panelWidth} style={floatPanelStyle}>
           <SidebarPanelExpandedContent
             isFloat={panel.isFloat}
             closeable={panel.isFloat}
