@@ -17,7 +17,7 @@ export interface ComponentsTreeProps {
   /**
    * 页面节点选中回调
    */
-  onPageNodeSelect?: (nodeKey: string) => void;
+  onSelect?: (nodeKey: string) => void;
   /**
    * 节点树更多功能菜单
    */
@@ -133,7 +133,7 @@ const OutlineTreeNode: React.FC<{ node: ITangoViewNodeData } & ComponentsTreePro
 );
 
 export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
-  ({ showToggleVisibleIcon = true, onPageNodeSelect = noop, actionItems }) => {
+  ({ showToggleVisibleIcon = true, onSelect = noop, actionItems }) => {
     const workspace = useWorkspace();
     const sandboxQuery = useSandboxQuery();
     const [selectedKeys, setSelectedKeys] = useState<React.Key[]>(
@@ -179,7 +179,7 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
               });
             }
             // export selected
-            onPageNodeSelect(slotKey);
+            onSelect(slotKey);
             setSelectedKeys(keys);
           }}
           blockNode
