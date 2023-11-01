@@ -15,11 +15,11 @@ interface ComponentsTreeProps {
    */
   showToggleVisibleIcon?: boolean;
   /**
-   * 节点选中回调
+   * 页面节点选中回调
    */
-  onNodeSelect?: (nodeKey: string) => void;
+  onPageNodeSelect?: (nodeKey: string) => void;
   /**
-   * 节点更多菜单
+   * 节点树更多功能菜单
    */
   actionItems?: ActionItem[];
 }
@@ -135,7 +135,7 @@ const OutlineTreeNode: React.FC<any> = observer(
 );
 
 export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
-  ({ showToggleVisibleIcon = true, onNodeSelect = noop, actionItems }) => {
+  ({ showToggleVisibleIcon = true, onPageNodeSelect = noop, actionItems }) => {
     const workspace = useWorkspace();
     const sandboxQuery = useSandboxQuery();
     const [selectedKeys, setSelectedKeys] = useState<React.Key[]>(
@@ -181,7 +181,7 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
               });
             }
             // export selected
-            onNodeSelect(slotKey);
+            onPageNodeSelect(slotKey);
             setSelectedKeys(keys);
           }}
           blockNode
