@@ -608,9 +608,12 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param code 模型代码
    */
   addStoreModule(name: string, code: string) {
-    const filename = getFilepath(name, '/src/stores', '.js');
+    const filename = `/src/stores/${name}.js`;
     this.addFile(filename, code);
-    this.storeEntryModule?.addStore(name).update();
+    if (!this.storeEntryModule) {
+      this.addFile('/src/stores/index.js', '');
+    }
+    this.storeEntryModule.addStore(name).update();
   }
 
   /**
