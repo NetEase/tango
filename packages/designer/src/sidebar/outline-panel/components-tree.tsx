@@ -53,7 +53,8 @@ const outlineStyle = css`
     display: none;
   }
   .material-icon {
-    width: 14px;
+    width: 1em;
+    height: 1em;
   }
 `;
 
@@ -164,7 +165,7 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
     return (
       <Box css={outlineStyle}>
         <Tree
-          selectedKeys={selectedKeys}
+          selectedKeys={selectedKeys as string[]}
           fieldNames={filedNames}
           treeData={nodesTree as any[]}
           onSelect={(keys) => {
