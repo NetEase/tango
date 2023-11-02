@@ -76,7 +76,7 @@ export interface SidebarPanelItemProps
 
 function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, footer, children }: SidebarProps) {
   const items = useMemo(() => {
-    const ret: Record<React.Key, SidebarPanelItemProps> = {};
+    const ret: Record<string, SidebarPanelItemProps> = {};
     React.Children.forEach(children, (child) => {
       if (child && React.isValidElement(child)) {
         const widget = getWidget(['sidebar', child.key].join('.'));

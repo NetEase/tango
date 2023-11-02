@@ -72,7 +72,7 @@ export function withDnd(options: IWithDndOptions<any>) {
       );
     });
 
-    hoistNonReactStatic(Component, BaseComponent);
+    hoistNonReactStatic(Component, BaseComponent as any);
     Component.displayName = wrapDisplayName(displayName, 'withDnd');
 
     return Component;
