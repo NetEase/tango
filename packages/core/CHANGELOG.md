@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.3](https://github.com/netease/tango/compare/@music163/tango-core@0.2.2...@music163/tango-core@0.2.3) (2023-11-02)
+
+### Bug Fixes
+
+- add onFilesChange to workspace ([#50](https://github.com/netease/tango/issues/50)) ([d775a50](https://github.com/netease/tango/commit/d775a5003ab1a14f801d3b38f7187ea15ef7d74d))
+- **core:** create store without entry file ([ae806ae](https://github.com/netease/tango/commit/ae806aee3583ef5f957836e15d715035c4556867))
+- **core:** logging drop action ([963bfe1](https://github.com/netease/tango/commit/963bfe1ab80fa4114637963534b2891a27538120))
+- designer model add defaultActiveSidebarPanel ([#51](https://github.com/netease/tango/issues/51)) ([9dd11f7](https://github.com/netease/tango/commit/9dd11f7a6d5807c80a63c84c1ad0df5bc1ce9558))
+- refactor workspace onFilesChange ([f53ce94](https://github.com/netease/tango/commit/f53ce94c6ed777d45ba6137188bfbc4566e03942))
+- update types ([46d5f59](https://github.com/netease/tango/commit/46d5f59b4cd4fa71ed247f5e470e66c8c9f6d4a0))
+
 ## [0.2.2](https://github.com/netease/tango/compare/@music163/tango-core@0.2.1...@music163/tango-core@0.2.2) (2023-10-23)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.8](https://github.com/netease/tango/compare/@music163/tango-ui@0.1.7...@music163/tango-ui@0.1.8) (2023-11-02)
+
+### Bug Fixes
+
+- outline-panel tree expand bug & add props ([#52](https://github.com/netease/tango/issues/52)) ([b29e235](https://github.com/netease/tango/commit/b29e23599befbd60845053544648b10976a65824))
+
 ## [0.1.7](https://github.com/netease/tango/compare/@music163/tango-ui@0.1.6...@music163/tango-ui@0.1.7) (2023-10-23)
 
 ### Bug Fixes

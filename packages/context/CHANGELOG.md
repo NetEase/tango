@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.4](https://github.com/netease/tango/compare/@music163/tango-context@0.2.3...@music163/tango-context@0.2.4) (2023-11-02)
+
+### Bug Fixes
+
+- optional context config ([70fc6f8](https://github.com/netease/tango/commit/70fc6f8030202f5d340281c0424752044ed0fb83))
+
 ## [0.2.3](https://github.com/netease/tango/compare/@music163/tango-context@0.2.2...@music163/tango-context@0.2.3) (2023-10-23)
 
 **Note:** Version bump only for package @music163/tango-context

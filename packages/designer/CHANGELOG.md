@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.1...@music163/tango-designer@0.5.2) (2023-11-02)
+
+### Bug Fixes
+
+- limit outline tree node icon ([c5840f2](https://github.com/netease/tango/commit/c5840f29b724966930e239fe00ee13b2fb882503))
+- outline-panel tree expand bug & add props ([#52](https://github.com/netease/tango/issues/52)) ([b29e235](https://github.com/netease/tango/commit/b29e23599befbd60845053544648b10976a65824))
+- resizable-box support horizontal and vertical dragging ([#48](https://github.com/netease/tango/issues/48)) ([fd2fa94](https://github.com/netease/tango/commit/fd2fa943b05e9f1fa57574e703307725c5aed5d8))
+- update style of components panel ([11f166a](https://github.com/netease/tango/commit/11f166a2a67313200922a514a8219f34cfafd8ab))
+
 ## [0.5.1](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.0...@music163/tango-designer@0.5.1) (2023-10-23)
 
 ### Bug Fixes
