@@ -74,14 +74,6 @@ export function useFlatMenuData<T>(menuData: T) {
   ];
 }
 
-const StyledSpin = styled(Spin)`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  margin-left: 25px;
-`;
-
 export const ComponentsPanel = observer(
   ({
     menuData = emptyMenuData,
@@ -100,8 +92,6 @@ export const ComponentsPanel = observer(
       ],
       [workspace.bizComps, workspace.blocks, getBizCompName],
     );
-
-    if (loading) return <StyledSpin tip="正在加载物料列表..." spinning />;
 
     const tabs = Object.keys(menuData).map((key) => ({
       key,
@@ -135,7 +125,9 @@ export const ComponentsPanel = observer(
         <Box px="l" py="m" position="sticky" top="0" zIndex={1} bg="white">
           <Search placeholder="搜索物料" onChange={setKeyword} />
         </Box>
-        {!keyword ? contentNode : <MaterialList data={allList} filterKeyword={keyword} />}
+        <Spin spinning={loading} tip="正在加载物料列表...">
+          {!keyword ? contentNode : <MaterialList data={allList} filterKeyword={keyword} />}
+        </Spin>
       </Box>
     );
   },
