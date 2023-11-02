@@ -5,7 +5,7 @@
 <h1 align="center">Tango 低代码设计器</h1>
 <div align="center">
 
-一个源码驱动的低代码设计器，来自网易云音乐技术团队
+一个源码驱动的低代码设计器框架
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/NetEase/tango/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@music163/tango-designer.svg?style=flat-square)](http://npmjs.org/package/@music163/tango-designer)
@@ -79,6 +79,7 @@ yarn start
 参与 NetEase Tango 的社区，以分享您的想法、建议或问题，并与其他用户和贡献者建立联系。
 
 - Discord: <https://discord.gg/B6hkGTe4Rz>
+- [使用趋势](https://npm-compare.com/@music163/tango-helpers,@music163/tango-context,@music163/tango-core,@music163/tango-setting-form,@music163/tango-sandbox,@music163/tango-ui,@music163/tango-designer)
 
 ## 🤝 参与共建
 
@@ -90,13 +91,9 @@ yarn start
 - 合并修改 git rebase master
 - 发起 Pull Request
 
-## 📈 使用量趋势
-
-[Tango 使用量趋势](https://npm-compare.com/@music163/tango-helpers,@music163/tango-context,@music163/tango-core,@music163/tango-setting-form,@music163/tango-sandbox,@music163/tango-ui,@music163/tango-designer)
-
 ## 💗 致谢
 
-感谢网易云音乐公共技术团队，大前端团队，直播技术团队，以及所有参与过 Tango 项目的同学们。
+感谢网易云音乐公共技术团队，大前端团队，直播技术团队，以及所有参与过 Tango 项目的开发者。
 
 感谢 CodeSandbox 提供的 [Sandpack](https://sandpack.codesandbox.io/) 项目，为 Tango 提供了强大的基于浏览器的代码构建与执行能力。
 

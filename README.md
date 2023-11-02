@@ -5,7 +5,7 @@
 <h1 align="center">Tango LowCode Builder</h1>
 <div align="center">
 
-A source code based low-code builder, developed by NetEase Cloud Music Develop Team.
+A source code based low-code builder.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/NetEase/tango/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@music163/tango-designer.svg?style=flat-square)](http://npmjs.org/package/@music163/tango-designer)
@@ -79,6 +79,7 @@ yarn start
 Join NetEase Tango Community to share your ideas, suggestions, or questions and connect with other users and contributors.
 
 - Discord: <https://discord.gg/B6hkGTe4Rz>
+- [Usage Trends](https://npm-compare.com/@music163/tango-helpers,@music163/tango-context,@music163/tango-core,@music163/tango-setting-form,@music163/tango-sandbox,@music163/tango-ui,@music163/tango-designer)
 
 ## 🤝 Contributing
 
@@ -89,13 +90,9 @@ Please read the [github contribution guide](https://docs.github.com/en/get-start
 - Commit and push your code
 - Open a Pull Request
 
-## 📈 Usage Trends
-
-[Usage Trends of Tango Packages](https://npm-compare.com/@music163/tango-helpers,@music163/tango-context,@music163/tango-core,@music163/tango-setting-form,@music163/tango-sandbox,@music163/tango-ui,@music163/tango-designer)
-
 ## 💗 Acknowledgments
 
-Thanks to the NetEase Cloud Music Front-end team, Public Technology team, Live Broadcasting Technology team, and all the colleagues who participated in the Tango project.
+Thanks to the NetEase Cloud Music Front-end team, Public Technology team, Live Broadcasting Technology team, and all the developers who participated in the Tango project.
 
 Thank you to CodeSandbox for providing the [Sandpack](https://sandpack.codesandbox.io/) project, which provides powerful online code execution capabilities for Tango.
 
