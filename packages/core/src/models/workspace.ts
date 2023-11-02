@@ -1107,13 +1107,6 @@ export class Workspace extends EventTarget implements IWorkspace {
       }
 
       this.selectSource.clear();
-
-      this.history.push({
-        message: HistoryMessage.DropNode,
-        data: {
-          [targetFile.filename]: targetFile.code,
-        },
-      });
     }
 
     targetFile.update();
@@ -1122,6 +1115,15 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
 
     dragSource.clear();
+
+    if (isValidOperation) {
+      this.history.push({
+        message: HistoryMessage.DropNode,
+        data: {
+          [targetFile.filename]: targetFile.code,
+        },
+      });
+    }
   }
 
   /**
