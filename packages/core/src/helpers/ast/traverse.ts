@@ -205,6 +205,31 @@ function isJSXElementById(node: t.JSXElement, jsxElementNodeId: string) {
 }
 
 /**
+ * 在当前文件中查找目标 jsx 元素的所有父级 jsx 元素
+ * @param ast
+ * @param targetJSXElementNodeId
+ * @returns 父级JSXElement名称
+ */
+export function findJSXParentsById(ast: t.File, targetJSXElementNodeId: string) {
+  const parents: string[] = [];
+  traverse(ast, {
+    JSXElement(path) {
+      const node = path.node;
+      if (isJSXElementById(node, targetJSXElementNodeId)) {
+        let parentPath = path.parentPath;
+        while (parentPath && t.isJSXElement(parentPath.node)) {
+          if (t.isJSXIdentifier(parentPath.node.openingElement.name)) {
+            parents.unshift(parentPath.node.openingElement.name.name);
+          }
+          parentPath = parentPath.parentPath;
+        }
+      }
+    },
+  });
+  return parents;
+}
+
+/**
  * 在目标 jsx 元素中添加子元素
  * @param ast
  * @param targetJSXElementNodeId
