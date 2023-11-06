@@ -194,7 +194,7 @@ export function queryXFormItemFields(ast: t.File | t.JSXElement) {
  * @param node
  * @param id
  */
-function isJSXElementById(node: t.JSXElement, jsxElementNodeId: string) {
+export function isJSXElementById(node: t.JSXElement, jsxElementNodeId: string) {
   let isTargetJSXElement = false;
   visitJSXElementAttributes(node, (name, value) => {
     if (name === SLOT.dnd && value === jsxElementNodeId) {
@@ -202,29 +202,6 @@ function isJSXElementById(node: t.JSXElement, jsxElementNodeId: string) {
     }
   });
   return isTargetJSXElement;
-}
-
-/**
- * 在当前文件中查找目标 jsx 元素的所有父级 jsx 元素
- * @param ast
- * @param targetJSXElementNodeId
- * @returns 父级 JSXElements
- */
-export function findJSXParentsById(ast: t.File, targetJSXElementNodeId: string) {
-  const parentsNodes: t.JSXElement[] = [];
-  traverse(ast, {
-    JSXElement(path) {
-      const node = path.node;
-      if (isJSXElementById(node, targetJSXElementNodeId)) {
-        let parentPath = path.parentPath;
-        while (parentPath && t.isJSXElement(parentPath.node)) {
-          parentsNodes.unshift(parentPath.node);
-          parentPath = parentPath.parentPath;
-        }
-      }
-    },
-  });
-  return parentsNodes;
 }
 
 /**
