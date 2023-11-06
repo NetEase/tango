@@ -194,7 +194,7 @@ export function queryXFormItemFields(ast: t.File | t.JSXElement) {
  * @param node
  * @param id
  */
-function isJSXElementById(node: t.JSXElement, jsxElementNodeId: string) {
+export function isJSXElementById(node: t.JSXElement, jsxElementNodeId: string) {
   let isTargetJSXElement = false;
   visitJSXElementAttributes(node, (name, value) => {
     if (name === SLOT.dnd && value === jsxElementNodeId) {
