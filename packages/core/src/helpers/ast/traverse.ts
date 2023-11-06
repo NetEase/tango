@@ -27,7 +27,6 @@ import { isDefineService, isDefineStore } from '../assert';
 import type {
   IRouteData,
   IStorePropertyData,
-  IClassPropertyNodeData,
   ITangoViewNodeData,
   IImportDeclarationPayload,
   IServiceFunctionPayload,

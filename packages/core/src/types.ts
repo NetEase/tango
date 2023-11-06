@@ -89,12 +89,6 @@ export interface IImportDeclarationPayload {
   sourcePath: string;
 }
 
-export interface IClassPropertyNodeData {
-  reference: string;
-  propertyName: string;
-  propertyBody: string;
-}
-
 /**
  * 服务函数参数类型
  */

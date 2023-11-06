@@ -733,9 +733,20 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 获取 package.json 中的依赖列表
    * @returns
+   * TODO: fix this logic to merge dependencies from package.json and tango.config.json
    */
   listDependencies() {
     return this.packageJson?.getValue('dependencies');
+  }
+
+  getDependencies(pkgName: string) {
+    const packages = this.tangoConfigJson?.getValue('packages');
+    const dependencies = this.packageJson?.getValue('dependencies'); // 兼容老版本
+    const detail = {
+      version: dependencies?.[pkgName],
+      ...(packages?.[pkgName] || {}),
+    };
+    return detail;
   }
 
   /**

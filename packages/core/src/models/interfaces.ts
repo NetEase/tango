@@ -220,6 +220,7 @@ export interface IWorkspace {
   updateRoute: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
 
   listDependencies?: () => any;
+  getDependencies?: (pkgName: string) => Record<'version' | string, any>;
 
   updateDependency?: (
     name: string,
