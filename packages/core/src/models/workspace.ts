@@ -312,7 +312,7 @@ export class Workspace extends EventTarget implements IWorkspace {
   }
 
   /**
-   * 添加一组文件到工作区
+   * 添加一组文件到工作区，如果文件同名，后面的文件会覆盖前面的文件
    * @param files
    */
   addFiles(files: IFileConfig[] = []) {
@@ -328,81 +328,79 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param fileType 模块类型
    */
   addFile(filename: string, code: string, fileType?: FileType) {
-    if (!this.files.has(filename)) {
-      const moduleType = fileType || inferFileType(filename);
-      const props = {
-        filename,
-        code,
-        type: moduleType,
-      };
+    const moduleType = fileType || inferFileType(filename);
+    const props = {
+      filename,
+      code,
+      type: moduleType,
+    };
 
-      let module;
-      switch (moduleType) {
-        case FileType.StoreEntryModule:
-          module = new TangoStoreEntryModule(this, props);
-          this.storeEntryModule = module;
-          break;
-        case FileType.RouteModule: {
-          module = new TangoRouteModule(this, props);
-          this.routeModule = module;
-          // check if activeRoute exists
-          const route = module.routes.find((item) => item.path === this.activeRoute);
-          if (!route) {
-            this.setActiveRoute(module.routes[0]?.path);
-          }
-          break;
+    let module;
+    switch (moduleType) {
+      case FileType.StoreEntryModule:
+        module = new TangoStoreEntryModule(this, props);
+        this.storeEntryModule = module;
+        break;
+      case FileType.RouteModule: {
+        module = new TangoRouteModule(this, props);
+        this.routeModule = module;
+        // check if activeRoute exists
+        const route = module.routes.find((item) => item.path === this.activeRoute);
+        if (!route) {
+          this.setActiveRoute(module.routes[0]?.path);
         }
-        case FileType.JsxViewModule:
-          module = new TangoViewModule(this, props);
-          break;
-        case FileType.ServiceModule:
-          module = new TangoServiceModule(this, props);
-          this.serviceModules[module.name] = module;
-          break;
-        case FileType.StoreModule:
-          module = new TangoStoreModule(this, props);
-          this.storeModules[module.name] = module;
-          break;
-        case FileType.BlockEntryModule: {
-          const blockName = getBlockNameByFilename(props.filename);
-          const prototype: ComponentPrototypeType = {
-            name: blockName,
-            exportType: 'defaultExport',
-            package: props.filename,
-            type: 'block',
-          };
-          this.localBlocks[blockName] = props.filename;
-          this.componentPrototypes.set(blockName, prototype);
-          module = new TangoViewModule(this, props);
-          break;
-        }
-        case FileType.Module:
-          module = new TangoJsModule(this, props);
-          break;
-        case FileType.Less:
-          module = new TangoLessFile(this, props);
-          break;
-        case FileType.PackageJson:
-          module = new TangoJsonFile(this, props);
-          this.packageJson = module;
-          break;
-        case FileType.TangoConfigJson:
-          module = new TangoJsonFile(this, props);
-          this.tangoConfigJson = module;
-          break;
-        case FileType.AppJson:
-          module = new TangoJsonFile(this, props);
-          this.appJson = module;
-          break;
-        case FileType.Json:
-          module = new TangoJsonFile(this, props);
-          break;
-        default:
-          module = new TangoFile(this, props);
+        break;
       }
-
-      this.files.set(filename, module);
+      case FileType.JsxViewModule:
+        module = new TangoViewModule(this, props);
+        break;
+      case FileType.ServiceModule:
+        module = new TangoServiceModule(this, props);
+        this.serviceModules[module.name] = module;
+        break;
+      case FileType.StoreModule:
+        module = new TangoStoreModule(this, props);
+        this.storeModules[module.name] = module;
+        break;
+      case FileType.BlockEntryModule: {
+        const blockName = getBlockNameByFilename(props.filename);
+        const prototype: ComponentPrototypeType = {
+          name: blockName,
+          exportType: 'defaultExport',
+          package: props.filename,
+          type: 'block',
+        };
+        this.localBlocks[blockName] = props.filename;
+        this.componentPrototypes.set(blockName, prototype);
+        module = new TangoViewModule(this, props);
+        break;
+      }
+      case FileType.Module:
+        module = new TangoJsModule(this, props);
+        break;
+      case FileType.Less:
+        module = new TangoLessFile(this, props);
+        break;
+      case FileType.PackageJson:
+        module = new TangoJsonFile(this, props);
+        this.packageJson = module;
+        break;
+      case FileType.TangoConfigJson:
+        module = new TangoJsonFile(this, props);
+        this.tangoConfigJson = module;
+        break;
+      case FileType.AppJson:
+        module = new TangoJsonFile(this, props);
+        this.appJson = module;
+        break;
+      case FileType.Json:
+        module = new TangoJsonFile(this, props);
+        break;
+      default:
+        module = new TangoFile(this, props);
     }
+
+    this.files.set(filename, module);
   }
 
   updateFile(filename: string, code: string, shouldFormatCode = false) {

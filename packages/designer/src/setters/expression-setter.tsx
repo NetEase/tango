@@ -82,6 +82,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
         onChange(undefined);
         return;
       }
+
       if (getVariableContent(code) === value2expressionCode(valueProp)) {
         return;
       }
