@@ -238,17 +238,26 @@ export function getVariableContent(str: string) {
   return str;
 }
 
+// 提供给代码执行环境的全局变量
+const patchCode = `
+var tango = {
+  stores: {},
+  services: {},
+  config: {},
+  refs: {},
+};
+`;
+
 /**
  * 将代码放到函数体中进行执行
  * @param code
  * @returns 函数执行的结果
  */
-export function executeCodeAsFunctionBody(code: string) {
+export function runCode(code: string) {
   let ret;
   try {
     // eslint-disable-next-line no-new-func
-    ret = new Function(code);
-    ret = ret();
+    ret = new Function(`${patchCode}\n return ${code}`)();
   } catch (err) {
     // ignore error
   }
@@ -261,14 +270,14 @@ const objectWrapperPattern = /^[{\[].*[}\]]$/s;
 /**
  * 将代码片段转成 js 对象
  * @param code 代码文本
- * @param isStrict 是否为严格模式
+ * @param isStrict 是否为严格模式（是否废弃）
  * @returns
  */
 export function code2object(code: string, isStrict = true) {
   // 非严格模式直接执行
   // 严格模式下需检测 code 是一个对象
   if (!isStrict || (isStrict && objectWrapperPattern.test(code))) {
-    const ret = executeCodeAsFunctionBody(`return ${code}`);
+    const ret = runCode(code);
     return typeof ret === 'object' ? ret : undefined;
   }
   return code;

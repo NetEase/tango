@@ -42,9 +42,9 @@ describe('string', () => {
     expect(isVariableString('{value}')).toBeTruthy();
     expect(isVariableString('{"hello"}')).toBeTruthy();
     expect(isVariableString('{ foo: "bar" }')).toBeFalsy();
-    expect(isVariableString('{{ foo: "bar" }}')).toBeTruthy();
-    expect(isVariableString('{() => {}}')).toBeTruthy();
-    expect(isVariableString('{() => { console.log(); }}')).toBeTruthy();
+    expect(isVariableString('{ type: tango.stores?.homePage?.tabKey }')).toBeFalsy();
+    expect(isVariableString('{ type: window.bar }')).toBeFalsy();
+    expect(isVariableString('{ foo: "bar" }')).toBeFalsy();
   });
 
   it('getVariableContent', () => {
