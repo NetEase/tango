@@ -56,7 +56,7 @@ type JSXElementChildrenType = Array<
  * @param node
  * @param visitCallback
  */
-function visitJSXElementAttributes(
+export function visitJSXElementAttributes(
   node: t.JSXElement,
   visitCallback: (
     name: StringOrNumber,
@@ -337,6 +337,24 @@ export function removeJSXElement(ast: t.File, targetJSXElementNodeId: string) {
     },
   });
   return ast;
+}
+
+/**
+ * 根据 id 查找 JSXElement
+ * @param ast
+ * @param targetJSXElementNodeId
+ */
+export function findJSXElementById(ast: t.File, targetJSXElementNodeId: string) {
+  let targetJSXElement: t.JSXElement;
+  traverse(ast, {
+    JSXElement(path) {
+      if (isJSXElementById(path.node, targetJSXElementNodeId)) {
+        targetJSXElement = path.node;
+        path.stop();
+      }
+    },
+  });
+  return targetJSXElement;
 }
 
 /**

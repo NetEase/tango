@@ -2,14 +2,16 @@ import * as t from '@babel/types';
 import {
   ComponentPropType,
   ComponentPrototypeType,
+  SLOT,
   isNil,
   isVariableString,
   logger,
+  parseDndId,
   uuid,
 } from '@music163/tango-helpers';
 import { getRelativePath, isFilepath } from './string';
 import type { IImportDeclarationPayload } from '../types';
-import { code2expression } from './ast';
+import { code2expression, visitJSXElementAttributes } from './ast';
 
 /**
  * 根据组件的 prototype 生成 ImportDeclarationPayload
@@ -137,4 +139,66 @@ export function prototype2code(prototype: ComponentPrototypeType) {
 export function prototype2jsxElement(prototype: ComponentPrototypeType) {
   const code = prototype2code(prototype);
   return code2expression(code) as t.JSXElement;
+}
+
+/**
+ * 基于值类型生成 setter
+ * "1" => stringSetter
+ * 1 => numberSetter
+ * true => boolSetter
+ * {() => {}} => expressionSetter
+ */
+export function getSetterByValueType(value: any) {
+  switch (typeof value) {
+    case 'string':
+      return /^{.*}$/.test(value) ? 'expressionSetter' : 'textSetter';
+    case 'number':
+      return 'numberSetter';
+    case 'boolean':
+      return 'boolSetter';
+    default:
+      return 'expressionSetter';
+  }
+}
+
+/**
+ * 基于 t.JSXElement 信息生成 prototype
+ * @param prototype
+ */
+export function jsxElemente2prototype(
+  targetNode: t.JSXElement,
+  payload?: Partial<ComponentPrototypeType>,
+) {
+  const prototype: Partial<ComponentPrototypeType> = {
+    ...payload,
+    type: 'element',
+    props: [],
+  };
+
+  const groupValue = (attrName: string) => {
+    if (attrName.startsWith('on')) {
+      return 'event';
+    }
+    if (attrName.startsWith('style')) {
+      return 'style';
+    }
+    return 'basic';
+  };
+
+  visitJSXElementAttributes(targetNode, (name, value) => {
+    const attrName = name.toString();
+    if (name === SLOT.dnd) {
+      const componaneName = parseDndId(value)?.component;
+      prototype.title = componaneName;
+      prototype.name = componaneName;
+    } else {
+      prototype.props.push({
+        name: attrName,
+        title: attrName,
+        group: groupValue(attrName),
+        setter: getSetterByValueType(value),
+      });
+    }
+  });
+  return prototype as ComponentPrototypeType;
 }

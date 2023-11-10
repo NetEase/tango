@@ -181,6 +181,7 @@ export interface IWorkspace {
   copySelectedNode: () => void;
   pasteSelectedNode: () => void;
   insertToSelectedNode: (childNameOrPrototype: string | ComponentPrototypeType) => void;
+  getSelectedNodePrototype: () => ComponentPrototypeType;
   dropNode: () => void;
   insertToNode: (
     targetNodeId: string,

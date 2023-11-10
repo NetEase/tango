@@ -84,10 +84,10 @@ export function useDnd({
   const onMouseMove = (e: React.MouseEvent) => {
     const point = sandboxQuery.getRelativePoint({ x: e.clientX, y: e.clientY });
     setElementStyle('.SelectionMask', {
-      width: Math.abs(selectSource.start?.point.x - point.x) + 'px',
-      height: Math.abs(selectSource.start?.point.y - point.y) + 'px',
-      left: Math.min(selectSource.start?.point.x, point.x) + 'px',
-      top: Math.min(selectSource.start?.point.y, point.y) + 'px',
+      width: `${Math.abs(selectSource.start?.point.x - point.x)}px`,
+      height: `${Math.abs(selectSource.start?.point.y - point.y)}px`,
+      left: `${Math.min(selectSource.start?.point.x, point.x)}px`,
+      top: `${Math.min(selectSource.start?.point.y, point.y)}px`,
     });
   };
 

@@ -138,22 +138,25 @@ export default counter;
 const viewHomeCode = `
 import React from "react";
 import { definePage } from "@music163/tango-boot";
-import {
-  Page,
-  Section,
-  Button,
-  Input,
-  FormilyForm,
-} from "@music163/antd";
+import { Page, Section, Button, Input } from "@music163/antd";
+
+const CustomButton = (props) => {
+  return (
+    <div style={{ width: "60px", height: "25px" }} {...props}>
+      自定义按钮
+    </div>
+  );
+};
+
 class App extends React.Component {
   render() {
     return (
       <Page title={tango.stores.app.title}>
-       <Section title="Section Title">
-       </Section>
-       <Section>
+        <Section title="Section Title"></Section>
+        <Section>
           <Button>button</Button>
           <Input />
+          <CustomButton type="primary"/>
         </Section>
       </Page>
     );

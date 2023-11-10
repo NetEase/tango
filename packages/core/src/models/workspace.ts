@@ -17,6 +17,7 @@ import {
   namesToImportDeclarations,
   getBlockNameByFilename,
   getPrivilegeCode,
+  jsxElemente2prototype,
 } from '../helpers';
 import { DropMethod } from './drop-target';
 import { HistoryMessage, TangoHistory } from './history';
@@ -1123,6 +1124,27 @@ export class Workspace extends EventTarget implements IWorkspace {
           [targetFile.filename]: targetFile.code,
         },
       });
+    }
+  }
+
+  /**
+   * 获取当前选中元素的prototype
+   * 默认从 componentPrototypes 中获取
+   * 获取失败则按照当前JSX的AST信息自动生成一份
+   * @returns prototype
+   */
+  getSelectedNodePrototype() {
+    if (this.selectSource.isSelected) {
+      const selectedNode = this.selectSource.first;
+      const presetPrototype = this.componentPrototypes.get(selectedNode.name);
+      if (presetPrototype) {
+        return presetPrototype;
+      }
+
+      if (this.selectSource.firstNode?.rawNode) {
+        const prototypes = jsxElemente2prototype(this.selectSource.firstNode.rawNode as JSXElement);
+        return prototypes;
+      }
     }
   }
 
