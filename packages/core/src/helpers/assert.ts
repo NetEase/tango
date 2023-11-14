@@ -20,3 +20,15 @@ const defineStoreHandlerName = 'defineStore';
 export function isDefineStore(name: string) {
   return defineStoreHandlerName === name;
 }
+
+/**
+ * 是否是 tango 的变量引用
+ * @example tango.stores.app.name
+ * @example tango.stores?.app?.name
+ *
+ * @param name
+ * @returns
+ */
+export function isTangoVariable(name: string) {
+  return /^tango\??\.(stores|services)\??\./.test(name) && name.split('.').length > 2;
+}

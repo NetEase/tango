@@ -23,7 +23,7 @@ import {
   object2node,
 } from './parse';
 import { isValidComponentName } from '../string';
-import { isDefineService, isDefineStore } from '../assert';
+import { isDefineService, isDefineStore, isTangoVariable } from '../assert';
 import type {
   IRouteData,
   IStorePropertyData,
@@ -1127,11 +1127,14 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
 
     MemberExpression(path) {
       const variable = node2value(path.node, false);
-      if (
-        /^tango\.(stores|services)\./.test(variable) &&
-        variable.split('.').length === 3 &&
-        !variables.includes(variable)
-      ) {
+      if (isTangoVariable(variable) && !variables.includes(variable)) {
+        variables.push(variable);
+      }
+    },
+
+    OptionalMemberExpression(path) {
+      const variable = node2value(path.node, false);
+      if (isTangoVariable(variable) && !variables.includes(variable)) {
         variables.push(variable);
       }
     },

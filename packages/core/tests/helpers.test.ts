@@ -126,7 +126,6 @@ describe('helpers', () => {
 });
 
 describe('string helpers', () => {
-
   it('value2code: empty array', () => {
     expect(value2code([])).toEqual('[]');
   });
@@ -151,9 +150,9 @@ describe('string helpers', () => {
   it('namesToImportDeclarations', () => {
     expect(
       namesToImportDeclarations(['Button', 'Box', 'React'], {
-        Button: { package: '@music163/antd' },
-        Box: { package: '@music163/antd' },
-        React: { package: 'react', isDefault: true },
+        Button: { source: '@music163/antd' },
+        Box: { source: '@music163/antd' },
+        React: { source: 'react', isDefault: true },
       }),
     ).toEqual([
       { sourcePath: '@music163/antd', specifiers: ['Button', 'Box'] },
