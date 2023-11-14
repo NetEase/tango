@@ -504,6 +504,7 @@ export interface CodeSandboxProps {
     isFile: (path: string) => Promise<boolean>;
     readFile: (path: string) => Promise<string>;
   };
+  style?: React.CSSProperties;
 }
 
 export interface ViteSandboxProps {

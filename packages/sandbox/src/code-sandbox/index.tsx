@@ -21,6 +21,7 @@ import { IFiles, CodeSandboxState, CodeSandboxProps, UnsubscribeFunction } from 
 // };
 export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxState> {
   static defaultProps = {
+    template: 'create-react-app',
     skipEval: false,
     eventHandlers: {},
     externalResources: [] as string[],
@@ -181,9 +182,10 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
   };
 
   render() {
+    const { style } = this.props;
     const { loading, status, iframeId } = this.state;
     return (
-      <div className="CodeSandbox" style={{ position: 'relative', height: '100%' }}>
+      <div className="CodeSandbox" style={{ position: 'relative', height: '100%', ...style }}>
         {loading ? <Loading status={status} /> : null}
         <iframe
           ref={this.setupFrame}
