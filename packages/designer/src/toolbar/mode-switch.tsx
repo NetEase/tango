@@ -1,9 +1,11 @@
 import React from 'react';
 import { Group } from 'coral-system';
+import { Modal } from 'antd';
 import { ToggleButton } from '@music163/tango-ui';
-import { observer, useDesigner } from '@music163/tango-context';
+import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 
 export const ModeSwitchTool = observer(() => {
+  const workspace = useWorkspace();
   const designer = useDesigner();
   return (
     <Group attached>
@@ -13,7 +15,7 @@ export const ModeSwitchTool = observer(() => {
         onClick={() => {
           designer.setActiveView('design');
         }}
-        tip="设计视图"
+        tooltip="设计视图"
       >
         设计
       </ToggleButton>
@@ -23,8 +25,16 @@ export const ModeSwitchTool = observer(() => {
         onClick={() => {
           designer.setActiveView('code'); // 切换到源码视图
           designer.setActiveSidebarPanel(''); // 关闭左侧面板
+          if (workspace.activeFile !== workspace.activeViewFile) {
+            Modal.confirm({
+              title: '当前打开的文件与视图不匹配，是否切换到当前视图对应的文件？',
+              onOk: () => {
+                workspace.setActiveFile(workspace.activeViewFile);
+              },
+            });
+          }
         }}
-        tip="源码视图"
+        tooltip="源码视图"
       >
         源码
       </ToggleButton>

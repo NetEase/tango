@@ -29,9 +29,6 @@ import {
 const workspace = new Workspace({
   entry: '/src/index.js',
   files: sampleFiles,
-  onFilesChange: (filenames) => {
-    console.log('onFilesChange', filenames, workspace.files);
-  },
 });
 
 // 2. 引擎初始化
