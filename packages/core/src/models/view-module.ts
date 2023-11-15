@@ -25,6 +25,7 @@ import {
   IImportDeclarationPayload,
   InsertChildPositionType,
   IImportSpecifierSourceData,
+  ImportDeclarationDataType,
 } from '../types';
 import { IViewFile, IWorkspace } from './interfaces';
 import { TangoModule } from './module';
@@ -51,6 +52,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   private _nodes: Map<string, TangoNode>;
   /**
    * 导入的模块
+   * @deprecated
    */
   private _importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>;
 
@@ -98,6 +100,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       ast: newAst,
       cleanAst,
       nodes,
+      imports,
       importedModules,
       variables,
     } = traverseViewFile(this.ast, this._idGenerator);
@@ -107,7 +110,8 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     this._cleanCode = ast2code(cleanAst);
 
     this._importedModules = importedModules;
-    this.importMap = this.buildImportMap(importedModules);
+    this.imports = imports;
+    this.importMap = this.buildImportMap(imports);
     this.variables = variables;
 
     this._nodes.clear();
@@ -127,7 +131,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * 依赖列表
    */
   listImportSources() {
-    return Object.keys(this._importedModules);
+    return Object.keys(this.imports);
   }
 
   /**
@@ -342,24 +346,15 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     return this;
   }
 
-  private buildImportMap(
-    importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>,
-  ) {
+  private buildImportMap(importedModules: ImportDeclarationDataType) {
     const map: Dict<IImportSpecifierSourceData> = {};
-    Object.keys(importedModules).forEach((modName) => {
-      const mod = importedModules[modName];
-      (Array.isArray(mod) ? mod : [mod]).forEach((item) => {
-        if (item.defaultSpecifier) {
-          map[item.defaultSpecifier] = {
-            source: modName,
-            isDefault: true,
-          };
-        }
-        if (item.specifiers.length) {
-          item.specifiers.forEach((spe) => {
-            map[spe] = { source: modName };
-          });
-        }
+    Object.keys(importedModules).forEach((source) => {
+      const specifiers = importedModules[source];
+      specifiers?.forEach((specifier) => {
+        map[specifier.localName] = {
+          source,
+          isDefault: specifier.type === 'ImportDefaultSpecifier',
+        };
       });
     });
     return map;

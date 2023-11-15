@@ -1276,6 +1276,7 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
     ast,
     cleanAst,
     nodes,
+    imports,
     importedModules,
     variables,
   };

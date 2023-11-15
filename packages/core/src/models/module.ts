@@ -10,7 +10,7 @@ import {
   updateImportDeclaration2,
 } from '../helpers';
 import { TangoFile } from './file';
-import { IFileConfig, IImportSpecifierData } from '../types';
+import { IFileConfig, IImportSpecifierData, ImportDeclarationDataType } from '../types';
 import { IWorkspace } from './interfaces';
 
 /**
@@ -24,7 +24,7 @@ export class TangoModule extends TangoFile {
   /**
    * 导入语句
    */
-  imports: Record<string, IImportSpecifierData[]>;
+  imports: ImportDeclarationDataType;
 
   constructor(workspace: IWorkspace, props: IFileConfig, isSyncCode = true) {
     super(workspace, props, isSyncCode);
