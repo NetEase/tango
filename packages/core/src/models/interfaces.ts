@@ -236,7 +236,7 @@ export interface IWorkspace {
 
   addDependency: (data: any) => void;
   listDependencies: () => any;
-  getDependencies: (pkgName: string) => Record<'version' | string, any>;
+  getDependency: (pkgName: string) => object;
 
   updateDependency: (
     name: string,

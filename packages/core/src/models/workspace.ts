@@ -755,7 +755,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     return this.packageJson?.getValue('dependencies');
   }
 
-  getDependencies(pkgName: string) {
+  getDependency(pkgName: string) {
     const packages = this.tangoConfigJson?.getValue('packages');
     const dependencies = this.packageJson?.getValue('dependencies'); // 兼容老版本
     const detail = {
