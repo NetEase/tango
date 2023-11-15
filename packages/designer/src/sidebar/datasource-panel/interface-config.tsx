@@ -275,7 +275,7 @@ function ServiceDetailForm({
       {...formProps}
     >
       <Form.Item
-        label="所属模块"
+        label="命名空间"
         name="moduleName"
         rules={[
           {

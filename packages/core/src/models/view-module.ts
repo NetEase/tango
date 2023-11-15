@@ -24,7 +24,7 @@ import {
   ITangoViewNodeData,
   IImportDeclarationPayload,
   InsertChildPositionType,
-  IImportSpecifierData,
+  IImportSpecifierSourceData,
 } from '../types';
 import { IViewFile, IWorkspace } from './interfaces';
 import { TangoModule } from './module';
@@ -38,7 +38,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   /**
    * 通过导入组件名查找组件来自的包
    */
-  importMap: Dict<IImportSpecifierData>;
+  importMap: Dict<IImportSpecifierSourceData>;
 
   /**
    * 视图中依赖的 tango 变量，仅 stores 和 services
@@ -169,6 +169,8 @@ export class TangoViewModule extends TangoModule implements IViewFile {
 
   /**
    * 基于组件的 prototype 信息更新导入信息
+   * TODO: 和 Module.addImportDeclaration 中的保持一致
+   * @deprecated
    * @param prototype
    * @param shouldUpdateCode
    */
@@ -183,6 +185,8 @@ export class TangoViewModule extends TangoModule implements IViewFile {
 
   /**
    * 更新导入的变量（新版）
+   * TODO: 和 Module.updateImportDeclaration 中的保持一致
+   * @deprecated
    */
   updateImportSpecifiers(importDeclaration: IImportDeclarationPayload) {
     const mods = this._importedModules[importDeclaration.sourcePath];
@@ -341,7 +345,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   private buildImportMap(
     importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>,
   ) {
-    const map: Dict<IImportSpecifierData> = {};
+    const map: Dict<IImportSpecifierSourceData> = {};
     Object.keys(importedModules).forEach((modName) => {
       const mod = importedModules[modName];
       (Array.isArray(mod) ? mod : [mod]).forEach((item) => {

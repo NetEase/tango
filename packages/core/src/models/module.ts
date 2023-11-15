@@ -1,9 +1,16 @@
 import * as t from '@babel/types';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { isNil } from '@music163/tango-helpers';
-import { code2ast, ast2code, formatCode } from '../helpers';
+import {
+  code2ast,
+  ast2code,
+  formatCode,
+  traverseFile,
+  addImportDeclaration2,
+  updateImportDeclaration2,
+} from '../helpers';
 import { TangoFile } from './file';
-import { IFileConfig } from '../types';
+import { IFileConfig, IImportSpecifierData } from '../types';
 import { IWorkspace } from './interfaces';
 
 /**
@@ -13,6 +20,11 @@ import { IWorkspace } from './interfaces';
  */
 export class TangoModule extends TangoFile {
   ast: t.File;
+
+  /**
+   * 导入语句
+   */
+  imports: Record<string, IImportSpecifierData[]>;
 
   constructor(workspace: IWorkspace, props: IFileConfig, isSyncCode = true) {
     super(workspace, props, isSyncCode);
@@ -37,6 +49,16 @@ export class TangoModule extends TangoFile {
     if (refreshWorkspace) {
       this.workspace.refresh([this.filename]);
     }
+  }
+
+  addImportDeclaration(source: string, specifiers: IImportSpecifierData[]) {
+    addImportDeclaration2(this.ast, source, specifiers);
+    return this;
+  }
+
+  updateImportDeclaration(source: string, specifiers: IImportSpecifierData[]) {
+    updateImportDeclaration2(this.ast, source, specifiers);
+    return this;
   }
 
   /**
@@ -69,7 +91,10 @@ export class TangoModule extends TangoFile {
     this.ast = code2ast(code);
   }
 
-  _analysisAst() {}
+  _analysisAst() {
+    const { imports } = traverseFile(this.ast);
+    this.imports = imports;
+  }
 }
 
 /**

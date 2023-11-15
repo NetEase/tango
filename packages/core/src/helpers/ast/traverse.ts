@@ -31,6 +31,7 @@ import type {
   IImportDeclarationPayload,
   IServiceFunctionPayload,
   InsertChildPositionType,
+  IImportSpecifierData,
 } from '../../types';
 import { IdGenerator } from '../id-generator';
 
@@ -447,6 +448,7 @@ function getLastExportDeclarationIndex(node: t.Program) {
 
 /**
  * 生成新的 ImportDeclaration
+ * @deprecated 使用 makeImportDeclaration2 代替
  * @param importedModule
  * @param importedSourcePath
  * @returns
@@ -466,6 +468,27 @@ export function makeImportDeclaration(importedModule: IImportDeclarationPayload)
   return t.importDeclaration(newSpecifierNodes, t.stringLiteral(importedModule.sourcePath));
 }
 
+export function makeImportDeclaration2(source: string, specifiers: IImportSpecifierData[]) {
+  const specifierNodes = specifiers.map((item) => {
+    switch (item.type) {
+      case 'ImportDefaultSpecifier':
+        return t.importDefaultSpecifier(t.identifier(item.localName));
+      case 'ImportSpecifier':
+        return t.importSpecifier(t.identifier(item.importedName), t.identifier(item.localName));
+      case 'ImportNamespaceSpecifier':
+        return t.importNamespaceSpecifier(t.identifier(item.localName));
+      default:
+        return;
+    }
+  });
+  return t.importDeclaration(specifierNodes, t.stringLiteral(source));
+}
+
+/**
+ * @deprecated 使用 parseImportDeclaration 代替
+ * @param node
+ * @returns
+ */
 function getImportDeclarationData(node: t.ImportDeclaration): IImportDeclarationPayload {
   const sourcePath = node2value(node.source);
   let defaultSpecifier;
@@ -486,6 +509,7 @@ function getImportDeclarationData(node: t.ImportDeclaration): IImportDeclaration
 
 /**
  * 添加新的导入语句
+ * @deprecated 使用 addImportDeclaration2 代替
  * @param ast
  * @param importedModule
  * @param importedSourcePath
@@ -503,8 +527,24 @@ export function addImportDeclaration(ast: t.File, importedModule: IImportDeclara
   return ast;
 }
 
+export function addImportDeclaration2(
+  ast: t.File,
+  source: string,
+  specifiers: IImportSpecifierData[],
+) {
+  traverse(ast, {
+    Program(path) {
+      const lastIndex = getLastImportDeclarationIndex(path.node);
+      const newImportDeclaration = makeImportDeclaration2(source, specifiers);
+      path.node.body.splice(lastIndex, 0, newImportDeclaration);
+      path.stop();
+    },
+  });
+}
+
 /**
  * 更新已有的导入语句
+ * @deprecated 使用 updateImportDeclaration2 代替
  * @param ast
  * @param importedModule
  * @param importedSourcePath
@@ -516,6 +556,24 @@ export function updateImportDeclaration(ast: t.File, importedModule: IImportDecl
       const currentSourcePath = node2value(path.node.source);
       if (currentSourcePath === importedModule.sourcePath) {
         const newImportDeclaration = makeImportDeclaration(importedModule);
+        path.replaceWith(newImportDeclaration);
+        path.stop(); // 只修改匹配到的第一条
+      }
+    },
+  });
+  return ast;
+}
+
+export function updateImportDeclaration2(
+  ast: t.File,
+  source: string,
+  specifiers: IImportSpecifierData[],
+) {
+  traverse(ast, {
+    ImportDeclaration(path) {
+      const currentSourcePath = node2value(path.node.source);
+      if (currentSourcePath === source) {
+        const newImportDeclaration = makeImportDeclaration2(source, specifiers);
         path.replaceWith(newImportDeclaration);
         path.stop(); // 只修改匹配到的第一条
       }
@@ -985,7 +1043,12 @@ export function traverseServiceFile(ast: t.File) {
   const baseConfig: any = {
     encryptFetch: false,
   };
+  const imports: Record<string, IImportSpecifierData[]> = {};
   traverse(ast, {
+    ImportDeclaration(path) {
+      const { source, specifiers } = parseImportDeclaration(path.node);
+      imports[source] = specifiers;
+    },
     CallExpression(path) {
       const calleeName = keyNode2value(path.node.callee) as string;
       if (isDefineService(calleeName)) {
@@ -1002,6 +1065,7 @@ export function traverseServiceFile(ast: t.File) {
     },
   });
   return {
+    imports,
     services,
     baseConfig,
   };
@@ -1106,6 +1170,7 @@ export function cloneJSXElementWithoutTrackingData(node: t.JSXElement) {
 }
 
 export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
+  const imports: Record<string, IImportSpecifierData[]> = {};
   const importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]> = {};
   const nodes: Array<ITangoViewNodeData<t.JSXElement>> = [];
   const cloneAst = t.cloneNode(ast, true, true);
@@ -1114,12 +1179,38 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
 
   traverse(ast, {
     ImportDeclaration(path) {
-      const declarationData = getImportDeclarationData(path.node);
-      const exist = importedModules[declarationData.sourcePath];
+      const { source, specifiers } = parseImportDeclaration(path.node);
+      imports[source] = specifiers;
+
+      // FIXME: 下面的逻辑兼容旧的逻辑，后续需要移除掉
+      const declarationData = specifiers.reduce(
+        (prev, cur) => {
+          switch (cur.type) {
+            case 'ImportDefaultSpecifier':
+              prev.defaultSpecifier = cur.localName;
+              break;
+            case 'ImportSpecifier':
+              prev.specifiers.push(cur.localName);
+              break;
+            case 'ImportNamespaceSpecifier':
+              prev.specifiers.push(cur.localName);
+              break;
+            default:
+              break;
+          }
+          return prev;
+        },
+        {
+          defaultSpecifier: undefined,
+          specifiers: [],
+          sourcePath: source,
+        },
+      );
+      const exist = importedModules[source];
       if (!exist) {
-        importedModules[declarationData.sourcePath] = declarationData;
+        importedModules[source] = declarationData;
       } else {
-        importedModules[declarationData.sourcePath] = Array.isArray(exist)
+        importedModules[source] = Array.isArray(exist)
           ? exist.concat([declarationData])
           : [exist, declarationData];
       }
@@ -1187,5 +1278,47 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
     nodes,
     importedModules,
     variables,
+  };
+}
+
+/**
+ * 解析导入语句
+ */
+function parseImportDeclaration(node: t.ImportDeclaration) {
+  const source = node2value(node.source) as string;
+  const specifiers: IImportSpecifierData[] = [];
+  node.specifiers.forEach((specifierNode) => {
+    const data: IImportSpecifierData = {
+      localName: keyNode2value(specifierNode.local) as string,
+      type: specifierNode.type,
+    };
+    if (specifierNode.type === 'ImportSpecifier') {
+      data.importedName = keyNode2value(specifierNode.imported) as string;
+    }
+    specifiers.push(data);
+  });
+
+  return {
+    source,
+    specifiers,
+  };
+}
+
+/**
+ * 基本的文件解析过程
+ * @param ast
+ */
+export function traverseFile(ast: t.File) {
+  const imports: Record<string, IImportSpecifierData[]> = {};
+
+  traverse(ast, {
+    ImportDeclaration(path) {
+      const { source, specifiers } = parseImportDeclaration(path.node);
+      imports[source] = specifiers;
+    },
+  });
+
+  return {
+    imports,
   };
 }

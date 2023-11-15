@@ -10,7 +10,7 @@ import {
   ITangoConfigPackages,
   IPageConfigData,
   IServiceFunctionPayload,
-  IImportSpecifierData,
+  IImportSpecifierSourceData,
 } from '../types';
 import { TangoFile, TangoJsonFile } from './file';
 import { TangoRouteModule } from './route-module';
@@ -25,7 +25,7 @@ export interface IViewFile {
   /**
    * 通过导入组件名查找组件来自的包
    */
-  importMap?: Dict<IImportSpecifierData>;
+  importMap?: Dict<IImportSpecifierSourceData>;
 
   listImportSources?: () => string[];
   listModals?: () => Array<{ label: string; value: string }>;
@@ -148,8 +148,8 @@ export interface IWorkspace {
   storeModules?: Record<string, TangoStoreModule>;
   serviceModules?: Record<string, TangoServiceModule>;
 
-  refresh: (names: string[]) => void;
   ready: () => void;
+  refresh: (names: string[]) => void;
 
   setActiveRoute: (path: string) => void;
   setActiveFile: (filename: string) => void;
@@ -159,22 +159,25 @@ export interface IWorkspace {
 
   onFilesChange?: (filenames: string[]) => void;
 
-  getFile: (filename: string) => TangoFile;
-  listFiles: () => Record<string, string>;
-  addFile: (filename: string, code: string, fileType?: FileType) => void;
+  // ----------------- 文件操作 -----------------
   addFiles: (files: IFileConfig[]) => void;
-  updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
+  addFile: (filename: string, code: string, fileType?: FileType) => void;
+
+  addServiceFile: (serviceName: string, code: string) => void;
+  addStoreFile: (storeName: string, code: string) => void;
+  addViewFile: (viewName: string, code: string) => void;
+
   removeFile: (filename: string) => void;
+
   renameFile: (oldFilename: string, newFilename: string) => void;
   renameFolder: (oldFoldername: string, newFoldername: string) => void;
 
-  /**
-   * 查询节点
-   * @param id 节点 ID
-   * @param module 节点所在的模块名
-   * @returns 返回节点对象
-   */
-  getNode: (id: string, module?: string) => IViewNode;
+  updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
+
+  listFiles: () => Record<string, string>;
+  getFile: (filename: string) => TangoFile;
+
+  // ----------------- 节点操作 -----------------
 
   removeSelectedNode: () => void;
   cloneSelectedNode: () => void;
@@ -195,34 +198,47 @@ export interface IWorkspace {
     relatedImports?: string[],
   ) => void;
 
-  getServiceFunction?: (serviceKey: string) => object;
-  listServiceFunctions?: () => Record<string, object>;
-  removeServiceFunction?: (serviceName: string, modName?: string) => void;
-  addServiceFunction?: (
+  /**
+   * 查询节点
+   * @param id 节点 ID
+   * @param module 节点所在的模块名
+   * @returns 返回节点对象
+   */
+  getNode: (id: string, module?: string) => IViewNode;
+
+  // ----------------- 服务函数文件操作 -----------------
+
+  getServiceFunction: (serviceKey: string) => object;
+  listServiceFunctions: () => Record<string, object>;
+  removeServiceFunction: (serviceName: string, modName?: string) => void;
+  addServiceFunction: (
     payload: IServiceFunctionPayload | IServiceFunctionPayload[],
     modName?: string,
   ) => void;
-  updateServiceFunction?: (payload: IServiceFunctionPayload, modName?: string) => void;
-  updateServiceBaseConfig?: (IServiceFunctionPayload: object, modName?: string) => void;
+  updateServiceFunction: (payload: IServiceFunctionPayload, modName?: string) => void;
+  updateServiceBaseConfig: (IServiceFunctionPayload: object, modName?: string) => void;
 
-  addStoreModule?: (storeName: string, code: string) => void;
-  removeStoreModule?: (storeName: string) => void;
+  // ----------------- 状态管理文件操作 -----------------
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;
   removeStoreState?: (storeName: string, stateName: string) => void;
+  removeStoreModule?: (storeName: string) => void;
 
-  updateModuleCodeByVariablePath?: (variablePath: string, code: string) => void;
+  // ----------------- 视图文件操作 -----------------
 
-  // TODO: 是否需要，和 addFile 有啥区别 ???
-  addViewPage: (name: string, code: string) => void;
   removeViewModule: (routePath: string) => void;
   copyViewPage: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
 
+  // ----------------- 路由文件操作 -----------------
+
   updateRoute: (sourceRoutePath: string, targetPageData: IPageConfigData) => void;
 
-  listDependencies?: () => any;
-  getDependencies?: (pkgName: string) => Record<'version' | string, any>;
+  // ----------------- 依赖包操作 -----------------
 
-  updateDependency?: (
+  addDependency: (data: any) => void;
+  listDependencies: () => any;
+  getDependencies: (pkgName: string) => Record<'version' | string, any>;
+
+  updateDependency: (
     name: string,
     version: string,
     options?: {
@@ -231,7 +247,7 @@ export interface IWorkspace {
     },
   ) => void;
 
-  removeDependency?: (name: string) => void;
+  removeDependency: (name: string) => void;
 
   addBizComp?: (
     name: string,
@@ -243,6 +259,12 @@ export interface IWorkspace {
   ) => void;
 
   removeBizComp?: (name: string) => void;
+
+  // ----------------- 其他操作 -----------------
+
+  updateModuleCodeByVariablePath?: (variablePath: string, code: string) => void;
+
+  // ----------------- getter -----------------
 
   get activeViewModule(): IViewFile;
   get pages(): any[];
