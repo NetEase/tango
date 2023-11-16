@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.9](https://github.com/netease/tango/compare/@music163/tango-sandbox@0.1.8...@music163/tango-sandbox@0.1.9) (2023-11-16)
+
+### Bug Fixes
+
+- fix sandbox props ([afb94d6](https://github.com/netease/tango/commit/afb94d6a304f217df24a5d3d986dec1670cd29a9))
+
 ## [0.1.8](https://github.com/netease/tango/compare/@music163/tango-sandbox@0.1.7...@music163/tango-sandbox@0.1.8) (2023-11-02)
 
 **Note:** Version bump only for package @music163/tango-sandbox

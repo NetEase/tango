@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.4](https://github.com/netease/tango/compare/@music163/tango-core@0.2.3...@music163/tango-core@0.2.4) (2023-11-16)
+
+### Bug Fixes
+
+- allow override existing file via addFile ([6cf673e](https://github.com/netease/tango/commit/6cf673e7f6f330613e1d6331256a59900e8cbc68))
+- export isJSXElementById from traverse ([#54](https://github.com/netease/tango/issues/54)) ([208e275](https://github.com/netease/tango/commit/208e275bb1cd98ed21d816c26179f9ebc11df223))
+- parse variables from view ([089a482](https://github.com/netease/tango/commit/089a482f750e9d9a7743a6641d6e39989347d318))
+- update types ([653386d](https://github.com/netease/tango/commit/653386dcc0b064b41915548129952eeabe53019f))
+
 ## [0.2.3](https://github.com/netease/tango/compare/@music163/tango-core@0.2.2...@music163/tango-core@0.2.3) (2023-11-02)
 
 ### Bug Fixes
