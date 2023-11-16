@@ -73,7 +73,7 @@ export const SettingPanel = observer(({ title = '设置面板', ...props }: Sett
     },
   });
 
-  const prototype = workspace.componentPrototypes.get(workspace.selectSource.first?.name);
+  const prototype = workspace.getSelectedNodePrototype();
 
   return (
     <Panel

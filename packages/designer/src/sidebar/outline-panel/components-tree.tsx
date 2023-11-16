@@ -172,11 +172,13 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
             const slotKey = keys?.[0] as string;
             const data = sandboxQuery.getDraggableParentsData(buildQueryBySlotId(slotKey), true);
             if (data && data.id) {
+              workspace.selectSource.select(data);
+            } else {
+              const d = parseDndId(slotKey);
               workspace.selectSource.select({
-                id: data.id,
-                name: data.name,
-                bounding: data.bounding,
-                parents: data.parents,
+                id: d.id,
+                name: d.component,
+                filename: d.filename,
               });
             }
             // export selected
