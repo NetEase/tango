@@ -75,6 +75,8 @@ export interface SidebarPanelItemProps
 }
 
 function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, footer, children }: SidebarProps) {
+  const designer = useDesigner();
+
   const items = useMemo(() => {
     const ret: Record<string, SidebarPanelItemProps> = {};
     React.Children.forEach(children, (child) => {
@@ -89,20 +91,6 @@ function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, footer, childre
     });
     return ret;
   }, [children]);
-
-  const designer = useDesigner();
-  const panel = items[designer.activeSidebarPanel];
-  const floatPanelStyle: any = panel?.isFloat
-    ? {
-        position: 'absolute',
-        left: '50px',
-        top: 0,
-        zIndex: 1000,
-        height: '100%',
-        boxShadow: 'var(--tango-shadows-lowRight)',
-      }
-    : {};
-  const panelWidth = typeof panel?.width === 'number' ? panel?.width : defaultPanelWidth;
 
   return (
     <Box display="flex" flexShrink={0} css={sidebarStyle} className="SidebarPanel">
@@ -142,19 +130,41 @@ function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 280, footer, childre
           {footer}
         </Box>
       </Box>
-      {panel ? (
-        <ResizableBox key={panel.label} width={panelWidth} style={floatPanelStyle}>
-          <SidebarPanelExpandedContent
-            isFloat={panel.isFloat}
-            closeable={panel.isFloat}
-            onClose={() => {
-              designer.closeSidebarPanel();
+      {Object.keys(items).map((key) => {
+        const panel = items[key];
+        const floatPanelStyle: any = panel?.isFloat
+          ? {
+              position: 'absolute',
+              left: '50px',
+              top: 0,
+              zIndex: 1000,
+              height: '100%',
+              boxShadow: 'var(--tango-shadows-lowRight)',
+            }
+          : {};
+        const panelWidth = typeof panel?.width === 'number' ? panel?.width : defaultPanelWidth;
+
+        return (
+          <ResizableBox
+            key={panel.label}
+            width={panelWidth}
+            style={{
+              display: designer.activeSidebarPanel === key ? 'block' : 'none',
+              ...floatPanelStyle,
             }}
           >
-            {panel.children}
-          </SidebarPanelExpandedContent>
-        </ResizableBox>
-      ) : null}
+            <SidebarPanelExpandedContent
+              isFloat={panel.isFloat}
+              closeable={panel.isFloat}
+              onClose={() => {
+                designer.closeSidebarPanel();
+              }}
+            >
+              {panel.children}
+            </SidebarPanelExpandedContent>
+          </ResizableBox>
+        );
+      })}
     </Box>
   );
 }

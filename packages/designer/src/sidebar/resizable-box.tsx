@@ -3,11 +3,14 @@ import cx from 'classnames';
 import { Box, HTMLCoralProps, css } from 'coral-system';
 import { Resizable, ResizeHandle } from 'react-resizable';
 
-export interface ResizableBoxProps extends HTMLCoralProps<'div'> {
+export interface ResizableBoxProps {
   width?: number;
   height?: number;
   resizeHandlePosition?: 'left' | 'right' | 'top' | 'bottom';
   axis?: 'x' | 'y';
+  children?: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 const resizeHandleStyle = (axis: ResizableBoxProps['axis'], barStyle: HTMLCoralProps<'div'>) => css`
