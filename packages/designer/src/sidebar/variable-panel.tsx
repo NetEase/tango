@@ -53,7 +53,7 @@ export const VariablePanel = observer(
             existNames={storeNames}
             onCancel={off}
             onSubmit={(values) => {
-              workspace.addStoreModule(values.name, newStoreTemplate);
+              workspace.addStoreFile(values.name, newStoreTemplate);
               off();
             }}
           />

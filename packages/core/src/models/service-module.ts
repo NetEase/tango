@@ -58,7 +58,8 @@ export class TangoServiceModule extends TangoModule {
   }
 
   _analysisAst() {
-    const { services, baseConfig } = traverseServiceFile(this.ast);
+    const { imports, services, baseConfig } = traverseServiceFile(this.ast);
+    this.imports = imports;
     this._serviceFunctions = services;
     this._baseConfig = baseConfig;
     if (baseConfig.namespace) {

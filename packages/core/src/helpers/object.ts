@@ -1,5 +1,5 @@
 import { Dict } from '@music163/tango-helpers';
-import { IImportDeclarationPayload, IImportSpecifierData } from '../types';
+import { IImportDeclarationPayload, IImportSpecifierSourceData } from '../types';
 
 /**
  * 导入列表解析为导入声明对象
@@ -7,7 +7,10 @@ import { IImportDeclarationPayload, IImportSpecifierData } from '../types';
  * @param nameMap
  * @returns
  */
-export function namesToImportDeclarations(names: string[], nameMap: Dict<IImportSpecifierData>) {
+export function namesToImportDeclarations(
+  names: string[],
+  nameMap: Dict<IImportSpecifierSourceData>,
+) {
   const map = {};
   names.forEach((name) => {
     const mod = nameMap[name];

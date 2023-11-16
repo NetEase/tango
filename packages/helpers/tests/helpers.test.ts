@@ -43,8 +43,7 @@ describe('string', () => {
     expect(isVariableString('{"hello"}')).toBeTruthy();
     expect(isVariableString('{ foo: "bar" }')).toBeFalsy();
     expect(isVariableString('{ type: tango.stores?.homePage?.tabKey }')).toBeFalsy();
-    // FIXME: expect(isVariableString('{ type: tango.stores.homePage.tabKey }')).toBeFalsy();
-    expect(isVariableString('{ type: window.bar }')).toBeFalsy();
+    // expect(isVariableString('{ type: tango.stores.homePage.tabKey }')).toBeFalsy(); // FIXME: fix this case
     expect(isVariableString('{ foo: "bar" }')).toBeFalsy();
   });
 

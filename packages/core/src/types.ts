@@ -73,15 +73,40 @@ export interface ITangoViewNodeData<T = JSXElement> {
 }
 
 /**
- * 导入变量的解析数据
+ * 导入变量的来源
  */
-export interface IImportSpecifierData {
+export interface IImportSpecifierSourceData {
   source: string;
   isDefault?: boolean;
 }
 
 /**
+ * 解析的导入变量数据
+ */
+export interface IImportSpecifierData {
+  /**
+   * 导入名
+   */
+  importedName?: string;
+  /**
+   * 本地名
+   */
+  localName: string;
+  /**
+   * 类型
+   */
+  type: 'ImportDefaultSpecifier' | 'ImportSpecifier' | 'ImportNamespaceSpecifier';
+}
+
+/**
+ * 解析的导入语句数据
+ * FIXME: 需要考虑到有两行重复的语句的情况
+ */
+export type ImportDeclarationDataType = Record<string, IImportSpecifierData[]>;
+
+/**
  * 模块导入的参数类型
+ * @deprecated 使用 IImportSpecifierData 代替
  */
 export interface IImportDeclarationPayload {
   defaultSpecifier?: string;

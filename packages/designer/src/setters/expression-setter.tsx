@@ -190,14 +190,11 @@ export function ExpressionModal({
     <Modal
       closable={false}
       destroyOnClose
-      width="70%"
+      width="60%"
       open={visible}
       onCancel={onCancel}
       onOk={() => {
         onOk(exp);
-      }}
-      okButtonProps={{
-        disabled: !!error,
       }}
       bodyStyle={{
         padding: 0,

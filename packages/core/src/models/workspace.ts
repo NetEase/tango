@@ -403,6 +403,26 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.files.set(filename, module);
   }
 
+  addServiceFile(serviceName: string, code: string) {
+    const filename = `/src/services/${serviceName}.js`;
+    this.addFile(filename, code, FileType.ServiceModule);
+    const indexServiceModule = this.serviceModules.index;
+    indexServiceModule?.addImportDeclaration(`./${serviceName}`, []).update();
+  }
+
+  addStoreFile(storeName: string, code: string) {
+    const filename = `/src/stores/${storeName}.js`;
+    this.addFile(filename, code);
+    if (!this.storeEntryModule) {
+      this.addFile('/src/stores/index.js', '');
+    }
+    this.storeEntryModule.addStore(storeName).update();
+  }
+
+  addViewFile(viewName: string, code: string) {
+    // TODO: implement it
+  }
+
   updateFile(filename: string, code: string, shouldFormatCode = false) {
     const file = this.getFile(filename);
     file.update(code);
@@ -602,16 +622,10 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * 添加新的模型文件
-   * @param name 模型名
-   * @param code 模型代码
+   * @deprecated 使用 addStoreFile 代替
    */
   addStoreModule(name: string, code: string) {
-    const filename = `/src/stores/${name}.js`;
-    this.addFile(filename, code);
-    if (!this.storeEntryModule) {
-      this.addFile('/src/stores/index.js', '');
-    }
-    this.storeEntryModule.addStore(name).update();
+    this.addStoreFile(name, code);
   }
 
   /**
@@ -728,6 +742,10 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.serviceModules[moduleName]?.updateBaseConfig(config).update();
   }
 
+  addDependency(data: any) {
+    // TODO: implement it to replace addBizComp & addServiceComp
+  }
+
   /**
    * 获取 package.json 中的依赖列表
    * @returns
@@ -737,7 +755,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     return this.packageJson?.getValue('dependencies');
   }
 
-  getDependencies(pkgName: string) {
+  getDependency(pkgName: string) {
     const packages = this.tangoConfigJson?.getValue('packages');
     const dependencies = this.packageJson?.getValue('dependencies'); // 兼容老版本
     const detail = {
