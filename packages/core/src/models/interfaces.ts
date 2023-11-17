@@ -208,15 +208,15 @@ export interface IWorkspace {
 
   // ----------------- 服务函数文件操作 -----------------
 
-  getServiceFunction: (serviceKey: string) => object;
-  listServiceFunctions: () => Record<string, object>;
-  removeServiceFunction: (serviceName: string, modName?: string) => void;
-  addServiceFunction: (
+  getServiceFunction?: (serviceKey: string) => object;
+  listServiceFunctions?: () => Record<string, object>;
+  removeServiceFunction?: (serviceName: string, modName?: string) => void;
+  addServiceFunction?: (
     payload: IServiceFunctionPayload | IServiceFunctionPayload[],
     modName?: string,
   ) => void;
-  updateServiceFunction: (payload: IServiceFunctionPayload, modName?: string) => void;
-  updateServiceBaseConfig: (IServiceFunctionPayload: object, modName?: string) => void;
+  updateServiceFunction?: (payload: IServiceFunctionPayload, modName?: string) => void;
+  updateServiceBaseConfig?: (IServiceFunctionPayload: object, modName?: string) => void;
 
   // ----------------- 状态管理文件操作 -----------------
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;
@@ -234,11 +234,11 @@ export interface IWorkspace {
 
   // ----------------- 依赖包操作 -----------------
 
-  addDependency: (data: any) => void;
-  listDependencies: () => any;
-  getDependency: (pkgName: string) => object;
+  addDependency?: (data: any) => void;
+  listDependencies?: () => any;
+  getDependency?: (pkgName: string) => object;
 
-  updateDependency: (
+  updateDependency?: (
     name: string,
     version: string,
     options?: {
@@ -247,7 +247,7 @@ export interface IWorkspace {
     },
   ) => void;
 
-  removeDependency: (name: string) => void;
+  removeDependency?: (name: string) => void;
 
   addBizComp?: (
     name: string,
