@@ -3,13 +3,13 @@ import {
   ComponentPropType,
   ComponentPrototypeType,
   isNil,
-  isVariableString,
   logger,
   uuid,
 } from '@music163/tango-helpers';
 import { getRelativePath, isFilepath } from './string';
 import type { IImportDeclarationPayload } from '../types';
 import { code2expression } from './ast';
+import { isWrappedByExpressionContainer } from './assert';
 
 /**
  * 根据组件的 prototype 生成 ImportDeclarationPayload
@@ -82,7 +82,7 @@ function getPropKeyValuePair(item: ComponentPropType, generateValue: (...args: a
       break;
     }
     case 'string': {
-      if (!isVariableString(value)) {
+      if (!isWrappedByExpressionContainer(value)) {
         // 不是变量字符串
         value = `"${value}"`;
       } else {

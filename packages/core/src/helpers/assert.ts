@@ -1,3 +1,5 @@
+import { isValidExpressionCode } from './ast';
+
 const defineServiceHandlerNames = ['defineServices', 'createServices'];
 const sfHandlerPattern = new RegExp(`^(${defineServiceHandlerNames.join('|')})$`);
 
@@ -31,4 +33,17 @@ export function isDefineStore(name: string) {
  */
 export function isTangoVariable(name: string) {
   return /^tango\??\.(stores|services)\??\./.test(name) && name.split('.').length > 2;
+}
+
+const templatePattern = /^{(.+)}$/s;
+
+/**
+ * 判断给定字符串是否被表达式容器`{expCode}`包裹
+ * @param code
+ */
+export function isWrappedByExpressionContainer(code: string, isStrict = true) {
+  if (isStrict && isValidExpressionCode(code)) {
+    return false;
+  }
+  return templatePattern.test(code);
 }

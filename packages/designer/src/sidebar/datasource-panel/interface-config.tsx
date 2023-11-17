@@ -6,13 +6,13 @@ import { PlayCircleOutlined } from '@ant-design/icons';
 import { Form, InputCode, Panel, JsonView, Search } from '@music163/tango-ui';
 import {
   isNil,
-  isVariableString,
   getVariableContent,
   isValidFunctionCode,
   logger,
   code2object,
   filterTreeData,
 } from '@music163/tango-helpers';
+import { isWrappedByExpressionContainer } from '@music163/tango-core';
 import { useSandboxQuery } from '../../context';
 import { VariableTree } from '../../components';
 
@@ -187,7 +187,10 @@ const DataSourceView = observer(({ onAdd, onUpdate, onDelete }: DataServiceViewP
                     const shapeValues = { ...val };
                     delete shapeValues.type;
                     // 兼容旧版，如果 formatter 包裹了 {} 则删掉首尾
-                    if (shapeValues.formatter && isVariableString(shapeValues.formatter)) {
+                    if (
+                      shapeValues.formatter &&
+                      isWrappedByExpressionContainer(shapeValues.formatter)
+                    ) {
                       shapeValues.formatter = getVariableContent(shapeValues.formatter);
                     }
                     return shapeValues;

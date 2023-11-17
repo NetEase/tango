@@ -21,6 +21,14 @@ describe('ast helpers', () => {
     expect(isValidExpressionCode('[1,2,3]')).toBeTruthy();
     expect(isValidExpressionCode('<div>hello</div>')).toBeTruthy();
     expect(isValidExpressionCode('<div>hello</div>')).toBeTruthy();
+
+    expect(isValidExpressionCode('{1}')).toBeFalsy();
+    expect(isValidExpressionCode('{"1"}')).toBeFalsy();
+    expect(isValidExpressionCode('{ 1+1 }')).toBeFalsy();
+    expect(isValidExpressionCode('{<div>aaa</div>}')).toBeFalsy();
+    expect(isValidExpressionCode('{() => {}}')).toBeFalsy();
+    expect(isValidExpressionCode('{[1,2,3]}')).toBeFalsy();
+    expect(isValidExpressionCode('{tango.stores.app.title}')).toBeFalsy();
   });
 
   it('object2node', () => {

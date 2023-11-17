@@ -182,6 +182,8 @@ const templatePattern = /^{(.+)}$/s;
 
 /**
  * 判断给定字符串是否为变量字符串
+ * @deprecated 使用 isWrappedByExpressionContainer 代替
+ *
  * @example {[]}
  * @example {{}}
  * @example {this.foo}
@@ -191,6 +193,7 @@ const templatePattern = /^{(.+)}$/s;
  */
 export function isVariableString(str: string) {
   // 先检查是否是简单的对象
+  // FIXME: 这里有问题，如果代码中有引用，会被误判
   if (code2object(str)) {
     return false;
   }
@@ -204,6 +207,8 @@ export function isVariableString(str: string) {
  * @example foo -> {foo}
  * @example "hello" => {"hello"}
  * @example () => {} => {() => {}}
+ *
+ * @deprecated 有问题，不要使用
  *
  * @param code 输入代码
  * @returns 加上花括号后的代码
