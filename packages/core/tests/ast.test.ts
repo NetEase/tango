@@ -51,7 +51,20 @@ describe('ast helpers', () => {
   });
 
   it('code2expression', () => {
+    expect(code2expression('')).toBeUndefined();
+    expect(code2expression('{tango.stores.app}')).toBeUndefined();
+
     expect(code2expression('{ type: window.bar }').type).toEqual('ObjectExpression');
-    expect(code2expression('{tango}').type).toEqual('ObjectExpression'); // FIXME: 这种不应该解析通过
+    expect(code2expression('() => {};').type).toEqual('ArrowFunctionExpression');
+    expect(code2expression('<Button>hello</Button>').type).toBe('JSXElement');
+    expect(code2expression('<BreadcrumbItem children="节点名称" />').type).toBe('JSXElement');
+
+    const arrayCode = `
+    [
+      { label: 'foo', value: 'foo' },
+      { label: 'bar', value: 'bar' },
+    ]
+    `;
+    expect(code2expression(arrayCode).type).toEqual('ArrayExpression');
   });
 });

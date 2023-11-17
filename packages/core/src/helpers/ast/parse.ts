@@ -91,9 +91,8 @@ export function code2expression(code: string) {
   try {
     expNode = t.cloneNode(parseExpression(code, babelParserConfig), false, true);
   } catch (err) {
-    console.error('invalid code', err);
-    // FIXME: return undefined
-    expNode = t.identifier('undefined');
+    logger.error('invalid code', err);
+    // expNode = t.identifier('undefined');
   }
   return expNode;
 }
