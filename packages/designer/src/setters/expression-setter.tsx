@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text, css } from 'coral-system';
 import { Modal } from 'antd';
-import { isValidExpressionCode, value2expressionCode } from '@music163/tango-core';
 import {
-  isVariableString,
-  getVariableContent,
-  noop,
-  useBoolean,
-  getValue,
-  wrapCode,
-} from '@music163/tango-helpers';
+  isValidExpressionCode,
+  isWrappedByExpressionContainer,
+  value2expressionCode,
+} from '@music163/tango-core';
+import { getVariableContent, noop, useBoolean, getValue } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
 import { IconButton, Panel, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
@@ -18,7 +15,7 @@ import { EditableVariableTree, IVariableTreeNode } from '../components';
 import { useSandboxQuery } from '../context';
 
 export const expressionValueValidate = (value: string) => {
-  if (isVariableString(value)) {
+  if (isWrappedByExpressionContainer(value)) {
     const exp = getVariableContent(value);
     if (!isValidExpressionCode(exp)) {
       return '表达式存在语法错误！';
@@ -27,7 +24,7 @@ export const expressionValueValidate = (value: string) => {
 };
 
 export const jsonValueValidate = (value: string) => {
-  if (isVariableString(value)) {
+  if (isWrappedByExpressionContainer(value)) {
     const jsonStr = getVariableContent(value);
     try {
       JSON.parse(jsonStr);
@@ -78,16 +75,25 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
 
   const change = useCallback(
     (code: string) => {
+      if (code === valueProp) {
+        return;
+      }
+
+      let ret;
+
       if (!code) {
-        onChange(undefined);
+        // do nothing
+      } else if (isWrappedByExpressionContainer(code)) {
+        ret = code;
+      } else {
+        ret = `{${code}}`;
+      }
+
+      if (ret === valueProp) {
         return;
       }
 
-      if (getVariableContent(code) === value2expressionCode(valueProp)) {
-        return;
-      }
-
-      onChange(wrapCode(code));
+      onChange(ret);
     },
     [valueProp, onChange],
   );

@@ -6,10 +6,10 @@ import * as t from '@babel/types';
 import {
   logger,
   isValidObjectString,
-  isVariableString,
   getVariableContent,
   isPlainObject,
 } from '@music163/tango-helpers';
+import { isWrappedByExpressionContainer } from '../assert';
 
 // @see https://babeljs.io/docs/en/babel-parser#pluginss
 const babelParserConfig: ParserOptions = {
@@ -22,7 +22,6 @@ const babelParserConfig: ParserOptions = {
     'classProperties',
     'asyncGenerators',
     'functionBind',
-    'functionSent',
     'dynamicImport',
     'optionalChaining',
   ],
@@ -44,6 +43,7 @@ export function isValidCode(code: string) {
 
 /**
  * 检测代码是否是合法的表达式代码
+ * 表达式是一组代码的集合，它返回一个值；每一个合法的表达式都能计算成某个值
  * @param code
  * @returns
  */
@@ -91,8 +91,8 @@ export function code2expression(code: string) {
   try {
     expNode = t.cloneNode(parseExpression(code, babelParserConfig), false, true);
   } catch (err) {
-    console.error('invalid code', err);
-    expNode = t.identifier('undefined');
+    logger.error('invalid code', err);
+    // expNode = t.identifier('undefined');
   }
   return expNode;
 }
@@ -103,7 +103,7 @@ export function code2expression(code: string) {
  * @returns File
  */
 export function expressionCode2ast(code: string) {
-  if (isVariableString(code)) {
+  if (isWrappedByExpressionContainer(code)) {
     code = getVariableContent(code);
   }
   const node = code2expression(code);
@@ -130,7 +130,7 @@ export function value2node(
       ret = t.numericLiteral(value);
       break;
     case 'string':
-      if (isVariableString(value)) {
+      if (isWrappedByExpressionContainer(value)) {
         // 再检查是否是表达式容器，例如 {this.foo}, {1}
         const innerString = getVariableContent(value);
         ret = code2expression(innerString);
@@ -201,7 +201,7 @@ export function value2jsxAttributeValueNode(value: any) {
       if (isValidObjectString(value)) {
         // 先检查是否是对象字符串
         ret = t.jsxExpressionContainer(code2expression(value));
-      } else if (isVariableString(value)) {
+      } else if (isWrappedByExpressionContainer(value)) {
         // 再检查是否是表达式容器，例如 {this.foo}, {1}
         const innerString = getVariableContent(value);
         ret = t.jsxExpressionContainer(code2expression(innerString));
@@ -221,7 +221,7 @@ export function value2jsxChildrenValueNode(value: any) {
   let ret: t.JSXElement | t.JSXFragment | t.JSXExpressionContainer | t.JSXSpreadChild | t.JSXText;
   switch (typeof value) {
     case 'string':
-      if (isVariableString(value)) {
+      if (isWrappedByExpressionContainer(value)) {
         const innerString = getVariableContent(value);
         ret = t.jsxExpressionContainer(code2expression(innerString));
       } else {

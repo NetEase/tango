@@ -527,7 +527,8 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * 添加新的视图文件
-   * @deprecated
+   * @deprecated 使用 addViewFile 代替
+   * FIXME: 重构这个逻辑
    * @param route 视图名
    * @param code 视图代码
    */

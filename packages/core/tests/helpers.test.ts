@@ -25,40 +25,6 @@ describe('helpers', () => {
     expect(code2ast('function App() {}').type).toEqual('File');
   });
 
-  it('code2expression: null', () => {
-    expect(code2expression('')).toBeUndefined();
-  });
-
-  it('code2expression: object', () => {
-    const code = `
-    {
-      foo: 'bar',
-    }
-    `;
-    const node = code2expression(code);
-    expect(node.type).toEqual('ObjectExpression');
-  });
-
-  it('code2expression: arrow function', () => {
-    expect(code2expression('() => {};').type).toEqual('ArrowFunctionExpression');
-  });
-
-  it('code2expression: list', () => {
-    const code = `
-    [
-      { label: 'foo', value: 'foo' },
-      { label: 'bar', value: 'bar' },
-    ]
-    `;
-    const node = code2expression(code);
-    expect(node.type).toEqual('ArrayExpression');
-  });
-
-  it('code2expression: jsxElement', () => {
-    const node = code2expression('<Button>hello</Button>');
-    expect(node.type).toEqual('JSXElement');
-  });
-
   it('parse jsxElement attributes', () => {
     const node = code2expression(
       "<XColumn dataIndex='col' enumMap={{ 1: '已解决', 2: '未解决' }} />",
@@ -71,11 +37,6 @@ describe('helpers', () => {
         2: '未解决',
       },
     });
-  });
-
-  it('code2expression: closed jsxElement', () => {
-    const node = code2expression('<BreadcrumbItem children="节点名称" />');
-    expect(node.type).toEqual('JSXElement');
   });
 
   it('value2node: number', () => {

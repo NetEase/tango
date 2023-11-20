@@ -1,5 +1,6 @@
-import { getVariableContent, isVariableString } from '@music163/tango-helpers';
-import { value2node, expression2code } from './ast';
+import { getVariableContent } from '@music163/tango-helpers';
+import { value2node, expression2code, isValidExpressionCode } from './ast';
+import { isWrappedByExpressionContainer } from './assert';
 
 /**
  * 将 js value 转换为代码字符串
@@ -36,7 +37,9 @@ export function value2expressionCode(val: any) {
 
   switch (typeof val) {
     case 'string': {
-      if (isVariableString(val)) {
+      if (isValidExpressionCode(val)) {
+        ret = val;
+      } else if (isWrappedByExpressionContainer(val, false)) {
         ret = getVariableContent(val);
       } else if (isStringCode(val)) {
         ret = val;

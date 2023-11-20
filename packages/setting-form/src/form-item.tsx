@@ -4,10 +4,10 @@ import { observer } from 'mobx-react-lite';
 import {
   clone,
   ComponentPropType,
-  isVariableString,
   SetterOnChangeDetailType,
   useBoolean,
 } from '@music163/tango-helpers';
+import { isWrappedByExpressionContainer } from '@music163/tango-core';
 import { IconFont, ToggleButton } from '@music163/tango-ui';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { InputProps, Tooltip } from 'antd';
@@ -83,7 +83,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const value = toJS(field.value ?? defaultValue);
     const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp;
     const [isVariable, { toggle: toggleIsVariable }] = useBoolean(
-      () => !disableVariableSetter && isVariableString(value),
+      () => !disableVariableSetter && isWrappedByExpressionContainer(value),
     );
 
     const setterName = isVariable ? 'expressionSetter' : setter;

@@ -4,7 +4,6 @@ import { AutoComplete } from 'antd';
 import { ActionSelect } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { wrapCode } from '@music163/tango-helpers';
 import { ExpressionModal } from './expression-setter';
 
 enum EventAction {
@@ -84,7 +83,7 @@ export function EventSetter(props: EventSetterProps) {
         onCancel={() => setExpModalVisible(false)}
         onOk={(nextValue) => {
           setExpModalVisible(false);
-          handleChange(wrapCode(nextValue));
+          handleChange(`{${nextValue}}`);
         }}
         dataSource={actionVariables}
       />
