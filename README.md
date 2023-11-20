@@ -96,6 +96,17 @@ Thanks to the NetEase Cloud Music Front-end team, Public Technology team, Live B
 
 Thank you to CodeSandbox for providing the [Sandpack](https://sandpack.codesandbox.io/) project, which provides powerful online code execution capabilities for Tango.
 
+## 📣 Product Promotion
+
+![](https://p5.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/31629770956/da9e/3a74/4e00/7c69cf46a713f1b008bd1243b5b1ab1c.png)
+
+Don't waste your time restoring the UI, try the NetEase Cloud Music "Seal D2C" development tool! Easily turn your design into code, support React, RN, Vue, WeChat apps and other multi-end scenarios, what you see is what you get!
+
+Experience "Seal D2C" now:
+
+- I'm a Figma user: <https://www.figma.com/community/plugin/1174548852019950797/seal-figma-to-code-d2c/>
+- I am a MasterGo user: <https://mastergo.com/community/plugin/98956774428196/>
+
 ## 📄 License
 
 This project is licensed under the terms of the [MIT license](./LICENSE)

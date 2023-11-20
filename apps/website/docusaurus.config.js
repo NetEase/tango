@@ -137,7 +137,7 @@ const config = {
             ],
           },
           {
-            title: '更多',
+            title: '相关资源',
             items: [
               {
                 label: '博客',
@@ -146,6 +146,19 @@ const config = {
               {
                 label: 'GitHub',
                 href: 'https://github.com/netease/tango',
+              },
+            ],
+          },
+          {
+            title: '更多产品',
+            items: [
+              {
+                label: '海豹 D2C - Figma 插件',
+                to: 'https://www.figma.com/community/plugin/1174548852019950797/seal-figma-to-code-d2c',
+              },
+              {
+                label: '海豹 D2C - MasterGo 插件',
+                to: 'https://mastergo.com/community/plugin/98956774428196/',
               },
             ],
           },

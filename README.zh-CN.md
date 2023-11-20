@@ -97,6 +97,17 @@ yarn start
 
 感谢 CodeSandbox 提供的 [Sandpack](https://sandpack.codesandbox.io/) 项目，为 Tango 提供了强大的基于浏览器的代码构建与执行能力。
 
+## 📣 产品推广
+
+![](https://p5.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/31629770956/da9e/3a74/4e00/7c69cf46a713f1b008bd1243b5b1ab1c.png)
+
+不要再浪费时间还原 UI 啦，快来试试网易云音乐「海豹 D2C」研发工具吧！轻松将设计稿转为代码，支持 React、RN、Vue、微信小程序等多端场景，所见即所得！
+
+立即体验「海豹 D2C」：
+
+- 我是 Figma 用户：<https://www.figma.com/community/plugin/1174548852019950797/seal-figma-to-code-d2c/>
+- 我是 MasterGo 用户：<https://mastergo.com/community/plugin/98956774428196/>
+
 ## 📄 开源协议
 
 此项目遵循 [MIT 开源协议](./LICENSE)
