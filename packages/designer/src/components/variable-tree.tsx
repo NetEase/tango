@@ -372,11 +372,11 @@ export function VariableTree({
             const isDeletable = node.showDeleteIcon ?? showDeleteIcon;
             return (
               <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Text>
+                <Text flex="1" truncated>
                   {node.title}
                   {node.type === 'function' && <FunctionOutlined />}
                 </Text>
-                <Box>
+                <Box flex="0 0 72px" textAlign="right">
                   {isDeletable && (
                     <Popconfirm
                       title="确认删除吗？该操作会导致引用此模型的代码报错，请谨慎操作！"
