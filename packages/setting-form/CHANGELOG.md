@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.9](https://github.com/netease/tango/compare/@music163/tango-setting-form@0.2.8...@music163/tango-setting-form@0.2.9) (2023-11-20)
+
+### Bug Fixes
+
+- refactor parse expression ([#61](https://github.com/netease/tango/issues/61)) ([dbbd1dd](https://github.com/netease/tango/commit/dbbd1dddc75c532b7c9710ab0941c8680100f093))
+
 ## [0.2.8](https://github.com/netease/tango/compare/@music163/tango-setting-form@0.2.7...@music163/tango-setting-form@0.2.8) (2023-11-16)
 
 **Note:** Version bump only for package @music163/tango-setting-form

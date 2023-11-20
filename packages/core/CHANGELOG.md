@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.5](https://github.com/netease/tango/compare/@music163/tango-core@0.2.4...@music163/tango-core@0.2.5) (2023-11-20)
+
+### Bug Fixes
+
+- refactor parse expression ([#61](https://github.com/netease/tango/issues/61)) ([dbbd1dd](https://github.com/netease/tango/commit/dbbd1dddc75c532b7c9710ab0941c8680100f093))
+
 ## [0.2.4](https://github.com/netease/tango/compare/@music163/tango-core@0.2.3...@music163/tango-core@0.2.4) (2023-11-16)
 
 ### Bug Fixes
