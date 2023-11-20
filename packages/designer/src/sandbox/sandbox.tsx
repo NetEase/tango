@@ -119,6 +119,7 @@ const PreviewSandbox = observer(
       startRoute,
       injectScript,
       sandboxType: 'preview',
+      ...rest,
     });
 
     return (
@@ -166,6 +167,7 @@ const DesignSandbox = observer(
       startRoute,
       injectScript,
       sandboxType: 'design',
+      ...rest,
     });
 
     return (
