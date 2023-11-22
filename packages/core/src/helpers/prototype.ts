@@ -35,6 +35,9 @@ export function getImportDeclarationPayloadByPrototype(
   if (relativeFilepath && isFilepath(sourcePath)) {
     sourcePath = getRelativePath(relativeFilepath, sourcePath);
   }
+  if (sourcePath.endsWith('.js')) {
+    sourcePath = sourcePath.slice(0, -3);
+  }
 
   return {
     defaultSpecifier,
