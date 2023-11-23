@@ -8,7 +8,6 @@ import {
   insertSiblingAfterJSXElement,
   appendChildToJSXElement,
   addImportDeclaration,
-  updateImportDeclaration,
   replaceJSXElement,
   removeUnusedImportSpecifiers,
   insertSiblingBeforeJSXElement,
@@ -16,9 +15,10 @@ import {
   IdGenerator,
   updateJSXAttributes,
   queryXFormItemFields,
-  addImportDeclaration2,
   prototype2importDeclarationData,
   insertImportSpecifiers,
+  addImportDeclarationLegacy,
+  updateImportDeclarationLegacy,
 } from '../helpers';
 import { TangoNode } from './node';
 import {
@@ -221,12 +221,12 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   }
 
   /**
-   * 更新导入声明
-   * @param source 导入来源
-   * @param newSpecifiers 变量列表
+   * 添加导入符号
+   * @param source
+   * @param newSpecifiers
    * @returns
    */
-  updateImportDeclaration(source: string, newSpecifiers: IImportSpecifierData[]) {
+  addImportSpecifiers(source: string, newSpecifiers: IImportSpecifierData[]) {
     const existSpecifiers = this.imports[source];
     if (existSpecifiers) {
       const insertedSpecifiers = newSpecifiers.filter((item) => {
@@ -234,7 +234,8 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       });
       this.ast = insertImportSpecifiers(this.ast, source, insertedSpecifiers);
     } else {
-      this.ast = addImportDeclaration2(this.ast, source, newSpecifiers);
+      // 不存在导入来源，直接添加新的导入语句
+      this.ast = addImportDeclaration(this.ast, source, newSpecifiers);
     }
     return this;
   }
@@ -243,7 +244,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * 更新导入的变量
    * @deprecated 使用 updateImportDeclaration 代替
    */
-  updateImportSpecifiers(importDeclaration: IImportDeclarationPayload) {
+  updateImportSpecifiersLegacy(importDeclaration: IImportDeclarationPayload) {
     const mods = this._importedModules[importDeclaration.sourcePath];
     let ast;
     // 如果模块已存在，需要去重
@@ -258,12 +259,12 @@ export class TangoViewModule extends TangoModule implements IViewFile {
         (name) => !specifiers.includes(name),
       );
 
-      ast = updateImportDeclaration(this.ast, {
+      ast = updateImportDeclarationLegacy(this.ast, {
         ...importDeclaration,
         specifiers: newSpecifiers.concat(targetMod.specifiers),
       });
     } else {
-      ast = addImportDeclaration(this.ast, importDeclaration);
+      ast = addImportDeclarationLegacy(this.ast, importDeclaration);
     }
     this.ast = ast;
     return this;
@@ -309,7 +310,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       relatedImports.forEach((name: string) => {
         const proto = this.workspace.getPrototype(name);
         const { source, specifiers } = prototype2importDeclarationData(proto, this.filename);
-        this.updateImportDeclaration(source, specifiers);
+        this.addImportSpecifiers(source, specifiers);
       });
     }
     this.ast = updateJSXAttributes(this.ast, nodeId, config);
@@ -366,7 +367,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
 
     if (importDeclarations?.length) {
       importDeclarations.forEach((item) => {
-        this.updateImportSpecifiers(item);
+        this.updateImportSpecifiersLegacy(item);
       });
     }
 

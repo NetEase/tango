@@ -32,7 +32,6 @@ import type {
   IServiceFunctionPayload,
   InsertChildPositionType,
   IImportSpecifierData,
-  IImportSpecifierSourceData,
 } from '../../types';
 import { IdGenerator } from '../id-generator';
 
@@ -454,7 +453,7 @@ function getLastExportDeclarationIndex(node: t.Program) {
  * @param importedSourcePath
  * @returns
  */
-export function makeImportDeclaration(importedModule: IImportDeclarationPayload) {
+export function makeImportDeclarationLegacy(importedModule: IImportDeclarationPayload) {
   const specifierNodes =
     importedModule.specifiers?.map((localName) =>
       t.importSpecifier(t.identifier(localName), t.identifier(localName)),
@@ -489,7 +488,7 @@ function specifierDataList2nodes(specifiers: IImportSpecifierData[]) {
   return specifiers.map((item) => specifierData2node(item)).filter((item) => !!item);
 }
 
-export function makeImportDeclaration2(source: string, specifiers: IImportSpecifierData[]) {
+export function makeImportDeclaration(source: string, specifiers: IImportSpecifierData[]) {
   const specifierNodes = specifierDataList2nodes(specifiers);
   return t.importDeclaration(specifierNodes, t.stringLiteral(source));
 }
@@ -525,11 +524,11 @@ function getImportDeclarationData(node: t.ImportDeclaration): IImportDeclaration
  * @param importedSourcePath
  * @returns
  */
-export function addImportDeclaration(ast: t.File, importedModule: IImportDeclarationPayload) {
+export function addImportDeclarationLegacy(ast: t.File, importedModule: IImportDeclarationPayload) {
   traverse(ast, {
     Program(path) {
       const lastIndex = getLastImportDeclarationIndex(path.node);
-      const newImportDeclaration = makeImportDeclaration(importedModule);
+      const newImportDeclaration = makeImportDeclarationLegacy(importedModule);
       path.node.body.splice(lastIndex, 0, newImportDeclaration);
       path.stop();
     },
@@ -537,7 +536,7 @@ export function addImportDeclaration(ast: t.File, importedModule: IImportDeclara
   return ast;
 }
 
-export function addImportDeclaration2(
+export function addImportDeclaration(
   ast: t.File,
   source: string,
   specifiers: IImportSpecifierData[],
@@ -545,7 +544,7 @@ export function addImportDeclaration2(
   traverse(ast, {
     Program(path) {
       const lastIndex = getLastImportDeclarationIndex(path.node);
-      const newImportDeclaration = makeImportDeclaration2(source, specifiers);
+      const newImportDeclaration = makeImportDeclaration(source, specifiers);
       path.node.body.splice(lastIndex, 0, newImportDeclaration);
       path.stop();
     },
@@ -561,12 +560,15 @@ export function addImportDeclaration2(
  * @param importedSourcePath
  * @returns
  */
-export function updateImportDeclaration(ast: t.File, importedModule: IImportDeclarationPayload) {
+export function updateImportDeclarationLegacy(
+  ast: t.File,
+  importedModule: IImportDeclarationPayload,
+) {
   traverse(ast, {
     ImportDeclaration(path) {
       const currentSourcePath = node2value(path.node.source);
       if (currentSourcePath === importedModule.sourcePath) {
-        const newImportDeclaration = makeImportDeclaration(importedModule);
+        const newImportDeclaration = makeImportDeclarationLegacy(importedModule);
         path.replaceWith(newImportDeclaration);
         path.stop(); // 只修改匹配到的第一条
       }
@@ -575,7 +577,7 @@ export function updateImportDeclaration(ast: t.File, importedModule: IImportDecl
   return ast;
 }
 
-export function updateImportDeclaration2(
+export function updateImportDeclaration(
   ast: t.File,
   source: string,
   specifiers: IImportSpecifierData[],
@@ -584,7 +586,7 @@ export function updateImportDeclaration2(
     ImportDeclaration(path) {
       const currentSourcePath = node2value(path.node.source);
       if (currentSourcePath === source) {
-        const newImportDeclaration = makeImportDeclaration2(source, specifiers);
+        const newImportDeclaration = makeImportDeclaration(source, specifiers);
         path.replaceWith(newImportDeclaration);
         path.stop(); // 只修改匹配到的第一条
       }
@@ -597,20 +599,21 @@ export function updateImportDeclaration2(
  * 再已有的导入语句中添加新的导入符号
  * @param ast
  * @param source
- * @param specifiers
+ * @param newSpecifiers
  * @returns
  */
 export function insertImportSpecifiers(
   ast: t.File,
   source: string,
-  specifiers: IImportSpecifierData[],
+  newSpecifiers: IImportSpecifierData[],
 ) {
   traverse(ast, {
     ImportDeclaration(path) {
       const currentSourcePath = node2value(path.node.source);
       if (currentSourcePath === source) {
-        const nodes = specifierDataList2nodes(specifiers);
+        const nodes = specifierDataList2nodes(newSpecifiers);
         path.node.specifiers.push(...nodes);
+        // 只在匹配到的第一个导入声明语句添加即可，不再重复执行
         path.stop();
       }
     },
@@ -1217,7 +1220,7 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
     ImportDeclaration(path) {
       const { source, specifiers } = parseImportDeclaration(path.node);
       if (imports[source]) {
-        // 存在重复的导入语句
+        // 存在重复的导入语句，合并导入符号列表
         imports[source] = imports[source].concat(specifiers);
       } else {
         imports[source] = specifiers;

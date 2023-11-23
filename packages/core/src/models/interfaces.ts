@@ -5,7 +5,6 @@ import { DragSource } from './drag-source';
 import {
   IFileConfig,
   FileType,
-  IImportDeclarationPayload,
   InsertChildPositionType,
   ITangoConfigPackages,
   IPageConfigData,
@@ -34,7 +33,13 @@ export interface IViewFile {
 
   update: (code?: string, isFormatCode?: boolean, refreshWorkspace?: boolean) => void;
 
-  updateImportDeclaration: (source: string, specifiers: IImportSpecifierData[]) => IViewFile;
+  /**
+   * 添加新的导入符号
+   * @param source 导入来源
+   * @param newSpecifiers 新导入符号列表
+   * @returns this
+   */
+  addImportSpecifiers: (source: string, newSpecifiers: IImportSpecifierData[]) => IViewFile;
 
   getNode: (targetNodeId: string) => IViewNode;
 

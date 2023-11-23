@@ -951,7 +951,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     );
 
     importDeclarations.forEach((importDeclaration) => {
-      this.activeViewModule.updateImportSpecifiers(importDeclaration);
+      this.activeViewModule.updateImportSpecifiersLegacy(importDeclaration);
     });
 
     this.copyTempNodes.forEach((node) => {
@@ -1005,7 +1005,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     const file = this.getNode(targetNodeId).file;
     file
       .insertChild(targetNodeId, newNode, 'last')
-      .updateImportDeclaration(source, specifiers)
+      .addImportSpecifiers(source, specifiers)
       .update();
     this.history.push({
       message: HistoryMessage.InsertNode,
@@ -1027,7 +1027,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     const newNode = prototype2jsxElement(sourcePrototype);
     const file = this.getNode(targetNodeId).file;
     const { source, specifiers } = prototype2importDeclarationData(sourcePrototype, file.filename);
-    file.replaceNode(targetNodeId, newNode).updateImportDeclaration(source, specifiers).update();
+    file.replaceNode(targetNodeId, newNode).addImportSpecifiers(source, specifiers).update();
     this.history.push({
       message: HistoryMessage.ReplaceNode,
       data: {
@@ -1048,7 +1048,7 @@ export class Workspace extends EventTarget implements IWorkspace {
       const { source, specifiers } = prototype2importDeclarationData(insertedPrototype);
       file
         .insertChild(this.selectSource.first.id, newNode, 'last')
-        .updateImportDeclaration(source, specifiers)
+        .addImportSpecifiers(source, specifiers)
         .update();
       this.history.push({
         message: HistoryMessage.InsertNode,
@@ -1117,28 +1117,28 @@ export class Workspace extends EventTarget implements IWorkspace {
       case DropMethod.InsertChild: {
         targetFile
           .insertChild(dropTarget.id, newNode, 'last')
-          .updateImportDeclaration(source, specifiers);
+          .addImportSpecifiers(source, specifiers);
         break;
       }
       case DropMethod.InsertFirstChild: {
         targetFile
           .insertChild(dropTarget.id, newNode, 'first')
-          .updateImportDeclaration(source, specifiers);
+          .addImportSpecifiers(source, specifiers);
         break;
       }
       // 往目标节点的后边插入一个节点
       case DropMethod.InsertAfter: {
-        targetFile.insertAfter(dropTarget.id, newNode).updateImportDeclaration(source, specifiers);
+        targetFile.insertAfter(dropTarget.id, newNode).addImportSpecifiers(source, specifiers);
         break;
       }
       // 往目标节点的前方插入一个节点
       case DropMethod.InsertBefore: {
-        targetFile.insertBefore(dropTarget.id, newNode).updateImportDeclaration(source, specifiers);
+        targetFile.insertBefore(dropTarget.id, newNode).addImportSpecifiers(source, specifiers);
         break;
       }
       // 替换目标节点
       case DropMethod.ReplaceNode: {
-        targetFile.replaceNode(dropTarget.id, newNode).updateImportDeclaration(source, specifiers);
+        targetFile.replaceNode(dropTarget.id, newNode).addImportSpecifiers(source, specifiers);
         break;
       }
       default:
