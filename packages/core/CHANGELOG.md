@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.6](https://github.com/netease/tango/compare/@music163/tango-core@0.2.5...@music163/tango-core@0.2.6) (2023-11-23)
+
+### Bug Fixes
+
+- prototype to import declaration ([#67](https://github.com/netease/tango/issues/67)) ([8a1234e](https://github.com/netease/tango/commit/8a1234e565489c92f041356b7a06339eaeee48df))
+- refactor update import specifiers ([#68](https://github.com/netease/tango/issues/68)) ([558f2cd](https://github.com/netease/tango/commit/558f2cd0a692c6bbc866d08250d25e2619af183f))
+
 ## [0.2.5](https://github.com/netease/tango/compare/@music163/tango-core@0.2.4...@music163/tango-core@0.2.5) (2023-11-20)
 
 ### Bug Fixes
