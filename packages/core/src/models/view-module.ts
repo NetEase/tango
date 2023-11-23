@@ -1,6 +1,6 @@
 import * as t from '@babel/types';
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
-import { ComponentPrototypeType, Dict } from '@music163/tango-helpers';
+import { Dict } from '@music163/tango-helpers';
 import {
   ast2code,
   traverseViewFile,
@@ -8,15 +8,17 @@ import {
   insertSiblingAfterJSXElement,
   appendChildToJSXElement,
   addImportDeclaration,
-  updateImportDeclaration,
   replaceJSXElement,
-  getImportDeclarationPayloadByPrototype,
   removeUnusedImportSpecifiers,
   insertSiblingBeforeJSXElement,
   replaceRootJSXElementChildren,
   IdGenerator,
   updateJSXAttributes,
   queryXFormItemFields,
+  prototype2importDeclarationData,
+  insertImportSpecifiers,
+  addImportDeclarationLegacy,
+  updateImportDeclarationLegacy,
 } from '../helpers';
 import { TangoNode } from './node';
 import {
@@ -26,9 +28,56 @@ import {
   InsertChildPositionType,
   IImportSpecifierSourceData,
   ImportDeclarationDataType,
+  IImportSpecifierData,
 } from '../types';
 import { IViewFile, IWorkspace } from './interfaces';
 import { TangoModule } from './module';
+
+/**
+ * 导入信息转为 变量名->来源 的 map 结构
+ * @param importedModules
+ * @returns
+ */
+function buildImportMap(importedModules: ImportDeclarationDataType) {
+  const map: Dict<IImportSpecifierSourceData> = {};
+  Object.keys(importedModules).forEach((source) => {
+    const specifiers = importedModules[source];
+    specifiers?.forEach((specifier) => {
+      map[specifier.localName] = {
+        source,
+        isDefault: specifier.type === 'ImportDefaultSpecifier',
+      };
+    });
+  });
+  return map;
+}
+
+/**
+ * 将节点列表转换为 tree data 嵌套数组
+ * @param list
+ */
+function nodeListToTreeData(list: ITangoViewNodeData[]) {
+  const map: Record<string, ITangoViewNodeData> = {};
+
+  list.forEach((item) => {
+    // 如果不存在，则初始化
+    if (!map[item.id]) {
+      map[item.id] = {
+        ...item,
+        children: [],
+      };
+    }
+
+    // 是否找到父节点，找到则塞进去
+    if (item.parentId && map[item.parentId]) {
+      map[item.parentId].children.push(map[item.id]);
+    }
+  });
+
+  // 保留根节点
+  const ret = Object.values(map).filter((item) => !item.parentId);
+  return ret;
+}
 
 /**
  * 视图模块
@@ -111,7 +160,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
 
     this._importedModules = importedModules;
     this.imports = imports;
-    this.importMap = this.buildImportMap(imports);
+    this.importMap = buildImportMap(imports);
     this.variables = variables;
 
     this._nodes.clear();
@@ -172,27 +221,30 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   }
 
   /**
-   * 基于组件的 prototype 信息更新导入信息
-   * TODO: 和 Module.addImportDeclaration 中的保持一致
-   * @deprecated
-   * @param prototype
-   * @param shouldUpdateCode
+   * 添加导入符号
+   * @param source
+   * @param newSpecifiers
+   * @returns
    */
-  updateImportSpecifiersByPrototype(sourcePrototype: string | ComponentPrototypeType) {
-    const prototype = this.workspace.getPrototype(sourcePrototype);
-    if (prototype) {
-      const importDeclaration = getImportDeclarationPayloadByPrototype(prototype, this.filename);
-      this.updateImportSpecifiers(importDeclaration);
+  addImportSpecifiers(source: string, newSpecifiers: IImportSpecifierData[]) {
+    const existSpecifiers = this.imports[source];
+    if (existSpecifiers) {
+      const insertedSpecifiers = newSpecifiers.filter((item) => {
+        return !existSpecifiers.find((existItem) => existItem.localName === item.localName);
+      });
+      this.ast = insertImportSpecifiers(this.ast, source, insertedSpecifiers);
+    } else {
+      // 不存在导入来源，直接添加新的导入语句
+      this.ast = addImportDeclaration(this.ast, source, newSpecifiers);
     }
     return this;
   }
 
   /**
-   * 更新导入的变量（新版）
-   * TODO: 和 Module.updateImportDeclaration 中的保持一致
-   * @deprecated
+   * 更新导入的变量
+   * @deprecated 使用 updateImportDeclaration 代替
    */
-  updateImportSpecifiers(importDeclaration: IImportDeclarationPayload) {
+  updateImportSpecifiersLegacy(importDeclaration: IImportDeclarationPayload) {
     const mods = this._importedModules[importDeclaration.sourcePath];
     let ast;
     // 如果模块已存在，需要去重
@@ -207,12 +259,12 @@ export class TangoViewModule extends TangoModule implements IViewFile {
         (name) => !specifiers.includes(name),
       );
 
-      ast = updateImportDeclaration(this.ast, {
+      ast = updateImportDeclarationLegacy(this.ast, {
         ...importDeclaration,
         specifiers: newSpecifiers.concat(targetMod.specifiers),
       });
     } else {
-      ast = addImportDeclaration(this.ast, importDeclaration);
+      ast = addImportDeclarationLegacy(this.ast, importDeclaration);
     }
     this.ast = ast;
     return this;
@@ -257,7 +309,8 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       // 导入依赖的组件
       relatedImports.forEach((name: string) => {
         const proto = this.workspace.getPrototype(name);
-        this.updateImportSpecifiersByPrototype(proto);
+        const { source, specifiers } = prototype2importDeclarationData(proto, this.filename);
+        this.addImportSpecifiers(source, specifiers);
       });
     }
     this.ast = updateJSXAttributes(this.ast, nodeId, config);
@@ -268,43 +321,25 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * 插入子节点的最后面
    * @param targetNodeId
    * @param newNode
-   * @param sourceName
+   * @param position
    * @returns
    */
   insertChild(
     targetNodeId: string,
     newNode: t.JSXElement,
     position: InsertChildPositionType = 'last',
-    sourceName: string | ComponentPrototypeType,
   ) {
     this.ast = appendChildToJSXElement(this.ast, targetNodeId, newNode, position);
-    if (sourceName) {
-      this.updateImportSpecifiersByPrototype(sourceName);
-    }
     return this;
   }
 
-  insertAfter(
-    targetNodeId: string,
-    newNode: t.JSXElement,
-    sourceName?: string | ComponentPrototypeType,
-  ) {
+  insertAfter(targetNodeId: string, newNode: t.JSXElement) {
     this.ast = insertSiblingAfterJSXElement(this.ast, targetNodeId, newNode);
-    if (sourceName) {
-      this.updateImportSpecifiersByPrototype(sourceName);
-    }
     return this;
   }
 
-  insertBefore(
-    targetNodeId: string,
-    newNode: t.JSXElement,
-    sourceName?: string | ComponentPrototypeType,
-  ) {
+  insertBefore(targetNodeId: string, newNode: t.JSXElement) {
     this.ast = insertSiblingBeforeJSXElement(this.ast, targetNodeId, newNode);
-    if (sourceName) {
-      this.updateImportSpecifiersByPrototype(sourceName);
-    }
     return this;
   }
 
@@ -312,22 +347,15 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * 替换目标节点为新节点
    * @param targetNodeId
    * @param newNode
-   * @param sourcePrototype
    */
-  replaceNode(
-    targetNodeId: string,
-    newNode: t.JSXElement,
-    sourceName?: string | ComponentPrototypeType,
-  ) {
+  replaceNode(targetNodeId: string, newNode: t.JSXElement) {
     this.ast = replaceJSXElement(this.ast, targetNodeId, newNode);
-    if (sourceName) {
-      this.updateImportSpecifiersByPrototype(sourceName);
-    }
     return this;
   }
 
   /**
    * 替换 jsx 跟结点的子元素
+   * @deprecated 不推荐使用
    */
   replaceViewChildren(
     childrenNodes: t.JSXElement[],
@@ -339,51 +367,10 @@ export class TangoViewModule extends TangoModule implements IViewFile {
 
     if (importDeclarations?.length) {
       importDeclarations.forEach((item) => {
-        this.updateImportSpecifiers(item);
+        this.updateImportSpecifiersLegacy(item);
       });
     }
 
     return this;
   }
-
-  private buildImportMap(importedModules: ImportDeclarationDataType) {
-    const map: Dict<IImportSpecifierSourceData> = {};
-    Object.keys(importedModules).forEach((source) => {
-      const specifiers = importedModules[source];
-      specifiers?.forEach((specifier) => {
-        map[specifier.localName] = {
-          source,
-          isDefault: specifier.type === 'ImportDefaultSpecifier',
-        };
-      });
-    });
-    return map;
-  }
-}
-
-/**
- * 将节点列表转换为 tree data 嵌套数组
- * @param list
- */
-function nodeListToTreeData(list: ITangoViewNodeData[]) {
-  const map: Record<string, ITangoViewNodeData> = {};
-
-  list.forEach((item) => {
-    // 如果不存在，则初始化
-    if (!map[item.id]) {
-      map[item.id] = {
-        ...item,
-        children: [],
-      };
-    }
-
-    // 是否找到父节点，找到则塞进去
-    if (item.parentId && map[item.parentId]) {
-      map[item.parentId].children.push(map[item.id]);
-    }
-  });
-
-  // 保留根节点
-  const ret = Object.values(map).filter((item) => !item.parentId);
-  return ret;
 }

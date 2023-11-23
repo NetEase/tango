@@ -6,8 +6,8 @@ import {
   ast2code,
   formatCode,
   traverseFile,
-  addImportDeclaration2,
-  updateImportDeclaration2,
+  addImportDeclaration,
+  updateImportDeclaration,
 } from '../helpers';
 import { TangoFile } from './file';
 import { IFileConfig, IImportSpecifierData, ImportDeclarationDataType } from '../types';
@@ -52,12 +52,12 @@ export class TangoModule extends TangoFile {
   }
 
   addImportDeclaration(source: string, specifiers: IImportSpecifierData[]) {
-    addImportDeclaration2(this.ast, source, specifiers);
+    this.ast = addImportDeclaration(this.ast, source, specifiers);
     return this;
   }
 
   updateImportDeclaration(source: string, specifiers: IImportSpecifierData[]) {
-    updateImportDeclaration2(this.ast, source, specifiers);
+    this.ast = updateImportDeclaration(this.ast, source, specifiers);
     return this;
   }
 
