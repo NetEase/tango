@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.7](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.6...@music163/tango-designer@0.5.7) (2023-11-23)
+
+### Bug Fixes
+
+- update varTreeNode style ([#69](https://github.com/netease/tango/issues/69)) ([f604996](https://github.com/netease/tango/commit/f604996e56c9e4d58ff7f80cd98c3753986f081f))
+
 ## [0.5.6](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.5...@music163/tango-designer@0.5.6) (2023-11-23)
 
 **Note:** Version bump only for package @music163/tango-designer
