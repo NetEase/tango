@@ -7,12 +7,47 @@ import {
   uuid,
 } from '@music163/tango-helpers';
 import { getRelativePath, isFilepath } from './string';
-import type { IImportDeclarationPayload } from '../types';
+import type { IImportDeclarationPayload, IImportSpecifierData } from '../types';
 import { code2expression } from './ast';
 import { isWrappedByExpressionContainer } from './assert';
 
+export function prototype2importDeclarationData(
+  prototype: ComponentPrototypeType,
+  relativeFilepath?: string,
+): { source: string; specifiers: IImportSpecifierData[] } {
+  let source = prototype.package;
+  if (relativeFilepath && isFilepath(source)) {
+    source = getRelativePath(relativeFilepath, source);
+  }
+  if (source.endsWith('.js')) {
+    source = source.slice(0, -3);
+  }
+
+  const specifiers: IImportSpecifierData[] = [];
+
+  if (prototype.exportType === 'defaultExport') {
+    specifiers.push({
+      localName: prototype.name,
+      type: 'ImportDefaultSpecifier',
+    });
+  } else {
+    [prototype.name, ...(prototype.relatedImports || [])].forEach((item) => {
+      specifiers.push({
+        localName: item,
+        type: 'ImportSpecifier',
+      });
+    });
+  }
+
+  return {
+    source,
+    specifiers,
+  };
+}
+
 /**
  * 根据组件的 prototype 生成 ImportDeclarationPayload
+ * @deprecated
  */
 export function getImportDeclarationPayloadByPrototype(
   prototype: ComponentPrototypeType,

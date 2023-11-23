@@ -11,6 +11,7 @@ import {
   IPageConfigData,
   IServiceFunctionPayload,
   IImportSpecifierSourceData,
+  IImportSpecifierData,
 } from '../types';
 import { TangoFile, TangoJsonFile } from './file';
 import { TangoRouteModule } from './route-module';
@@ -33,6 +34,8 @@ export interface IViewFile {
 
   update: (code?: string, isFormatCode?: boolean, refreshWorkspace?: boolean) => void;
 
+  updateImportDeclaration: (source: string, specifiers: IImportSpecifierData[]) => IViewFile;
+
   getNode: (targetNodeId: string) => IViewNode;
 
   removeNode: (targetNodeId: string) => IViewFile;
@@ -41,31 +44,15 @@ export interface IViewFile {
     targetNodeId: string,
     newNode: any,
     position?: InsertChildPositionType,
-    sourcePrototype?: string | ComponentPrototypeType,
   ) => IViewFile;
 
-  insertAfter: (
-    targetNodeId: string,
-    newNode: any,
-    sourcePrototype?: string | ComponentPrototypeType,
-  ) => IViewFile;
+  insertAfter: (targetNodeId: string, newNode: any) => IViewFile;
 
-  insertBefore: (
-    targetNodeId: string,
-    newNode: any,
-    sourcePrototype?: string | ComponentPrototypeType,
-  ) => IViewFile;
+  insertBefore: (targetNodeId: string, newNode: any) => IViewFile;
 
-  replaceNode: (
-    targetNodeId: string,
-    newNode: any,
-    sourcePrototype?: string | ComponentPrototypeType,
-  ) => IViewFile;
+  replaceNode: (targetNodeId: string, newNode: any) => IViewFile;
 
-  replaceViewChildren: (
-    rawNodes: any[],
-    importDeclarations?: IImportDeclarationPayload[],
-  ) => IViewFile;
+  replaceViewChildren: (rawNodes: any[]) => IViewFile;
 
   updateNodeAttribute: (
     nodeId: string,

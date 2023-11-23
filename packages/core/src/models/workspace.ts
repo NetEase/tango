@@ -17,6 +17,7 @@ import {
   namesToImportDeclarations,
   getBlockNameByFilename,
   getPrivilegeCode,
+  prototype2importDeclarationData,
 } from '../helpers';
 import { DropMethod } from './drop-target';
 import { HistoryMessage, TangoHistory } from './history';
@@ -1000,8 +1001,12 @@ export class Workspace extends EventTarget implements IWorkspace {
 
     const sourcePrototype = this.getPrototype(sourceName);
     const newNode = prototype2jsxElement(sourcePrototype);
+    const { source, specifiers } = prototype2importDeclarationData(sourcePrototype);
     const file = this.getNode(targetNodeId).file;
-    file.insertChild(targetNodeId, newNode, 'last', sourcePrototype).update();
+    file
+      .insertChild(targetNodeId, newNode, 'last')
+      .updateImportDeclaration(source, specifiers)
+      .update();
     this.history.push({
       message: HistoryMessage.InsertNode,
       data: {
@@ -1021,7 +1026,8 @@ export class Workspace extends EventTarget implements IWorkspace {
     const sourcePrototype = this.getPrototype(sourceName);
     const newNode = prototype2jsxElement(sourcePrototype);
     const file = this.getNode(targetNodeId).file;
-    file.replaceNode(targetNodeId, newNode, sourcePrototype).update();
+    const { source, specifiers } = prototype2importDeclarationData(sourcePrototype, file.filename);
+    file.replaceNode(targetNodeId, newNode).updateImportDeclaration(source, specifiers).update();
     this.history.push({
       message: HistoryMessage.ReplaceNode,
       data: {
@@ -1039,7 +1045,11 @@ export class Workspace extends EventTarget implements IWorkspace {
     if (insertedPrototype) {
       const newNode = prototype2jsxElement(insertedPrototype);
       const file = this.selectSource.file;
-      file.insertChild(this.selectSource.first.id, newNode, 'last', insertedPrototype).update();
+      const { source, specifiers } = prototype2importDeclarationData(insertedPrototype);
+      file
+        .insertChild(this.selectSource.first.id, newNode, 'last')
+        .updateImportDeclaration(source, specifiers)
+        .update();
       this.history.push({
         message: HistoryMessage.InsertNode,
         data: {
@@ -1095,30 +1105,40 @@ export class Workspace extends EventTarget implements IWorkspace {
     const targetFile = dropTarget.node?.file;
     const sourceFile = dragSource.node?.file;
 
+    // dragSourcePrototype to importDeclarations
+    const { source, specifiers } = prototype2importDeclarationData(
+      dragSourcePrototype,
+      targetFile.filename,
+    );
+
     let isValidOperation = true;
     switch (dropTarget.method) {
       // 直接往目标节点的 children 里添加一个节点
       case DropMethod.InsertChild: {
-        targetFile.insertChild(dropTarget.id, newNode, 'last', dragSourcePrototype);
+        targetFile
+          .insertChild(dropTarget.id, newNode, 'last')
+          .updateImportDeclaration(source, specifiers);
         break;
       }
       case DropMethod.InsertFirstChild: {
-        targetFile.insertChild(dropTarget.id, newNode, 'first', dragSourcePrototype);
+        targetFile
+          .insertChild(dropTarget.id, newNode, 'first')
+          .updateImportDeclaration(source, specifiers);
         break;
       }
       // 往目标节点的后边插入一个节点
       case DropMethod.InsertAfter: {
-        targetFile.insertAfter(dropTarget.id, newNode, dragSourcePrototype);
+        targetFile.insertAfter(dropTarget.id, newNode).updateImportDeclaration(source, specifiers);
         break;
       }
       // 往目标节点的前方插入一个节点
       case DropMethod.InsertBefore: {
-        targetFile.insertBefore(dropTarget.id, newNode, dragSourcePrototype);
+        targetFile.insertBefore(dropTarget.id, newNode).updateImportDeclaration(source, specifiers);
         break;
       }
       // 替换目标节点
       case DropMethod.ReplaceNode: {
-        targetFile.replaceNode(dropTarget.id, newNode, dragSourcePrototype);
+        targetFile.replaceNode(dropTarget.id, newNode).updateImportDeclaration(source, specifiers);
         break;
       }
       default:

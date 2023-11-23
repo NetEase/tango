@@ -151,6 +151,7 @@ import {
   Input,
   FormilyForm,
 } from "@music163/antd";
+import { Space } from '@music163/antd';
 class App extends React.Component {
   render() {
     return (
@@ -158,8 +159,10 @@ class App extends React.Component {
        <Section title="Section Title">
        </Section>
        <Section>
+       <Space>
           <Button>button</Button>
           <Input />
+          </Space>
         </Section>
       </Page>
     );
