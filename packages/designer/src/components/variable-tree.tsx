@@ -317,6 +317,10 @@ const varTreeStyle = css`
     font-family: Consolas, Menlo, Courier, monospace;
   }
 
+  .ant-tree-node-content-wrapper.ant-tree-node-content-wrapper-normal {
+    width: calc(100% - 50px);
+  }
+
   .ant-tree .ant-tree-treenode {
     padding: 0;
   }

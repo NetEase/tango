@@ -187,6 +187,13 @@ import { defineServices } from '@music163/tango-boot';
 import './sub';
 
 export default defineServices({
+  longLongLongLongLongLongLongLongGet: {
+    url: 'https://nei.hz.netease.com/api/apimock-v2/cc974ffbaa7a85c77f30e4ce67deb67f/api/getUserProfile',
+    formatter: res => res.data,
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  },
   get: {
     url: 'https://nei.hz.netease.com/api/apimock-v2/cc974ffbaa7a85c77f30e4ce67deb67f/api/getUserProfile',
     formatter: res => res.data,
