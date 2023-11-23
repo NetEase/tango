@@ -1001,8 +1001,8 @@ export class Workspace extends EventTarget implements IWorkspace {
 
     const sourcePrototype = this.getPrototype(sourceName);
     const newNode = prototype2jsxElement(sourcePrototype);
-    const { source, specifiers } = prototype2importDeclarationData(sourcePrototype);
     const file = this.getNode(targetNodeId).file;
+    const { source, specifiers } = prototype2importDeclarationData(sourcePrototype, file.filename);
     file
       .insertChild(targetNodeId, newNode, 'last')
       .addImportSpecifiers(source, specifiers)

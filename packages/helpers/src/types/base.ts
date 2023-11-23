@@ -15,8 +15,8 @@ export type PartialRecord<K extends keyof any, T> = {
   [P in K]?: T;
 };
 
-export type ReactComponentProps = {
+export interface ReactComponentProps {
   children?: React.ReactNode;
   style?: React.CSSProperties;
   className?: string;
-};
+}
