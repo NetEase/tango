@@ -696,12 +696,10 @@ export class Workspace extends EventTarget implements IWorkspace {
    */
   listServiceFunctions() {
     const ret: Record<string, object> = {};
-    Object.values(this.serviceModules).forEach((module) => {
+    Object.keys(this.serviceModules).forEach((moduleName) => {
+      const module = this.serviceModules[moduleName];
       Object.keys(module.serviceFunctions).forEach((name) => {
-        const serviceKey =
-          module.baseConfig.namespace !== 'index'
-            ? name
-            : [module.baseConfig.namespace, name].join('.');
+        const serviceKey = moduleName === 'index' ? name : [moduleName, name].join('.');
         ret[serviceKey] = module.serviceFunctions[name];
       });
     });
