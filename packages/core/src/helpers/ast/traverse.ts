@@ -1262,7 +1262,12 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
 
     MemberExpression(path) {
       const variable = node2value(path.node, false);
-      if (isTangoVariable(variable) && !variables.includes(variable)) {
+      const parentNode = path.parentPath.node;
+      if (
+        !t.isMemberExpression(parentNode) &&
+        isTangoVariable(variable) &&
+        !variables.includes(variable)
+      ) {
         variables.push(variable);
       }
     },
