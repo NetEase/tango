@@ -34,6 +34,23 @@ export const jsonValueValidate = (value: string) => {
   }
 };
 
+/**
+ * 返回 `{}` 包裹后的表达式代码
+ * @param code 原始代码
+ * @returns
+ */
+export function getWrappedExpressionCode(code: string) {
+  let ret;
+  if (!code) {
+    // do nothing
+  } else if (isWrappedByExpressionContainer(code)) {
+    ret = code;
+  } else {
+    ret = `{${code}}`;
+  }
+  return ret;
+}
+
 const suffixStyle = css`
   .anticon-close-circle {
     color: rgba(0, 0, 0, 0.25);
@@ -79,15 +96,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
         return;
       }
 
-      let ret;
-
-      if (!code) {
-        // do nothing
-      } else if (isWrappedByExpressionContainer(code)) {
-        ret = code;
-      } else {
-        ret = `{${code}}`;
-      }
+      const ret = getWrappedExpressionCode(code);
 
       if (ret === valueProp) {
         return;
@@ -138,7 +147,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
         value={inputValue}
         onCancel={() => off()}
         onOk={(value) => {
-          onChange(value);
+          change(value);
           off();
         }}
       />

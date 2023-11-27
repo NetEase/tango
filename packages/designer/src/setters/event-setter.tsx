@@ -4,7 +4,7 @@ import { AutoComplete } from 'antd';
 import { ActionSelect } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { ExpressionModal } from './expression-setter';
+import { ExpressionModal, getWrappedExpressionCode } from './expression-setter';
 
 enum EventAction {
   NoAction = 'noAction',
@@ -47,8 +47,9 @@ export function EventSetter(props: EventSetterProps) {
 
   const handleChange = useCallback<FormItemComponentProps['onChange']>(
     (nextValue: any, ...args) => {
-      if (nextValue !== value) {
-        onChange(nextValue, ...args);
+      const ret = getWrappedExpressionCode(nextValue);
+      if (ret !== value) {
+        onChange(ret, ...args);
       }
     },
     [onChange, value],
@@ -83,7 +84,7 @@ export function EventSetter(props: EventSetterProps) {
         onCancel={() => setExpModalVisible(false)}
         onOk={(nextValue) => {
           setExpModalVisible(false);
-          handleChange(`{${nextValue}}`);
+          handleChange(nextValue);
         }}
         dataSource={actionVariables}
       />
