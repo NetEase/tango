@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-designer",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "lowcode designer",
   "keywords": [
     "react"
@@ -37,8 +37,8 @@
     "@music163/tango-core": "^0.2.7",
     "@music163/tango-helpers": "^0.1.8",
     "@music163/tango-sandbox": "^0.1.12",
-    "@music163/tango-setting-form": "^0.2.11",
-    "@music163/tango-ui": "^0.1.11",
+    "@music163/tango-setting-form": "^0.2.12",
+    "@music163/tango-ui": "^0.1.12",
     "antd": "^4.24.2",
     "cash-dom": "^8.1.2",
     "classnames": "^2.3.2",
