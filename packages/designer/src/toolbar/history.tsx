@@ -10,7 +10,7 @@ export const HistoryTool = observer(() => {
       <ToggleButton
         shape="ghost"
         disabled={!workspace.history.couldBack || workspace.history.index === 0}
-        tip="撤销"
+        tooltip="撤销"
         onClick={() => {
           workspace.history.back();
           workspace.selectSource.clear();
@@ -21,7 +21,7 @@ export const HistoryTool = observer(() => {
       <ToggleButton
         shape="ghost"
         disabled={!workspace.history.couldForward}
-        tip="重做"
+        tooltip="重做"
         onClick={() => {
           workspace.history.forward();
           workspace.selectSource.clear();

@@ -36,6 +36,8 @@ export function DesignerPanel(props: DesignerPanelProps) {
           height="48px"
           bg="colors.custom.topNavBg"
           color="colors.custom.topNavColor"
+          borderBottom="solid"
+          borderColor="colors.custom.topNavBorderColor"
           className="DesignerPanelHeader"
         >
           <Box display="flex" alignItems="center">

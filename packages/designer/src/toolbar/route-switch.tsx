@@ -71,6 +71,7 @@ function PageSelect({ value, onSelect, onRemove, onUpdate, onCopy, options }: Pa
           }}
         />
       }
+      icon={<FileOutlined />}
     >
       {current?.name || current?.label || value}
     </ToggleButton>

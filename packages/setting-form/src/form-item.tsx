@@ -137,7 +137,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
         visible={getVisible(model)}
         label={title}
         note={name}
-        tip={tip}
+        tooltip={tip}
         docs={docs}
         error={field.error}
         extra={

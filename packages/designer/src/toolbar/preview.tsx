@@ -17,7 +17,7 @@ export const PreviewTool = observer(() => {
           designer.setActiveView('design');
         }
       }}
-      tip="预览"
+      tooltip="预览"
     >
       <EyeOutlined />
     </ToggleButton>

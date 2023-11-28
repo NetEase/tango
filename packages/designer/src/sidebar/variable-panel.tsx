@@ -30,7 +30,6 @@ export const VariablePanel = observer(
 
     return (
       <Panel
-        shape="solid"
         className="ModelView"
         height={wrapperHeight}
         title="视图模型与变量管理"

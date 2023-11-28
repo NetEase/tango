@@ -3,9 +3,9 @@ import { SystemProvider, extendTheme } from 'coral-system';
 import { ConfigProvider } from 'antd';
 import { TangoEngineProvider, ITangoEngineContext } from '@music163/tango-context';
 import { createFromIconfontCN } from '@ant-design/icons';
-import { DesignerProvider, IDesignerContext } from './context';
-import { theme as baseTheme } from './theme';
 import zhCN from 'antd/lib/locale/zh_CN';
+import { DesignerProvider, IDesignerContext } from './context';
+import defaultTheme from './themes/default';
 
 export interface DesignerProps extends IDesignerContext, ITangoEngineContext {
   /**
@@ -34,7 +34,7 @@ export function Designer(props: DesignerProps) {
     iconfontScriptUrl = '//at.alicdn.com/t/c/font_2891794_lzc7rtwuzf.js',
     children,
   } = props;
-  const theme = useMemo(() => extendTheme(themeProp, baseTheme), [themeProp]);
+  const theme = useMemo(() => extendTheme(themeProp, defaultTheme), [themeProp]);
   useEffect(() => {
     createFromIconfontCN({
       scriptUrl: iconfontScriptUrl,

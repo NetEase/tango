@@ -17,7 +17,7 @@ export const ViewportSwitchTool = observer(() => {
         onClick={() => {
           designer.setSimulator('desktop');
         }}
-        tip="桌面视图"
+        tooltip="桌面视图"
       >
         <DesktopOutlined />
       </ToggleButton>
@@ -27,7 +27,7 @@ export const ViewportSwitchTool = observer(() => {
         onClick={() => {
           designer.setSimulator('phone');
         }}
-        tip="手机视图"
+        tooltip="手机视图"
       >
         <MobileOutlined />
       </ToggleButton>

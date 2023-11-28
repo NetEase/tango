@@ -81,7 +81,7 @@ function ToolbarItem({ placement, widgetProps, children }: ToolbarItemProps) {
 }
 
 function Separator() {
-  return <Box className="Separator" width={1} height={16} bg="gray.60" />;
+  return <Box className="Separator" width={1} height={16} bg="colors.custom.toolbarDividerColor" />;
 }
 
 Toolbar.Item = ToolbarItem;

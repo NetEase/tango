@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { css, Button, HTMLCoralProps } from 'coral-system';
+import { css, Button, HTMLCoralProps, Box } from 'coral-system';
 import { DropDownProps, Dropdown, MenuProps, Tooltip, TooltipProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
@@ -26,19 +26,11 @@ const buttonStyle = css`
   &.size-m {
     height: 32px;
     font-size: 14px;
-
-    .anticon {
-      font-size: 16px;
-    }
   }
 
   &.size-l {
     height: 40px;
     font-size: 16px;
-
-    .anticon {
-      font-size: 20px;
-    }
   }
 
   &.size-xl {
@@ -106,10 +98,12 @@ const buttonStyle = css`
 
     &.disabled {
       color: var(--tango-colors-custom-toolbarButtonTextColorDisabled, rgb(201, 205, 212));
+      background-color: var(--tango-colors-custom-toolbarButtonBgDisabled, rgb(247, 248, 250));
     }
 
     &.selected {
-      background-color: var(--tango-colors-brand);
+      color: var(--tango-colors-custom-toolbarButtonTextColorActive);
+      background-color: var(--tango-colors-custom-toolbarButtonBgActive);
     }
   }
 
@@ -124,6 +118,7 @@ export interface ToggleButtonProps extends Omit<HTMLCoralProps<'button'>, 'type'
   type?: 'normal' | 'primary';
   selected?: boolean;
   disabled?: boolean;
+  icon?: React.ReactNode;
   /**
    * 提示文案
    * @deprecated 使用 tooltip 代替
@@ -167,6 +162,7 @@ export function ToggleButton(props: ToggleButtonProps) {
     disabled,
     selected,
     children,
+    icon,
     tip,
     tooltip = tip,
     tooltipPlacement = 'bottom',
@@ -189,7 +185,14 @@ export function ToggleButton(props: ToggleButtonProps) {
 
   let btn = (
     <Button css={buttonStyle} className={clazz} type="button" {...rest}>
-      {children}
+      <Box as="span">
+        {icon && (
+          <Box as="span" className="buttonIcon" mr="s">
+            {icon}
+          </Box>
+        )}
+        {children}
+      </Box>
       {showDropdown ? <DownOutlined /> : null}
     </Button>
   );

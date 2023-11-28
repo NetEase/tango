@@ -1,6 +1,6 @@
 import { extendTheme } from 'coral-system';
 
-export const theme = extendTheme({
+export default extendTheme({
   colors: {
     primary: {
       10: '#e8f3ff',
@@ -27,11 +27,16 @@ export const theme = extendTheme({
     custom: {
       topNavBg: '#222',
       topNavColor: '#fff',
+      topNavBorderColor: '#222',
+      toolbarDividerColor: 'gray.60',
       toolbarButtonBg: 'rgba(223, 223, 223, 0.08)',
       toolbarButtonBgHover: '#4080ff',
+      toolbarButtonBgDisabled: 'rgb(223,223,223)',
+      toolbarButtonBgActive: '#4080ff',
       toolbarButtonTextColor: '#f5f5f5',
       toolbarButtonTextColorHover: '#FFF',
-      toolbarButtonTextColorDisabled: '#bfbfbf',
+      toolbarButtonTextColorDisabled: 'rgb(201,205,212)',
+      toolbarButtonTextColorActive: '#fff',
       sidebarBg: '#fff',
       sidebarExpandBg: '#fff',
       sidebarItemActiveBg: '#f2f3f5',

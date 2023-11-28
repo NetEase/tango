@@ -17,6 +17,12 @@ const navigatorStyle = css`
 
   .navigatorInput {
     flex: 1;
+    border-color: transparent;
+    background-color: var(--tango-colors-fill2);
+
+    &:focus {
+      background-color: #fff;
+    }
   }
 `;
 
@@ -68,7 +74,7 @@ export class Navigator extends React.Component<NavigatorProps, NavigatorState> {
         className="navigator"
         bg="white"
         px="l"
-        py="4px"
+        py="m"
         borderBottom="solid"
         borderBottomColor="line.normal"
         css={navigatorStyle}

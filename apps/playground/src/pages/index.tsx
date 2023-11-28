@@ -12,6 +12,7 @@ import {
   CodeEditor,
   Sandbox,
   DndQuery,
+  themeLight,
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
 import { Logo, ProjectDetail, bootHelperVariables } from './share';
@@ -52,6 +53,7 @@ export default function App() {
   const [menuData, setMenuData] = useState(false);
   return (
     <Designer
+      theme={themeLight}
       engine={engine}
       config={{
         customActionVariables: bootHelperVariables,
