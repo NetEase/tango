@@ -688,7 +688,6 @@ export function addRouteToRouteFile(ast: t.File, routePath: string, importFilePa
       const newNode = t.objectExpression([
         t.objectProperty(t.identifier('path'), t.stringLiteral(routePath)),
         t.objectProperty(t.identifier('component'), t.identifier(component)),
-        // FIXME: tango/issues#144 https://g.hz.netease.com/tango/issues/-/issues/144
         t.objectProperty(t.identifier('exact'), t.booleanLiteral(true)),
       ]);
       path.node.elements.push(newNode);
