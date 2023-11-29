@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.8](https://github.com/netease/tango/compare/@music163/tango-core@0.2.7...@music163/tango-core@0.2.8) (2023-11-29)
+
+### Bug Fixes
+
+- workspace onFilesChange ([#70](https://github.com/netease/tango/issues/70)) ([accd826](https://github.com/netease/tango/commit/accd8263764c811ea8175a9cd341fc6fa6c75967))
+
 ## [0.2.7](https://github.com/netease/tango/compare/@music163/tango-core@0.2.6...@music163/tango-core@0.2.7) (2023-11-27)
 
 ### Bug Fixes

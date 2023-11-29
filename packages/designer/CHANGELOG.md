@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.11](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.10...@music163/tango-designer@0.5.11) (2023-11-29)
+
+**Note:** Version bump only for package @music163/tango-designer
+
 ## [0.5.10](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.9...@music163/tango-designer@0.5.10) (2023-11-28)
 
 ### Bug Fixes
