@@ -100,7 +100,6 @@ export interface IImportSpecifierData {
 
 /**
  * 解析的导入语句数据
- * FIXME: 需要考虑到有两行重复的语句的情况
  */
 export type ImportDeclarationDataType = Record<string, IImportSpecifierData[]>;
 
@@ -193,7 +192,7 @@ export interface IPageConfigData {
    */
   name?: string;
   /**
-   * PMS 权限码
+   * 权限码
    */
   privilegeCode?: string;
 }

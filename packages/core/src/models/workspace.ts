@@ -59,7 +59,7 @@ export interface IWorkspaceOptions {
   /**
    * 工作区文件变更事件
    */
-  onFilesChange?: (filenames: string[]) => void;
+  onFilesChange?: IWorkspace['onFilesChange'];
 }
 
 /**
@@ -125,17 +125,6 @@ export class Workspace extends EventTarget implements IWorkspace {
   tangoConfigJson: TangoJsonFile;
 
   /**
-   * appJson.json 文件
-   * FIXME: 是否保留 ???
-   */
-  appJson: TangoJsonFile;
-
-  /**
-   * 代码变更回调
-   */
-  onFilesChange?: (filenames: string[]) => void;
-
-  /**
    * 绑定事件
    * TODO: 是否需要自己来管理 listeners，并及时进行 gc
    */
@@ -170,15 +159,12 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 获取页面列表
    */
   get pages() {
-    const appJsonPages = this.appJson?.getValue('pages');
-    const pagesMap = array2object(appJsonPages || [], (item) => item.path);
     const ret: IPageConfigData[] = [];
     this.routeModule?.routes.forEach((item) => {
-      const data = pagesMap[item.path];
       if (item.path !== '*') {
         ret.push({
-          ...data,
           path: item.path,
+          name: item.component,
         });
       }
     });
@@ -230,7 +216,11 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.activeViewFile = '';
     this.files = new Map();
     this.isReady = false;
-    this.onFilesChange = options?.onFilesChange;
+
+    if (options?.onFilesChange) {
+      // 使用用户提供的 onFilesChange
+      this.onFilesChange = options.onFilesChange;
+    }
 
     if (options?.files) {
       this.addFiles(options.files);
@@ -390,10 +380,6 @@ export class Workspace extends EventTarget implements IWorkspace {
         module = new TangoJsonFile(this, props);
         this.tangoConfigJson = module;
         break;
-      case FileType.AppJson:
-        module = new TangoJsonFile(this, props);
-        this.appJson = module;
-        break;
       case FileType.Json:
         module = new TangoJsonFile(this, props);
         break;
@@ -517,12 +503,6 @@ export class Workspace extends EventTarget implements IWorkspace {
       this.routeModule.removeRoute(routePath).update();
       this.setActiveRoute(this.routeModule.routes[0]?.path || '/');
     }
-    // remove appJson page
-    this.appJson
-      ?.setValue('pages', (pages) => {
-        return (pages as IPageConfigData[]).filter((page) => page.path !== routePath);
-      })
-      .update();
     this.removeFile(filename);
   }
 
@@ -552,16 +532,6 @@ export class Workspace extends EventTarget implements IWorkspace {
    */
   addRoute(routeData: IPageConfigData, importFilePath: string) {
     this.routeModule?.addRoute(routeData.path, importFilePath).update();
-    this.appJson
-      ?.setValue('pages', (pages) => {
-        (pages as IPageConfigData[]).push({
-          name: routeData.name || routeData.path,
-          path: routeData.path,
-          privilegeCode: getPrivilegeCode(this.packageJson?.getValue('name'), routeData.path),
-        });
-        return pages;
-      })
-      .update();
   }
 
   /**
@@ -573,18 +543,6 @@ export class Workspace extends EventTarget implements IWorkspace {
     if (sourceRoutePath !== targetPageData.path) {
       this.routeModule?.updateRoute(sourceRoutePath, targetPageData.path).update();
     }
-    this.appJson
-      ?.setValue('pages', (pages) => {
-        for (const page of pages as IPageConfigData[]) {
-          if (page.path === sourceRoutePath) {
-            page.path = targetPageData.path;
-            page.name = targetPageData.name;
-            break;
-          }
-        }
-        return pages;
-      })
-      .update();
   }
 
   /**
@@ -1175,6 +1133,10 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
   }
 
+  onFilesChange(filenams: string[]) {
+    // do nothing
+  }
+
   /**
    * 刷新目标文件
    * @param filenames
@@ -1188,7 +1150,6 @@ export class Workspace extends EventTarget implements IWorkspace {
         },
       }),
     );
-    this.onFilesChange?.(filenames);
   }
 
   /**

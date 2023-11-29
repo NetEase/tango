@@ -75,15 +75,6 @@ const tangoConfigJson = {
   },
 };
 
-const appJson: any = {
-  pages: [
-    {
-      path: '/',
-      name: '首页',
-    },
-  ],
-};
-
 const routesCode = `
 import Index from "./pages/list";
 
@@ -249,7 +240,6 @@ p {
 
 export const sampleFiles = [
   { filename: '/package.json', code: JSON.stringify(packageJson) },
-  { filename: '/appJson.json', code: JSON.stringify(appJson) },
   { filename: '/tango.config.json', code: JSON.stringify(tangoConfigJson) },
   { filename: '/README.md', code: '# readme' },
   { filename: '/src/index.less', code: lessCode },

@@ -149,8 +149,6 @@ export interface IWorkspace {
   setComponentPrototypes: (prototypes: Record<string, ComponentPrototypeType>) => void;
   getPrototype: (name: string | ComponentPrototypeType) => ComponentPrototypeType;
 
-  onFilesChange?: (filenames: string[]) => void;
-
   // ----------------- 文件操作 -----------------
   addFiles: (files: IFileConfig[]) => void;
   addFile: (filename: string, code: string, fileType?: FileType) => void;
@@ -168,6 +166,12 @@ export interface IWorkspace {
 
   listFiles: () => Record<string, string>;
   getFile: (filename: string) => TangoFile;
+
+  /**
+   * 文件变化回调
+   * @param filenames 文件名列表
+   */
+  onFilesChange: (filenames: string[]) => void;
 
   // ----------------- 节点操作 -----------------
 
