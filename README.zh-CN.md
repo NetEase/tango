@@ -45,10 +45,10 @@ gantt
     %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
 
     section Builder Release
-    Alpha version            :active,  des1, 2023-08-10, 2023-08-30
-    Beta version               :         des2, 2023-09-01, 2023-09-30
-    1.0 RC               :         des3, after des2, 40d
-    1.0 version              :         des4, after des3, 21d
+    Alpha version            :active,  m1, 2023-08-10, 2023-08-30
+    Beta version               :         m2, 2023-09-01, 2023-09-30
+    1.0 RC               :         m3, 2023-10-01, 2023-12-15
+    1.0 version              :         m4, after m3, 10d
 ```
 
 ## 💻 开发
