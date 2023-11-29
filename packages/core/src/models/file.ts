@@ -56,6 +56,7 @@ export class TangoFile {
       this._code = code;
       this._cleanCode = code;
     }
+    this.workspace.onFilesChange([this.filename]);
   }
 }
 
@@ -134,6 +135,7 @@ export class TangoJsonFile extends TangoFile {
         logger.error(err);
       }
     }
+    this.workspace.onFilesChange([this.filename]);
   }
 
   /**

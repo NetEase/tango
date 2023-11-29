@@ -59,7 +59,7 @@ export interface IWorkspaceOptions {
   /**
    * 工作区文件变更事件
    */
-  onFilesChange?: (filenames: string[]) => void;
+  onFilesChange?: IWorkspace['onFilesChange'];
 }
 
 /**
@@ -129,11 +129,6 @@ export class Workspace extends EventTarget implements IWorkspace {
    * FIXME: 是否保留 ???
    */
   appJson: TangoJsonFile;
-
-  /**
-   * 代码变更回调
-   */
-  onFilesChange?: (filenames: string[]) => void;
 
   /**
    * 绑定事件
@@ -230,7 +225,11 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.activeViewFile = '';
     this.files = new Map();
     this.isReady = false;
-    this.onFilesChange = options?.onFilesChange;
+
+    if (options?.onFilesChange) {
+      // 使用用户提供的 onFilesChange
+      this.onFilesChange = options.onFilesChange;
+    }
 
     if (options?.files) {
       this.addFiles(options.files);
@@ -1175,6 +1174,10 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
   }
 
+  onFilesChange(filenams: string[]) {
+    // do nothing
+  }
+
   /**
    * 刷新目标文件
    * @param filenames
@@ -1188,7 +1191,6 @@ export class Workspace extends EventTarget implements IWorkspace {
         },
       }),
     );
-    this.onFilesChange?.(filenames);
   }
 
   /**

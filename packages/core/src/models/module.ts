@@ -46,6 +46,8 @@ export class TangoModule extends TangoFile {
 
     this._analysisAst();
 
+    this.workspace.onFilesChange([this.filename]);
+
     if (refreshWorkspace) {
       this.workspace.refresh([this.filename]);
     }
