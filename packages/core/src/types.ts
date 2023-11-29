@@ -193,7 +193,7 @@ export interface IPageConfigData {
    */
   name?: string;
   /**
-   * PMS 权限码
+   * 权限码
    */
   privilegeCode?: string;
 }

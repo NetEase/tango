@@ -82,7 +82,6 @@ export default function App() {
         }
       >
         <Sidebar>
-          <Sidebar.Item key="outline" label="结构" icon={<BuildOutlined />} />
           <Sidebar.Item
             key="components"
             label="组件"
@@ -92,6 +91,7 @@ export default function App() {
               loading: menuLoading,
             }}
           />
+          <Sidebar.Item key="outline" label="结构" icon={<BuildOutlined />} />
           <Sidebar.Item
             key="variables"
             label="变量"
