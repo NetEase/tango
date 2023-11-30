@@ -1,7 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { JSXElement } from '@babel/types';
 import {
-  array2object,
   ComponentPrototypeType,
   hasFileExtension,
   isString,
@@ -16,7 +15,6 @@ import {
   getJSXElementChildrenNames,
   namesToImportDeclarations,
   getBlockNameByFilename,
-  getPrivilegeCode,
   prototype2importDeclarationData,
 } from '../helpers';
 import { DropMethod } from './drop-target';

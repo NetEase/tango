@@ -148,6 +148,12 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
       setSelectedKeys(workspace.selectSource.selected.map((item) => item.id));
     }, [workspace.selectSource.selected]);
 
+    useEffect(() => {
+      setExpandedKeys(getNodeKeys(nodesTree));
+      // nodeTree 更新后重新计算expandKeys
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [nodesTree?.[0]?.id]);
+
     if (!nodesTree.length) {
       return (
         <Box>
@@ -155,12 +161,6 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
         </Box>
       );
     }
-
-    useEffect(() => {
-      setExpandedKeys(getNodeKeys(nodesTree));
-      // nodeTree 更新后重新计算expandKeys
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [nodesTree?.[0]?.id]);
 
     return (
       <Box css={outlineStyle}>
