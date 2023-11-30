@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.9](https://github.com/netease/tango/compare/@music163/tango-core@0.2.8...@music163/tango-core@0.2.9) (2023-11-30)
+
+### Bug Fixes
+
+- fix render components tree ([76a5a2c](https://github.com/netease/tango/commit/76a5a2c65920bc42b019cd1f32a3cacd0d888638))
+
 ## [0.2.8](https://github.com/netease/tango/compare/@music163/tango-core@0.2.7...@music163/tango-core@0.2.8) (2023-11-29)
 
 ### Bug Fixes
