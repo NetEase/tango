@@ -10,11 +10,15 @@ export enum FileType {
   Module = 'module',
   StoreEntryModule = 'storeEntryModule',
   RouteModule = 'routeModule',
-  BlockEntryModule = 'blockEntryModule',
   ServiceModule = 'serviceModule',
   StoreModule = 'storeModule',
 
+  // 区块入口文件
+  BlockEntryModule = 'blockEntryModule',
+
+  // jsx 类型视图文件
   JsxViewModule = 'jsxViewModule',
+  // json 类型视图文件
   JsonViewModule = 'jsonViewModule',
 
   // 非 js 文件
