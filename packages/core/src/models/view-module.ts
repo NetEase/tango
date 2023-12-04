@@ -307,10 +307,24 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   updateNodeAttributes(nodeId: string, config: Record<string, any>, relatedImports?: string[]) {
     if (relatedImports && relatedImports.length) {
       // 导入依赖的组件
-      relatedImports.forEach((name: string) => {
+      const newImportData = relatedImports.reduce((prev, name) => {
         const proto = this.workspace.getPrototype(name);
         const { source, specifiers } = prototype2importDeclarationData(proto, this.filename);
-        this.addImportSpecifiers(source, specifiers);
+        const existSpecifiers: IImportSpecifierData[] = prev[source];
+        if (existSpecifiers) {
+          // merge specifiers
+          specifiers.forEach((item) => {
+            if (!existSpecifiers.find((existItem) => existItem.localName === item.localName)) {
+              existSpecifiers.push(item);
+            }
+          });
+        } else {
+          prev[source] = specifiers;
+        }
+        return prev;
+      }, {});
+      Object.keys(newImportData).forEach((source) => {
+        this.addImportSpecifiers(source, newImportData[source]);
       });
     }
     this.ast = updateJSXAttributes(this.ast, nodeId, config);

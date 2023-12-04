@@ -23,6 +23,12 @@ export type SandboxProps = Omit<CodeSandboxProps, 'files' | 'eventHandlers' | 'o
    * tangoConfigJson 处理器
    */
   configFormatter?: IMergeTangoConfigJsonConfig['formatter'];
+  /**
+   * 文件格式化器
+   * @param files 沙箱文件列表
+   * @returns 修改后的文件列表
+   */
+  filesFormatter?: (files: CodeSandboxProps['files']) => CodeSandboxProps['files'];
   sandboxType?: 'design' | 'preview';
   mode?: 'single' | 'combined';
   injectScript?: string;
@@ -41,6 +47,7 @@ const LANDING_PAGE_PATH = '/__background_landing_page__';
 function useSandbox({
   isPreview: isPreviewProp,
   configFormatter,
+  filesFormatter,
   onViewChange,
   onMessage: onMessageProp,
   onLoad: onLoadProp,
@@ -79,7 +86,12 @@ function useSandbox({
     prev[filename] = { code };
     return prev;
   }, {});
+
   files = fixSandboxFiles(files, workspace.entry);
+  if (filesFormatter) {
+    // 支持用户对传入的文件进行修改
+    files = filesFormatter(files);
+  }
 
   const onMessage = (data: any) => onMessageProp && onMessageProp(data, getSandboxConfig());
   const onLoad = () => onLoadProp && onLoadProp(getSandboxConfig());
@@ -413,6 +425,7 @@ function fixSandboxFiles(files: Record<string, { code: string }>, entry = '/src/
       `,
     };
   }
+
   return files;
 }
 

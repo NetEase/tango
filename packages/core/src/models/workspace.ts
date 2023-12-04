@@ -94,7 +94,7 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * 本地区块 { [blockName]: filePath }
-   * FIXME: 修正类型 Record<string, TangoBlockModule>
+   * TODO: 废弃这个，不再支持
    */
   localBlocks: Record<string, string>;
 
