@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.13](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.12...@music163/tango-designer@0.5.13) (2023-12-04)
+
+### Bug Fixes
+
+- add filesFormatter to sandbox & fix update props with imports ([#71](https://github.com/netease/tango/issues/71)) ([138cbe9](https://github.com/netease/tango/commit/138cbe9b203b370aff42c1ae8086d69edacf35e9))
+
 ## [0.5.12](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.11...@music163/tango-designer@0.5.12) (2023-11-30)
 
 ### Bug Fixes
