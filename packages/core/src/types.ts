@@ -13,7 +13,12 @@ export enum FileType {
   ServiceModule = 'serviceModule',
   StoreModule = 'storeModule',
 
-  // 区块入口文件
+  // 组件配置文件
+  ComponentPrototypeModule = 'componentPrototypeModule',
+  // 组件运行调试入口文件，一般为 `/app.js`
+  ComponentDemoEntryModule = 'componentDemoEntryModule',
+
+  // 区块入口文件 FIXME: 是否移除
   BlockEntryModule = 'blockEntryModule',
 
   // jsx 类型视图文件

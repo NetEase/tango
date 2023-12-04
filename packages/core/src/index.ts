@@ -4,5 +4,5 @@ export * from './helpers';
 export * from './types';
 
 export { default as generator } from '@babel/generator';
-export { default as traverse } from '@babel/types';
+export { default as traverse } from '@babel/traverse';
 export * from '@babel/parser';

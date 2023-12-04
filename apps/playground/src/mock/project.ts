@@ -143,6 +143,8 @@ import {
   FormilyForm,
 } from "@music163/antd";
 import { Space } from '@music163/antd';
+import { MyButton } from '../components/button';
+
 class App extends React.Component {
   render() {
     return (
@@ -151,6 +153,7 @@ class App extends React.Component {
        </Section>
        <Section>
        <Space>
+          <MyButton />
           <Button>button</Button>
           <Input />
           </Space>
@@ -161,6 +164,16 @@ class App extends React.Component {
 }
 export default definePage(App);
 `;
+
+const componentsButtonCode = `
+import React from 'react';
+
+export function MyButton() {
+  return <button>my button</button>
+}
+`;
+
+const componentsPrototypeCode = ``;
 
 const storeApp = `
 import { defineStore } from '@music163/tango-boot';
@@ -246,6 +259,8 @@ export const sampleFiles = [
   { filename: '/src/style.css', code: cssCode },
   { filename: '/src/index.js', code: entryCode },
   { filename: '/src/pages/list.js', code: viewHomeCode },
+  { filename: '/src/components/button.js', code: componentsButtonCode },
+  { filename: '/src/components/prototype.js', code: componentsPrototypeCode },
   { filename: '/src/routes.js', code: routesCode },
   { filename: '/src/stores/index.js', code: storeIndexCode },
   { filename: '/src/stores/app.js', code: storeApp },
