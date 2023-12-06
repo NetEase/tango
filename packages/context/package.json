@@ -33,7 +33,7 @@
   "dependencies": {
     "@music163/tango-core": "^0.2.11",
     "@music163/tango-helpers": "^0.1.8",
-    "mobx-react-lite": "4.0.2"
+    "mobx-react-lite": "4.0.5"
   },
   "publishConfig": {
     "access": "public",
