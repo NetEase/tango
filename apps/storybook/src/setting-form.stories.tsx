@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { EditableVariableTree, FormModel, SettingForm } from '@music163/tango-setting-form';
-import { ComponentPrototypeType, getValue } from '@music163/tango-helpers';
-import { createServices } from '@music163/request';
+import React from 'react';
+import { FormModel, SettingForm } from '@music163/tango-setting-form';
+import { ComponentPrototypeType } from '@music163/tango-helpers';
 import { Box } from 'coral-system';
 import { JsonView } from '@music163/tango-ui';
 import { toJS } from 'mobx';
@@ -9,50 +8,8 @@ import { observer } from 'mobx-react-lite';
 import { Card } from 'antd';
 
 export default {
-  title: 'SettingForm/ Setters',
+  title: 'SettingForm',
 };
-
-const modelVariables = [
-  {
-    title: 'stores',
-    key: 'stores',
-    selectable: false,
-    children: [
-      {
-        title: 'app',
-        key: 'stores.app',
-        selectable: false,
-        children: [
-          { title: 'app.title', key: 'stores.app.title', raw: '"hello"' },
-          { title: 'app.age', key: 'stores.app.age', raw: '20' },
-          { title: 'app.detail', key: 'stores.app.detail', raw: '{ foo: "foo" }' },
-          { title: 'app.list', key: 'stores.app.list', type: 'function', raw: '() => {}' },
-        ],
-      },
-      {
-        title: 'user',
-        key: 'stores.user',
-        selectable: false,
-        children: [
-          { title: 'name', key: 'stores.user.name' },
-          { title: 'age', key: 'stores.user.age' },
-        ],
-      },
-    ],
-  },
-  {
-    title: 'services',
-    key: 'services',
-    selectable: false,
-    children: [
-      {
-        title: 'listUsers',
-        key: 'services.listUsers',
-        type: 'function',
-      },
-    ],
-  },
-];
 
 const prototype: ComponentPrototypeType = {
   name: 'Test',
@@ -257,47 +214,6 @@ const prototype: ComponentPrototypeType = {
   ],
 };
 
-const deerService = createServices(
-  {
-    listMy: {
-      url: '/my/upload/list',
-    },
-    listFav: {
-      url: '/my/star/list',
-    },
-    listPub: {
-      url: '/list',
-    },
-  },
-  {
-    baseURL: 'https://febase-openapi.fn.netease.com/deer/api/deer/pic',
-    withCredentials: false, // 解决跨域时必须非*问题
-    headers: {
-      'Febase-Auth': 'dskPVkIRnQ2dEn1DbyxURmUj4rl4BsCh53xFAsJnvVs=',
-    },
-  },
-);
-
-const context = {
-  stores: {
-    app: {
-      title: 'Sample App',
-      age: 20,
-      detail: {
-        foo: 'foo',
-        bar: 'bar',
-        biz: {
-          x: 'xxx',
-        },
-      },
-      newKey: 'xxx',
-    },
-    foo: {
-      test: 'test string',
-    },
-  },
-};
-
 /**
  * 表单值预览
  */
@@ -310,9 +226,7 @@ export function Basic() {
   const model = new FormModel(
     {
       router: 'www.163.com',
-      expression: {
-        foo: 'foo',
-      },
+      expression: `{ foo: 'foo' }`,
       object: {
         name: 'Alice',
       },
@@ -324,19 +238,7 @@ export function Basic() {
 
   return (
     <Box display="flex">
-      <SettingForm
-        model={model}
-        remoteServices={{
-          ImageService: deerService as any,
-        }}
-        prototype={prototype}
-        evaluateContext={{
-          tango: context,
-          __UNSAFE_TANGO_CURRENT_PAGE_RENDER_RUNTIME__: { routeData: { params: {}, query: {} } },
-        }}
-        modelVariables={modelVariables}
-        expressionVariables={modelVariables}
-      />
+      <SettingForm model={model} prototype={prototype} />
       <Box position="relative">
         <Card title="表单状态预览" style={{ position: 'sticky', top: 0 }}>
           <FormValuePreview model={model} />
@@ -351,33 +253,6 @@ export function NoExpressionSwitch() {
   return (
     <Box>
       <SettingForm model={model} prototype={prototype} disableSwitchExpressionSetter />
-    </Box>
-  );
-}
-
-export function Binding() {
-  const [data, setData] = useState<any>({});
-  return (
-    <Box>
-      <Box as="code" bg="highlight" color="white" fontSize="24px">
-        selected: {data?.key}
-      </Box>
-      <EditableVariableTree
-        dataSource={modelVariables as any}
-        getPreviewValue={(node) => {
-          if (!node || !node.key) {
-            return;
-          }
-          if (node.type === 'function') {
-            return node.raw;
-          }
-          const keyPath = node.key.replaceAll('?', '');
-          return getValue(context, keyPath);
-        }}
-        onSelect={setData}
-        onAddVariable={console.log}
-        onSave={console.log}
-      />
     </Box>
   );
 }

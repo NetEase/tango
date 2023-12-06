@@ -1,3 +1,4 @@
+export * from './icons';
 export * from './action-select';
 export * from './code-editor';
 export * from './chat-input';

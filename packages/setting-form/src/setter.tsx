@@ -1,7 +1,12 @@
 import React from 'react';
+import { Input } from 'antd';
+import { InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from './form-item';
 
-// TODO: 内置基本的 ExpressionSetter，默认全部 fallback 到此 setter
-export function ExpressionSetter(props: FormItemComponentProps<string>) {
-  return <div>exp setter</div>;
+export function ExpressionSetter({ value, onChange, ...rest }: FormItemComponentProps<string>) {
+  return <InputCode onChange={(val) => onChange?.(val)} value={value || ''} {...rest} />;
+}
+
+export function TextSetter({ onChange, ...rest }: FormItemComponentProps<string>) {
+  return <Input onChange={(e) => onChange?.(e.target.value)} {...rest} />;
 }

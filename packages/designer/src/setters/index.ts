@@ -168,4 +168,6 @@ const setters: IFormItemCreateOptions[] = [
   { name: 'borderSetter', component: BorderSetter },
 ];
 
-setters.forEach(register);
+export function registerBuiltinSetters() {
+  setters.forEach(register);
+}
