@@ -248,6 +248,14 @@ export function Basic() {
   );
 }
 
+export function Lite() {
+  return (
+    <Box width={320} border="solid">
+      <SettingForm showSearch={false} showGroups={false} prototype={prototype} />
+    </Box>
+  );
+}
+
 export function NoExpressionSwitch() {
   const model = new FormModel({});
   return (

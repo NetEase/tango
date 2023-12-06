@@ -16,6 +16,7 @@ import { Box, Text } from 'coral-system';
 
 export interface FormItemProps extends ComponentPropType {
   extra?: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
 export interface FormItemComponentProps<T = any> {
@@ -76,6 +77,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     getVisible: getVisibleProp,
     getSetterProps: getSetterPropsProp,
     extra,
+    footer,
   }: FormItemProps) {
     const { disableSwitchExpressionSetter } = useFormVariable();
     const model = useFormModel();
@@ -159,6 +161,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
             ) : null}
           </Box>
         }
+        footer={footer}
         data-setter={setterName}
         data-field={name}
       >
@@ -195,8 +198,8 @@ export function SettingFormItem(props: FormItemProps) {
     return (
       <Fallback
         {...props}
-        extra={
-          <Text color="red" mx="l">
+        footer={
+          <Text color="red" mt="m">
             {props.setter} is invalid
           </Text>
         }

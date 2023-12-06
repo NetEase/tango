@@ -7,6 +7,7 @@ import { isNil, isString } from '@music163/tango-helpers';
 export interface FormControlProps extends Omit<FormLabelProps, 'type'> {
   visible: boolean;
   extra?: React.ReactNode;
+  footer?: React.ReactNode;
   error?: string;
   children?: React.ReactNode;
 }
@@ -18,6 +19,7 @@ export function FormControl({
   tip,
   docs,
   extra,
+  footer,
   error,
   children,
   ...rest
@@ -29,6 +31,7 @@ export function FormControl({
         {extra}
       </Box>
       <Box>{children}</Box>
+      {footer}
       {!!error && (
         <Box mt="m" color="red">
           {error}

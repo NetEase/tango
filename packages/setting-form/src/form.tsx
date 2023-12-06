@@ -83,7 +83,15 @@ export interface SettingFormProps {
    */
   prototype?: ComponentPrototypeType;
   /**
-   * 选项分组信息
+   * 是否显示搜索框
+   */
+  showSearch?: boolean;
+  /**
+   * 是否显示分组导航
+   */
+  showGroups?: boolean;
+  /**
+   * 选项分组信息，用于对表单项进行分组展示，如未提供，则使用内置的分组信息
    */
   groupOptions?: IFormTabsGroupOption[];
   /**
@@ -98,6 +106,8 @@ export function SettingForm({
   model: modelProp,
   defaultValue,
   onChange = noop,
+  showSearch = true,
+  showGroups = true,
   groupOptions = internalGroups,
 }: SettingFormProps) {
   const [keyword, setKeyword] = useState('');
@@ -107,10 +117,8 @@ export function SettingForm({
   const componentPropGroups = useMemo(() => {
     return normalizeComponentProps(componentProps);
   }, [componentProps]);
+
   const filterProps = useMemo(() => {
-    if (!keyword) {
-      return componentPropGroups[tabKey] || [];
-    }
     const computedProps = mapTreeData(componentProps, (node) => {
       const { getProp, ...rest } = node;
       return {
@@ -118,8 +126,19 @@ export function SettingForm({
         ...getProp?.(model),
       };
     });
+
+    // 没有进行搜索的情况
+    if (!keyword) {
+      if (showGroups) {
+        return componentPropGroups[tabKey] || [];
+      } else {
+        return computedProps;
+      }
+    }
+
+    // 用户进行搜索的情况
     return filterComponentProps(computedProps, keyword);
-  }, [keyword, componentProps, tabKey, model]);
+  }, [keyword, componentProps, tabKey, model, showGroups, componentPropGroups]);
 
   const renderProps = useCallback(
     (props: ComponentPropType[]) =>
@@ -155,15 +174,17 @@ export function SettingForm({
       <FormModelProvider value={model}>
         <Box className="SettingForm" mb="xl" css={formStyle}>
           <Box className="SettingFormHeader" position="sticky" top="0" bg="white" zIndex="2">
-            <Box className="SettingFormSearch" px="l" py="m">
-              <Search
-                placeholder="搜索属性"
-                onChange={(val) => {
-                  setKeyword(val?.trim());
-                }}
-              />
-            </Box>
-            {!keyword && (
+            {showSearch && (
+              <Box className="SettingFormSearch" px="l" py="m">
+                <Search
+                  placeholder="搜索属性"
+                  onChange={(val) => {
+                    setKeyword(val?.trim());
+                  }}
+                />
+              </Box>
+            )}
+            {!keyword && showGroups && (
               <Box className="SettingFormNav">
                 <Tabs activeKey={tabKey} onChange={setTabKey}>
                   {groupOptions.map((group) => (
