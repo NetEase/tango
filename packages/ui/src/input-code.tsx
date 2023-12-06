@@ -153,12 +153,12 @@ export function InputCode({
       autocomplete: buildAutoComplete(autoCompleteContext, options),
     });
   }, [autoCompleteContext, autoCompleteOptions]);
-  const { rootStyle, codeSetup } = useInputCode({ shape, status, showLineNumbers, showFoldGutter });
   const extensions = [javascript({ jsx: true }), globalJavaScriptCompletions];
   if (enableESLint) {
     // @ts-ignore
     extensions.push(lintGutter(), linter(esLint(new eslint.Linter(), eslintConfig)));
   }
+  const { rootStyle, codeSetup } = useInputCode({ shape, status, showLineNumbers, showFoldGutter });
 
   return (
     <Box className="InputCode" display="flex" alignItems="center" overflow="hidden" {...rootStyle}>
@@ -194,6 +194,7 @@ function useInputCode({
     codeSetup: {
       lineNumbers: showLineNumbers ?? lineNumbers,
       foldGutter: showFoldGutter ?? foldGutter,
+      searchKeymap: false, // 默认关闭搜索快捷键，原因：https://github.com/uiwjs/react-codemirror/issues/280
     },
   };
 }
