@@ -68,6 +68,7 @@ export default function App() {
           <Box px="l">
             <Toolbar>
               <Toolbar.Item key="routeSwitch" placement="left" />
+              <Toolbar.Item key="history" placement="left" />
               <Toolbar.Item key="preview" placement="left" />
               <Toolbar.Item key="modeSwitch" placement="right" />
               <Toolbar.Item key="togglePanel" placement="right" />

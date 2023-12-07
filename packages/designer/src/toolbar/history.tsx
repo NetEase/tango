@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from 'coral-system';
-import { ToggleButton, IconFont } from '@music163/tango-ui';
+import { ToggleButton, RedoOutlined, UndoOutlined } from '@music163/tango-ui';
 import { observer, useWorkspace } from '@music163/tango-context';
 
 export const HistoryTool = observer(() => {
@@ -16,7 +16,7 @@ export const HistoryTool = observer(() => {
           workspace.selectSource.clear();
         }}
       >
-        <IconFont type="icon-undo" />
+        <UndoOutlined />
       </ToggleButton>
       <ToggleButton
         shape="ghost"
@@ -27,7 +27,7 @@ export const HistoryTool = observer(() => {
           workspace.selectSource.clear();
         }}
       >
-        <IconFont type="icon-redo" />
+        <RedoOutlined />
       </ToggleButton>
     </Box>
   );

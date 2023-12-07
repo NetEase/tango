@@ -1,6 +1,5 @@
 import React from 'react';
-import Icon from '@ant-design/icons';
-import type { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
+import { createIcon } from './create-icon';
 
 const CodeOutlinedSvg = () => (
   <svg
@@ -20,6 +19,4 @@ const CodeOutlinedSvg = () => (
   </svg>
 );
 
-export const CodeOutlined = (props: Partial<CustomIconComponentProps>) => (
-  <Icon component={CodeOutlinedSvg} {...props} />
-);
+export const CodeOutlined = createIcon(CodeOutlinedSvg, 'CodeOutlined');
