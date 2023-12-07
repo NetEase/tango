@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Space } from 'antd';
-import { useBoolean } from '@music163/tango-helpers';
-import { Panel, Form, IconButton } from '@music163/tango-ui';
+import { Button, Space, Form, Input } from 'antd';
 import { FileAddOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { useBoolean } from '@music163/tango-helpers';
+import { Panel, IconButton } from '@music163/tango-ui';
 import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { EditableVariableTree, EditableVariableTreeProps } from '../components';
 
@@ -90,9 +90,10 @@ interface AddStoreFormProps {
 
 function AddStoreForm({ existNames = [], onCancel, onSubmit }: AddStoreFormProps) {
   return (
-    <Panel title="添加模型" subTitle="模型可以用来组织一组变量">
+    <Panel title="添加模型" subTitle="模型可以用来组织一组变量" bodyProps={{ p: 'l' }}>
       <Form
         autoComplete="off"
+        colon={false}
         onFinish={(values) => {
           onSubmit && onSubmit(values);
         }}
@@ -112,11 +113,9 @@ function AddStoreForm({ existNames = [], onCancel, onSubmit }: AddStoreFormProps
               },
             },
           ]}
-          component="input"
-          componentProps={{
-            placeholder: '请输入模型名称',
-          }}
-        />
+        >
+          <Input placeholder="请输入模型名称" />
+        </Form.Item>
         <Form.Item label=" ">
           <Space>
             <Button onClick={onCancel}>取消</Button>

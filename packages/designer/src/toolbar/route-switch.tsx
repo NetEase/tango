@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Popconfirm, Modal, ModalProps } from 'antd';
+import { Button, Popconfirm, Modal, ModalProps, Form, Input } from 'antd';
 import { Box, css, Group, Text } from 'coral-system';
 import { FileOutlined, DeleteOutlined, CopyOutlined, SettingOutlined } from '@ant-design/icons';
 import { array2object, callAll } from '@music163/tango-helpers';
 import { IPageConfigData } from '@music163/tango-core';
-import { Form, ToggleButton } from '@music163/tango-ui';
+import { ToggleButton } from '@music163/tango-ui';
 import { observer, useWorkspace } from '@music163/tango-context';
 
 export const RouteSwitchTool = observer(() => {
@@ -250,17 +250,13 @@ function CopyViewModalForm({
       }}
     >
       <Form
-        wrapperCol={20}
+        wrapperCol={{ span: 20 }}
         form={form}
         initialValues={{ name: current?.name, path: current?.path }}
       >
-        <Form.Item
-          label="页面标题"
-          name="name"
-          required
-          component="input"
-          componentProps={{ placeholder: '请输入标题' }}
-        />
+        <Form.Item label="页面标题" name="name" required>
+          <Input placeholder="请输入标题" />
+        </Form.Item>
         <Form.Item
           label="页面路由"
           name="path"
@@ -281,11 +277,9 @@ function CopyViewModalForm({
               message: '非法的路由地址',
             },
           ]}
-          component="input"
-          componentProps={{
-            placeholder: '输入页面路由',
-          }}
-        />
+        >
+          <Input placeholder="请输入页面路由" />
+        </Form.Item>
       </Form>
     </Modal>
   );

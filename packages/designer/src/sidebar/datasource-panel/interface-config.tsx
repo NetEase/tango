@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { Box, css } from 'coral-system';
-import { Button, FormProps, Empty, Space, Dropdown } from 'antd';
+import { Button, FormProps, Empty, Space, Dropdown, Form, Select, Input } from 'antd';
 import { PlayCircleOutlined } from '@ant-design/icons';
-import { Form, InputCode, Panel, JsonView, Search } from '@music163/tango-ui';
+import { InputCode, Panel, JsonView, Search } from '@music163/tango-ui';
 import {
   isNil,
   getVariableContent,
@@ -38,15 +38,6 @@ enum ServiceFunctionMethodType {
 }
 
 /**
- * requestType
- * headers: Content-Type
- */
-enum DataServiceRequestType {
-  'application/json' = 'json',
-  'application/x-www-form-urlencoded' = 'x-www-form-urlencoded',
-}
-
-/**
  * 将 api 路径转换为默认的驼峰方法名
  */
 export const getApiDefaultName = (url: string) =>
@@ -77,12 +68,6 @@ interface DataServiceViewProps {
 const httpMethods = Object.keys(ServiceFunctionMethodType).map((key) => ({
   label: key,
   value: key,
-}));
-
-// requestType 类型
-const requestTypes = Object.keys(DataServiceRequestType).map((key) => ({
-  label: key,
-  value: DataServiceRequestType[key],
 }));
 
 const detailFormStyle = css`
@@ -261,8 +246,8 @@ function ServiceDetailForm({
   return (
     <Form
       form={form}
-      labelCol={6}
-      wrapperCol={17}
+      labelCol={{ span: 6 }}
+      wrapperCol={{ span: 17 }}
       colon={false}
       layout="horizontal"
       initialValues={initialValues}
@@ -285,12 +270,9 @@ function ServiceDetailForm({
             required: true,
           },
         ]}
-        component="select"
-        componentProps={{
-          options: serviceModules,
-          disabled: disabled || isModifyMode,
-        }}
-      />
+      >
+        <Select options={serviceModules} disabled={disabled || isModifyMode} />
+      </Form.Item>
       <Form.Item
         label="方法名"
         name="name"
@@ -308,11 +290,6 @@ function ServiceDetailForm({
             },
           },
         ]}
-        component="input"
-        componentProps={{
-          placeholder: '请输入数据服务调用名称',
-          disabled: disabled || isModifyMode,
-        }}
         extra={
           !disabled &&
           !isModifyMode && (
@@ -331,38 +308,15 @@ function ServiceDetailForm({
             </Box>
           )
         }
-      />
-      <Form.Item
-        label="路径"
-        name="url"
-        rules={[{ required: true, type: 'url' }]}
-        component="input"
-        componentProps={{
-          placeholder: '请输入数据服务调用名称',
-          disabled: disabled || isModifyMode,
-        }}
-      />
-      <Form.Item
-        label="方法"
-        name="method"
-        component="select"
-        componentProps={{
-          options: httpMethods,
-          placeholder: '请选择 HTTP 请求方法',
-          disabled,
-        }}
-      />
-      <Form.Item
-        label="编码类型"
-        name="requestType"
-        tooltip="设置请求头的 Content-Type，若不设置，则默认变为为 JSON"
-        component="select"
-        componentProps={{
-          options: requestTypes,
-          placeholder: '请求头Content-Type，默认为JSON',
-          disabled,
-        }}
-      />
+      >
+        <Input placeholder="请输入数据服务调用名称" disabled={disabled || isModifyMode} />
+      </Form.Item>
+      <Form.Item label="路径" name="url" rules={[{ required: true, type: 'url' }]}>
+        <Input placeholder="请输入数据服务调用名称" disabled={disabled || isModifyMode} />
+      </Form.Item>
+      <Form.Item label="方法" name="method">
+        <Select options={httpMethods} placeholder="请选择 HTTP 请求方法" disabled={disabled} />
+      </Form.Item>
       <Form.Item
         label="格式化响应"
         name="formatter"
