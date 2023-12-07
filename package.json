@@ -29,8 +29,8 @@
     "@babel/preset-env": "^7.23.2",
     "@babel/preset-react": "^7.22.15",
     "@babel/preset-typescript": "^7.23.2",
-    "@commitlint/cli": "^17.5.0",
-    "@commitlint/config-conventional": "^17.3.0",
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@types/jest": "^29.5.7",
     "@types/lodash-es": "^4.17.10",
     "@types/lodash.get": "^4.4.8",
@@ -54,14 +54,17 @@
     "husky": "^8.0.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "lerna": "^6.6.1",
-    "lint-staged": "^14.0.1",
+    "lerna": "^8.0.0",
+    "lint-staged": "^15.2.0",
     "prettier": "^3.1.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "styled-components": "^5.3.6",
     "typedoc": "^0.25.4",
     "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
