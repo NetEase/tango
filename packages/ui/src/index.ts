@@ -1,3 +1,4 @@
+export * from './icons';
 export * from './action-select';
 export * from './code-editor';
 export * from './chat-input';
@@ -19,4 +20,3 @@ export * from './tabs';
 export * from './select-action';
 export * from './copy-clipboard';
 export * from './tag-select';
-export { Form } from 'antd-easy-form';

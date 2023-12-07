@@ -1,7 +1,13 @@
 import React from 'react';
 import { observer, useDesigner } from '@music163/tango-context';
 import { Box } from 'coral-system';
-import { IconFont, ToggleButton } from '@music163/tango-ui';
+import {
+  OpenPanelFilledLeftOutlined,
+  OpenPanelFilledRightOutlined,
+  OpenPanelLeftOutlined,
+  OpenPanelRightOutlined,
+  ToggleButton,
+} from '@music163/tango-ui';
 
 export const TogglePanelTool = observer(() => {
   const designer = useDesigner();
@@ -14,20 +20,14 @@ export const TogglePanelTool = observer(() => {
           designer.setActiveSidebarPanel(designer.activeSidebarPanel ? '' : 'outline');
         }}
       >
-        <IconFont
-          type={
-            designer.activeSidebarPanel ? 'icon-open-panel-filled-left' : 'icon-open-panel-left'
-          }
-        />
+        {designer.activeSidebarPanel ? <OpenPanelFilledLeftOutlined /> : <OpenPanelLeftOutlined />}
       </ToggleButton>
       <ToggleButton
         tooltip="隐藏/显示右侧面板"
         shape="ghost"
         onClick={() => designer.toggleRightPanel()}
       >
-        <IconFont
-          type={designer.showRightPanel ? 'icon-open-panel-filled-right' : 'icon-open-panel-right'}
-        />
+        {designer.showRightPanel ? <OpenPanelFilledRightOutlined /> : <OpenPanelRightOutlined />}
       </ToggleButton>
     </Box>
   );

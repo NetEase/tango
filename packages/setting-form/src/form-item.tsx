@@ -8,14 +8,15 @@ import {
   useBoolean,
 } from '@music163/tango-helpers';
 import { isWrappedByExpressionContainer } from '@music163/tango-core';
-import { IconFont, ToggleButton } from '@music163/tango-ui';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { InputProps, Tooltip } from 'antd';
+import { ToggleButton, CodeOutlined } from '@music163/tango-ui';
+import { InputProps } from 'antd';
 import { useFormModel, useFormVariable } from './context';
 import { FormControl } from './form-ui';
+import { Box, Text } from 'coral-system';
 
 export interface FormItemProps extends ComponentPropType {
   extra?: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
 export interface FormItemComponentProps<T = any> {
@@ -76,6 +77,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     getVisible: getVisibleProp,
     getSetterProps: getSetterPropsProp,
     extra,
+    footer,
   }: FormItemProps) {
     const { disableSwitchExpressionSetter } = useFormVariable();
     const model = useFormModel();
@@ -106,7 +108,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
 
     let expProps = {};
 
-    // FIXME: 重新考虑这段代码的位置
+    // FIXME: 重新考虑这段代码的位置，外置这个逻辑
     if (['expressionSetter', 'actionSetter', 'eventSetter'].includes(setter) || isVariable) {
       expProps = {
         modalTitle: title,
@@ -141,7 +143,8 @@ export function createFormItem(options: IFormItemCreateOptions) {
         docs={docs}
         error={field.error}
         extra={
-          <>
+          <Box>
+            {extra}
             {!disableVariableSetter ? (
               <ToggleButton
                 borderRadius="s"
@@ -153,12 +156,12 @@ export function createFormItem(options: IFormItemCreateOptions) {
                 selected={isVariable}
                 onClick={() => toggleIsVariable()}
               >
-                <IconFont type="icon-brackets-curly" />
+                <CodeOutlined />
               </ToggleButton>
             ) : null}
-            {extra}
-          </>
+          </Box>
         }
+        footer={footer}
         data-setter={setterName}
         data-field={name}
       >
@@ -187,10 +190,6 @@ export function register(config: IFormItemCreateOptions) {
   });
 }
 
-const iconStyle = {
-  color: 'red',
-};
-
 export function SettingFormItem(props: FormItemProps) {
   const { setter } = props;
   const Comp = REGISTERED_FORM_ITEM_MAP[setter];
@@ -199,10 +198,10 @@ export function SettingFormItem(props: FormItemProps) {
     return (
       <Fallback
         {...props}
-        extra={
-          <Tooltip title={`${props.name}: invalid setter ${props.setter}`}>
-            <QuestionCircleOutlined color="red" style={iconStyle} />
-          </Tooltip>
+        footer={
+          <Text color="red" mt="m">
+            {props.setter} is invalid
+          </Text>
         }
       />
     );

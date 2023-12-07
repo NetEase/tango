@@ -1,10 +1,15 @@
 import { register } from './form-item';
-import { ExpressionSetter } from './setter';
+import { ExpressionSetter, TextSetter } from './setter';
 
 // 预注册基础 Setter
 register({
   name: 'expressionSetter',
   component: ExpressionSetter,
+});
+
+register({
+  name: 'textSetter',
+  component: TextSetter,
 });
 
 export * from './form';
