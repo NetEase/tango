@@ -18,8 +18,9 @@
     "test:watch": "jest --watch",
     "eslint": "eslint packages/**/src/*.{ts,tsx} --cache",
     "publish": "lerna publish",
-    "ver": "lerna version --no-private --conventional-commits",
-    "release": "yarn eslint && yarn build && yarn run ver && lerna publish from-git",
+    "ver": "lerna version --no-private",
+    "release": "yarn eslint && yarn build && lerna version --no-private --conventional-commits && lerna publish from-git",
+    "release:npm": "yarn eslint && yarn build && yarn run ver && lerna publish from-git",
     "release:beta": "yarn eslint && yarn build && yarn run ver && lerna publish from-package --dist-tag beta",
     "up": "yarn upgrade-interactive --latest",
     "prepare": "husky install"
