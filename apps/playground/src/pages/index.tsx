@@ -15,9 +15,7 @@ import {
   themeLight,
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
-import { Logo, ProjectDetail, bootHelperVariables } from './share';
-import { sampleFiles } from '../mock/project';
-import './index.less';
+import { Logo, ProjectDetail, bootHelperVariables, sampleFiles } from '../helpers';
 import {
   ApiOutlined,
   AppstoreAddOutlined,

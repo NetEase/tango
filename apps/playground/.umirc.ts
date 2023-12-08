@@ -1,33 +1,15 @@
 import path from 'path';
+import { defineConfig } from 'umi';
 
 const resolvePackageIndex = (relativeEntry: string) =>
-  path.resolve(__dirname, '../../../packages/', relativeEntry);
+  path.resolve(__dirname, '../../packages/', relativeEntry);
 
-export default {
+export default defineConfig({
   routes: [
-    {
-      exact: true,
-      path: '/',
-      component: 'index',
-      name: '首页',
-    },
+    { path: '/', component: 'index' },
+    { path: '/docs', component: 'docs' },
   ],
-  devServer: {
-    host: 'local.netease.com',
-    port: 8008,
-    https: {
-      key: path.resolve(__dirname, 'local.netease.com-key.pem'),
-      cert: path.resolve(__dirname, 'local.netease.com.pem'),
-    },
-    headers: { 'Origin-Agent-Cluster': '?0' },
-  },
-  targets: {
-    chrome: 79,
-    firefox: false,
-    safari: false,
-    edge: false,
-    ios: false,
-  },
+  npmClient: 'yarn',
   alias: {
     '@music163/tango-helpers': resolvePackageIndex('helpers/src/index.ts'),
     '@music163/tango-core': resolvePackageIndex('core/src/index.ts'),
@@ -43,6 +25,19 @@ export default {
     'styled-components': 'styled',
     moment: 'moment',
     antd: 'antd',
+  },
+  headScripts: [
+    'https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js',
+    'https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js',
+    'https://cdn.jsdelivr.net/npm/react-is@18.2.0/umd/react-is.production.min.js',
+    'https://cdn.jsdelivr.net/npm/moment/min/moment-with-locales.js',
+    'https://cdn.jsdelivr.net/npm/styled-components@5.3.11/dist/styled-components.js',
+    'https://cdn.jsdelivr.net/npm/@babel/standalone@7.15.6/babel.js',
+    'https://cdn.jsdelivr.net/npm/antd@4.24.13/dist/antd-with-locales.min.js',
+  ],
+  https: {
+    key: path.resolve(__dirname, 'local.netease.com-key.pem'),
+    cert: path.resolve(__dirname, 'local.netease.com.pem'),
   },
   chainWebpack: (config: any) => {
     // @see https://github.com/graphql/graphql-js/issues/1272#issuecomment-393903706
@@ -61,4 +56,5 @@ export default {
     config.module.rule('js').include.add(resolvePackageIndex('ui/src'));
     return config;
   },
-};
+  monorepoRedirect: {},
+});
