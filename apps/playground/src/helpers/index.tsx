@@ -6,6 +6,8 @@ import { registerSetter } from '@music163/tango-designer';
 import type { ComponentPrototypeType } from '@music163/tango-helpers';
 import { FooSetter } from '../components';
 
+export * from './mock-files';
+
 export const bootHelperVariables = [
   {
     key: '$helpers',
