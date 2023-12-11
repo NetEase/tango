@@ -10,6 +10,7 @@ export default defineConfig({
     { path: '/docs', component: 'docs' },
   ],
   npmClient: 'yarn',
+  mfsu: false,
   alias: {
     '@music163/tango-helpers': resolvePackageIndex('helpers/src/index.ts'),
     '@music163/tango-core': resolvePackageIndex('core/src/index.ts'),
