@@ -1,6 +1,6 @@
 import React from 'react';
 import { ToggleButton, UndoOutlined, RedoOutlined } from '@music163/tango-ui';
-import { Box, Flex } from 'coral-system';
+import { Box, Group, Flex } from 'coral-system';
 
 export default {
   title: 'UI/ToggleButton',
@@ -9,7 +9,7 @@ export default {
 export function Basic() {
   return (
     <Box>
-      <Flex gap="l" bg="#efefef" p="l">
+      <Box display="flex" columnGap="l" p="l">
         <ToggleButton>
           <UndoOutlined />
         </ToggleButton>
@@ -19,7 +19,25 @@ export function Basic() {
         <ToggleButton disabled>
           <RedoOutlined />
         </ToggleButton>
-      </Flex>
+      </Box>
+      <Box display="flex" columnGap="l" p="l">
+        <ToggleButton type="primary">
+          <UndoOutlined />
+        </ToggleButton>
+        <ToggleButton type="primary" selected>
+          <RedoOutlined />
+        </ToggleButton>
+        <ToggleButton type="primary" disabled>
+          <RedoOutlined />
+        </ToggleButton>
+      </Box>
+    </Box>
+  );
+}
+
+export function DarkMode() {
+  return (
+    <Box>
       <Flex gap="l" bg="#222" p="l">
         <ToggleButton shape="ghost">
           <UndoOutlined />
@@ -31,6 +49,33 @@ export function Basic() {
           <UndoOutlined />
         </ToggleButton>
       </Flex>
+      <Flex gap="l" bg="#222" p="l">
+        <ToggleButton shape="text">
+          <UndoOutlined />
+        </ToggleButton>
+        <ToggleButton shape="text" selected>
+          <RedoOutlined />
+        </ToggleButton>
+        <ToggleButton shape="text" disabled>
+          <RedoOutlined />
+        </ToggleButton>
+      </Flex>
     </Box>
+  );
+}
+
+export function ButtonGroup() {
+  return (
+    <Group attached>
+      <ToggleButton>
+        <UndoOutlined />
+      </ToggleButton>
+      <ToggleButton selected>
+        <RedoOutlined />
+      </ToggleButton>
+      <ToggleButton disabled>
+        <RedoOutlined />
+      </ToggleButton>
+    </Group>
   );
 }

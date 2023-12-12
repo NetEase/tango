@@ -64,18 +64,18 @@ const buttonStyle = css`
 
   &.shape-outline {
     background-color: #fff;
-    border: 1px solid #d9d9d9;
+    border: 1px solid var(--tango-colors-line2);
     border-radius: var(--tango-radii-s);
 
     &.disabled {
-      color: rgba(0, 0, 0, 0.25);
-      background-color: #f5f5f5;
+      color: var(--tango-colors-text4);
+      background-color: var(--tango-colors-fill1);
     }
 
     &.selected.type-normal {
       color: var(--tango-colors-gray-100);
-      background-color: var(--tango-colors-gray-30);
-      border-color: var(--tango-colors-gray-30);
+      background-color: var(--tango-colors-fill3);
+      border-color: var(--tango-colors-line2);
     }
 
     &.selected.type-primary {
