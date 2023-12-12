@@ -149,10 +149,6 @@ export function SettingForm({
           ...getProp?.(model),
         };
         const FormChild = isValidNestProps(childProto.props) ? SettingFormObject : SettingFormItem;
-
-        if (!FormChild) {
-          return null;
-        }
         return <FormChild key={item.name} {...childProto} />;
       }),
     [model],
