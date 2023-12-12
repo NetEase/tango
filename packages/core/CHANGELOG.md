@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.1](https://github.com/netease/tango/compare/@music163/tango-core@0.2.11...@music163/tango-core@1.0.0-alpha.1) (2023-12-12)
+
+**Note:** Version bump only for package @music163/tango-core
+
 ## [0.2.11](https://github.com/netease/tango/compare/@music163/tango-core@0.2.10...@music163/tango-core@0.2.11) (2023-12-04)
 
 ### Bug Fixes

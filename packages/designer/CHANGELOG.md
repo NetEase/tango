@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.1](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.14...@music163/tango-designer@1.0.0-alpha.1) (2023-12-12)
+
+### Bug Fixes
+
+- add showSearch and showGroups to SettingForm & update internal icons ([#73](https://github.com/netease/tango/issues/73)) ([a8357f4](https://github.com/netease/tango/commit/a8357f45b8b0c1f2b91a856918f6bdecdc65aa73))
+- render form item without setter & enhance tools ([#76](https://github.com/netease/tango/issues/76)) ([1acfa68](https://github.com/netease/tango/commit/1acfa6864b1faad1a441facc426d8d94b6b090b5))
+
 ## [0.5.14](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.13...@music163/tango-designer@0.5.14) (2023-12-04)
 
 **Note:** Version bump only for package @music163/tango-designer
