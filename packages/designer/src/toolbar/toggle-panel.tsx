@@ -26,6 +26,7 @@ export const TogglePanelTool = observer(() => {
         tooltip="隐藏/显示右侧面板"
         shape="ghost"
         onClick={() => designer.toggleRightPanel()}
+        disabled={designer.activeView === 'code'}
       >
         {designer.showRightPanel ? <OpenPanelFilledRightOutlined /> : <OpenPanelRightOutlined />}
       </ToggleButton>
