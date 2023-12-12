@@ -10,6 +10,7 @@ export default defineConfig({
     { path: '/docs', component: 'docs' },
   ],
   npmClient: 'yarn',
+  mfsu: false,
   alias: {
     '@music163/tango-helpers': resolvePackageIndex('helpers/src/index.ts'),
     '@music163/tango-core': resolvePackageIndex('core/src/index.ts'),
@@ -32,8 +33,9 @@ export default defineConfig({
     'https://cdn.jsdelivr.net/npm/react-is@18.2.0/umd/react-is.production.min.js',
     'https://cdn.jsdelivr.net/npm/moment/min/moment-with-locales.js',
     'https://cdn.jsdelivr.net/npm/styled-components@5.3.11/dist/styled-components.js',
-    'https://cdn.jsdelivr.net/npm/@babel/standalone@7.15.6/babel.js',
     'https://cdn.jsdelivr.net/npm/antd@4.24.13/dist/antd-with-locales.min.js',
+    'https://cdn.jsdelivr.net/npm/prettier@2.6.0/standalone.js',
+    'https://cdn.jsdelivr.net/npm/prettier@2.6.0/parser-babel.js',
   ],
   https: {
     key: path.resolve(__dirname, 'local.netease.com-key.pem'),

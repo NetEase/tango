@@ -3,6 +3,7 @@ import { Group } from 'coral-system';
 import { Modal } from 'antd';
 import { ToggleButton } from '@music163/tango-ui';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
+import { BorderOutlined, CodeOutlined } from '@ant-design/icons';
 
 export const ModeSwitchTool = observer(() => {
   const workspace = useWorkspace();
@@ -17,7 +18,7 @@ export const ModeSwitchTool = observer(() => {
         }}
         tooltip="设计视图"
       >
-        设计
+        <BorderOutlined />
       </ToggleButton>
       <ToggleButton
         shape="ghost"
@@ -36,7 +37,7 @@ export const ModeSwitchTool = observer(() => {
         }}
         tooltip="源码视图"
       >
-        源码
+        <CodeOutlined />
       </ToggleButton>
     </Group>
   );
