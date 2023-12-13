@@ -11,6 +11,7 @@ export default defineConfig({
   ],
   npmClient: 'yarn',
   mfsu: false,
+  codeSplitting: false,
   alias: {
     '@music163/tango-helpers': resolvePackageIndex('helpers/src/index.ts'),
     '@music163/tango-core': resolvePackageIndex('core/src/index.ts'),

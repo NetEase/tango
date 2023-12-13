@@ -1,9 +1,9 @@
 import React from 'react';
 import { Group } from 'coral-system';
 import { Modal } from 'antd';
-import { ToggleButton } from '@music163/tango-ui';
+import { ToggleButton, CodeOutlined } from '@music163/tango-ui';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { BorderOutlined, CodeOutlined } from '@ant-design/icons';
+import { BorderOutlined } from '@ant-design/icons';
 
 export const ModeSwitchTool = observer(() => {
   const workspace = useWorkspace();
