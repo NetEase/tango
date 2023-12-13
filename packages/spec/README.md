@@ -1,11 +1,3 @@
-# `spec`
+# Tango Config Spec
 
-> TODO: description
-
-## Usage
-
-```
-const spec = require('spec');
-
-// TODO: DEMONSTRATE API
-```
+This is the specification for the Tango Config format.

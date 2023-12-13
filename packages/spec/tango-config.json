@@ -7,12 +7,8 @@
   "properties": {
     "packages": {
       "type": "object",
-      "properties": {
-        "key": {
-          "type": "string",
-          "description": "package name"
-        },
-        "value": {
+      "patternProperties": {
+        "^(?:@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*$": {
           "type": "object",
           "properties": {
             "description": {
