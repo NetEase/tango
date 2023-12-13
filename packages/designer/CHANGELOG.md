@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.2](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.1...@music163/tango-designer@1.0.0-alpha.2) (2023-12-13)
+
+### Bug Fixes
+
+- update variable tree with help messages and styling & add tangoConfig schema ([5e7e285](https://github.com/netease/tango/commit/5e7e285452b46888b447991b0e8548b6392acb3a))
+
 # [1.0.0-alpha.1](https://github.com/netease/tango/compare/@music163/tango-designer@0.5.14...@music163/tango-designer@1.0.0-alpha.1) (2023-12-12)
 
 ### Bug Fixes
