@@ -11,6 +11,7 @@ import {
   Empty,
   Popconfirm,
   Tooltip,
+  Alert,
 } from 'antd';
 import { Box, Text, css } from 'coral-system';
 import {
@@ -166,7 +167,7 @@ export function EditableVariableTree({
       height={height}
       position="relative"
     >
-      <Box p="l" width="40%" borderRight="solid" borderColor="line.normal">
+      <Box p="l" width="40%">
         <Box mb="m" position="sticky" top="0" bg="white" zIndex={2}>
           <Input.Group compact>
             <Search
@@ -201,68 +202,75 @@ export function EditableVariableTree({
         />
       </Box>
       {node ? (
-        <Panel
-          title={
-            {
-              preview: '变量值预览',
-              add: '添加变量',
-              define: '变量定义',
-            }[mode]
-          }
-          extra={
-            hasPanelSwitch && mode !== 'add' ? (
-              <Radio.Group
-                optionType="button"
-                buttonStyle="solid"
-                size="small"
-                value={mode}
-                onChange={(e) => setMode(e.target.value)}
-                options={previewOptions}
+        <Box width="60%" position="sticky" top="0">
+          {node.help && (
+            <Alert
+              type="info"
+              message={`使用说明：${node.help}`}
+              closable
+              style={{ marginBottom: 12 }}
+            />
+          )}
+          <Panel
+            shape="solid"
+            title={
+              {
+                preview: '变量值预览',
+                add: '添加变量',
+                define: '变量定义',
+              }[mode]
+            }
+            extra={
+              hasPanelSwitch && mode !== 'add' ? (
+                <Radio.Group
+                  optionType="button"
+                  buttonStyle="solid"
+                  size="small"
+                  value={mode}
+                  onChange={(e) => setMode(e.target.value)}
+                  options={previewOptions}
+                />
+              ) : null
+            }
+            bodyProps={{ px: 'm' }}
+          >
+            {mode === 'preview' && (
+              <ValuePreview
+                value={getPreviewValue(node)}
+                onSelect={(valuePath) => {
+                  return ['tango', node.key.replaceAll('.', '?.'), valuePath].join('.');
+                }}
               />
-            ) : null
-          }
-          width="60%"
-          borderRadius="m"
-          position="sticky"
-          top="0"
-          bodyProps={{ px: 'm' }}
-        >
-          {mode === 'preview' && (
-            <ValuePreview
-              value={getPreviewValue(node)}
-              onSelect={(valuePath) => {
-                return ['tango', node.key.replaceAll('.', '?.'), valuePath].join('.');
-              }}
-            />
-          )}
-          {mode === 'define' && (
-            <NodeDefineForm
-              node={node}
-              onSave={onSave}
-              onDelete={(item) => {
-                const [type, storeName, stateName] = item.key.split('.');
-                onDeleteVariable(storeName, stateName);
-                setNode(null);
-              }}
-            />
-          )}
-          {mode === 'add' && (
-            <AddNodeForm
-              parentNode={node}
-              onCancel={() => {
-                setMode(defaultMode);
-                setNode(null);
-              }}
-              onSubmit={(storeName, data) => {
-                onAddVariable(storeName, data);
-                setMode(defaultMode);
-                setNode(null);
-              }}
-            />
-          )}
-        </Panel>
+            )}
+            {mode === 'define' && (
+              <NodeDefineForm
+                node={node}
+                onSave={onSave}
+                onDelete={(item) => {
+                  const [type, storeName, stateName] = item.key.split('.');
+                  onDeleteVariable(storeName, stateName);
+                  setNode(null);
+                }}
+              />
+            )}
+            {mode === 'add' && (
+              <AddNodeForm
+                parentNode={node}
+                onCancel={() => {
+                  setMode(defaultMode);
+                  setNode(null);
+                }}
+                onSubmit={(storeName, data) => {
+                  onAddVariable(storeName, data);
+                  setMode(defaultMode);
+                  setNode(null);
+                }}
+              />
+            )}
+          </Panel>
+        </Box>
       ) : (
-        <Panel title="提示" flex="1" position="sticky" top="0">
+        <Panel shape="solid" title="提示" flex="1" position="sticky" top="0">
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="请从左侧列表中选择一个变量" />
         </Panel>
       )}
@@ -469,11 +477,11 @@ interface NodePreviewProps {
 
 export function ValuePreview({ value, onSelect }: NodePreviewProps) {
   if (isNil(value)) {
-    return <span>暂时没有可预览的数据</span>;
+    return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂时没有可预览的数据" />;
   }
 
   if (isFunction(value)) {
-    return <span>暂不支持预览函数</span>;
+    return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂不支持预览函数" />;
   }
 
   if (typeof value === 'object') {
@@ -503,7 +511,7 @@ function NodeDefineForm({ node, onSave = noop, onDelete = noop }: NodeDefineProp
   const [error, setError] = useState('');
   const [editable, { on, off }] = useBoolean();
   if (isNil(node.raw)) {
-    return <Empty description="缺失定义数据" />;
+    return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="缺失定义数据" />;
   }
   return (
     <Box>

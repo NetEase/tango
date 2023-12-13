@@ -11,6 +11,7 @@ export default defineConfig({
   ],
   npmClient: 'yarn',
   mfsu: false,
+  codeSplitting: false,
   alias: {
     '@music163/tango-helpers': resolvePackageIndex('helpers/src/index.ts'),
     '@music163/tango-core': resolvePackageIndex('core/src/index.ts'),
@@ -40,6 +41,7 @@ export default defineConfig({
   https: {
     key: path.resolve(__dirname, 'local.netease.com-key.pem'),
     cert: path.resolve(__dirname, 'local.netease.com.pem'),
+    http2: false,
   },
   chainWebpack: (config: any) => {
     // @see https://github.com/graphql/graphql-js/issues/1272#issuecomment-393903706

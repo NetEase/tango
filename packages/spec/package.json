@@ -1,0 +1,27 @@
+{
+  "name": "tango-spec",
+  "version": "1.0.1",
+  "description": "tango config spec",
+  "keywords": [
+    "json",
+    "schema"
+  ],
+  "author": "wwsun <ww.sww@outlook.com>",
+  "homepage": "https://github.com/NetEase/tango#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NetEase/tango.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/spec.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/NetEase/tango/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

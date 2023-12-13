@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://unpkg.com/tango-spec/tango-config.json",
+  "title": "JSON Schema of tango.config.json",
+  "description": "tango.config.json is a configuration file for NetEase Tango apps",
+  "type": "object",
+  "properties": {
+    "packages": {
+      "type": "object",
+      "patternProperties": {
+        "^(?:@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*$": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "package description"
+            },
+            "version": {
+              "type": "string",
+              "description": "package version"
+            },
+            "library": {
+              "type": "string",
+              "description": "package library"
+            },
+            "type": {
+              "type": "string",
+              "description": "package type",
+              "enum": ["dependency", "bizDependency", "baseDependency"]
+            },
+            "resources": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "package resources"
+            },
+            "designerResources": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "package designer resources"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["version", "library"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "dataSource": {
+      "type": "object",
+      "properties": {
+        "ox": {
+          "type": "object",
+          "description": "music ox data provider",
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "dataSource provider name"
+            },
+            "value": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "app": {
+                    "type": "string",
+                    "description": "app name"
+                  },
+                  "branch": {
+                    "type": "string",
+                    "description": "branch name"
+                  }
+                },
+                "additionalProperties": false,
+                "required": ["app", "branch"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "proxy": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "the path of proxy rule"
+        },
+        "value": {
+          "type": "object",
+          "properties": {
+            "target": {
+              "type": "string",
+              "description": "the target of proxy rule"
+            },
+            "changeOrigin": {
+              "type": "boolean",
+              "description": "whether change origin of proxy rule"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["target"]
+        }
+      }
+    },
+    "externalResources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true,
+  "required": ["packages"]
+}
