@@ -41,6 +41,7 @@ export default defineConfig({
   https: {
     key: path.resolve(__dirname, 'local.netease.com-key.pem'),
     cert: path.resolve(__dirname, 'local.netease.com.pem'),
+    http2: false,
   },
   chainWebpack: (config: any) => {
     // @see https://github.com/graphql/graphql-js/issues/1272#issuecomment-393903706
