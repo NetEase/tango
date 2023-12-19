@@ -109,7 +109,10 @@ export function createFormItem(options: IFormItemCreateOptions) {
     let expProps = {};
 
     // FIXME: 重新考虑这段代码的位置，外置这个逻辑
-    if (['expressionSetter', 'actionSetter', 'eventSetter'].includes(setter) || isVariable) {
+    if (
+      ['expressionSetter', 'expSetter', 'actionSetter', 'eventSetter'].includes(setter) ||
+      isVariable
+    ) {
       expProps = {
         modalTitle: title,
         modalTip: tip,

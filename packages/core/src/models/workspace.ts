@@ -394,8 +394,22 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.storeEntryModule.addStore(storeName).update();
   }
 
+  /**
+   * 添加视图文件
+   * @param viewName 文件名
+   * @param code 代码
+   */
   addViewFile(viewName: string, code: string) {
-    // TODO: implement it
+    const viewRoute = viewName.startsWith('/') ? viewName : `/${viewName}`;
+    const filename = `/src/pages/${viewName}.js`;
+    this.addFile(filename, code);
+    this.addRoute(
+      {
+        name: viewName,
+        path: viewRoute,
+      },
+      filename,
+    );
   }
 
   updateFile(filename: string, code: string, shouldFormatCode = false) {
@@ -492,27 +506,6 @@ export class Workspace extends EventTarget implements IWorkspace {
       this.setActiveRoute(this.routeModule.routes[0]?.path || '/');
     }
     this.removeFile(filename);
-  }
-
-  /**
-   * 添加新的视图文件
-   * @deprecated 使用 addViewFile 代替
-   * FIXME: 重构这个逻辑
-   * @param route 视图名
-   * @param code 视图代码
-   */
-  addViewPage(routeConfig: string | IPageConfigData, code: string) {
-    const config =
-      typeof routeConfig === 'string'
-        ? {
-            name: routeConfig,
-            path: routeConfig.startsWith('/') ? routeConfig : `/${routeConfig}`,
-          }
-        : routeConfig;
-
-    const filename = getFilepath(config.path, '/src/pages', '.js');
-    this.addFile(filename, code);
-    this.addRoute(config, filename);
   }
 
   /**

@@ -366,19 +366,19 @@ function RenderItem({
               </Popconfirm>,
             ]
           : baseNeedUpgrade
-          ? [
-              <Popconfirm
-                title={`确认升级 ${record.name} 到 ${basePackage.version} 吗？`}
-                onConfirm={() => onDepUpgrade({ version: basePackage.version })}
-              >
-                <a key="upgrade">升级</a>
-              </Popconfirm>,
-            ]
-          : [
-              <Text key="latest" color={'rgba(0, 0, 0, 0.45)'}>
-                {!isUndefined(baseNeedUpgrade) && '已是最新'}
-              </Text>,
-            ]
+            ? [
+                <Popconfirm
+                  title={`确认升级 ${record.name} 到 ${basePackage.version} 吗？`}
+                  onConfirm={() => onDepUpgrade({ version: basePackage.version })}
+                >
+                  <a key="upgrade">升级</a>
+                </Popconfirm>,
+              ]
+            : [
+                <Text key="latest" color={'rgba(0, 0, 0, 0.45)'}>
+                  {!isUndefined(baseNeedUpgrade) && '已是最新'}
+                </Text>,
+              ]
       }
     >
       <List.Item.Meta
@@ -453,7 +453,7 @@ function AddDependencyModal({
 
   const onFinishCallback = (name?: string) => {
     name && message.success(`${name} 添加成功`);
-    // FIXME: 修复沙箱添加组件后 HMR 失效的 bug，添加完刷新
+    // TIP: 修复沙箱添加组件后 HMR 失效的 bug，添加完刷新
     sandbox.reload();
     off();
   };

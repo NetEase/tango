@@ -72,7 +72,6 @@ export function getElementData(
   const bounding = getElementBoundingData(element, relativeContainer);
   const data = getElementDataProps(element);
   const dnd = parseDndId(data.dnd);
-  // FIXME: 是否改为按需执行，仅 dropTarget 需要 display 信息，且目前 display 信息并不准确
   const display = getElementCSSDisplay(element);
   return {
     id: dnd.id,
