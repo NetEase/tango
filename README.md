@@ -53,10 +53,10 @@ gantt
 
 ## 💻 Development
 
-### Recommended Development Environment
+### Environment
 
-- Node.js >= 16.0.0
-- Yarn >= 1.22.0
+- Node `>= 18`
+- Yarn `>= 1.22 && < 2`
 
 ### Development Quick Start
 

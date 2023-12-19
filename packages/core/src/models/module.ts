@@ -22,9 +22,9 @@ export class TangoModule extends TangoFile {
   ast: t.File;
 
   /**
-   * 导入语句
+   * 导入的依赖列表
    */
-  imports: ImportDeclarationDataType;
+  importList: ImportDeclarationDataType;
 
   constructor(workspace: IWorkspace, props: IFileConfig, isSyncCode = true) {
     super(workspace, props, isSyncCode);
@@ -95,7 +95,7 @@ export class TangoModule extends TangoFile {
 
   _analysisAst() {
     const { imports } = traverseFile(this.ast);
-    this.imports = imports;
+    this.importList = imports;
   }
 }
 

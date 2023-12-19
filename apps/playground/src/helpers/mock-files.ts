@@ -75,6 +75,18 @@ const tangoConfigJson = {
   },
 };
 
+const helperCode = `
+export function registerComponentPrototype(proto) {
+  if (!proto) return;
+  if (!window.localTangoComponentPrototypes) {
+    window.localTangoComponentPrototypes = {};
+  }
+  if (proto.name) {
+    window.localTangoComponentPrototypes[proto.name] = proto;
+  }
+}
+`;
+
 const routesCode = `
 import Index from "./pages/list";
 
@@ -143,7 +155,7 @@ import {
   FormilyForm,
 } from "@music163/antd";
 import { Space } from '@music163/antd';
-import { MyButton } from '../components/button';
+import { LocalButton } from '../components';
 
 class App extends React.Component {
   render() {
@@ -153,7 +165,7 @@ class App extends React.Component {
        </Section>
        <Section>
        <Space>
-          <MyButton />
+          <LocalButton />
           <Button>button</Button>
           <Input />
           </Space>
@@ -162,18 +174,52 @@ class App extends React.Component {
     );
   }
 }
+
 export default definePage(App);
 `;
 
 const componentsButtonCode = `
 import React from 'react';
+import { registerComponentPrototype } from '../utils';
 
-export function MyButton() {
-  return <button>my button</button>
+export default function MyButton(props) {
+  return <button {...props}>my button</button>
 }
+
+registerComponentPrototype({
+  name: 'LocalButton',
+  title: 'Local Button',
+  exportType: 'namedExport',
+  package: '/src/components',
+  props: [
+    { name: 'background', title: '背景色', setter: 'colorSetter'  },
+  ],
+});
 `;
 
-const componentsPrototypeCode = ``;
+const componentsInputCode = `
+import React from 'react';
+import { registerComponentPrototype } from '../utils';
+
+export default function MyInput(props) {
+  return <input {...props} />;
+}
+
+registerComponentPrototype({
+  name: 'LocalInput',
+  title: 'Local Input',
+  exportType: 'namedExport',
+  package: '/src/components',
+  props: [
+    { name: 'color', title: '文本色', setter: 'colorSetter'  },
+  ],
+});
+`;
+
+const componentsEntryCode = `
+export { default as LocalButton } from './button';
+export { default as LocalInput } from './input';
+`;
 
 const storeApp = `
 import { defineStore } from '@music163/tango-boot';
@@ -260,14 +306,15 @@ export const sampleFiles = [
   { filename: '/src/index.js', code: entryCode },
   { filename: '/src/pages/list.js', code: viewHomeCode },
   { filename: '/src/components/button.js', code: componentsButtonCode },
-  { filename: '/src/components/prototype.js', code: componentsPrototypeCode },
+  { filename: '/src/components/input.js', code: componentsInputCode },
+  { filename: '/src/components/index.js', code: componentsEntryCode },
   { filename: '/src/routes.js', code: routesCode },
   { filename: '/src/stores/index.js', code: storeIndexCode },
   { filename: '/src/stores/app.js', code: storeApp },
   { filename: '/src/stores/counter.js', code: storeCounter },
   { filename: '/src/services/index.js', code: serviceCode },
   { filename: '/src/services/sub.js', code: subServiceCode },
-  { filename: '/src/utils/index.js', code: `export function foo() {}` },
+  { filename: '/src/utils/index.js', code: helperCode },
 ];
 
 export const genDefaultPage = (index: number) => ({

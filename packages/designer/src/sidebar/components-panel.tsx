@@ -13,7 +13,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Empty, Spin, Popover } from 'antd';
 import { getDragGhostElement } from '../helpers';
 
-type MenuKeyType = 'common' | 'atom' | 'snippet' | 'block' | 'bizComp';
+type MenuKeyType = 'common' | 'atom' | 'snippet' | 'bizComp' | 'localComp';
 type MenuValueType = Array<{ title: string; items: string[] }>;
 export type MenuDataType = PartialRecord<MenuKeyType, MenuValueType>;
 
@@ -26,10 +26,6 @@ export interface ComponentsPanelProps {
    * 展示业务组件分类
    */
   showBizComps?: boolean;
-  /**
-   * 展示基础组件分类
-   */
-  showBlocks?: boolean;
   /**
    * 动态加载物料 loading，避免未加载完成用户点击空列表
    */
@@ -47,7 +43,7 @@ const localeMap = {
   atom: '原子组件',
   snippet: '组合',
   bizComp: '业务组件',
-  block: '区块',
+  localComp: '本地组件',
 };
 
 const emptyMenuData: MenuDataType = {
@@ -78,19 +74,18 @@ export const ComponentsPanel = observer(
   ({
     menuData = emptyMenuData,
     showBizComps = true,
-    showBlocks = true,
     getBizCompName = upperCamelCase,
     loading = false,
   }: ComponentsPanelProps) => {
     const [keyword, setKeyword] = useState<string>('');
     const allList = useFlatMenuData<MenuDataType>(menuData);
     const workspace = useWorkspace();
-    const [bizCompData, blockData] = useMemo(
+    const [bizCompData, localCompData] = useMemo(
       () => [
         [{ title: '已安装业务组件', items: workspace.bizComps.map(getBizCompName) }],
-        [{ title: '项目区块', items: workspace.blocks }],
+        [{ title: '本地组件', items: workspace.localComps }],
       ],
-      [workspace.bizComps, workspace.blocks, getBizCompName],
+      [workspace.bizComps, workspace.localComps, getBizCompName],
     );
 
     const tabs = Object.keys(menuData).map((key) => ({
@@ -106,11 +101,12 @@ export const ComponentsPanel = observer(
         children: <MaterialList type="bizComp" data={bizCompData} />,
       });
     }
-    if (showBlocks) {
+
+    if (localCompData.length) {
       tabs.push({
-        key: 'block',
-        label: localeMap.block,
-        children: <MaterialList type="block" data={blockData} />,
+        key: 'localComps',
+        label: localeMap.localComp,
+        children: <MaterialList data={localCompData} />,
       });
     }
     const contentNode =
@@ -145,7 +141,7 @@ interface MaterialListProps {
   /**
    * 物料类型
    */
-  type?: 'common' | 'bizComp' | 'block';
+  type?: 'common' | 'bizComp' | 'localComp';
 }
 
 function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProps) {
@@ -175,7 +171,7 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="没有匹配到任何组件" />
               )}
               <Grid
-                columns={type === 'block' ? 1 : 2}
+                columns={type === 'localComp' ? 1 : 2}
                 spacing="1px"
                 bg="background.normal"
                 padding="0"
@@ -185,9 +181,7 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
                   if (!prototype) {
                     logger.log(`<${item}> prototype not found!`);
                   }
-                  return prototype ? (
-                    <MaterialGrid key={item} data={prototype} type={type} />
-                  ) : null;
+                  return prototype ? <MaterialGrid key={item} data={prototype} /> : null;
                 })}
                 {addBlock && <Box bg="white" />}
               </Grid>
@@ -201,7 +195,6 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
 
 interface MaterialProps {
   data: ComponentPrototypeType;
-  type: 'common' | 'atom' | 'snippet' | 'bizComp' | 'block';
 }
 
 const StyledCommonGridItem = styled.div`
@@ -218,11 +211,6 @@ const StyledCommonGridItem = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
-  &[class~='block-item'] {
-    flex-direction: row;
-    justify-content: flex-start;
-  }
 
   .material-icon {
     font-size: 40px;
@@ -260,7 +248,7 @@ const StyledCommonGridItem = styled.div`
   }
 `;
 
-function MaterialGrid({ data, type }: MaterialProps) {
+function MaterialGrid({ data }: MaterialProps) {
   const workspace = useWorkspace();
 
   const handleDragStart = (e: React.DragEvent) => {
@@ -286,7 +274,6 @@ function MaterialGrid({ data, type }: MaterialProps) {
       data-name={data.name}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      className={type === 'block' ? 'block-item' : null}
     >
       {icon.startsWith('icon-') ? (
         <IconFont className="material-icon" type={data.icon || 'icon-placeholder'} />
@@ -296,7 +283,7 @@ function MaterialGrid({ data, type }: MaterialProps) {
       <Text fontSize="12px" lineHeight="1.5">
         {data.title}
       </Text>
-      <Text fontSize="12px" color={type === 'block' ? 'inherit' : 'gray.50'}>
+      <Text fontSize="12px" color="gray.50">
         {data.name}
       </Text>
       {data.docs || data.help ? (

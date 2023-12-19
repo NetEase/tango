@@ -22,7 +22,7 @@ import {
   code2expression,
   object2node,
 } from './parse';
-import { isValidComponentName } from '../string';
+import { getFullPath, isValidComponentName } from '../string';
 import { isDefineService, isDefineStore, isTangoVariable } from '../assert';
 import type {
   IRouteData,
@@ -32,6 +32,7 @@ import type {
   IServiceFunctionPayload,
   InsertChildPositionType,
   IImportSpecifierData,
+  IExportSpecifierData,
 } from '../../types';
 import { IdGenerator } from '../id-generator';
 
@@ -1328,6 +1329,33 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
     importedModules,
     variables,
   };
+}
+
+export function traverseComponentsEntryFile(ast: t.File, baseDir?: string) {
+  const exportMap: Record<string, IExportSpecifierData> = {};
+  traverse(ast, {
+    ExportNamedDeclaration(path) {
+      const node = path.node;
+      let source = node2value(node.source);
+      if (baseDir) {
+        // fix relative source path
+        source = getFullPath(baseDir, source);
+      }
+      node.specifiers.forEach((specifier) => {
+        if (t.isExportSpecifier(specifier)) {
+          const name = keyNode2value(specifier.exported) as string;
+          if (name) {
+            exportMap[name] = {
+              source,
+              exportedName: name,
+            };
+          }
+        }
+      });
+    },
+  });
+
+  return { ast, exportMap };
 }
 
 /**

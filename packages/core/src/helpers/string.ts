@@ -33,6 +33,10 @@ export function inferFileType(filename: string): FileType {
     return FileType.JsonViewModule;
   }
 
+  if (/\/(blocks|components)\/index\.js/.test(filename)) {
+    return FileType.ComponentsEntryModule;
+  }
+
   if (/\/services\/.+\.js$/.test(filename)) {
     return FileType.ServiceModule;
   }
@@ -47,10 +51,6 @@ export function inferFileType(filename: string): FileType {
 
   if (/\/stores\/.+\.js$/.test(filename)) {
     return FileType.StoreModule;
-  }
-
-  if (/\/blocks\/[\w-]+\/index\.js/.test(filename)) {
-    return FileType.BlockEntryModule;
   }
 
   if (/\.jsx?$/.test(filename)) {
@@ -170,24 +170,35 @@ export function getBlockNameByFilename(filename: string) {
 }
 
 /**
- * FIXME: 有问题，需要优化下
- * 基于 from 文件的地址计算 to 文件的相对引用路径
- * @param from
- * @param to
+ * 合并两个路径
+ * @param root
+ * @param filename
+ * @returns
  */
-export function getRelativePath(from: string, to: string) {
-  const fromFolder = path.dirname(from);
-  return path.relative(fromFolder, to);
+export function getFullPath(root: string, filename: string) {
+  return path.join(root, filename);
+}
+
+/**
+ * 计算 targetFile 在 sourceFile 中的相对引用路径
+ * @param sourceFile
+ * @param targetFile
+ * @returns
+ */
+export function getRelativePath(sourceFile: string, targetFile: string) {
+  sourceFile = path.dirname(sourceFile);
+  return path.relative(sourceFile, targetFile);
 }
 
 /**
  * 判断给定字符串是否是文件路径
  * @example ./pages/index.js -- yes
  * @example ../pages/index.js -- yes
+ * @example ../components -- yes
  * @example /src/pages/index.js -- yes
  * @example @music163/tango-designer -- no
  * @param str
  */
 export function isFilepath(str: string) {
-  return /^(\.\.?\/|\/).*\.[a-z]+$/.test(str);
+  return /^(\.\.?\/|\/).*(\.[a-z]+)?$/.test(str);
 }

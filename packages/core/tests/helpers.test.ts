@@ -129,8 +129,10 @@ describe('string helpers', () => {
     expect(getRelativePath('/src/pages/index.js', '/src/blocks/sample-block/index.js')).toEqual(
       '../blocks/sample-block/index.js',
     );
-    // TODO: fix me
-    // expect(getRelativePath('/src/pages/', '/src/pages/index.js')).toEqual('./index.js');
+    expect(getRelativePath('/src/pages/index.js', '/src/components')).toEqual('../components');
+    expect(getRelativePath('/src/pages/index.js', '/src/components/input.js')).toEqual(
+      '../components/index.js',
+    );
   });
 
   it('getFilepath', () => {
@@ -143,7 +145,9 @@ describe('string helpers', () => {
     expect(isFilepath('./pages/index.js')).toBeTruthy();
     expect(isFilepath('../pages/index.js')).toBeTruthy();
     expect(isFilepath('./pages/index.css')).toBeTruthy();
-    expect(isFilepath('/src/pages/index.js')).toBeTruthy();
+    expect(isFilepath('./src/pages/index.js')).toBeTruthy();
+    expect(isFilepath('./src/components')).toBeTruthy();
+    expect(isFilepath('../src/components')).toBeTruthy();
     expect(isFilepath('path')).toBeFalsy();
     expect(isFilepath('path-browserify')).toBeFalsy();
     expect(isFilepath('@music/one')).toBeFalsy();
