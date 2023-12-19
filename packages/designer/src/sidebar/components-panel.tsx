@@ -181,9 +181,7 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
                   if (!prototype) {
                     logger.log(`<${item}> prototype not found!`);
                   }
-                  return prototype ? (
-                    <MaterialGrid key={item} data={prototype} type={type} />
-                  ) : null;
+                  return prototype ? <MaterialGrid key={item} data={prototype} /> : null;
                 })}
                 {addBlock && <Box bg="white" />}
               </Grid>
@@ -197,7 +195,6 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
 
 interface MaterialProps {
   data: ComponentPrototypeType;
-  type: 'common' | 'atom' | 'snippet' | 'bizComp' | 'localComp';
 }
 
 const StyledCommonGridItem = styled.div`
@@ -251,7 +248,7 @@ const StyledCommonGridItem = styled.div`
   }
 `;
 
-function MaterialGrid({ data, type }: MaterialProps) {
+function MaterialGrid({ data }: MaterialProps) {
   const workspace = useWorkspace();
 
   const handleDragStart = (e: React.DragEvent) => {

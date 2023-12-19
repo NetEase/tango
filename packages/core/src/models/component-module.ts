@@ -32,7 +32,7 @@ export class TangoComponentsEntryModule extends TangoModule {
       this.workspace.componentPrototypes.set(key, {
         name: key,
         exportType: 'namedExport',
-        package: '/src/components', // FIXME: 根据真实的目录名设置
+        package: baseDir,
         type: 'element',
       });
     });
