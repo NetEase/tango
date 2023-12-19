@@ -87,6 +87,24 @@ export interface ITangoViewNodeData<T = JSXElement> {
 }
 
 /**
+ * 导出变量数据
+ */
+export interface IExportSpecifierData {
+  /**
+   * 来源
+   */
+  source: string;
+  /**
+   * exported name
+   */
+  exportedName: string;
+  /**
+   * local name
+   */
+  localName?: string;
+}
+
+/**
  * 导入变量的来源
  */
 export interface IImportSpecifierSourceData {

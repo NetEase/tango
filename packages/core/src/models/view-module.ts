@@ -159,7 +159,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     this._cleanCode = ast2code(cleanAst);
 
     this._importedModules = importedModules;
-    this.imports = imports;
+    this.importList = imports;
     this.importMap = buildImportMap(imports);
     this.variables = variables;
 
@@ -180,7 +180,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * 依赖列表
    */
   listImportSources() {
-    return Object.keys(this.imports);
+    return Object.keys(this.importList);
   }
 
   /**
@@ -227,7 +227,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * @returns
    */
   addImportSpecifiers(source: string, newSpecifiers: IImportSpecifierData[]) {
-    const existSpecifiers = this.imports[source];
+    const existSpecifiers = this.importList[source];
     if (existSpecifiers) {
       const insertedSpecifiers = newSpecifiers.filter((item) => {
         return !existSpecifiers.find((existItem) => existItem.localName === item.localName);

@@ -32,6 +32,7 @@ import type {
   IServiceFunctionPayload,
   InsertChildPositionType,
   IImportSpecifierData,
+  IExportSpecifierData,
 } from '../../types';
 import { IdGenerator } from '../id-generator';
 
@@ -1331,7 +1332,7 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
 }
 
 export function traverseComponentsEntryFile(ast: t.File, baseDir?: string) {
-  const exportMap: Record<string, object> = {};
+  const exportMap: Record<string, IExportSpecifierData> = {};
   traverse(ast, {
     ExportNamedDeclaration(path) {
       const node = path.node;
@@ -1342,10 +1343,11 @@ export function traverseComponentsEntryFile(ast: t.File, baseDir?: string) {
       }
       node.specifiers.forEach((specifier) => {
         if (t.isExportSpecifier(specifier)) {
-          const name = keyNode2value(specifier.exported);
+          const name = keyNode2value(specifier.exported) as string;
           if (name) {
             exportMap[name] = {
               source,
+              exportedName: name,
             };
           }
         }
