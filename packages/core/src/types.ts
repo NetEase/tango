@@ -17,8 +17,13 @@ export enum FileType {
   ComponentPrototypeModule = 'componentPrototypeModule',
   // 组件运行调试入口文件，一般为 `/app.js`
   ComponentDemoEntryModule = 'componentDemoEntryModule',
-
-  // 区块入口文件 FIXME: 是否移除
+  /**
+   * 本地组件目录的入口文件
+   */
+  ComponentsEntryModule = 'componentsEntryModule',
+  /**
+   * @deprecated 已废弃
+   */
   BlockEntryModule = 'blockEntryModule',
 
   // jsx 类型视图文件

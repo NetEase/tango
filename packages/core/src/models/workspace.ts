@@ -14,7 +14,6 @@ import {
   isPathnameMatchRoute,
   getJSXElementChildrenNames,
   namesToImportDeclarations,
-  getBlockNameByFilename,
   prototype2importDeclarationData,
 } from '../helpers';
 import { DropMethod } from './drop-target';
@@ -36,6 +35,7 @@ import { TangoRouteModule } from './route-module';
 import { TangoStoreEntryModule, TangoStoreModule } from './store-module';
 import { TangoServiceModule } from './service-module';
 import { TangoViewModule } from './view-module';
+import { TangoComponentsEntryModule } from './component-module';
 
 export interface IWorkspaceOptions {
   /**
@@ -73,8 +73,14 @@ export class Workspace extends EventTarget implements IWorkspace {
    */
   files: Map<string, TangoFile>;
 
+  /**
+   * 组件配置
+   */
   componentPrototypes: Map<string, ComponentPrototypeType>;
 
+  /**
+   * 入口文件
+   */
   entry: string;
 
   /**
@@ -93,12 +99,6 @@ export class Workspace extends EventTarget implements IWorkspace {
   activeViewFile: string;
 
   /**
-   * 本地区块 { [blockName]: filePath }
-   * TODO: 废弃这个，不再支持
-   */
-  localBlocks: Record<string, string>;
-
-  /**
    * 路由配置模块
    */
   routeModule: TangoRouteModule;
@@ -111,6 +111,8 @@ export class Workspace extends EventTarget implements IWorkspace {
   storeModules: Record<string, TangoStoreModule> = {};
 
   serviceModules: Record<string, TangoServiceModule> = {};
+
+  componentsEntryModule: TangoComponentsEntryModule;
 
   /**
    * package.json 文件
@@ -197,8 +199,8 @@ export class Workspace extends EventTarget implements IWorkspace {
     return list;
   }
 
-  get blocks() {
-    return Object.keys(this.localBlocks);
+  get localComps(): string[] {
+    return Object.keys(this.componentsEntryModule.exportList);
   }
 
   constructor(options?: IWorkspaceOptions) {
@@ -207,7 +209,6 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.selectSource = new SelectSource(this);
     this.dragSource = new DragSource(this);
     this.componentPrototypes = new Map();
-    this.localBlocks = {};
     this.entry = options?.entry;
     this.activeRoute = options?.defaultActiveRoute || '/';
     this.activeFile = options?.entry;
@@ -233,8 +234,6 @@ export class Workspace extends EventTarget implements IWorkspace {
       activeRoute: observable,
       activeFile: observable,
       activeViewFile: observable,
-      localBlocks: observable,
-      blocks: computed,
       pages: computed,
       bizComps: computed,
       setActiveRoute: action,
@@ -330,6 +329,10 @@ export class Workspace extends EventTarget implements IWorkspace {
         module = new TangoStoreEntryModule(this, props);
         this.storeEntryModule = module;
         break;
+      case FileType.ComponentsEntryModule:
+        module = new TangoComponentsEntryModule(this, props);
+        this.componentsEntryModule = module;
+        break;
       case FileType.RouteModule: {
         module = new TangoRouteModule(this, props);
         this.routeModule = module;
@@ -351,19 +354,6 @@ export class Workspace extends EventTarget implements IWorkspace {
         module = new TangoStoreModule(this, props);
         this.storeModules[module.name] = module;
         break;
-      case FileType.BlockEntryModule: {
-        const blockName = getBlockNameByFilename(props.filename);
-        const prototype: ComponentPrototypeType = {
-          name: blockName,
-          exportType: 'defaultExport',
-          package: props.filename,
-          type: 'block',
-        };
-        this.localBlocks[blockName] = props.filename;
-        this.componentPrototypes.set(blockName, prototype);
-        module = new TangoViewModule(this, props);
-        break;
-      }
       case FileType.Module:
         module = new TangoJsModule(this, props);
         break;

@@ -33,7 +33,6 @@ const workspace = new Workspace({
 // 2. 引擎初始化
 const engine = createEngine({
   workspace,
-  defaultActiveSidebarPanel: 'outline',
 });
 
 // @ts-ignore
@@ -120,6 +119,9 @@ export default function App() {
                     if (sandboxWindow.TangoAntd.prototypes) {
                       workspace.setComponentPrototypes(sandboxWindow.TangoAntd.prototypes);
                     }
+                  }
+                  if (sandboxWindow.localTangoComponentPrototypes) {
+                    workspace.setComponentPrototypes(sandboxWindow.localTangoComponentPrototypes);
                   }
                   setMenuLoading(false);
                 }

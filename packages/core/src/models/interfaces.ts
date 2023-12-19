@@ -266,5 +266,5 @@ export interface IWorkspace {
   get pages(): any[];
   get bizComps(): string[];
   get baseComps(): string[];
-  get blocks(): any[];
+  get localComps(): string[];
 }
