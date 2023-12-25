@@ -3142,6 +3142,15 @@
     mobx "6.9.0"
     path-browserify "^1.0.1"
 
+"@music163/tango-helpers@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.npmjs.org/@music163/tango-helpers/-/tango-helpers-0.1.8.tgz#158171fa2255814cacb8d91aea48e119915a8421"
+  integrity sha512-fxL7lcrg46trH6HwCg6UyAR2JnCHbmnqsrYr4yZ7duk5O6muPKsw1FXJ32LdlMg1nIYQ9TkkKRO9f78ggRPhBA==
+  dependencies:
+    hoist-non-react-statics "^3.3.2"
+    lodash.get "^4.4.2"
+    lodash.set "^4.3.2"
+
 "@music163/tango-setting-form@*":
   version "0.2.16"
   resolved "https://registry.npmjs.org/@music163/tango-setting-form/-/tango-setting-form-0.2.16.tgz#71176e0e667a8beb17d53ce334ea6661799ddb76"
