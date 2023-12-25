@@ -11,5 +11,6 @@ export * from './route-module';
 export * from './service-module';
 export * from './store-module';
 export * from './view-module';
+export * from './component-module';
 export * from './node';
 export * from './interfaces';
