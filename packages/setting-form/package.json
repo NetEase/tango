@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-setting-form",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "setting form of tango-apps",
   "author": "wwsun <ww.sun@outlook.com>",
   "homepage": "",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
-    "@music163/tango-core": "^1.0.0-alpha.2",
+    "@music163/tango-core": "^1.0.0-alpha.3",
     "@music163/tango-helpers": "^1.0.0-alpha.0",
     "@music163/tango-ui": "^1.0.0-alpha.2",
     "antd": "^4.24.2",

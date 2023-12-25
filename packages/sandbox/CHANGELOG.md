@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.3](https://github.com/netease/tango/compare/@music163/tango-sandbox@1.0.0-alpha.2...@music163/tango-sandbox@1.0.0-alpha.3) (2023-12-25)
+
+**Note:** Version bump only for package @music163/tango-sandbox
+
 # [1.0.0-alpha.1](https://github.com/netease/tango/compare/@music163/tango-sandbox@0.1.16...@music163/tango-sandbox@1.0.0-alpha.1) (2023-12-12)
 
 **Note:** Version bump only for package @music163/tango-sandbox
