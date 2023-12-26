@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.4](https://github.com/netease/tango/compare/@music163/tango-core@1.0.0-alpha.3...@music163/tango-core@1.0.0-alpha.4) (2023-12-26)
+
+### Bug Fixes
+
+- list overflow in expSetter ([4d6b67e](https://github.com/netease/tango/commit/4d6b67eecd02b31f01d1bc896c6eeb83f6b34b35))
+
 # [1.0.0-alpha.3](https://github.com/netease/tango/compare/@music163/tango-core@1.0.0-alpha.2...@music163/tango-core@1.0.0-alpha.3) (2023-12-25)
 
 ### Bug Fixes
