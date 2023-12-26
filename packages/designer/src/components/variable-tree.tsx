@@ -239,6 +239,7 @@ export function EditableVariableTree({
             )}
             {mode === 'define' && (
               <NodeDefineForm
+                key={node.key}
                 node={node}
                 onSave={onSave}
                 onDelete={(item) => {
@@ -502,7 +503,7 @@ interface NodeDefineProps {
  * 变量值定义面板
  */
 function NodeDefineForm({ node, onSave = noop, onDelete = noop }: NodeDefineProps) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(node.raw);
   const [error, setError] = useState('');
   const [editable, { on, off }] = useBoolean();
   if (isNil(node.raw)) {
@@ -512,11 +513,14 @@ function NodeDefineForm({ node, onSave = noop, onDelete = noop }: NodeDefineProp
     <Box>
       <InputCode
         shape="inset"
-        value={node.raw}
+        value={value}
         onChange={(nextValue) => setValue(nextValue)}
-        editable={editable}
+        readOnly={!editable}
         onBlur={() => {
-          if (!isValidExpressionCode(value)) {
+          if (!value) {
+            setError('输入内容不可为空！');
+          } else if (value && !isValidExpressionCode(`foo = ${value}`)) {
+            // 这里先保证输入是一个合法的表达式
             setError('代码格式错误，请检查代码语法！');
           } else {
             setError('');

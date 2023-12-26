@@ -131,7 +131,7 @@ describe('string helpers', () => {
     );
     expect(getRelativePath('/src/pages/index.js', '/src/components')).toEqual('../components');
     expect(getRelativePath('/src/pages/index.js', '/src/components/input.js')).toEqual(
-      '../components/index.js',
+      '../components/input.js',
     );
   });
 

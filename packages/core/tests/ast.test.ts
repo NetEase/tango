@@ -15,6 +15,8 @@ describe('ast helpers', () => {
   it('isValidExpression', () => {
     expect(isValidExpressionCode('() => { }')).toBeTruthy();
     expect(isValidExpressionCode('1')).toBeTruthy();
+    expect(isValidExpressionCode('a = 1')).toBeTruthy();
+    expect(isValidExpressionCode('1 + 1')).toBeTruthy();
     expect(isValidExpressionCode('"hello"')).toBeTruthy();
     expect(isValidExpressionCode('false')).toBeTruthy();
     expect(isValidExpressionCode('{ bizId: "vip", type: "category" }')).toBeTruthy();

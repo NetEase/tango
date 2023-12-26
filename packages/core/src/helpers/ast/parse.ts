@@ -44,6 +44,11 @@ export function isValidCode(code: string) {
 /**
  * 检测代码是否是合法的表达式代码
  * 表达式是一组代码的集合，它返回一个值；每一个合法的表达式都能计算成某个值
+ * 只要你输入这段代码，可以形成一个值，就算是表达式
+ * @example x = 1; // 1
+ * @example 1=1
+ * @example 'hello'
+ * @example { foo: 'bar' }
  * @param code
  * @returns
  */

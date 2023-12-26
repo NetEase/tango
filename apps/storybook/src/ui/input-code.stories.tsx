@@ -28,6 +28,41 @@ export function Basic() {
   );
 }
 
+const code = `
+function foo() {
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+  console.log("test");
+}
+`;
+
+export function Readonly() {
+  return <InputCode shape="inset" readOnly value={code} />;
+}
+
 export function Inset() {
   return <InputCode shape="inset" />;
 }
