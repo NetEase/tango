@@ -229,6 +229,35 @@ export default defineStore({
   title: 'Page Title',
 
   array: [1, 2, 3],
+
+  test: function() {
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+    console.log('test');
+  }
 }, 'app');
 `;
 

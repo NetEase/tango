@@ -160,14 +160,8 @@ export function EditableVariableTree({
   }, [keyword, dataSource]);
 
   return (
-    <Box
-      className="EditableVariableTree"
-      display="flex"
-      overflow="auto"
-      height={height}
-      position="relative"
-    >
-      <Box p="l" width="40%">
+    <Box className="EditableVariableTree" display="flex" height={height} position="relative">
+      <Box p="l" width="40%" height="100%" overflow="auto">
         <Box mb="m" position="sticky" top="0" bg="white" zIndex={2}>
           <Input.Group compact>
             <Search
@@ -202,7 +196,7 @@ export function EditableVariableTree({
         />
       </Box>
       {node ? (
-        <Box width="60%" position="sticky" top="0">
+        <Box width="60%" height="100%" position="sticky" top="0">
           {node.help && (
             <Alert
               type="info"
@@ -232,6 +226,7 @@ export function EditableVariableTree({
                 />
               ) : null
             }
+            height="100%"
             bodyProps={{ px: 'm' }}
           >
             {mode === 'preview' && (

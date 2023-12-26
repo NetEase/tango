@@ -231,7 +231,7 @@ export function ExpressionModal({
         />
         {error ? <Text color="red">输入的表达式存在语法错误，请修改后再提交！</Text> : null}
       </Panel>
-      <Panel title="从变量列表中选中" shape="solid" borderTop="0">
+      <Panel title="从变量列表中选中" shape="solid" borderTop="0" overflow="hidden">
         <EditableVariableTree
           height={380}
           dataSource={dataSource || expressionVariables}
@@ -268,7 +268,7 @@ export function ExpressionModal({
             }
 
             if (node.type === 'function') {
-              return node.raw;
+              return;
             }
 
             return getValue(evaluateContext['tango'], node.key);

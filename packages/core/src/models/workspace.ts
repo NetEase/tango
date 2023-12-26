@@ -200,7 +200,7 @@ export class Workspace extends EventTarget implements IWorkspace {
   }
 
   get localComps(): string[] {
-    return Object.keys(this.componentsEntryModule.exportList);
+    return Object.keys(this.componentsEntryModule?.exportList || {});
   }
 
   constructor(options?: IWorkspaceOptions) {
