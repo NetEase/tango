@@ -5,8 +5,9 @@ import { getValue, isFunction } from '@music163/tango-helpers';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { MenuOutlined } from '@ant-design/icons';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { EditableVariableTreeModal } from '../components';
+import { VariableTreeModal } from '../components';
 import { useSandboxQuery } from '../context';
+import { CODE_TEMPLATES } from '../helpers';
 
 function object2treeData(
   val: any,
@@ -52,17 +53,15 @@ function traverseTreeData(val: any, callback: (val: any) => void) {
   }
 }
 
-export function ModelSetter({ value, onChange }: FormItemComponentProps) {
+export function ModelSetter({
+  value,
+  onChange,
+  newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
+}: FormItemComponentProps) {
   const [inputValue, setInputValue] = useState(value);
   const { modelVariables } = useWorkspaceData();
   const evaluateContext = useSandboxQuery().window || {};
   const workspace = useWorkspace();
-  const onAction = useCallback(
-    (action: string, args: unknown[]) => {
-      workspace[action]?.(...args);
-    },
-    [workspace],
-  );
   const definedVariables = useMemo(() => {
     const map = new Map();
     traverseTreeData(modelVariables, (node) => {
@@ -76,6 +75,7 @@ export function ModelSetter({ value, onChange }: FormItemComponentProps) {
   const variables = evaluateContext['tango']?.stores
     ? [
         object2treeData(evaluateContext['tango']?.stores, 'stores', 0, 1, (keyPath, val) => {
+          // FIXME: 需要调整下这个逻辑，运行时变量不支持删除和添加子节点
           if (keyPath.split('.').length === 2 && definedVariables.has(keyPath)) {
             return {
               showAddChildIcon: true,
@@ -122,30 +122,30 @@ export function ModelSetter({ value, onChange }: FormItemComponentProps) {
         onChange={onInputChange}
         onBlur={onInputBlur}
         suffix={
-          <EditableVariableTreeModal
+          <VariableTreeModal
             title="同步到的变量"
             trigger={
               <Tooltip title="从模型列表选择" placement="topRight">
                 <MenuOutlined />
               </Tooltip>
             }
-            modes={['preview']}
             dataSource={variables as any[]}
             onSelect={(node) => {
               const modelPath = node.key.split('.').slice(1).join('.');
               onChange(modelPath);
             }}
-            onAddVariable={(storeName, data) => {
-              onAction('addStoreState', [storeName, data.name, data.initialValue]);
+            onAddStoreVariable={(storeName, data) => {
+              workspace.addStoreState(storeName, data.name, data.initialValue);
             }}
-            onDeleteVariable={(storeName, stateName) => {
-              onAction('removeStoreState', [storeName, stateName]);
+            onUpdateVariable={(variableKey, code) => {
+              workspace.updateStoreVariable(variableKey, code);
             }}
-            onDeleteStore={(storeName) => {
-              onAction('removeStoreModule', [storeName]);
+            onAddStore={(storeName) => {
+              workspace.addStoreFile(storeName, newStoreTemplate);
             }}
-            onSave={(code, node) => {
-              onAction('updateModuleCodeByVariablePath', [node.key, code]);
+            onRemoveVariable={(variableKey) => {
+              const [, storeName, stateName] = variableKey.split('.');
+              workspace.removeStoreState(storeName, stateName);
             }}
             getPreviewValue={(node) => {
               if (!node || !node.key) {

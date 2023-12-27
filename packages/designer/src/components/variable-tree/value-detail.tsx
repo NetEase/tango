@@ -1,0 +1,111 @@
+import React, { useState } from 'react';
+import { IVariableTreeNode } from '../variable-tree-modal';
+import { isNil, noop, useBoolean } from '@music163/tango-helpers';
+import { Empty, Space, Button, Radio } from 'antd';
+import { Box } from 'coral-system';
+import { InputCode, Panel } from '@music163/tango-ui';
+import { isValidExpressionCode } from '@music163/tango-core';
+
+const previewOptions = [
+  { label: '运行时', value: 'runtime' },
+  { label: '定义', value: 'define' },
+];
+
+type ModeType = 'runtime' | 'define';
+
+export interface ValueDetailProps {
+  children: (mode: ModeType) => React.ReactNode;
+}
+
+export function ValueDetail({ children }: ValueDetailProps) {
+  const [mode, setMode] = useState<ModeType>('runtime');
+  return (
+    <Panel
+      title="变量详情"
+      shape="solid"
+      extra={
+        <Radio.Group
+          optionType="button"
+          buttonStyle="solid"
+          size="small"
+          value={mode}
+          onChange={(e) => {
+            setMode(e.target.value);
+          }}
+          options={previewOptions}
+        />
+      }
+    >
+      {children(mode)}
+    </Panel>
+  );
+}
+
+export interface ValueDefineProps {
+  data: IVariableTreeNode;
+  onSave?: (variableKey: string, code: string) => void;
+}
+
+/**
+ * 变量值定义面板
+ */
+export function ValueDefine({ data, onSave = noop }: ValueDefineProps) {
+  const [value, setValue] = useState(data.raw);
+  const [error, setError] = useState('');
+  const [editable, { on, off }] = useBoolean();
+  if (isNil(data.raw)) {
+    return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="缺失定义数据" />;
+  }
+  return (
+    <Box>
+      <InputCode
+        shape="inset"
+        value={value}
+        onChange={(nextValue) => setValue(nextValue)}
+        readOnly={!editable}
+        onBlur={() => {
+          if (!value) {
+            setError('输入内容不可为空！');
+          } else if (value && !isValidExpressionCode(`foo = ${value}`)) {
+            // 这里先保证输入是一个合法的表达式
+            setError('代码格式错误，请检查代码语法！');
+          } else {
+            setError('');
+          }
+        }}
+      />
+      <Box color="red" my="m">
+        {error}
+      </Box>
+      <Box mt="l">
+        {editable ? (
+          <Space>
+            <Button
+              onClick={() => {
+                off();
+                setError('');
+              }}
+            >
+              取消
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                if (error) {
+                  return;
+                }
+
+                onSave(data.key, value);
+                off();
+              }}
+            >
+              保存
+            </Button>
+          </Space>
+        ) : (
+          <Button onClick={on}>编辑</Button>
+        )}
+      </Box>
+    </Box>
+  );
+}

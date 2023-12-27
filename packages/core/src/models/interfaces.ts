@@ -204,7 +204,11 @@ export interface IWorkspace {
 
   // ----------------- 服务函数文件操作 -----------------
 
-  getServiceFunction?: (serviceKey: string) => object;
+  getServiceFunction?: (serviceKey: string) => {
+    name: string;
+    moduleName: string;
+    config: object;
+  };
   listServiceFunctions?: () => Record<string, object>;
   removeServiceFunction?: (serviceName: string, modName?: string) => void;
   addServiceFunction?: (
@@ -218,6 +222,7 @@ export interface IWorkspace {
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;
   removeStoreState?: (storeName: string, stateName: string) => void;
   removeStoreModule?: (storeName: string) => void;
+  updateStoreVariable?: (variablePath: string, code: string) => void;
 
   // ----------------- 视图文件操作 -----------------
 
@@ -255,10 +260,6 @@ export interface IWorkspace {
   ) => void;
 
   removeBizComp?: (name: string) => void;
-
-  // ----------------- 其他操作 -----------------
-
-  updateModuleCodeByVariablePath?: (variablePath: string, code: string) => void;
 
   // ----------------- getter -----------------
 

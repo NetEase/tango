@@ -5,6 +5,7 @@ import {
   hasFileExtension,
   isString,
   logger,
+  parseServiceKey,
   uniq,
 } from '@music163/tango-helpers';
 import {
@@ -599,12 +600,11 @@ export class Workspace extends EventTarget implements IWorkspace {
   }
 
   /**
-   * 根据变量路径更新模块内容
-   * TODO: 改名，不直观
+   * 根据变量路径更新状态变量的值
    * @param variablePath 变量路径
    * @param code 变量代码
    */
-  updateModuleCodeByVariablePath(variablePath: string, code: string) {
+  updateStoreVariable(variablePath: string, code: string) {
     if (/^stores\.\w+\.\w+$/.test(variablePath)) {
       const [, storeName, stateName] = variablePath.split('.');
       this.storeModules[storeName]?.updateState(stateName, code).update();
@@ -618,7 +618,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @returns
    */
   getServiceFunction(serviceKey: string) {
-    const { name, moduleName } = this.parseServiceKey(serviceKey);
+    const { name, moduleName } = parseServiceKey(serviceKey);
     if (!name) {
       return;
     }
@@ -1208,41 +1208,5 @@ export class Workspace extends EventTarget implements IWorkspace {
     } else {
       logger.error('copyFiles failed, source: %s, target: %s', sourceFilePath, targetFilePath);
     }
-  }
-
-  /**
-   * 解析 serviceKey
-   * @param serviceKey
-   * @returns
-   *
-   * @example services.list => { moduleName: 'index', name: 'list' }
-   * @example services.sub.list => { moduleName: 'sub', name: 'list' }
-   * @example foo => undefined
-   */
-  private parseServiceKey(serviceKey: string) {
-    const parts = serviceKey.split('.');
-    if (parts[0] !== 'services') {
-      return {};
-    }
-
-    let moduleName = 'index';
-    let name = '';
-    switch (parts.length) {
-      case 2: {
-        name = parts[1];
-        break;
-      }
-      case 3: {
-        moduleName = parts[1];
-        name = parts[2];
-        break;
-      }
-      default:
-        break;
-    }
-    return {
-      moduleName,
-      name,
-    };
   }
 }

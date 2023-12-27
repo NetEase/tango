@@ -1,18 +1,13 @@
 import React from 'react';
 import { Button, Space, Form, Input } from 'antd';
-import { FileAddOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { FileAddOutlined } from '@ant-design/icons';
 import { useBoolean } from '@music163/tango-helpers';
-import { Panel, IconButton } from '@music163/tango-ui';
+import { Panel } from '@music163/tango-ui';
 import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { EditableVariableTree, EditableVariableTreeProps } from '../components';
+import { VariableTree } from '../components';
+import { CODE_TEMPLATES } from '../helpers';
 
-const defaultStoreTemplate = `
-import { defineStore } from '@music163/tango-boot';
-export default defineStore({
-});
-`;
-
-export interface VariablePanelProps extends EditableVariableTreeProps {
+export interface VariablePanelProps {
   wrapperHeight?: number | string;
   newStoreTemplate?: string;
 }
@@ -20,28 +15,20 @@ export interface VariablePanelProps extends EditableVariableTreeProps {
 export const VariablePanel = observer(
   ({
     wrapperHeight = '100%',
-    newStoreTemplate = defaultStoreTemplate,
-    ...restProps
+    newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
   }: VariablePanelProps) => {
     const [isAdd, { on, off }] = useBoolean();
     const workspace = useWorkspace();
     const { storeVariables } = useWorkspaceData();
-    const storeNames = storeVariables.map((item) => item.title);
+    const storeNames = storeVariables.map((item) => item.title) as string[];
 
     return (
       <Panel
         className="ModelView"
         height={wrapperHeight}
         title="视图模型与变量管理"
-        subTitle={
-          <IconButton
-            tooltip="如何使用"
-            icon={<QuestionCircleOutlined />}
-            href="https://music-doc.st.netease.com/st/tango-docs/docs/guide/basic/model"
-          />
-        }
         extra={
-          <Button size="small" type="text" icon={<FileAddOutlined />} onClick={on}>
+          <Button size="small" type="primary" icon={<FileAddOutlined />} onClick={on}>
             新建模型
           </Button>
         }
@@ -57,24 +44,19 @@ export const VariablePanel = observer(
             }}
           />
         ) : (
-          <EditableVariableTree
-            modes={['add', 'define']}
-            defaultMode="define"
+          <VariableTree
+            showViewIcon={false}
             dataSource={storeVariables}
-            onAddVariable={(storeName, data) => {
+            onAddStoreVariable={(storeName, data) => {
               workspace.addStoreState(storeName, data.name, data.initialValue);
             }}
-            onDeleteVariable={(storeName, stateName) => {
+            onRemoveVariable={(variableKey) => {
+              const [, storeName, stateName] = variableKey.split('.');
               workspace.removeStoreState(storeName, stateName);
             }}
-            onDeleteStore={(storeName) => {
-              workspace.removeStoreModule(storeName);
+            onUpdateVariable={(variableKey, code) => {
+              workspace.updateStoreVariable(variableKey, code);
             }}
-            onSave={(code, node) => {
-              workspace.updateModuleCodeByVariablePath(node.key, code);
-            }}
-            height="100%"
-            {...restProps}
           />
         )}
       </Panel>

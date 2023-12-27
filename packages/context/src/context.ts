@@ -77,8 +77,6 @@ export const useWorkspaceData = () => {
       key: prefix,
       selectable: false,
       children: [...states, ...actions],
-      showAddChildIcon: true,
-      showRemoveIcon: true,
     });
   });
 
