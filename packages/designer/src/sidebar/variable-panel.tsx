@@ -48,8 +48,7 @@ export const VariablePanel = observer(
               workspace.addStoreState(storeName, data.name, data.initialValue);
             }}
             onRemoveVariable={(variableKey) => {
-              const [, storeName, stateName] = variableKey.split('.');
-              workspace.removeStoreState(storeName, stateName);
+              workspace.removeStoreVariable(variableKey);
             }}
             onUpdateVariable={(variableKey, code) => {
               workspace.updateStoreVariable(variableKey, code);

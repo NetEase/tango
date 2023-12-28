@@ -332,16 +332,32 @@ export function url2serviceName(url: string) {
 }
 
 /**
- * 解析 serviceKey
- * @param serviceKey
+ * 解析状态变量的 path
+ * @example stores.foo.bar => { storeName: 'foo', variableName: 'bar' }
+ * @example stores.user.count => { storeName: 'user', variableName: 'count' }
+ *
+ * @param variablePath
+ * @returns
+ */
+export function parseStoreVariablePath(variablePath: string) {
+  const [, storeName, variableName] = variablePath.split('.');
+  return {
+    storeName,
+    variableName,
+  };
+}
+
+/**
+ * 解析服务变量的 path
+ * @param variablePath
  * @returns
  *
  * @example services.list => { moduleName: 'index', name: 'list' }
  * @example services.sub.list => { moduleName: 'sub', name: 'list' }
  * @example foo => undefined
  */
-export function parseServiceKey(serviceKey: string) {
-  const parts = serviceKey.split('.');
+export function parseServiceVariablePath(variablePath: string) {
+  const parts = variablePath.split('.');
   if (parts[0] !== 'services') {
     return {};
   }

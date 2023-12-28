@@ -70,11 +70,16 @@ export function AddServiceForm({
                 type="link"
                 size="small"
                 onClick={() => {
-                  const funcName = url2serviceName(form.getFieldValue('url'));
+                  const url = form.getFieldValue('url');
+                  if (!url) {
+                    return;
+                  }
+
+                  const funcName = url2serviceName(url);
                   form.setFieldValue('name', funcName);
                 }}
               >
-                使用接口路径自动生成
+                基于接口路径自动生成
               </Button>
             </Box>
           )

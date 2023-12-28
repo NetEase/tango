@@ -3,9 +3,11 @@ import { JSXElement } from '@babel/types';
 import {
   ComponentPrototypeType,
   hasFileExtension,
+  isStoreVariablePath,
   isString,
   logger,
-  parseServiceKey,
+  parseServiceVariablePath,
+  parseStoreVariablePath,
   uniq,
 } from '@music163/tango-helpers';
 import {
@@ -600,14 +602,23 @@ export class Workspace extends EventTarget implements IWorkspace {
   }
 
   /**
+   * 根据变量路径删除状态变量
+   * @param variablePath
+   */
+  removeStoreVariable(variablePath: string) {
+    const { storeName, variableName } = parseStoreVariablePath(variablePath);
+    this.removeStoreState(storeName, variableName);
+  }
+
+  /**
    * 根据变量路径更新状态变量的值
    * @param variablePath 变量路径
    * @param code 变量代码
    */
   updateStoreVariable(variablePath: string, code: string) {
-    if (/^stores\.\w+\.\w+$/.test(variablePath)) {
-      const [, storeName, stateName] = variablePath.split('.');
-      this.storeModules[storeName]?.updateState(stateName, code).update();
+    if (isStoreVariablePath(variablePath)) {
+      const { storeName, variableName } = parseStoreVariablePath(variablePath);
+      this.storeModules[storeName]?.updateState(variableName, code).update();
     }
   }
 
@@ -618,7 +629,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @returns
    */
   getServiceFunction(serviceKey: string) {
-    const { name, moduleName } = parseServiceKey(serviceKey);
+    const { name, moduleName } = parseServiceVariablePath(serviceKey);
     if (!name) {
       return;
     }

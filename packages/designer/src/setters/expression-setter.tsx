@@ -6,7 +6,14 @@ import {
   isWrappedByExpressionContainer,
   value2expressionCode,
 } from '@music163/tango-core';
-import { getVariableContent, noop, useBoolean, getValue } from '@music163/tango-helpers';
+import {
+  getVariableContent,
+  noop,
+  useBoolean,
+  getValue,
+  isStoreVariablePath,
+  parseServiceVariablePath,
+} from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
 import { IconButton, Panel, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
@@ -287,9 +294,13 @@ export function ExpressionModal({
           onAddStore={(storeName) => {
             workspace.addStoreFile(storeName, newStoreTemplate);
           }}
-          onRemoveVariable={(variableKey) => {
-            const [, storeName, stateName] = variableKey.split('.');
-            workspace.removeStoreState(storeName, stateName);
+          onRemoveVariable={(variablePath) => {
+            if (isStoreVariablePath(variablePath)) {
+              workspace.removeStoreVariable(variablePath);
+            } else {
+              const { moduleName, name } = parseServiceVariablePath(variablePath);
+              workspace.removeServiceFunction(name, moduleName);
+            }
           }}
           getPreviewValue={(node) => {
             if (!node || !node.key) {

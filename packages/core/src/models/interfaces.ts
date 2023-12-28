@@ -220,8 +220,8 @@ export interface IWorkspace {
 
   // ----------------- 状态管理文件操作 -----------------
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;
-  removeStoreState?: (storeName: string, stateName: string) => void;
   removeStoreModule?: (storeName: string) => void;
+  removeStoreVariable?: (variablePath: string) => void;
   updateStoreVariable?: (variablePath: string, code: string) => void;
 
   // ----------------- 视图文件操作 -----------------

@@ -1,5 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { filterTreeData, noop, parseServiceKey } from '@music163/tango-helpers';
+import {
+  filterTreeData,
+  isServiceVariablePath,
+  isStoreVariablePath,
+  noop,
+  parseServiceVariablePath,
+} from '@music163/tango-helpers';
 import { css, Box, Text } from 'coral-system';
 import { Button, Popconfirm, Tooltip, Tree } from 'antd';
 import {
@@ -103,9 +109,9 @@ export function VariableTree({
   }, []);
 
   const selectNode = useCallback((node: IVariableTreeNode, callback?: SelectNodeCallback) => {
-    if (isStoreVariable(node.key)) {
+    if (isStoreVariablePath(node.key)) {
       setMode('storeVariableDetail');
-    } else if (isServiceVariable(node.key)) {
+    } else if (isServiceVariablePath(node.key)) {
       setMode('serviceDetail');
     } else {
       setMode('detail');
@@ -154,7 +160,7 @@ export function VariableTree({
                   <Box flex="0 0 72px" textAlign="right">
                     {showRemove && (
                       <Popconfirm
-                        title="确认删除吗？该操作会导致引用此模型的代码报错，请谨慎操作！"
+                        title={`确认删除吗 ${node.title}？该操作会导致引用此模型的代码报错，请谨慎操作！`}
                         onConfirm={() => {
                           onRemoveVariable(node.key);
                         }}
@@ -284,7 +290,7 @@ export function VariableTree({
                 key={activeNode.key}
                 serviceModules={serviceModules}
                 serviceNames={(function () {
-                  const { moduleName } = parseServiceKey(activeNode.key);
+                  const { moduleName } = parseServiceVariablePath(activeNode.key);
                   return getServiceNames?.(moduleName) || [];
                 })()}
                 initialValues={{
@@ -353,12 +359,4 @@ export function VariableTree({
       </Box>
     </Box>
   );
-}
-
-function isStoreVariable(key: string) {
-  return /^stores\.[a-zA-Z0-9]+\.\w+$/.test(key);
-}
-
-function isServiceVariable(key: string) {
-  return /^services\.[a-zA-Z0-9]+/.test(key);
 }
