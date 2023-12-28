@@ -18,9 +18,25 @@ export interface IVariableTreeNode {
    */
   title?: string;
   /**
+   * 辅助提示信息
+   */
+  help?: string;
+  /**
    * 是否可选中
    */
   selectable?: boolean;
+  /**
+   * 隐藏删除按钮
+   */
+  hideRemoveButton?: boolean;
+  /**
+   * 隐藏添加按钮
+   */
+  hideAddButton?: boolean;
+  /**
+   * 隐藏查看按钮
+   */
+  hideViewButton?: boolean;
   /**
    * 结点类型，用来展示图标
    */
@@ -33,5 +49,4 @@ export interface IVariableTreeNode {
    * 子结点
    */
   children?: IVariableTreeNode[];
-  [key: string]: any;
 }

@@ -63,23 +63,22 @@ export function ModelSetter({
   const evaluateContext = useSandboxQuery().window || {};
   const workspace = useWorkspace();
   const definedVariables = useMemo(() => {
-    const map = new Map();
+    const list: string[] = [];
     traverseTreeData(modelVariables, (node) => {
       if (node.key.split('.').length > 1) {
-        map.set(node.key, node);
+        list.push(node.key);
       }
     });
-    return map;
+    return list;
   }, [modelVariables]);
 
   const variables = evaluateContext['tango']?.stores
     ? [
         object2treeData(evaluateContext['tango']?.stores, 'stores', 0, 1, (keyPath, val) => {
-          // FIXME: 需要调整下这个逻辑，运行时变量不支持删除和添加子节点
-          if (keyPath.split('.').length === 2 && definedVariables.has(keyPath)) {
+          if (!definedVariables.includes(keyPath)) {
             return {
-              showAddChildIcon: true,
-              showRemoveIcon: true,
+              hideAddButton: true,
+              hideRemoveButton: true,
             };
           }
           if (isFunction(val)) {

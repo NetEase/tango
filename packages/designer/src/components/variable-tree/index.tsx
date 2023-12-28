@@ -70,8 +70,6 @@ export interface VariableTreeProps {
   onUpdateService?: (data: object) => void;
   onCopy?: (data: IVariableTreeNode) => void;
   onView?: (data: IVariableTreeNode) => void;
-  showDeleteIcon?: boolean;
-  showViewIcon?: boolean;
   height?: number | string;
 }
 
@@ -93,8 +91,6 @@ export function VariableTree({
   getServiceNames,
   getStoreNames,
   getPreviewValue = noop,
-  showDeleteIcon = true,
-  showViewIcon = true,
   ...rest
 }: VariableTreeProps) {
   const [keyword, setKeyword] = useState('');
@@ -140,7 +136,7 @@ export function VariableTree({
             const isLeaf = !node.children;
 
             if (isLeaf) {
-              const isDeletable = node.showDeleteIcon ?? showDeleteIcon;
+              const isDeletable = !node.hideRemoveButton;
               return (
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Text flex="1" truncated>
@@ -184,7 +180,7 @@ export function VariableTree({
                         );
                       }}
                     </CopyClipboard>
-                    {showViewIcon && (
+                    {!node.hideViewButton && (
                       <Tooltip title="查看变量详情">
                         <Button
                           type="text"
@@ -219,7 +215,7 @@ export function VariableTree({
                       />
                     </Tooltip>
                   )}
-                  {/^stores\.[a-zA-Z0-9]+$/.test(node.key) && (
+                  {!node.hideAddButton && /^stores\.[a-zA-Z0-9]+$/.test(node.key) && (
                     <Tooltip title={`向 ${node.title} 中添加变量`}>
                       <Button
                         type="text"
