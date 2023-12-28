@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { isNil, noop, useBoolean } from '@music163/tango-helpers';
+import { IVariableTreeNode, isNil, noop, useBoolean } from '@music163/tango-helpers';
 import { Empty, Space, Button, Radio, Alert } from 'antd';
 import { Box } from 'coral-system';
 import { InputCode, Panel } from '@music163/tango-ui';
 import { isValidExpressionCode } from '@music163/tango-core';
-import { IVariableTreeNode } from '../../types';
 
 const previewOptions = [
   { label: '运行时', value: 'runtime' },
