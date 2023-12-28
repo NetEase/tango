@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { ModalProps, Modal } from 'antd';
 import { Box } from 'coral-system';
-import { noop, useBoolean } from '@music163/tango-helpers';
+import { IVariableTreeNode, noop, useBoolean } from '@music163/tango-helpers';
 import { VariableTree, VariableTreeProps } from './variable-tree';
-import { IVariableTreeNode } from '../types';
 
 interface VariableTreeModalProps extends VariableTreeProps {
   trigger?: React.ReactElement;

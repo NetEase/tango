@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
+  IVariableTreeNode,
   filterTreeData,
   isServiceVariablePath,
   isStoreVariablePath,
@@ -27,7 +28,6 @@ import {
 } from './value-detail';
 import { ValuePreview } from './value-preview';
 import { ServicePreview } from './service-preview';
-import { IVariableTreeNode } from '../../types';
 
 const varTreeStyle = css`
   overflow: auto;
@@ -145,7 +145,6 @@ export function VariableTree({
             const isLeaf = !node.children;
 
             if (isLeaf) {
-              const showRemove = node.showRemoveButton ?? true;
               const showView = node.showViewButton ?? showViewButton;
               return (
                 <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -158,7 +157,7 @@ export function VariableTree({
                     )}
                   </Text>
                   <Box flex="0 0 72px" textAlign="right">
-                    {showRemove && (
+                    {node.showRemoveButton && (
                       <Popconfirm
                         title={`确认删除吗 ${node.title}？该操作会导致引用此模型的代码报错，请谨慎操作！`}
                         onConfirm={() => {
@@ -212,8 +211,6 @@ export function VariableTree({
               );
             }
 
-            const showAdd = node.showAddButton ?? true;
-
             return (
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Text mr="m">{node.title}</Text>
@@ -231,7 +228,7 @@ export function VariableTree({
                       />
                     </Tooltip>
                   )}
-                  {showAdd && /^stores\.[a-zA-Z0-9]+$/.test(node.key) && (
+                  {node.showAddButton && /^stores\.[a-zA-Z0-9]+$/.test(node.key) && (
                     <Tooltip title={`向 ${node.title} 中添加变量`}>
                       <Button
                         type="text"

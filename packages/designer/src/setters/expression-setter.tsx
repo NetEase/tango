@@ -13,6 +13,7 @@ import {
   getValue,
   isStoreVariablePath,
   parseServiceVariablePath,
+  IVariableTreeNode,
 } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
 import { IconButton, Panel, InputCode } from '@music163/tango-ui';
@@ -21,7 +22,6 @@ import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { VariableTree } from '../components';
 import { useSandboxQuery } from '../context';
 import { CODE_TEMPLATES } from '../helpers';
-import { IVariableTreeNode } from '../types';
 
 export const expressionValueValidate = (value: string) => {
   if (isWrappedByExpressionContainer(value)) {
