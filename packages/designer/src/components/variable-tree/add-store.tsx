@@ -1,8 +1,8 @@
 import React from 'react';
-import { IVariableTreeNode } from '../variable-tree-modal';
 import { Button, Form, Input, Space } from 'antd';
 import { isValidExpressionCode } from '@music163/tango-core';
 import { InputCode, Panel } from '@music163/tango-ui';
+import { IVariableTreeNode } from '../../types';
 
 export interface AddStoreVariableFormProps {
   parentNode: IVariableTreeNode;

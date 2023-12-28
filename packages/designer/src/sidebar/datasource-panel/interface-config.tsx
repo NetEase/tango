@@ -27,7 +27,7 @@ const DataSourceView = observer(() => {
   }));
 
   return (
-    <Box className="ServiceFunctionList">
+    <Box className="ServiceFunctionList" p="m">
       <VariableTree
         showViewIcon={false}
         dataSource={serviceVariables}

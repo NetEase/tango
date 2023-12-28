@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import { IVariableTreeNode } from '../variable-tree-modal';
 import { isNil, noop, useBoolean } from '@music163/tango-helpers';
-import { Empty, Space, Button, Radio } from 'antd';
+import { Empty, Space, Button, Radio, Alert } from 'antd';
 import { Box } from 'coral-system';
 import { InputCode, Panel } from '@music163/tango-ui';
 import { isValidExpressionCode } from '@music163/tango-core';
+import { IVariableTreeNode } from '../../types';
 
 const previewOptions = [
   { label: '运行时', value: 'runtime' },
   { label: '定义', value: 'define' },
 ];
 
-type ModeType = 'runtime' | 'define';
+export type ValueDetailModeType = 'runtime' | 'define';
 
 export interface ValueDetailProps {
-  children: (mode: ModeType) => React.ReactNode;
+  defaultMode?: ValueDetailModeType;
+  children: (mode: ValueDetailModeType) => React.ReactNode;
 }
 
-export function ValueDetail({ children }: ValueDetailProps) {
-  const [mode, setMode] = useState<ModeType>('runtime');
+export function ValueDetail({ defaultMode = 'runtime', children }: ValueDetailProps) {
+  const [mode, setMode] = useState<ValueDetailModeType>(defaultMode);
   return (
     <Panel
       title="变量详情"
@@ -108,4 +109,15 @@ export function ValueDefine({ data, onSave = noop }: ValueDefineProps) {
       </Box>
     </Box>
   );
+}
+
+export interface NodeCommonDetailProps {
+  data: IVariableTreeNode;
+}
+
+export function NodeCommonDetail({ data }: NodeCommonDetailProps) {
+  if (!data?.help) {
+    return <div />;
+  }
+  return <Alert type="info" message={`使用说明：${data.help}`} closable />;
 }

@@ -11,9 +11,10 @@ import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
 import { IconButton, Panel, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { IVariableTreeNode, VariableTree } from '../components';
+import { VariableTree } from '../components';
 import { useSandboxQuery } from '../context';
 import { CODE_TEMPLATES } from '../helpers';
+import { IVariableTreeNode } from '../types';
 
 export const expressionValueValidate = (value: string) => {
   if (isWrappedByExpressionContainer(value)) {
@@ -78,7 +79,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     value: valueProp,
     status,
     allowClear = true,
-    newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
+    newStoreTemplate,
   } = props;
   const [visible, { on, off }] = useBoolean();
   const [inputValue, setInputValue] = useState(() => {
@@ -172,7 +173,7 @@ export interface ExpressionModalProps {
   /**
    * 新建 store 的模板代码
    */
-  newStoreTemplate: string;
+  newStoreTemplate?: string;
 }
 
 export function ExpressionModal({
@@ -186,7 +187,7 @@ export function ExpressionModal({
   value,
   dataSource,
   autoCompleteOptions,
-  newStoreTemplate,
+  newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
 }: ExpressionModalProps) {
   const [exp, setExp] = useState(value ?? defaultValue);
   const [error, setError] = useState('');
@@ -239,7 +240,13 @@ export function ExpressionModal({
         />
         {error ? <Text color="red">输入的表达式存在语法错误，请修改后再提交！</Text> : null}
       </Panel>
-      <Panel title="从变量列表中选中" shape="solid" borderTop="0" overflow="hidden">
+      <Panel
+        title="从变量列表中选中"
+        shape="solid"
+        borderTop="0"
+        overflow="hidden"
+        bodyProps={{ overflow: 'hidden' }}
+      >
         <VariableTree
           height={380}
           dataSource={dataSource || expressionVariables}

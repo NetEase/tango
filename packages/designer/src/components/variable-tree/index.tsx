@@ -1,8 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { css } from 'styled-components';
-import { IVariableTreeNode } from '../variable-tree-modal';
 import { filterTreeData, noop, parseServiceKey } from '@music163/tango-helpers';
-import { Box, Text } from 'coral-system';
+import { css, Box, Text } from 'coral-system';
 import { Button, Popconfirm, Tooltip, Tree } from 'antd';
 import {
   CopyOutlined,
@@ -14,12 +12,20 @@ import {
 import { CopyClipboard, Panel, Search } from '@music163/tango-ui';
 import { AddStoreForm, AddStoreVariableForm } from './add-store';
 import { AddServiceForm } from './add-service';
-import { ValueDefine, ValueDefineProps, ValueDetail } from './value-detail';
+import {
+  NodeCommonDetail,
+  ValueDefine,
+  ValueDefineProps,
+  ValueDetail,
+  ValueDetailProps,
+} from './value-detail';
 import { ValuePreview } from './value-preview';
 import { ServicePreview } from './service-preview';
+import { IVariableTreeNode } from '../../types';
 
 const varTreeStyle = css`
   overflow: auto;
+  position: relative;
 
   .ant-tree {
     font-family: Consolas, Menlo, Courier, monospace;
@@ -47,6 +53,7 @@ const varTreeStyle = css`
 `;
 
 export interface VariableTreeProps {
+  defaultValueDetailMode?: ValueDetailProps['defaultMode'];
   dataSource: IVariableTreeNode[];
   appContext?: object;
   serviceModules?: any[];
@@ -72,6 +79,7 @@ export function VariableTree({
   dataSource = [],
   serviceModules = [],
   appContext = {},
+  defaultValueDetailMode,
   onSelect = noop,
   onAddStoreVariable = noop,
   onAddStore = noop,
@@ -106,136 +114,85 @@ export function VariableTree({
   }, [keyword, dataSource]);
 
   return (
-    <Box p="m" {...rest}>
-      <Box display="flex" columnGap="l" className="VariableTree" css={varTreeStyle}>
-        <Box width="40%">
-          <Box mb="m" position="sticky" top="0" bg="white" zIndex={2}>
-            <Search placeholder="请输入变量名" onChange={(val) => setKeyword(val?.trim())} />
-          </Box>
-          <Tree
-            blockNode
-            showIcon={false}
-            defaultExpandAll
-            treeData={treeData}
-            onSelect={(keys, detail) => {
-              const key = keys[0] as string;
-              if (isStoreVariable(key)) {
-                setMode('storeVariableDetail');
-              } else if (isServiceVariable(key)) {
-                setMode('serviceDetail');
-              } else {
-                setMode('detail');
-              }
-              setActiveNode(detail.node);
-              onSelect(detail.node);
-            }}
-            titleRender={(node) => {
-              const isLeaf = !node.children;
+    <Box display="flex" columnGap="l" className="VariableTree" css={varTreeStyle} {...rest}>
+      <Box className="VariableList" width="40%">
+        <Box mb="m" position="sticky" top="0" bg="white" zIndex={2}>
+          <Search placeholder="请输入变量名" onChange={(val) => setKeyword(val?.trim())} />
+        </Box>
+        <Tree
+          blockNode
+          showIcon={false}
+          defaultExpandAll
+          treeData={treeData}
+          onSelect={(keys, detail) => {
+            const key = keys[0] as string;
+            if (isStoreVariable(key)) {
+              setMode('storeVariableDetail');
+            } else if (isServiceVariable(key)) {
+              setMode('serviceDetail');
+            } else {
+              setMode('detail');
+            }
+            setActiveNode(detail.node);
+            onSelect(detail.node);
+          }}
+          titleRender={(node) => {
+            const isLeaf = !node.children;
 
-              if (isLeaf) {
-                const isDeletable = node.showDeleteIcon ?? showDeleteIcon;
-                return (
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Text flex="1" truncated>
-                      {node.title}
-                      {node.type === 'function' && <FunctionOutlined />}
-                    </Text>
-                    <Box flex="0 0 72px" textAlign="right">
-                      {isDeletable && (
-                        <Popconfirm
-                          title="确认删除吗？该操作会导致引用此模型的代码报错，请谨慎操作！"
-                          onConfirm={() => {
-                            onRemoveVariable(node.key);
-                          }}
-                        >
-                          <Button
-                            type="text"
-                            size="small"
-                            icon={<DeleteOutlined />}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                          />
-                        </Popconfirm>
-                      )}
-                      <CopyClipboard text={`tango.${node.key.replaceAll('.', '?.')}`}>
-                        {({ copied, onClick }) => {
-                          const label = copied ? '已复制' : '复制变量路径';
-                          return (
-                            <Tooltip title={label}>
-                              <Button
-                                type="text"
-                                size="small"
-                                icon={<CopyOutlined />}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onClick();
-                                  onCopy(node);
-                                }}
-                              />
-                            </Tooltip>
-                          );
-                        }}
-                      </CopyClipboard>
-                      {showViewIcon && (
-                        <Tooltip title="查看变量详情">
-                          <Button
-                            type="text"
-                            size="small"
-                            icon={<EyeOutlined />}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onView(node);
-                            }}
-                          />
-                        </Tooltip>
-                      )}
-                    </Box>
-                  </Box>
-                );
-              }
-
+            if (isLeaf) {
+              const isDeletable = node.showDeleteIcon ?? showDeleteIcon;
               return (
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Text mr="m">{node.title}</Text>
-                  <Box>
-                    {/^\$?stores$/.test(node.key) && (
-                      <Tooltip title="新建数据模型">
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Text flex="1" truncated>
+                    {node.title}
+                    {node.type === 'function' && <FunctionOutlined />}
+                  </Text>
+                  <Box flex="0 0 72px" textAlign="right">
+                    {isDeletable && (
+                      <Popconfirm
+                        title="确认删除吗？该操作会导致引用此模型的代码报错，请谨慎操作！"
+                        onConfirm={() => {
+                          onRemoveVariable(node.key);
+                        }}
+                      >
                         <Button
                           type="text"
                           size="small"
-                          icon={<PlusOutlined />}
+                          icon={<DeleteOutlined />}
                           onClick={(e) => {
                             e.stopPropagation();
-                            setMode('addStore');
                           }}
                         />
-                      </Tooltip>
+                      </Popconfirm>
                     )}
-                    {/^stores\.[a-zA-Z0-9]+$/.test(node.key) && (
-                      <Tooltip title={`向 ${node.title} 中添加变量`}>
+                    <CopyClipboard text={`tango.${node.key.replaceAll('.', '?.')}`}>
+                      {({ copied, onClick }) => {
+                        const label = copied ? '已复制' : '复制变量路径';
+                        return (
+                          <Tooltip title={label}>
+                            <Button
+                              type="text"
+                              size="small"
+                              icon={<CopyOutlined />}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onClick();
+                                onCopy(node);
+                              }}
+                            />
+                          </Tooltip>
+                        );
+                      }}
+                    </CopyClipboard>
+                    {showViewIcon && (
+                      <Tooltip title="查看变量详情">
                         <Button
                           type="text"
                           size="small"
-                          icon={<PlusOutlined />}
+                          icon={<EyeOutlined />}
                           onClick={(e) => {
                             e.stopPropagation();
-                            setActiveNode(node);
-                            setMode('addVariable');
-                          }}
-                        />
-                      </Tooltip>
-                    )}
-                    {/^services(\.[a-zA-Z0-9]+)?$/.test(node.key) && (
-                      <Tooltip title={`向 ${node.title} 中添加服务函数`}>
-                        <Button
-                          type="text"
-                          size="small"
-                          icon={<PlusOutlined />}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setActiveNode(node);
-                            setMode('addService');
+                            onView(node);
                           }}
                         />
                       </Tooltip>
@@ -243,101 +200,150 @@ export function VariableTree({
                   </Box>
                 </Box>
               );
-            }}
-          />
-        </Box>
-        <Box flex="1">
-          {mode === 'detail' && <div>fallback detail</div>}
-          {mode === 'storeVariableDetail' && (
-            <ValueDetail>
-              {(previewMode) =>
-                previewMode === 'runtime' ? (
-                  <ValuePreview
-                    value={getPreviewValue(activeNode)}
-                    onCopy={(valuePath) => {
-                      return ['tango', activeNode.key.replaceAll('.', '?.'), valuePath].join('.');
-                    }}
-                  />
-                ) : (
-                  <ValueDefine data={activeNode} onSave={onUpdateVariable} />
-                )
-              }
-            </ValueDetail>
-          )}
-          {mode === 'serviceDetail' && (
-            <>
-              <Panel shape="solid" title="服务函数配置">
-                <AddServiceForm
-                  key={activeNode.key}
-                  serviceModules={serviceModules}
-                  serviceNames={(function () {
-                    const { moduleName } = parseServiceKey(activeNode.key);
-                    return getServiceNames?.(moduleName) || [];
-                  })()}
-                  initialValues={{
-                    ...getServiceData?.(activeNode.key),
-                  }}
-                  onCancel={clear}
-                  onSubmit={(values) => {
-                    onUpdateService(values);
-                    clear();
+            }
+
+            return (
+              <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Text mr="m">{node.title}</Text>
+                <Box>
+                  {/^\$?stores$/.test(node.key) && (
+                    <Tooltip title="新建数据模型">
+                      <Button
+                        type="text"
+                        size="small"
+                        icon={<PlusOutlined />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMode('addStore');
+                        }}
+                      />
+                    </Tooltip>
+                  )}
+                  {/^stores\.[a-zA-Z0-9]+$/.test(node.key) && (
+                    <Tooltip title={`向 ${node.title} 中添加变量`}>
+                      <Button
+                        type="text"
+                        size="small"
+                        icon={<PlusOutlined />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveNode(node);
+                          setMode('addVariable');
+                        }}
+                      />
+                    </Tooltip>
+                  )}
+                  {/^services(\.[a-zA-Z0-9]+)?$/.test(node.key) && (
+                    <Tooltip title={`向 ${node.title} 中添加服务函数`}>
+                      <Button
+                        type="text"
+                        size="small"
+                        icon={<PlusOutlined />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveNode(node);
+                          setMode('addService');
+                        }}
+                      />
+                    </Tooltip>
+                  )}
+                </Box>
+              </Box>
+            );
+          }}
+        />
+      </Box>
+      <Box className="VariableDetail" flex="1" position="sticky" top="0" overflow="auto">
+        {mode === 'detail' && <NodeCommonDetail data={activeNode} />}
+        {mode === 'storeVariableDetail' && (
+          <ValueDetail key={activeNode.key} defaultMode={defaultValueDetailMode}>
+            {(previewMode) =>
+              previewMode === 'runtime' ? (
+                <ValuePreview
+                  value={getPreviewValue(activeNode)}
+                  onCopy={(valuePath) => {
+                    return ['tango', activeNode.key.replaceAll('.', '?.'), valuePath].join('.');
                   }}
                 />
-              </Panel>
-              <Panel shape="solid" title="服务函数预览" mt="l">
-                <ServicePreview
-                  key={activeNode.key}
-                  appContext={appContext}
-                  functionKey={activeNode.key}
-                />
-              </Panel>
-            </>
-          )}
-          {mode === 'addVariable' && (
-            <Panel shape="solid" title="添加变量">
-              <AddStoreVariableForm
-                parentNode={activeNode}
-                onSubmit={(storeName, data) => {
-                  onAddStoreVariable(storeName, data);
-                  clear();
+              ) : (
+                <ValueDefine data={activeNode} onSave={onUpdateVariable} />
+              )
+            }
+          </ValueDetail>
+        )}
+        {mode === 'serviceDetail' && (
+          <>
+            <Panel shape="solid" title="服务函数配置">
+              <AddServiceForm
+                key={activeNode.key}
+                serviceModules={serviceModules}
+                serviceNames={(function () {
+                  const { moduleName } = parseServiceKey(activeNode.key);
+                  return getServiceNames?.(moduleName) || [];
+                })()}
+                initialValues={{
+                  ...getServiceData?.(activeNode.key),
                 }}
-                onCancel={() => {
+                onCancel={clear}
+                onSubmit={(values) => {
+                  onUpdateService(values);
                   clear();
                 }}
               />
             </Panel>
-          )}
-          {mode === 'addStore' && (
-            <AddStoreForm
-              storeNames={getStoreNames?.() || []}
-              onSubmit={({ name }) => {
-                onAddStore(name);
+            <Panel shape="solid" title="服务函数预览" mt="l">
+              <ServicePreview
+                key={activeNode.key}
+                appContext={appContext}
+                functionKey={activeNode.key}
+              />
+            </Panel>
+          </>
+        )}
+        {mode === 'addVariable' && (
+          <Panel shape="solid" title="添加变量">
+            <AddStoreVariableForm
+              parentNode={activeNode}
+              onSubmit={(storeName, data) => {
+                onAddStoreVariable(storeName, data);
                 clear();
               }}
               onCancel={() => {
                 clear();
               }}
             />
-          )}
-          {mode === 'addService' && (
-            <Panel shape="solid" title="创建服务函数">
-              <AddServiceForm
-                serviceModules={serviceModules}
-                serviceNames={activeNode.children?.map((item) => item.title) || []}
-                initialValues={{
-                  moduleName: 'index',
-                }}
-                onCancel={() => {
-                  clear();
-                }}
-                onSubmit={(values) => {
-                  onAddService(values);
-                  clear();
-                }}
-              />
-            </Panel>
-          )}
-        </Box>
+          </Panel>
+        )}
+        {mode === 'addStore' && (
+          <AddStoreForm
+            storeNames={getStoreNames?.() || []}
+            onSubmit={({ name }) => {
+              onAddStore(name);
+              clear();
+            }}
+            onCancel={() => {
+              clear();
+            }}
+          />
+        )}
+        {mode === 'addService' && (
+          <Panel shape="solid" title="创建服务函数">
+            <AddServiceForm
+              serviceModules={serviceModules}
+              serviceNames={activeNode.children?.map((item) => item.title) || []}
+              initialValues={{
+                moduleName: 'index',
+              }}
+              onCancel={() => {
+                clear();
+              }}
+              onSubmit={(values) => {
+                onAddService(values);
+                clear();
+              }}
+            />
+          </Panel>
+        )}
       </Box>
     </Box>
   );
