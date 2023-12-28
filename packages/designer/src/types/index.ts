@@ -26,17 +26,17 @@ export interface IVariableTreeNode {
    */
   selectable?: boolean;
   /**
-   * 隐藏删除按钮
+   * 展示删除按钮
    */
-  hideRemoveButton?: boolean;
+  showRemoveButton?: boolean;
   /**
-   * 隐藏添加按钮
+   * 展示添加按钮
    */
-  hideAddButton?: boolean;
+  showAddButton?: boolean;
   /**
-   * 隐藏查看按钮
+   * 展示查看按钮
    */
-  hideViewButton?: boolean;
+  showViewButton?: boolean;
   /**
    * 结点类型，用来展示图标
    */

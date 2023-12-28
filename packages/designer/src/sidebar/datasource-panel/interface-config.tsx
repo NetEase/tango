@@ -29,7 +29,6 @@ const DataSourceView = observer(() => {
   return (
     <Box className="ServiceFunctionList" p="m">
       <VariableTree
-        showViewIcon={false}
         dataSource={serviceVariables}
         appContext={sandbox?.window['tango']}
         serviceModules={serviceModules}

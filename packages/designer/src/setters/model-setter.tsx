@@ -75,19 +75,18 @@ export function ModelSetter({
   const variables = evaluateContext['tango']?.stores
     ? [
         object2treeData(evaluateContext['tango']?.stores, 'stores', 0, 1, (keyPath, val) => {
-          if (!definedVariables.includes(keyPath)) {
-            return {
-              hideAddButton: true,
-              hideRemoveButton: true,
-            };
-          }
+          const ret: any = {};
           if (isFunction(val)) {
-            // 不可以同步给函数类型变量
-            return {
-              disabled: true,
-              type: 'function',
-            };
+            ret.disabled = true;
+            ret.type = 'function';
           }
+
+          if (!definedVariables.includes(keyPath)) {
+            ret.showAddButton = false;
+            ret.showRemoveButton = false;
+          }
+
+          return ret;
         }),
       ]
     : modelVariables;
@@ -146,6 +145,7 @@ export function ModelSetter({
               const [, storeName, stateName] = variableKey.split('.');
               workspace.removeStoreState(storeName, stateName);
             }}
+            getStoreNames={() => Object.keys(workspace.storeModules)}
             getPreviewValue={(node) => {
               if (!node || !node.key) {
                 return;

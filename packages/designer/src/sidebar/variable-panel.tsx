@@ -43,7 +43,6 @@ export const VariablePanel = observer(
         ) : (
           <VariableTree
             defaultValueDetailMode="define"
-            showViewIcon={false}
             dataSource={storeVariables}
             onAddStoreVariable={(storeName, data) => {
               workspace.addStoreState(storeName, data.name, data.initialValue);

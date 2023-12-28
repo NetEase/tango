@@ -45,12 +45,9 @@ const varTreeStyle = css`
   .ant-tree-indent-unit {
     width: 12px;
   }
-
-  .anticon-function {
-    margin-left: 4px;
-    color: var(--tango-colors-text2);
-  }
 `;
+
+type SelectNodeCallback = (data: IVariableTreeNode) => void;
 
 export interface VariableTreeProps {
   defaultValueDetailMode?: ValueDetailProps['defaultMode'];
@@ -61,7 +58,7 @@ export interface VariableTreeProps {
   getServiceData?: (serviceKey: string) => object;
   getServiceNames?: (moduleName: string) => string[];
   getStoreNames?: () => string[];
-  onSelect?: (data: IVariableTreeNode) => void;
+  onSelect?: SelectNodeCallback;
   onAddStoreVariable?: (storeName: string, data: any) => void;
   onAddStore?: (newStoreName: string) => void;
   onAddService?: (data: object) => void;
@@ -69,8 +66,9 @@ export interface VariableTreeProps {
   onUpdateVariable?: ValueDefineProps['onSave'];
   onUpdateService?: (data: object) => void;
   onCopy?: (data: IVariableTreeNode) => void;
-  onView?: (data: IVariableTreeNode) => void;
+  onView?: SelectNodeCallback;
   height?: number | string;
+  showViewButton?: boolean;
 }
 
 export function VariableTree({
@@ -91,6 +89,7 @@ export function VariableTree({
   getServiceNames,
   getStoreNames,
   getPreviewValue = noop,
+  showViewButton,
   ...rest
 }: VariableTreeProps) {
   const [keyword, setKeyword] = useState('');
@@ -102,6 +101,19 @@ export function VariableTree({
     setActiveNode(null);
     setMode(null);
   }, []);
+
+  const selectNode = useCallback((node: IVariableTreeNode, callback?: SelectNodeCallback) => {
+    if (isStoreVariable(node.key)) {
+      setMode('storeVariableDetail');
+    } else if (isServiceVariable(node.key)) {
+      setMode('serviceDetail');
+    } else {
+      setMode('detail');
+    }
+    setActiveNode(node);
+    callback?.(node);
+  }, []);
+
   const treeData = useMemo(() => {
     const pattern = new RegExp(keyword, 'ig');
     return keyword
@@ -121,30 +133,26 @@ export function VariableTree({
           defaultExpandAll
           treeData={treeData}
           onSelect={(keys, detail) => {
-            const key = keys[0] as string;
-            if (isStoreVariable(key)) {
-              setMode('storeVariableDetail');
-            } else if (isServiceVariable(key)) {
-              setMode('serviceDetail');
-            } else {
-              setMode('detail');
-            }
-            setActiveNode(detail.node);
-            onSelect(detail.node);
+            selectNode(detail.node, onSelect);
           }}
           titleRender={(node) => {
             const isLeaf = !node.children;
 
             if (isLeaf) {
-              const isDeletable = !node.hideRemoveButton;
+              const showRemove = node.showRemoveButton ?? true;
+              const showView = node.showViewButton ?? showViewButton;
               return (
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Text flex="1" truncated>
                     {node.title}
-                    {node.type === 'function' && <FunctionOutlined />}
+                    {node.type === 'function' && (
+                      <Text color="text3" ml="m">
+                        <FunctionOutlined />
+                      </Text>
+                    )}
                   </Text>
                   <Box flex="0 0 72px" textAlign="right">
-                    {isDeletable && (
+                    {showRemove && (
                       <Popconfirm
                         title="确认删除吗？该操作会导致引用此模型的代码报错，请谨慎操作！"
                         onConfirm={() => {
@@ -180,7 +188,7 @@ export function VariableTree({
                         );
                       }}
                     </CopyClipboard>
-                    {!node.hideViewButton && (
+                    {showView && (
                       <Tooltip title="查看变量详情">
                         <Button
                           type="text"
@@ -188,7 +196,7 @@ export function VariableTree({
                           icon={<EyeOutlined />}
                           onClick={(e) => {
                             e.stopPropagation();
-                            onView(node);
+                            selectNode(node, onView);
                           }}
                         />
                       </Tooltip>
@@ -197,6 +205,8 @@ export function VariableTree({
                 </Box>
               );
             }
+
+            const showAdd = node.showAddButton ?? true;
 
             return (
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -215,7 +225,7 @@ export function VariableTree({
                       />
                     </Tooltip>
                   )}
-                  {!node.hideAddButton && /^stores\.[a-zA-Z0-9]+$/.test(node.key) && (
+                  {showAdd && /^stores\.[a-zA-Z0-9]+$/.test(node.key) && (
                     <Tooltip title={`向 ${node.title} 中添加变量`}>
                       <Button
                         type="text"

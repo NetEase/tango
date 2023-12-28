@@ -249,6 +249,7 @@ export function ExpressionModal({
       >
         <VariableTree
           height={380}
+          showViewButton
           dataSource={dataSource || expressionVariables}
           appContext={sandbox?.window['tango']}
           getStoreNames={() => Object.keys(workspace.storeModules)}
