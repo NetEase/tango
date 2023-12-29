@@ -6,13 +6,22 @@ import {
   isWrappedByExpressionContainer,
   value2expressionCode,
 } from '@music163/tango-core';
-import { getVariableContent, noop, useBoolean, getValue } from '@music163/tango-helpers';
+import {
+  getVariableContent,
+  noop,
+  useBoolean,
+  getValue,
+  isStoreVariablePath,
+  IVariableTreeNode,
+} from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
 import { IconButton, Panel, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { EditableVariableTree, IVariableTreeNode } from '../components';
+import { VariableTree } from '../components';
 import { useSandboxQuery } from '../context';
+import { CODE_TEMPLATES } from '../helpers';
+import { shapeServiceValues } from '../sidebar/datasource-panel/interface-config';
 
 export const expressionValueValidate = (value: string) => {
   if (isWrappedByExpressionContainer(value)) {
@@ -77,6 +86,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     value: valueProp,
     status,
     allowClear = true,
+    newStoreTemplate,
   } = props;
   const [visible, { on, off }] = useBoolean();
   const [inputValue, setInputValue] = useState(() => {
@@ -143,6 +153,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
         subTitle={modalTip}
         placeholder={placeholder}
         autoCompleteOptions={autoCompleteOptions}
+        newStoreTemplate={newStoreTemplate}
         visible={visible}
         value={inputValue}
         onCancel={() => off()}
@@ -166,6 +177,10 @@ export interface ExpressionModalProps {
   onOk?: (value: string) => void;
   dataSource?: IVariableTreeNode[];
   autoCompleteOptions?: string[];
+  /**
+   * 新建 store 的模板代码
+   */
+  newStoreTemplate?: string;
 }
 
 export function ExpressionModal({
@@ -179,18 +194,19 @@ export function ExpressionModal({
   value,
   dataSource,
   autoCompleteOptions,
+  newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
 }: ExpressionModalProps) {
   const [exp, setExp] = useState(value ?? defaultValue);
   const [error, setError] = useState('');
   const workspace = useWorkspace();
-  const onAction = useCallback(
-    (action: string, args: unknown[]) => {
-      workspace[action]?.(...args);
-    },
-    [workspace],
-  );
-  const sandbox = useSandboxQuery();
+
   const { expressionVariables } = useWorkspaceData();
+  const serviceModules = Object.keys(workspace.serviceModules).map((key) => ({
+    label: key === 'index' ? '默认模块' : key,
+    value: key,
+  }));
+
+  const sandbox = useSandboxQuery();
   const evaluateContext = sandbox.window;
 
   const handleExpInputChange = (val: string) => {
@@ -231,10 +247,29 @@ export function ExpressionModal({
         />
         {error ? <Text color="red">输入的表达式存在语法错误，请修改后再提交！</Text> : null}
       </Panel>
-      <Panel title="从变量列表中选中" shape="solid" borderTop="0" overflow="hidden">
-        <EditableVariableTree
+      <Panel
+        title="从变量列表中选中"
+        shape="solid"
+        borderTop="0"
+        overflow="hidden"
+        bodyProps={{ overflow: 'hidden' }}
+      >
+        <VariableTree
           height={380}
+          showViewButton
           dataSource={dataSource || expressionVariables}
+          appContext={sandbox?.window['tango']}
+          getStoreNames={() => Object.keys(workspace.storeModules)}
+          serviceModules={serviceModules}
+          getServiceData={(serviceKey) => {
+            const data = workspace.getServiceFunction(serviceKey);
+            return {
+              name: data.name,
+              moduleName: data.moduleName,
+              method: 'get',
+              ...data.config,
+            };
+          }}
           onSelect={(node) => {
             if (!node.key) {
               return;
@@ -250,17 +285,29 @@ export function ExpressionModal({
             }
             setExp(str);
           }}
-          onAddVariable={(storeName, data) => {
-            onAction('addStoreState', [storeName, data.name, data.initialValue]);
+          onAddStoreVariable={(storeName, data) => {
+            workspace.addStoreState(storeName, data.name, data.initialValue);
           }}
-          onDeleteVariable={(storeName, stateName) => {
-            onAction('removeStoreState', [storeName, stateName]);
+          onUpdateVariable={(variableKey, code) => {
+            workspace.updateStoreVariable(variableKey, code);
           }}
-          onDeleteStore={(storeName) => {
-            onAction('removeStoreModule', [storeName]);
+          onAddStore={(storeName) => {
+            workspace.addStoreFile(storeName, newStoreTemplate);
           }}
-          onSave={(code, node) => {
-            onAction('updateModuleCodeByVariablePath', [node.key, code]);
+          onRemoveVariable={(variablePath) => {
+            if (isStoreVariablePath(variablePath)) {
+              workspace.removeStoreVariable(variablePath);
+            } else {
+              workspace.removeServiceFunction(variablePath);
+            }
+          }}
+          onAddService={(data) => {
+            const { name, moduleName, ...payload } = shapeServiceValues(data);
+            workspace.addServiceFunction(name, payload, moduleName);
+          }}
+          onUpdateService={(data) => {
+            const { name, moduleName, ...payload } = shapeServiceValues(data);
+            workspace.updateServiceFunction(name, payload, moduleName);
           }}
           getPreviewValue={(node) => {
             if (!node || !node.key) {

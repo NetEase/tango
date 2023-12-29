@@ -1,12 +1,5 @@
 import type { Engine } from '@music163/tango-core';
-import { createContext } from '@music163/tango-helpers';
-
-interface CustomVariableData {
-  key: string;
-  title: string;
-  children?: CustomVariableData[];
-  [key: string]: any;
-}
+import { IVariableTreeNode, createContext } from '@music163/tango-helpers';
 
 export interface ITangoEngineContext {
   /**
@@ -17,8 +10,8 @@ export interface ITangoEngineContext {
    * 自定义配置数据
    */
   config?: {
-    customActionVariables?: CustomVariableData[];
-    customExpressionVariables?: CustomVariableData[];
+    customActionVariables?: IVariableTreeNode[];
+    customExpressionVariables?: IVariableTreeNode[];
   };
 }
 
@@ -39,23 +32,25 @@ export const useDesigner = () => {
 export const useWorkspaceData = () => {
   const ctx = useTangoEngine();
   const workspace = useWorkspace();
-  const modelVariables: any[] = []; // 绑定变量列表
-  const storeActionVariables: any[] = []; // 模型中的所有 actions
-  const storeVariables: any[] = []; // 模型中的所有变量
-  const serviceVariables: any[] = []; // 服务中的所有变量
+  const modelVariables: IVariableTreeNode[] = []; // 绑定变量列表
+  const storeActionVariables: IVariableTreeNode[] = []; // 模型中的所有 actions
+  const storeVariables: IVariableTreeNode[] = []; // 模型中的所有变量
+  const serviceVariables: IVariableTreeNode[] = []; // 服务中的所有变量
 
   Object.values(workspace.storeModules).forEach((file) => {
     const prefix = `stores.${file.name}`;
-    const states = file.states.map((item) => ({
+    const states: IVariableTreeNode[] = file.states.map((item) => ({
       title: item.name,
       key: `${prefix}.${item.name}`,
       raw: item.code,
+      showRemoveButton: true,
     }));
-    const actions = file.actions.map((item) => ({
+    const actions: IVariableTreeNode[] = file.actions.map((item) => ({
       title: item.name,
       key: `${prefix}.${item.name}`,
       type: 'function',
       raw: item.code,
+      showRemoveButton: true,
     }));
 
     modelVariables.push({
@@ -63,6 +58,7 @@ export const useWorkspaceData = () => {
       key: prefix,
       selectable: false,
       children: states,
+      showAddButton: true,
     });
 
     storeActionVariables.push({
@@ -77,8 +73,7 @@ export const useWorkspaceData = () => {
       key: prefix,
       selectable: false,
       children: [...states, ...actions],
-      showAddChildIcon: true,
-      showRemoveIcon: true,
+      showAddButton: true,
     });
   });
 
@@ -88,10 +83,12 @@ export const useWorkspaceData = () => {
       title: file.name,
       key: prefix,
       selectable: false,
+      showAddButton: true,
       children: Object.keys(file.serviceFunctions || {}).map((key) => ({
         title: key,
         key: [prefix, key].join('.'),
         type: 'function',
+        showRemoveButton: true,
       })),
     });
   });
@@ -102,7 +99,7 @@ export const useWorkspaceData = () => {
     value: item.path,
   }));
 
-  let actionVariables: CustomVariableData[] = [
+  let actionVariables: IVariableTreeNode[] = [
     buildVariableOptions('数据模型', '$stores', storeActionVariables),
     buildVariableOptions('服务函数', '$services', serviceVariables),
   ];
@@ -111,7 +108,7 @@ export const useWorkspaceData = () => {
     actionVariables = actionVariables.concat(ctx.config?.customActionVariables);
   }
 
-  let expressionVariables: CustomVariableData[] = [
+  let expressionVariables: IVariableTreeNode[] = [
     buildVariableOptions('数据模型', '$stores', storeVariables),
     buildVariableOptions('服务函数', '$services', serviceVariables),
   ];
@@ -129,7 +126,7 @@ export const useWorkspaceData = () => {
   };
 };
 
-function buildVariableOptions(title: string, key: string, children: any[]) {
+function buildVariableOptions(title: string, key: string, children: IVariableTreeNode[]) {
   return {
     key,
     title,

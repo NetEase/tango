@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box } from 'coral-system';
 import { Input, Tooltip } from 'antd';
-import { getValue, isFunction } from '@music163/tango-helpers';
+import { getValue, isFunction, isStoreVariablePath } from '@music163/tango-helpers';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { MenuOutlined } from '@ant-design/icons';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { EditableVariableTreeModal } from '../components';
+import { VariableTreeModal } from '../components';
 import { useSandboxQuery } from '../context';
+import { CODE_TEMPLATES } from '../helpers';
 
 function object2treeData(
   val: any,
@@ -52,43 +53,40 @@ function traverseTreeData(val: any, callback: (val: any) => void) {
   }
 }
 
-export function ModelSetter({ value, onChange }: FormItemComponentProps) {
+export function ModelSetter({
+  value,
+  onChange,
+  newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
+}: FormItemComponentProps) {
   const [inputValue, setInputValue] = useState(value);
   const { modelVariables } = useWorkspaceData();
   const evaluateContext = useSandboxQuery().window || {};
   const workspace = useWorkspace();
-  const onAction = useCallback(
-    (action: string, args: unknown[]) => {
-      workspace[action]?.(...args);
-    },
-    [workspace],
-  );
   const definedVariables = useMemo(() => {
-    const map = new Map();
+    const list: string[] = [];
     traverseTreeData(modelVariables, (node) => {
       if (node.key.split('.').length > 1) {
-        map.set(node.key, node);
+        list.push(node.key);
       }
     });
-    return map;
+    return list;
   }, [modelVariables]);
 
   const variables = evaluateContext['tango']?.stores
     ? [
         object2treeData(evaluateContext['tango']?.stores, 'stores', 0, 1, (keyPath, val) => {
-          if (keyPath.split('.').length === 2 && definedVariables.has(keyPath)) {
-            return {
-              showAddChildIcon: true,
-              showRemoveIcon: true,
-            };
-          }
+          const ret: any = {};
           if (isFunction(val)) {
-            // 不可以同步给函数类型变量
-            return {
-              disabled: true,
-              type: 'function',
-            };
+            ret.disabled = true;
+            ret.type = 'function';
           }
+
+          if (!definedVariables.includes(keyPath)) {
+            ret.showAddButton = false;
+            ret.showRemoveButton = false;
+          }
+
+          return ret;
         }),
       ]
     : modelVariables;
@@ -122,31 +120,35 @@ export function ModelSetter({ value, onChange }: FormItemComponentProps) {
         onChange={onInputChange}
         onBlur={onInputBlur}
         suffix={
-          <EditableVariableTreeModal
+          <VariableTreeModal
             title="同步到的变量"
             trigger={
               <Tooltip title="从模型列表选择" placement="topRight">
                 <MenuOutlined />
               </Tooltip>
             }
-            modes={['preview']}
             dataSource={variables as any[]}
             onSelect={(node) => {
               const modelPath = node.key.split('.').slice(1).join('.');
               onChange(modelPath);
             }}
-            onAddVariable={(storeName, data) => {
-              onAction('addStoreState', [storeName, data.name, data.initialValue]);
+            onAddStoreVariable={(storeName, data) => {
+              workspace.addStoreState(storeName, data.name, data.initialValue);
             }}
-            onDeleteVariable={(storeName, stateName) => {
-              onAction('removeStoreState', [storeName, stateName]);
+            onUpdateVariable={(variableKey, code) => {
+              workspace.updateStoreVariable(variableKey, code);
             }}
-            onDeleteStore={(storeName) => {
-              onAction('removeStoreModule', [storeName]);
+            onAddStore={(storeName) => {
+              workspace.addStoreFile(storeName, newStoreTemplate);
             }}
-            onSave={(code, node) => {
-              onAction('updateModuleCodeByVariablePath', [node.key, code]);
+            onRemoveVariable={(variablePath) => {
+              if (isStoreVariablePath(variablePath)) {
+                workspace.removeStoreVariable(variablePath);
+              } else {
+                workspace.removeServiceFunction(variablePath);
+              }
             }}
+            getStoreNames={() => Object.keys(workspace.storeModules)}
             getPreviewValue={(node) => {
               if (!node || !node.key) {
                 return;

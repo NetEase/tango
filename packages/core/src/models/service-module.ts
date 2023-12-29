@@ -7,7 +7,7 @@ import {
   deleteServiceConfigFromServiceFile,
   updateBaseConfigToServiceFile,
 } from '../helpers';
-import { IFileConfig, IServiceFunctionPayload } from '../types';
+import { IFileConfig } from '../types';
 import { IWorkspace } from './interfaces';
 import { TangoModule } from './module';
 
@@ -67,25 +67,23 @@ export class TangoServiceModule extends TangoModule {
     }
   }
 
-  addServiceFunction(payload: IServiceFunctionPayload) {
-    const { name, ...rest } = payload;
-    this.ast = updateServiceConfigToServiceFile(this.ast, { [name]: clone(rest, false) });
+  addServiceFunction(name: string, config: object) {
+    this.ast = updateServiceConfigToServiceFile(this.ast, { [name]: clone(config, false) });
     return this;
   }
 
-  addServiceFunctions(payloads: IServiceFunctionPayload[]) {
-    const config = payloads.reduce((acc, cur) => {
-      const { name, ...rest } = cur;
-      acc[name] = clone(rest, false);
-      return acc;
-    }, {});
-    this.ast = updateServiceConfigToServiceFile(this.ast, config);
+  /**
+   * 批量添加服务函数
+   * @param configs { [name: string]: object }
+   * @returns
+   */
+  addServiceFunctions(configs: object) {
+    this.ast = updateServiceConfigToServiceFile(this.ast, configs);
     return this;
   }
 
-  updateServiceFunction(payload: IServiceFunctionPayload) {
-    const { name, ...rest } = payload;
-    this.ast = updateServiceConfigToServiceFile(this.ast, { [name]: clone(rest, false) });
+  updateServiceFunction(name: string, payload: object) {
+    this.ast = updateServiceConfigToServiceFile(this.ast, { [name]: clone(payload, false) });
     return this;
   }
 

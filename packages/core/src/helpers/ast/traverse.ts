@@ -29,7 +29,6 @@ import type {
   IStorePropertyData,
   ITangoViewNodeData,
   IImportDeclarationPayload,
-  IServiceFunctionPayload,
   InsertChildPositionType,
   IImportSpecifierData,
   IExportSpecifierData,
@@ -998,7 +997,7 @@ export function deleteServiceConfigFromServiceFile(ast: t.File, serviceFunctionN
  * @param payload
  * @returns
  */
-export function serviceConfig2Node(payload: IServiceFunctionPayload) {
+export function serviceConfig2Node(payload: object) {
   return object2node(payload, (value, key) => {
     if (key === 'formatter' && value) {
       return code2expression(value);
@@ -1007,10 +1006,7 @@ export function serviceConfig2Node(payload: IServiceFunctionPayload) {
   });
 }
 
-export function updateServiceConfigToServiceFile(
-  ast: t.File,
-  config: { [key: string]: IServiceFunctionPayload },
-) {
+export function updateServiceConfigToServiceFile(ast: t.File, config: object) {
   traverse(ast, {
     CallExpression(path) {
       const calleeName = keyNode2value(path.node.callee) as string;

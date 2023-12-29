@@ -4,8 +4,6 @@ import { Tabs } from '@music163/tango-ui';
 import InterfaceConfig from './interface-config';
 import ProxyConfig from './proxy-config';
 
-export * from './interface-config';
-
 export function DataSourcePanel(props: Record<string, any>) {
   return (
     <Box className="DataSourceView" height="100%" overflowY="auto">

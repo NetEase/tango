@@ -8,7 +8,6 @@ import {
   InsertChildPositionType,
   ITangoConfigPackages,
   IPageConfigData,
-  IServiceFunctionPayload,
   IImportSpecifierSourceData,
   IImportSpecifierData,
 } from '../types';
@@ -204,20 +203,23 @@ export interface IWorkspace {
 
   // ----------------- 服务函数文件操作 -----------------
 
-  getServiceFunction?: (serviceKey: string) => object;
+  getServiceFunction?: (serviceKey: string) => {
+    name: string;
+    moduleName: string;
+    config: object;
+  };
   listServiceFunctions?: () => Record<string, object>;
-  removeServiceFunction?: (serviceName: string, modName?: string) => void;
-  addServiceFunction?: (
-    payload: IServiceFunctionPayload | IServiceFunctionPayload[],
-    modName?: string,
-  ) => void;
-  updateServiceFunction?: (payload: IServiceFunctionPayload, modName?: string) => void;
-  updateServiceBaseConfig?: (IServiceFunctionPayload: object, modName?: string) => void;
+  removeServiceFunction?: (serviceKey: string) => void;
+  addServiceFunction?: (serviceName: string, config: object, modName?: string) => void;
+  addServiceFunctions?: (configs: object, modName?: string) => void;
+  updateServiceFunction?: (serviceName: string, payload: object, modName?: string) => void;
+  updateServiceBaseConfig?: (config: object, modName?: string) => void;
 
   // ----------------- 状态管理文件操作 -----------------
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;
-  removeStoreState?: (storeName: string, stateName: string) => void;
   removeStoreModule?: (storeName: string) => void;
+  removeStoreVariable?: (variablePath: string) => void;
+  updateStoreVariable?: (variablePath: string, code: string) => void;
 
   // ----------------- 视图文件操作 -----------------
 
@@ -255,10 +257,6 @@ export interface IWorkspace {
   ) => void;
 
   removeBizComp?: (name: string) => void;
-
-  // ----------------- 其他操作 -----------------
-
-  updateModuleCodeByVariablePath?: (variablePath: string, code: string) => void;
 
   // ----------------- getter -----------------
 

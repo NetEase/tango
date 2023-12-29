@@ -43,3 +43,21 @@ export function isPromise(obj: any) {
 export function isNil(val: any) {
   return val == null;
 }
+
+/**
+ * 是否是状态变量的 path
+ * @param key
+ * @returns
+ */
+export function isStoreVariablePath(key: string) {
+  return /^stores\.[a-zA-Z0-9]+\.\w+$/.test(key);
+}
+
+/**
+ * 是否是服务变量的 path
+ * @param key
+ * @returns
+ */
+export function isServiceVariablePath(key: string) {
+  return /^services\.[a-zA-Z0-9]+/.test(key);
+}
