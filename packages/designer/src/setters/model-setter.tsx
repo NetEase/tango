@@ -1,12 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box } from 'coral-system';
 import { Input, Tooltip } from 'antd';
-import {
-  getValue,
-  isFunction,
-  isStoreVariablePath,
-  parseServiceVariablePath,
-} from '@music163/tango-helpers';
+import { getValue, isFunction, isStoreVariablePath } from '@music163/tango-helpers';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { MenuOutlined } from '@ant-design/icons';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
@@ -150,8 +145,7 @@ export function ModelSetter({
               if (isStoreVariablePath(variablePath)) {
                 workspace.removeStoreVariable(variablePath);
               } else {
-                const { moduleName, name } = parseServiceVariablePath(variablePath);
-                workspace.removeServiceFunction(name, moduleName);
+                workspace.removeServiceFunction(variablePath);
               }
             }}
             getStoreNames={() => Object.keys(workspace.storeModules)}

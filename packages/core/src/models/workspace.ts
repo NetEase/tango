@@ -25,13 +25,7 @@ import { TangoNode } from './node';
 import { TangoJsModule } from './module';
 import { TangoFile, TangoJsonFile, TangoLessFile } from './file';
 import { IWorkspace } from './interfaces';
-import {
-  IFileConfig,
-  FileType,
-  ITangoConfigPackages,
-  IPageConfigData,
-  IServiceFunctionPayload,
-} from '../types';
+import { IFileConfig, FileType, ITangoConfigPackages, IPageConfigData } from '../types';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
 import { TangoRouteModule } from './route-module';
@@ -659,29 +653,27 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 更新服务函数
    */
-  updateServiceFunction(payload: IServiceFunctionPayload, moduleName = 'index') {
-    this.serviceModules[moduleName].updateServiceFunction(payload).update();
+  updateServiceFunction(serviceName: string, payload: object, moduleName = 'index') {
+    this.serviceModules[moduleName].updateServiceFunction(serviceName, payload).update();
   }
 
   /**
    * 新增服务函数，支持批量添加
    */
-  addServiceFunction(
-    payload: IServiceFunctionPayload | IServiceFunctionPayload[],
-    moduleName = 'index',
-  ) {
-    if (Array.isArray(payload)) {
-      this.serviceModules[moduleName]?.addServiceFunctions(payload).update();
-    } else {
-      this.serviceModules[moduleName]?.addServiceFunction(payload).update();
-    }
+  addServiceFunction(name: string, config: object, moduleName = 'index') {
+    this.serviceModules[moduleName]?.addServiceFunction(name, config).update();
+  }
+
+  addServiceFunctions(configs: object, modName = 'index') {
+    this.serviceModules[modName]?.addServiceFunctions(configs).update();
   }
 
   /**
    * 删除服务函数
    * @param name
    */
-  removeServiceFunction(name: string, moduleName = 'index') {
+  removeServiceFunction(serviceKey: string) {
+    const { moduleName, name } = parseServiceVariablePath(serviceKey);
     this.serviceModules[moduleName]?.deleteServiceFunction(name).update();
   }
 

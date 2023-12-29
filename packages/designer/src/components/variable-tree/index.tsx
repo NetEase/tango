@@ -338,10 +338,11 @@ export function VariableTree({
         {mode === 'addService' && (
           <Panel shape="solid" title="创建服务函数">
             <AddServiceForm
+              key={activeNode.key}
               serviceModules={serviceModules}
               serviceNames={activeNode.children?.map((item) => item.title) || []}
               initialValues={{
-                moduleName: 'index',
+                moduleName: activeNode.title,
               }}
               onCancel={() => {
                 clear();

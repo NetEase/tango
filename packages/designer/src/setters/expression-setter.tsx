@@ -12,7 +12,6 @@ import {
   useBoolean,
   getValue,
   isStoreVariablePath,
-  parseServiceVariablePath,
   IVariableTreeNode,
 } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
@@ -22,6 +21,7 @@ import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { VariableTree } from '../components';
 import { useSandboxQuery } from '../context';
 import { CODE_TEMPLATES } from '../helpers';
+import { shapeServiceValues } from '../sidebar/datasource-panel/interface-config';
 
 export const expressionValueValidate = (value: string) => {
   if (isWrappedByExpressionContainer(value)) {
@@ -298,9 +298,16 @@ export function ExpressionModal({
             if (isStoreVariablePath(variablePath)) {
               workspace.removeStoreVariable(variablePath);
             } else {
-              const { moduleName, name } = parseServiceVariablePath(variablePath);
-              workspace.removeServiceFunction(name, moduleName);
+              workspace.removeServiceFunction(variablePath);
             }
+          }}
+          onAddService={(data) => {
+            const { name, moduleName, ...payload } = shapeServiceValues(data);
+            workspace.addServiceFunction(name, payload, moduleName);
+          }}
+          onUpdateService={(data) => {
+            const { name, moduleName, ...payload } = shapeServiceValues(data);
+            workspace.updateServiceFunction(name, payload, moduleName);
           }}
           getPreviewValue={(node) => {
             if (!node || !node.key) {

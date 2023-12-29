@@ -8,7 +8,6 @@ import {
   InsertChildPositionType,
   ITangoConfigPackages,
   IPageConfigData,
-  IServiceFunctionPayload,
   IImportSpecifierSourceData,
   IImportSpecifierData,
 } from '../types';
@@ -210,13 +209,11 @@ export interface IWorkspace {
     config: object;
   };
   listServiceFunctions?: () => Record<string, object>;
-  removeServiceFunction?: (serviceName: string, modName?: string) => void;
-  addServiceFunction?: (
-    payload: IServiceFunctionPayload | IServiceFunctionPayload[],
-    modName?: string,
-  ) => void;
-  updateServiceFunction?: (payload: IServiceFunctionPayload, modName?: string) => void;
-  updateServiceBaseConfig?: (IServiceFunctionPayload: object, modName?: string) => void;
+  removeServiceFunction?: (serviceKey: string) => void;
+  addServiceFunction?: (serviceName: string, config: object, modName?: string) => void;
+  addServiceFunctions?: (configs: object, modName?: string) => void;
+  updateServiceFunction?: (serviceName: string, payload: object, modName?: string) => void;
+  updateServiceBaseConfig?: (config: object, modName?: string) => void;
 
   // ----------------- 状态管理文件操作 -----------------
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;

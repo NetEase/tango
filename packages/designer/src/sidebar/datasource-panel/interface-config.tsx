@@ -7,7 +7,7 @@ import { VariableTree } from '../../components';
 import { useSandboxQuery } from '../../context';
 
 // 移除掉不必要的属性
-function shapeServiceValues(val: any) {
+export function shapeServiceValues(val: any) {
   const shapeValues = { ...val };
   delete shapeValues.type;
   // 兼容旧版，如果 formatter 包裹了 {} 则删掉首尾
@@ -33,16 +33,15 @@ const DataSourceView = observer(() => {
         appContext={sandbox?.window['tango']}
         serviceModules={serviceModules}
         onRemoveVariable={(variableKey) => {
-          const { moduleName, name } = parseServiceVariablePath(variableKey);
-          workspace.removeServiceFunction(name, moduleName);
+          workspace.removeServiceFunction(variableKey);
         }}
         onAddService={(data) => {
-          const { moduleName, ...payload } = shapeServiceValues(data);
-          workspace.addServiceFunction(payload, moduleName);
+          const { name, moduleName, ...payload } = shapeServiceValues(data);
+          workspace.addServiceFunction(name, payload, moduleName);
         }}
         onUpdateService={(data) => {
-          const { moduleName, ...payload } = shapeServiceValues(data);
-          workspace.updateServiceFunction(payload, moduleName);
+          const { name, moduleName, ...payload } = shapeServiceValues(data);
+          workspace.updateServiceFunction(name, payload, moduleName);
         }}
         getServiceData={(serviceKey) => {
           const data = workspace.getServiceFunction(serviceKey);

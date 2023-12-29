@@ -146,17 +146,6 @@ export interface IImportDeclarationPayload {
 }
 
 /**
- * 服务函数参数类型
- */
-export interface IServiceFunctionPayload {
-  [key: string]: any;
-  /**
-   * 服务函数名
-   */
-  name: string;
-}
-
-/**
  * Store 属性类型
  */
 export interface IStorePropertyData {
