@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.5](https://github.com/netease/tango/compare/@music163/tango-context@1.0.0-alpha.4...@music163/tango-context@1.0.0-alpha.5) (2023-12-29)
+
+### Bug Fixes
+
+- refactor VariableTree & Workspace ([#83](https://github.com/netease/tango/issues/83)) ([8c07821](https://github.com/netease/tango/commit/8c07821d93cea4dfc43f81ca948b845176821184))
+
 # [1.0.0-alpha.4](https://github.com/netease/tango/compare/@music163/tango-context@1.0.0-alpha.3...@music163/tango-context@1.0.0-alpha.4) (2023-12-26)
 
 **Note:** Version bump only for package @music163/tango-context

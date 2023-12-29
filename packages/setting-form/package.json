@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-setting-form",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "setting form of tango-apps",
   "author": "wwsun <ww.sun@outlook.com>",
   "homepage": "",
@@ -28,9 +28,9 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
-    "@music163/tango-core": "^1.0.0-alpha.4",
-    "@music163/tango-helpers": "^1.0.0-alpha.0",
-    "@music163/tango-ui": "^1.0.0-alpha.2",
+    "@music163/tango-core": "^1.0.0-alpha.5",
+    "@music163/tango-helpers": "^1.0.0-alpha.1",
+    "@music163/tango-ui": "^1.0.0-alpha.3",
     "antd": "^4.24.2",
     "coral-system": "^1.0.5",
     "mobx": "6.12.0",

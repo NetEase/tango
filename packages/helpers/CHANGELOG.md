@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.1](https://github.com/netease/tango/compare/@music163/tango-helpers@1.0.0-alpha.0...@music163/tango-helpers@1.0.0-alpha.1) (2023-12-29)
+
+### Bug Fixes
+
+- refactor VariableTree & Workspace ([#83](https://github.com/netease/tango/issues/83)) ([8c07821](https://github.com/netease/tango/commit/8c07821d93cea4dfc43f81ca948b845176821184))
+
 ## [0.1.8](https://github.com/netease/tango/compare/@music163/tango-helpers@0.1.7...@music163/tango-helpers@0.1.8) (2023-11-23)
 
 ### Bug Fixes

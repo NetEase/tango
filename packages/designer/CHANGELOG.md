@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.6](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.5...@music163/tango-designer@1.0.0-alpha.6) (2023-12-29)
+
+### Bug Fixes
+
+- check if store value is valid ([765ea07](https://github.com/netease/tango/commit/765ea07cd5be6528e3b326e4ecb163647774d9e5))
+- refactor VariableTree & Workspace ([#83](https://github.com/netease/tango/issues/83)) ([8c07821](https://github.com/netease/tango/commit/8c07821d93cea4dfc43f81ca948b845176821184))
+
 # [1.0.0-alpha.5](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.4...@music163/tango-designer@1.0.0-alpha.5) (2023-12-26)
 
 ### Bug Fixes
