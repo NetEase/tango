@@ -35,22 +35,6 @@ You can view the detailed usage guide through the following links:
 
 - Modern browsers（Chrome >= 80, Edge >= 80, last 2 safari versions, last 2 firefox versions）
 
-## 🎯 Milestone
-
-```mermaid
-gantt
-    dateFormat  YYYY-MM-DD
-    title       Tango Release Milestone
-    excludes    weekends
-    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
-
-    section Builder Release
-    Alpha version            :active,  m1, 2023-08-10, 2023-08-30
-    Beta version               :         m2, 2023-09-01, 2023-09-30
-    1.0 RC               :         m3, 2023-10-01, 2023-12-15
-    1.0 version              :         m4, after m3, 10d
-```
-
 ## 💻 Development
 
 ### Environment
