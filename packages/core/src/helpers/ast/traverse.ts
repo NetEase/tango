@@ -1006,7 +1006,7 @@ export function serviceConfig2Node(payload: object) {
   });
 }
 
-export function updateServiceConfigToServiceFile(ast: t.File, config: object) {
+export function updateServiceConfigToServiceFile(ast: t.File, config: Dict<object>) {
   traverse(ast, {
     CallExpression(path) {
       const calleeName = keyNode2value(path.node.callee) as string;

@@ -31,25 +31,27 @@
 - 开箱即用的前端低代码设计器，提供灵活易用的设计器 React 组件
 - 使用 TypeScript 开发，提供完整的类型定义文件
 
-## 🌐 兼容环境
-
-- 现代浏览器（Chrome >= 80, Edge >= 80, last 2 safari versions, last 2 firefox versions）
-
 ## 🎯 里程碑
 
 ```mermaid
 gantt
     dateFormat  YYYY-MM-DD
-    title       Tango Release Milestone
+    title       Tango 1.0 Milestones
     excludes    weekends
     %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
 
     section Builder Release
-    Alpha version            :active,  m1, 2023-08-10, 2023-08-30
-    Beta version               :         m2, 2023-09-01, 2023-09-30
-    1.0 RC               :         m3, 2023-10-01, 2023-12-15
-    1.0 version              :         m4, after m3, 10d
+    1.0 Alpha  : m1, 2023-10-01, 2024-01-31
+    1.0 RC     : m2, 2024-02-01, 2024-04-30
+    1.0 Stable : m3, 2024-04-30, 2024-12-31
 ```
+
+> [!NOTE]
+> Alpha 版本会持续对一些实现协议进行优化，并持续融合网易内网版本中的新增特性；RC 版本将会提供基本稳定的解析协议和实现；1.0 正式版本计划在 2024 年Q2发布。1.0 正式版发布后我们将会持续进行版本迭代，并逐步融入内网版本中的流程设计、组件库、AIGC 等核心基础能力。
+
+## 🌐 兼容环境
+
+- 现代浏览器（Chrome >= 80, Edge >= 80, last 2 safari versions, last 2 firefox versions）
 
 ## 💻 开发
 

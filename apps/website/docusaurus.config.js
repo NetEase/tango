@@ -62,13 +62,13 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/social-card.png',
-      announcementBar: {
-        id: 'notion_alert',
-        content: '🏗 当前版本为测试版，请暂时不要用于生产环境，正式版将于2023年Q4发布！',
-        backgroundColor: 'var(--ifm-color-primary-contrast-background)',
-        textColor: 'var(--ifm-color-primary-contrast-foreground)',
-        isCloseable: false,
-      },
+      // announcementBar: {
+      //   id: 'notion_alert',
+      //   content: '🏗 当前版本为测试版，请暂时不要用于生产环境，正式版将于2023年Q4发布！',
+      //   backgroundColor: 'var(--ifm-color-primary-contrast-background)',
+      //   textColor: 'var(--ifm-color-primary-contrast-foreground)',
+      //   isCloseable: false,
+      // },
       navbar: {
         title: '',
         logo: {

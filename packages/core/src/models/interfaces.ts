@@ -206,14 +206,14 @@ export interface IWorkspace {
   getServiceFunction?: (serviceKey: string) => {
     name: string;
     moduleName: string;
-    config: object;
+    config: Dict<object>;
   };
-  listServiceFunctions?: () => Record<string, object>;
+  listServiceFunctions?: () => Dict<object>;
   removeServiceFunction?: (serviceKey: string) => void;
-  addServiceFunction?: (serviceName: string, config: object, modName?: string) => void;
-  addServiceFunctions?: (configs: object, modName?: string) => void;
-  updateServiceFunction?: (serviceName: string, payload: object, modName?: string) => void;
-  updateServiceBaseConfig?: (config: object, modName?: string) => void;
+  addServiceFunction?: (serviceName: string, config: Dict, modName?: string) => void;
+  addServiceFunctions?: (configs: Dict<object>, modName?: string) => void;
+  updateServiceFunction?: (serviceName: string, payload: Dict, modName?: string) => void;
+  updateServiceBaseConfig?: (config: Dict, modName?: string) => void;
 
   // ----------------- 状态管理文件操作 -----------------
   addStoreState?: (storeName: string, stateName: string, initValue: string) => void;

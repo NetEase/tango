@@ -55,6 +55,21 @@ const varTreeStyle = css`
 
 type SelectNodeCallback = (data: IVariableTreeNode) => void;
 
+type DetailModeType =
+  | 'detail'
+  | 'storeVariableDetail'
+  | 'serviceDetail'
+  | 'addVariable'
+  | 'addStore'
+  | 'addService';
+
+interface IVariableTreeRenderDetailState {
+  mode: DetailModeType;
+  setMode: (mode: DetailModeType) => void;
+  activeNode: IVariableTreeNode;
+  clear: () => void;
+}
+
 export interface VariableTreeProps {
   defaultValueDetailMode?: ValueDetailProps['defaultMode'];
   dataSource: IVariableTreeNode[];
@@ -66,43 +81,63 @@ export interface VariableTreeProps {
   getStoreNames?: () => string[];
   onSelect?: SelectNodeCallback;
   onAddStoreVariable?: (storeName: string, data: any) => void;
+  onUpdateStoreVariable?: ValueDefineProps['onSave'];
+  onRemoveStoreVariable?: (variableKey: string) => void;
   onAddStore?: (newStoreName: string) => void;
   onAddService?: (data: object) => void;
-  onRemoveVariable?: (variableKey: string) => void;
-  onUpdateVariable?: ValueDefineProps['onSave'];
   onUpdateService?: (data: object) => void;
+  onRemoveService?: (variableKey: string) => void;
   onCopy?: (data: IVariableTreeNode) => void;
   onView?: SelectNodeCallback;
   height?: number | string;
   showViewButton?: boolean;
+  /**
+   * 自定义头部
+   */
+  renderHeaderExtra?: (
+    props: VariableTreeProps,
+    state: IVariableTreeRenderDetailState,
+  ) => React.ReactNode;
+  /**
+   * 自定义变量详情渲染
+   * @param props
+   * @param state
+   * @returns
+   */
+  renderDetail?: (
+    props: VariableTreeProps,
+    state: IVariableTreeRenderDetailState,
+  ) => React.ReactNode;
 }
 
-export function VariableTree({
-  dataSource = [],
-  serviceModules = [],
-  appContext = {},
-  defaultValueDetailMode,
-  onSelect = noop,
-  onAddStoreVariable = noop,
-  onAddStore = noop,
-  onAddService = noop,
-  onRemoveVariable = noop,
-  onUpdateVariable = noop,
-  onUpdateService = noop,
-  onCopy = noop,
-  onView = noop,
-  getServiceData,
-  getServiceNames,
-  getStoreNames,
-  getPreviewValue = noop,
-  showViewButton,
-  ...rest
-}: VariableTreeProps) {
+export function VariableTree(props: VariableTreeProps) {
+  const {
+    dataSource = [],
+    serviceModules = [],
+    appContext = {},
+    defaultValueDetailMode,
+    onSelect = noop,
+    onAddStoreVariable = noop,
+    onAddStore = noop,
+    onAddService = noop,
+    onUpdateStoreVariable = noop,
+    onUpdateService = noop,
+    onRemoveStoreVariable,
+    onRemoveService,
+    onCopy = noop,
+    onView = noop,
+    getServiceData,
+    getServiceNames,
+    getStoreNames,
+    getPreviewValue = noop,
+    showViewButton,
+    renderHeaderExtra,
+    renderDetail: renderDetailProp,
+    ...rest
+  } = props;
   const [keyword, setKeyword] = useState('');
   const [activeNode, setActiveNode] = useState<IVariableTreeNode>();
-  const [mode, setMode] = useState<
-    'detail' | 'storeVariableDetail' | 'serviceDetail' | 'addVariable' | 'addStore' | 'addService'
-  >();
+  const [mode, setMode] = useState<DetailModeType>();
   const clear = useCallback(() => {
     setActiveNode(null);
     setMode(null);
@@ -127,9 +162,12 @@ export function VariableTree({
       : dataSource;
   }, [keyword, dataSource]);
 
+  const state = { activeNode, mode, setMode, clear };
+
   return (
     <Box display="flex" columnGap="l" className="VariableTree" css={varTreeStyle} {...rest}>
       <Box className="VariableList" width="40%">
+        {renderHeaderExtra?.(props, state)}
         <Box mb="m" position="sticky" top="0" bg="white" zIndex={2}>
           <Search placeholder="请输入变量名" onChange={(val) => setKeyword(val?.trim())} />
         </Box>
@@ -161,7 +199,11 @@ export function VariableTree({
                       <Popconfirm
                         title={`确认删除吗 ${node.title}？该操作会导致引用此模型的代码报错，请谨慎操作！`}
                         onConfirm={() => {
-                          onRemoveVariable(node.key);
+                          if (isStoreVariablePath(node.key)) {
+                            onRemoveStoreVariable(node.key);
+                          } else {
+                            onRemoveService(node.key);
+                          }
                         }}
                       >
                         <Button
@@ -263,97 +305,114 @@ export function VariableTree({
         />
       </Box>
       <Box className="VariableDetail" flex="1" position="sticky" top="0" overflow="auto">
-        {mode === 'detail' && <NodeCommonDetail data={activeNode} />}
-        {mode === 'storeVariableDetail' && (
-          <ValueDetail key={activeNode.key} defaultMode={defaultValueDetailMode}>
-            {(previewMode) =>
-              previewMode === 'runtime' ? (
-                <ValuePreview
-                  value={getPreviewValue(activeNode)}
-                  onCopy={(valuePath) => {
-                    return ['tango', activeNode.key.replaceAll('.', '?.'), valuePath].join('.');
-                  }}
-                />
-              ) : (
-                <ValueDefine data={activeNode} onSave={onUpdateVariable} />
-              )
-            }
-          </ValueDetail>
-        )}
-        {mode === 'serviceDetail' && (
-          <>
-            <Panel shape="solid" title="服务函数配置">
-              <AddServiceForm
-                key={activeNode.key}
-                serviceModules={serviceModules}
-                serviceNames={(function () {
-                  const { moduleName } = parseServiceVariablePath(activeNode.key);
-                  return getServiceNames?.(moduleName) || [];
-                })()}
-                initialValues={{
-                  ...getServiceData?.(activeNode.key),
+        {(function renderDetail() {
+          const customRenderer = renderDetailProp?.(props, state);
+          if (customRenderer) {
+            return customRenderer;
+          }
+
+          if (mode === 'detail') {
+            return <NodeCommonDetail data={activeNode} />;
+          }
+          if (mode === 'storeVariableDetail') {
+            return (
+              <ValueDetail key={activeNode.key} defaultMode={defaultValueDetailMode}>
+                {(previewMode) =>
+                  previewMode === 'runtime' ? (
+                    <ValuePreview
+                      value={getPreviewValue(activeNode)}
+                      onCopy={(valuePath) => {
+                        return ['tango', activeNode.key.replaceAll('.', '?.'), valuePath].join('.');
+                      }}
+                    />
+                  ) : (
+                    <ValueDefine data={activeNode} onSave={onUpdateStoreVariable} />
+                  )
+                }
+              </ValueDetail>
+            );
+          }
+          if (mode === 'serviceDetail') {
+            return (
+              <>
+                <Panel shape="solid" title="服务函数配置">
+                  <AddServiceForm
+                    key={activeNode.key}
+                    serviceModules={serviceModules}
+                    serviceNames={(function () {
+                      const { moduleName } = parseServiceVariablePath(activeNode.key);
+                      return getServiceNames?.(moduleName) || [];
+                    })()}
+                    initialValues={{
+                      ...getServiceData?.(activeNode.key),
+                    }}
+                    onCancel={clear}
+                    onSubmit={(values) => {
+                      onUpdateService(values);
+                      clear();
+                    }}
+                  />
+                </Panel>
+                <Panel shape="solid" title="服务函数预览" mt="l">
+                  <ServicePreview
+                    key={activeNode.key}
+                    appContext={appContext}
+                    functionKey={activeNode.key}
+                  />
+                </Panel>
+              </>
+            );
+          }
+          if (mode === 'addVariable') {
+            return (
+              <AddStoreVariableForm
+                parentNode={activeNode}
+                onSubmit={(storeName, data) => {
+                  onAddStoreVariable(storeName, data);
+                  clear();
                 }}
-                onCancel={clear}
-                onSubmit={(values) => {
-                  onUpdateService(values);
+                onCancel={() => {
                   clear();
                 }}
               />
-            </Panel>
-            <Panel shape="solid" title="服务函数预览" mt="l">
-              <ServicePreview
-                key={activeNode.key}
-                appContext={appContext}
-                functionKey={activeNode.key}
+            );
+          }
+          if (mode === 'addStore') {
+            return (
+              <AddStoreForm
+                storeNames={getStoreNames?.() || []}
+                onSubmit={({ name }) => {
+                  onAddStore(name);
+                  clear();
+                }}
+                onCancel={() => {
+                  clear();
+                }}
               />
-            </Panel>
-          </>
-        )}
-        {mode === 'addVariable' && (
-          <Panel shape="solid" title="添加变量">
-            <AddStoreVariableForm
-              parentNode={activeNode}
-              onSubmit={(storeName, data) => {
-                onAddStoreVariable(storeName, data);
-                clear();
-              }}
-              onCancel={() => {
-                clear();
-              }}
-            />
-          </Panel>
-        )}
-        {mode === 'addStore' && (
-          <AddStoreForm
-            storeNames={getStoreNames?.() || []}
-            onSubmit={({ name }) => {
-              onAddStore(name);
-              clear();
-            }}
-            onCancel={() => {
-              clear();
-            }}
-          />
-        )}
-        {mode === 'addService' && (
-          <Panel shape="solid" title="创建服务函数">
-            <AddServiceForm
-              key={activeNode.key}
-              serviceModules={serviceModules}
-              serviceNames={activeNode.children?.map((item) => item.title) || []}
-              initialValues={{
-                moduleName: activeNode.title,
-              }}
-              onCancel={() => {
-                clear();
-              }}
-              onSubmit={(values) => {
-                onAddService(values);
-                clear();
-              }}
-            />
-          </Panel>
-        )}
+            );
+          }
+          if (mode === 'addService') {
+            return (
+              <Panel shape="solid" title="创建服务函数">
+                <AddServiceForm
+                  key={activeNode.key}
+                  serviceModules={serviceModules}
+                  serviceNames={activeNode.children?.map((item) => item.title) || []}
+                  initialValues={{
+                    moduleName: activeNode.title,
+                  }}
+                  onCancel={() => {
+                    clear();
+                  }}
+                  onSubmit={(values) => {
+                    onAddService(values);
+                    clear();
+                  }}
+                />
+              </Panel>
+            );
+          }
+        })()}
       </Box>
     </Box>
   );

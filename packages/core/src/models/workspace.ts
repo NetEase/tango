@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import { JSXElement } from '@babel/types';
 import {
   ComponentPrototypeType,
+  Dict,
   hasFileExtension,
   isStoreVariablePath,
   isString,
@@ -637,9 +638,10 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * 获取服务函数的列表
+   * @returns 返回服务函数的列表 { [serviceKey: string]: Dict }
    */
   listServiceFunctions() {
-    const ret: Record<string, object> = {};
+    const ret: Record<string, Dict> = {};
     Object.keys(this.serviceModules).forEach((moduleName) => {
       const module = this.serviceModules[moduleName];
       Object.keys(module.serviceFunctions).forEach((name) => {
@@ -653,18 +655,18 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 更新服务函数
    */
-  updateServiceFunction(serviceName: string, payload: object, moduleName = 'index') {
+  updateServiceFunction(serviceName: string, payload: Dict, moduleName = 'index') {
     this.serviceModules[moduleName].updateServiceFunction(serviceName, payload).update();
   }
 
   /**
    * 新增服务函数，支持批量添加
    */
-  addServiceFunction(name: string, config: object, moduleName = 'index') {
+  addServiceFunction(name: string, config: Dict, moduleName = 'index') {
     this.serviceModules[moduleName]?.addServiceFunction(name, config).update();
   }
 
-  addServiceFunctions(configs: object, modName = 'index') {
+  addServiceFunctions(configs: Dict<Dict>, modName = 'index') {
     this.serviceModules[modName]?.addServiceFunctions(configs).update();
   }
 
@@ -680,7 +682,7 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 更新服务的基础配置
    */
-  updateServiceBaseConfig(config: object, moduleName = 'index') {
+  updateServiceBaseConfig(config: Dict, moduleName = 'index') {
     this.serviceModules[moduleName]?.updateBaseConfig(config).update();
   }
 

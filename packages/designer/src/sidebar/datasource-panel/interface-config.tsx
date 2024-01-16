@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { Box } from 'coral-system';
-import { getVariableContent, parseServiceVariablePath } from '@music163/tango-helpers';
+import { getVariableContent } from '@music163/tango-helpers';
 import { isWrappedByExpressionContainer } from '@music163/tango-core';
 import { VariableTree } from '../../components';
 import { useSandboxQuery } from '../../context';
@@ -32,7 +32,7 @@ const DataSourceView = observer(() => {
         dataSource={serviceVariables}
         appContext={sandbox?.window['tango']}
         serviceModules={serviceModules}
-        onRemoveVariable={(variableKey) => {
+        onRemoveService={(variableKey) => {
           workspace.removeServiceFunction(variableKey);
         }}
         onAddService={(data) => {
