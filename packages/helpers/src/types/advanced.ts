@@ -74,6 +74,10 @@ export interface IVariableTreeNode {
    */
   raw?: any;
   /**
+   * 是否禁用
+   */
+  disabled?: boolean;
+  /**
    * 子结点
    */
   children?: IVariableTreeNode[];

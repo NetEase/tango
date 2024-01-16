@@ -11,7 +11,6 @@ import {
   noop,
   useBoolean,
   getValue,
-  isStoreVariablePath,
   IVariableTreeNode,
 } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
@@ -288,18 +287,17 @@ export function ExpressionModal({
           onAddStoreVariable={(storeName, data) => {
             workspace.addStoreState(storeName, data.name, data.initialValue);
           }}
-          onUpdateVariable={(variableKey, code) => {
+          onUpdateStoreVariable={(variableKey, code) => {
             workspace.updateStoreVariable(variableKey, code);
           }}
           onAddStore={(storeName) => {
             workspace.addStoreFile(storeName, newStoreTemplate);
           }}
-          onRemoveVariable={(variablePath) => {
-            if (isStoreVariablePath(variablePath)) {
-              workspace.removeStoreVariable(variablePath);
-            } else {
-              workspace.removeServiceFunction(variablePath);
-            }
+          onRemoveStoreVariable={(variableKey) => {
+            workspace.removeStoreVariable(variableKey);
+          }}
+          onRemoveService={(serviceKey) => {
+            workspace.removeServiceFunction(serviceKey);
           }}
           onAddService={(data) => {
             const { name, moduleName, ...payload } = shapeServiceValues(data);

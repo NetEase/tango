@@ -77,7 +77,7 @@ export class TangoServiceModule extends TangoModule {
    * @param configs { [name: string]: object }
    * @returns
    */
-  addServiceFunctions(configs: object) {
+  addServiceFunctions(configs: Dict<object>) {
     this.ast = updateServiceConfigToServiceFile(this.ast, configs);
     return this;
   }
