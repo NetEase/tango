@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.6](https://github.com/netease/tango/compare/@music163/tango-core@1.0.0-alpha.5...@music163/tango-core@1.0.0-alpha.6) (2024-01-16)
+
+### Bug Fixes
+
+- 优化变量树实现 ([#90](https://github.com/netease/tango/issues/90)) ([62d403f](https://github.com/netease/tango/commit/62d403f80a5ad08c216bc0c035ffc12c2cf329d2))
+
 # [1.0.0-alpha.5](https://github.com/netease/tango/compare/@music163/tango-core@1.0.0-alpha.4...@music163/tango-core@1.0.0-alpha.5) (2023-12-29)
 
 ### Bug Fixes

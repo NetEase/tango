@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.2](https://github.com/netease/tango/compare/@music163/tango-helpers@1.0.0-alpha.1...@music163/tango-helpers@1.0.0-alpha.2) (2024-01-16)
+
+### Bug Fixes
+
+- 优化变量树实现 ([#90](https://github.com/netease/tango/issues/90)) ([62d403f](https://github.com/netease/tango/commit/62d403f80a5ad08c216bc0c035ffc12c2cf329d2))
+
 # [1.0.0-alpha.1](https://github.com/netease/tango/compare/@music163/tango-helpers@1.0.0-alpha.0...@music163/tango-helpers@1.0.0-alpha.1) (2023-12-29)
 
 ### Bug Fixes
