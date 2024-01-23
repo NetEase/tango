@@ -6,37 +6,28 @@ const timelines = [
   {
     icon: null,
     title: 'Alpha',
-    date: '2023.08.30',
+    date: '2024.01.31',
     description: translate({
       id: 'homepage.timeline.alpha',
-      message: '开源仓库和文档站点上线，发布 alpha 演示版本。',
-    }),
-  },
-  {
-    icon: null,
-    title: 'Beta',
-    date: '2023.09.30',
-    description: translate({
-      id: 'homepage.timeline.beta',
-      message: '核心 API 面向社区场景重构和优化，发布 Beta 测试版本。',
+      message: '核心 API 重构完成，文档内容优化',
     }),
   },
   {
     icon: null,
     title: '1.0 RC',
-    date: '2023.11.30',
+    date: '2024.04.30',
     description: translate({
       id: 'homepage.timeline.rc',
-      message: '核心 API 基本稳定，不再发生 BR，发布 1.0 RC 版本。',
+      message: '核心 API 基本稳定，能力完善。',
     }),
   },
   {
     icon: null,
     title: '1.0',
-    date: 'Before 2023.12.29',
+    date: 'Before 2024.12.31',
     description: translate({
       id: 'homepage.timeline.stable',
-      message: 'API 完全稳定，提供良好的社区支持，可用于生产环境。',
+      message: '1.0 正式版常规迭代',
     }),
   },
 ];
