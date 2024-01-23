@@ -47,8 +47,12 @@ const formStyle = css`
     margin-top: var(--tango-space-m);
   }
 
-  > .SettingFormMain > .FormControl,
-  .FormObject {
+  > .SettingFormMain > .FormControl {
+    margin-left: var(--tango-space-m);
+    margin-right: var(--tango-space-m);
+  }
+
+  > .SettingFormMain > .FormObject {
     margin-left: var(--tango-space-m);
     margin-right: var(--tango-space-m);
   }
