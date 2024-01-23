@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.7](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.6...@music163/tango-setting-form@1.0.0-alpha.7) (2024-01-23)
+
+### Bug Fixes
+
+- update FormObject style ([#91](https://github.com/netease/tango/issues/91)) ([8fd085d](https://github.com/netease/tango/commit/8fd085d4fd41e588a5d3657add736a1e56088e4a))
+
 # [1.0.0-alpha.6](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.5...@music163/tango-setting-form@1.0.0-alpha.6) (2024-01-16)
 
 **Note:** Version bump only for package @music163/tango-setting-form
