@@ -32,6 +32,8 @@ export interface CollapsePanelProps extends Omit<HTMLCoralProps<'div'>, 'title'>
    * 是否显示底部边框线
    */
   showBottomBorder?: boolean;
+  headerProps?: HTMLCoralProps<'div'>;
+  bodyProps?: HTMLCoralProps<'div'>;
 }
 
 const headerStyle = css`
@@ -54,6 +56,8 @@ export function CollapsePanel(props: CollapsePanelProps) {
     onCollapse,
     stickyHeader,
     showBottomBorder = true,
+    headerProps,
+    bodyProps,
     ...rest
   } = props;
   const [collapsed, setCollapsed] = useControllableState({
@@ -92,6 +96,7 @@ export function CollapsePanel(props: CollapsePanelProps) {
         onClick={() => setCollapsed(!collapsed)}
         p="m"
         {...stickHeaderProps}
+        {...headerProps}
         css={headerStyle}
       >
         <Box display="flex" alignItems="center" fontSize="14px" fontWeight="500">
@@ -100,7 +105,7 @@ export function CollapsePanel(props: CollapsePanelProps) {
         </Box>
         <Box>{extra}</Box>
       </Box>
-      <Box className="CollapsePanelBody" display={collapsed ? 'none' : 'block'}>
+      <Box className="CollapsePanelBody" display={collapsed ? 'none' : 'block'} {...bodyProps}>
         {children}
       </Box>
     </Box>

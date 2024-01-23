@@ -103,9 +103,11 @@ export function FormControlGroup({
           {extra}
         </Box>
       }
-      borderTop="solid"
-      borderBottom="solid"
+      border="solid"
       borderColor="line.normal"
+      headerProps={{
+        bg: 'fill1',
+      }}
     >
       <Box
         p="m"
