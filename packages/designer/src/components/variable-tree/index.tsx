@@ -349,7 +349,6 @@ export function VariableTree(props: VariableTreeProps) {
                     onCancel={clear}
                     onSubmit={(values) => {
                       onUpdateService(values);
-                      clear();
                     }}
                   />
                 </Panel>
