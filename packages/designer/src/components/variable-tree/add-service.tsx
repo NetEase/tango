@@ -33,6 +33,7 @@ export function AddServiceForm({
       layout="horizontal"
       initialValues={initialValues}
       onFinish={(values) => {
+        setDisabled(true);
         onSubmit(values);
       }}
       {...formProps}
