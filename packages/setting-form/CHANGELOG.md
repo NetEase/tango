@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.8](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.7...@music163/tango-setting-form@1.0.0-alpha.8) (2024-01-24)
+
+### Bug Fixes
+
+- update service preview panel ([#94](https://github.com/netease/tango/issues/94)) ([d6a08ee](https://github.com/netease/tango/commit/d6a08eecd2521e9699bee1ff3ffebb651a2a620d))
+
 # [1.0.0-alpha.7](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.6...@music163/tango-setting-form@1.0.0-alpha.7) (2024-01-23)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.9](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.8...@music163/tango-designer@1.0.0-alpha.9) (2024-01-24)
+
+### Bug Fixes
+
+- update service preview panel ([#94](https://github.com/netease/tango/issues/94)) ([d6a08ee](https://github.com/netease/tango/commit/d6a08eecd2521e9699bee1ff3ffebb651a2a620d))
+
 # [1.0.0-alpha.8](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.7...@music163/tango-designer@1.0.0-alpha.8) (2024-01-23)
 
 **Note:** Version bump only for package @music163/tango-designer
