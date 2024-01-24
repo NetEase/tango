@@ -44,7 +44,7 @@
     "coral-system": "^1.0.5",
     "eslint-linter-browserify": "^8.51.0",
     "react-json-view": "^1.21.3",
-    "react-monaco-editor-lite": "^1.2.3"
+    "react-monaco-editor-lite": "^1.2.4"
   },
   "publishConfig": {
     "access": "public",
