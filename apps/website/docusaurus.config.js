@@ -127,8 +127,8 @@ const config = {
             title: '社区',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/netease-tango',
+                label: 'Discussions',
+                href: 'https://github.com/NetEase/tango/discussions',
               },
               {
                 label: 'Discord',
