@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { SystemProvider, extendTheme } from 'coral-system';
 import { ConfigProvider } from 'antd';
 import { TangoEngineProvider, ITangoEngineContext } from '@music163/tango-context';
-import { createFromIconfontCN } from '@ant-design/icons';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { DesignerProvider, IDesignerContext } from './context';
 import defaultTheme from './themes/default';
@@ -12,10 +11,6 @@ export interface DesignerProps extends IDesignerContext, ITangoEngineContext {
    * 主题包
    */
   theme?: any;
-  /**
-   * 自定义图表库svg脚本地址
-   */
-  iconfontScriptUrl?: string;
   children?: React.ReactNode;
 }
 
@@ -25,21 +20,8 @@ export interface DesignerProps extends IDesignerContext, ITangoEngineContext {
  * @returns
  */
 export function Designer(props: DesignerProps) {
-  const {
-    engine,
-    config,
-    theme: themeProp,
-    sandboxQuery,
-    remoteServices = {},
-    iconfontScriptUrl = '//at.alicdn.com/t/c/font_2891794_lzc7rtwuzf.js',
-    children,
-  } = props;
+  const { engine, config, theme: themeProp, sandboxQuery, remoteServices = {}, children } = props;
   const theme = useMemo(() => extendTheme(themeProp, defaultTheme), [themeProp]);
-  useEffect(() => {
-    createFromIconfontCN({
-      scriptUrl: iconfontScriptUrl,
-    });
-  }, [iconfontScriptUrl]);
   return (
     <SystemProvider theme={theme} prefix="--tango">
       <ConfigProvider locale={zhCN}>
