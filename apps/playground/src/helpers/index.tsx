@@ -3,12 +3,12 @@ import { Box, Group } from 'coral-system';
 import { Avatar, Space, Switch } from 'antd';
 import { BranchesOutlined, MenuOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { registerSetter } from '@music163/tango-designer';
-import type { ComponentPrototypeType } from '@music163/tango-helpers';
+import type { ComponentPrototypeType, IVariableTreeNode } from '@music163/tango-helpers';
 import { FooSetter } from '../components';
 
 export * from './mock-files';
 
-export const bootHelperVariables = [
+export const bootHelperVariables: IVariableTreeNode[] = [
   {
     key: '$helpers',
     title: '工具函数',

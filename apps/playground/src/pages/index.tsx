@@ -22,6 +22,7 @@ import {
   BuildOutlined,
   ClusterOutlined,
   FunctionOutlined,
+  createFromIconfontCN,
 } from '@ant-design/icons';
 
 // 1. 实例化工作区
@@ -38,12 +39,18 @@ const engine = createEngine({
 // @ts-ignore
 window.__workspace__ = workspace;
 
+// 3. 沙箱初始化
 const sandboxQuery = new DndQuery({
   context: 'iframe',
 });
 
+// 4. 图标库初始化（物料面板和组件树使用了 iconfont 里的图标）
+createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/c/font_2891794_lzc7rtwuzf.js',
+});
+
 /**
- * 3. 平台初始化，访问 https://local.netease.com:6006/
+ * 5. 平台初始化，访问 https://local.netease.com:6006/
  */
 export default function App() {
   const [menuLoading, setMenuLoading] = useState(true);

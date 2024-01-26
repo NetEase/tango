@@ -1,5 +1,7 @@
 export * from './create-icon';
 export * from './code-outlined';
+export * from './line-dashed-outlined';
+export * from './line-solid-outlined';
 export * from './open-panel-filled-left-outlined';
 export * from './open-panel-filled-right-outlined';
 export * from './open-panel-left-outlined';
