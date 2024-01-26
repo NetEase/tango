@@ -1,11 +1,17 @@
 import React from 'react';
-import { FormModel, SettingForm } from '@music163/tango-setting-form';
+import { FormModel, SettingForm, register } from '@music163/tango-setting-form';
 import { ComponentPrototypeType } from '@music163/tango-helpers';
+import { BorderSetter } from '@music163/tango-designer/src/setters/style-setter';
 import { Box } from 'coral-system';
 import { JsonView } from '@music163/tango-ui';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Card } from 'antd';
+
+register({
+  name: 'borderSetter',
+  component: BorderSetter,
+});
 
 export default {
   title: 'SettingForm',
@@ -25,6 +31,11 @@ const prototype: ComponentPrototypeType = {
       name: 'text',
       title: 'textSetter',
       setter: 'textSetter',
+    },
+    {
+      name: 'border',
+      title: 'borderSetter',
+      setter: 'borderSetter',
     },
     {
       name: 'router',
