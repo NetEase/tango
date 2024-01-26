@@ -3,8 +3,8 @@ import { Box, Grid, HTMLCoralProps } from 'coral-system';
 import { InputNumber, Dropdown, Input, Radio, Popover, Button } from 'antd';
 import { SketchPicker } from 'react-color';
 import Color from 'color';
-import { BgColorsOutlined, FileImageOutlined } from '@ant-design/icons';
-import { SingleMonacoEditor, IconFont } from '@music163/tango-ui';
+import { BgColorsOutlined, EyeInvisibleOutlined, FileImageOutlined } from '@ant-design/icons';
+import { SingleMonacoEditor, LineSolidOutlined, LineDashedOutlined } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { ChoiceSetter } from './choice-setter';
 import { TextSetter } from './text-setter';
@@ -34,7 +34,7 @@ export function CssCodeSetter({ value, onChange }: FormItemComponentProps<string
             value={contentValue}
             onBlur={(newCode) => {
               if (newCode != contentValue) {
-                onChange('{css`' + newCode + '`}', {
+                onChange(`{css\`${newCode}\`}`, {
                   // relatedImports: ['']
                 });
               }
@@ -258,7 +258,7 @@ export function SpacingSetter({ value, onChange }: FormItemComponentProps<string
     return (val: string) => {
       tempRef.current[index] = `${val}`;
       const str2px = tempRef.current.map((it) => {
-        return it + 'px';
+        return `${it}px`;
       });
       onChange(str2px.join(' '));
     };
@@ -388,15 +388,16 @@ export function BorderSetter({ value, onChange }: FormItemComponentProps<string>
             setStyle(e.target.value);
             handleChange('style', e.target.value);
           }}
+          buttonStyle="solid"
         >
           <Radio.Button value="none">
-            <IconFont type="icon-display-none" title="none" />
+            <EyeInvisibleOutlined />
           </Radio.Button>
           <Radio.Button value="solid">
-            <IconFont type="icon-fengexian" title="solid" />
+            <LineSolidOutlined />
           </Radio.Button>
           <Radio.Button value="dashed">
-            <IconFont type="icon-line-dashed" title="dashed" />
+            <LineDashedOutlined />
           </Radio.Button>
         </Radio.Group>
       </Label>

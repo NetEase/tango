@@ -1,5 +1,5 @@
 import React from 'react';
-import { VariableTree } from '@music163/tango-designer/lib/cjs/components';
+import { VariableTree } from '@music163/tango-designer/src/components';
 import { Box } from 'coral-system';
 
 export default {
