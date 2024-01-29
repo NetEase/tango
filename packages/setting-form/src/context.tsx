@@ -15,6 +15,10 @@ export interface FormVariableContextType {
    * 是否允许表单项切换到表达式设置器
    */
   disableSwitchExpressionSetter?: boolean;
+  /**
+   * 是否展示表单项的副标题
+   */
+  showItemSubtitle?: boolean;
 }
 
 const FormVariableContext = createContext<FormVariableContextType>(null);

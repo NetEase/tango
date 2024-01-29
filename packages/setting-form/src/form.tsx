@@ -96,6 +96,10 @@ export interface SettingFormProps {
    */
   showGroups?: boolean;
   /**
+   * 是否显示表单项的副标题
+   */
+  showItemSubtitle?: boolean;
+  /**
    * 选项分组信息，用于对表单项进行分组展示，如未提供，则使用内置的分组信息
    */
   groupOptions?: IFormTabsGroupOption[];
@@ -113,6 +117,7 @@ export function SettingForm({
   onChange = noop,
   showSearch = true,
   showGroups = true,
+  showItemSubtitle = true,
   groupOptions = internalGroups,
 }: SettingFormProps) {
   const [keyword, setKeyword] = useState('');
@@ -167,7 +172,7 @@ export function SettingForm({
   }, [modelProp]);
 
   return (
-    <FormVariableProvider value={{ disableSwitchExpressionSetter }}>
+    <FormVariableProvider value={{ disableSwitchExpressionSetter, showItemSubtitle }}>
       <FormModelProvider value={model}>
         <Box className="SettingForm" mb="xl" css={formStyle}>
           <Box className="SettingFormHeader" position="sticky" top="0" bg="white" zIndex="2">
