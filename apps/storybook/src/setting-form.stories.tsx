@@ -267,6 +267,7 @@ export function Lite() {
         showGroups={false}
         showItemSubtitle={false}
         prototype={prototype}
+        disableSwitchExpressionSetter
       />
     </Box>
   );

@@ -100,6 +100,10 @@ export interface SettingFormProps {
    */
   showItemSubtitle?: boolean;
   /**
+   * 自定义渲染表单项的额外内容（标签右侧）
+   */
+  renderItemExtra?: (props: ComponentPropType) => React.ReactNode;
+  /**
    * 选项分组信息，用于对表单项进行分组展示，如未提供，则使用内置的分组信息
    */
   groupOptions?: IFormTabsGroupOption[];
@@ -118,6 +122,7 @@ export function SettingForm({
   showSearch = true,
   showGroups = true,
   showItemSubtitle = true,
+  renderItemExtra,
   groupOptions = internalGroups,
 }: SettingFormProps) {
   const [keyword, setKeyword] = useState('');
@@ -154,14 +159,19 @@ export function SettingForm({
     (props: ComponentPropType[]) =>
       props.map((item) => {
         const { getProp, ...rest } = item;
-        const childProto = {
+        const childProp = {
           ...rest,
           ...getProp?.(model),
         };
-        const FormChild = isValidNestProps(childProto.props) ? SettingFormObject : SettingFormItem;
-        return <FormChild key={item.name} {...childProto} />;
+        if (isValidNestProps(childProp.props)) {
+          return <SettingFormObject key={item.name} {...childProp} />;
+        } else {
+          return (
+            <SettingFormItem key={item.name} extra={renderItemExtra?.(childProp)} {...childProp} />
+          );
+        }
       }),
-    [model],
+    [model, renderItemExtra],
   );
 
   useEffect(() => {
