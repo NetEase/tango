@@ -262,7 +262,13 @@ export function Basic() {
 export function Lite() {
   return (
     <Box width={320} border="solid">
-      <SettingForm showSearch={false} showGroups={false} prototype={prototype} />
+      <SettingForm
+        showSearch={false}
+        showGroups={false}
+        showItemSubtitle={false}
+        prototype={prototype}
+        disableSwitchExpressionSetter
+      />
     </Box>
   );
 }

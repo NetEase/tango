@@ -79,7 +79,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     extra,
     footer,
   }: FormItemProps) {
-    const { disableSwitchExpressionSetter } = useFormVariable();
+    const { disableSwitchExpressionSetter, showItemSubtitle } = useFormVariable();
     const model = useFormModel();
     const field = model.getField(name);
     const value = toJS(field.value ?? defaultValue);
@@ -141,7 +141,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
       <FormControl
         visible={getVisible(model)}
         label={title}
-        note={name}
+        note={showItemSubtitle ? name : null}
         tip={tip}
         docs={docs}
         error={field.error}
