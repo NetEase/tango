@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.7](https://github.com/netease/tango/compare/@music163/tango-ui@1.0.0-alpha.6...@music163/tango-ui@1.0.0-alpha.7) (2024-01-29)
+
+### Bug Fixes
+
+- remove load iconfont ([#97](https://github.com/netease/tango/issues/97)) ([d5e42c9](https://github.com/netease/tango/commit/d5e42c93bb79362dd5f15d5cd2147952dee681bf))
+
 # [1.0.0-alpha.6](https://github.com/netease/tango/compare/@music163/tango-ui@1.0.0-alpha.5...@music163/tango-ui@1.0.0-alpha.6) (2024-01-24)
 
 ### Bug Fixes

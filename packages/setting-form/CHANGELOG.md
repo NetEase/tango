@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.9](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.8...@music163/tango-setting-form@1.0.0-alpha.9) (2024-01-29)
+
+### Features
+
+- add showItemSubtitle and renderItemExtra to SettingForm ([#99](https://github.com/netease/tango/issues/99)) ([32962d4](https://github.com/netease/tango/commit/32962d47fbef4a5cd59df0431eb4df951c36f521))
+
 # [1.0.0-alpha.8](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.7...@music163/tango-setting-form@1.0.0-alpha.8) (2024-01-24)
 
 ### Bug Fixes

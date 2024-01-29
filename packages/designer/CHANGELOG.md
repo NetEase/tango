@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.10](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.9...@music163/tango-designer@1.0.0-alpha.10) (2024-01-29)
+
+### Bug Fixes
+
+- remove load iconfont ([#97](https://github.com/netease/tango/issues/97)) ([d5e42c9](https://github.com/netease/tango/commit/d5e42c93bb79362dd5f15d5cd2147952dee681bf))
+
 # [1.0.0-alpha.9](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.8...@music163/tango-designer@1.0.0-alpha.9) (2024-01-24)
 
 ### Bug Fixes
