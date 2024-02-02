@@ -33,6 +33,10 @@ interface NavigatorProps {
   onForward?: () => void;
   onRefresh?: () => void;
   onInputEnter?: (text: string, e: React.KeyboardEvent<HTMLInputElement>) => void;
+  /**
+   * 附加信息
+   */
+  extra?: React.ReactNode;
 }
 
 interface NavigatorState {
@@ -68,7 +72,7 @@ export class Navigator extends React.Component<NavigatorProps, NavigatorState> {
   };
 
   render() {
-    const { disabled, onBack, onForward, onRefresh } = this.props;
+    const { disabled, onBack, onForward, onRefresh, extra } = this.props;
     return (
       <Box
         className="navigator"
@@ -93,6 +97,7 @@ export class Navigator extends React.Component<NavigatorProps, NavigatorState> {
           disabled={disabled}
         />
         <ViewportSwitch />
+        {extra}
       </Box>
     );
   }
