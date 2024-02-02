@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.11](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.10...@music163/tango-designer@1.0.0-alpha.11) (2024-02-02)
+
+### Features
+
+- allow add extra node to sandbox navigator ([#100](https://github.com/netease/tango/issues/100)) ([5b12193](https://github.com/netease/tango/commit/5b121939e6712c912610014f7bbad3074403fc3f))
+
 # [1.0.0-alpha.10](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.9...@music163/tango-designer@1.0.0-alpha.10) (2024-01-29)
 
 ### Bug Fixes
