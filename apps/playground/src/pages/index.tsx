@@ -133,6 +133,7 @@ export default function App() {
                   setMenuLoading(false);
                 }
               }}
+              navigatorExtra={<Button size="small">hello world</Button>}
             />
           </WorkspaceView>
           <WorkspaceView mode="code">

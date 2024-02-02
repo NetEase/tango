@@ -35,6 +35,10 @@ export type SandboxProps = Omit<CodeSandboxProps, 'files' | 'eventHandlers' | 'o
   onViewChange?: (data: any, config?: ISandboxEventHandlerConfig) => void;
   onMessage?: (data: any, config?: ISandboxEventHandlerConfig) => void;
   onLoad?: (config?: ISandboxEventHandlerConfig) => void;
+  /**
+   * 沙箱导航栏扩展
+   */
+  navigatorExtra?: React.ReactNode;
 };
 
 export interface CombinedSandboxRef {
@@ -296,6 +300,7 @@ export const Sandbox = observer(
     selectionTools,
     bundlerURL,
     mode = 'combined',
+    navigatorExtra,
     ...props
   }: SandboxProps) => {
     const bundlerUrl = bundlerURL ?? 'https://codesandbox.fn.netease.com';
@@ -362,6 +367,7 @@ export const Sandbox = observer(
             }
             workspace.selectSource.clear();
           }}
+          extra={navigatorExtra}
         />
         <Simulator>
           <Viewport selectionTools={selectionTools}>
