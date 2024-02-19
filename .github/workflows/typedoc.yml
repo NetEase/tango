@@ -2,7 +2,7 @@ name: 'typedoc'
 
 on:
   push:
-    branches: [main, typedoc]
+    branches: [main, chore/typedoc]
 
 permissions:
   contents: read
