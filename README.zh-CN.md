@@ -20,7 +20,7 @@
 
 可以通过下面的链接查看详细的使用指南：
 
-- 官方文档站点: <https://netease.github.io/tango/>
+- 官方文档站点: <https://netease.github.io/tango-site/>
 - 演示应用: <https://tango-demo.musicfe.com/designer/>
 
 ## ✨ 特性
