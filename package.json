@@ -12,7 +12,7 @@
     "deploy:site": "yarn workspace website deploy",
     "build": "lerna run build",
     "build:site": "yarn workspace website build",
-    "typedoc": "typedoc --options typedoc.json",
+    "typedoc": "typedoc",
     "docs": "yarn typedoc && open docs/index.html",
     "test": "jest",
     "test:watch": "jest --watch",
