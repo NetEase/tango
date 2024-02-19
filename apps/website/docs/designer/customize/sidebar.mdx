@@ -1,0 +1,53 @@
+# 侧边栏自定义
+
+提供了默认的设计器左侧边栏的布局设置。
+
+## 侧边栏组件
+
+### Sidebar
+
+侧边栏容器组件。
+
+### Sidebar.Item
+
+侧边栏子项
+
+| 属性        | 说明                                             | 类型                                              | 默认值 |
+| ----------- | ------------------------------------------------ | ------------------------------------------------- | ------ |
+| key         | 子项的唯一标识                                   | `string`                                          | -      |
+| label       | 子项的描述文本，推荐不超过2个字                  | `string`                                          | -      |
+| icon        | 图标                                             | `ReactNode`                                       | -      |
+| showBadge   | 是否显示角标                                     | `boolean` \| `{ count?: number; dot?: boolean; }` | -      |
+| title       | 展开面板的标题                                   | `string`                                          | -      |
+| width       | 展开面板的宽度                                   | `number`                                          | -      |
+| isFloat     | 展开面板是否为浮动面板，浮动面板不压缩工作区宽度 | `boolean`                                         | -      |
+| widgetProps | 子项的属性                                       | `object`                                          | -      |
+| children    | 子项的展开面板内容                               | `ReactNode`                                       | -      |
+
+## 内置的工具栏组件
+
+设计器内置了一些基本的侧边栏组件，当子项的 `key` 使用了特定的值时，会自动的进行渲染。
+
+| key        | 组件       |
+| ---------- | ---------- |
+| components | 组件列表   |
+| outline    | 结构       |
+| dependency | 依赖管理   |
+| variables  | 变量管理   |
+| dataSource | 数据源管理 |
+
+例如，下面的代码会自动渲染一个结构面板：
+
+```jsx
+<Sidebar.Item key="outline" label="结构" icon={<BuildOutlined />} />
+```
+
+## 自定义侧边栏子项
+
+可以直接在 `Sidebar.Item` 的子节点传入自定义的内容来渲染需要的结果，例如：
+
+```jsx
+<Sidebar.Item key="custom" label="自定义" icon={<SmileOutlined />}>
+  <div>展开的内容部分</div>
+</Sidebar.Item>
+```

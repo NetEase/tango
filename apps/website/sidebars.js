@@ -32,7 +32,7 @@ const sidebars = {
       items: [
         'designer/customize/panels',
         'designer/customize/tools',
-        'designer/customize/selections',
+        'designer/customize/sidebar',
         'designer/customize/setters',
         'designer/customize/editor',
         'designer/customize/components',
@@ -62,7 +62,7 @@ const sidebars = {
     // 'boot/i18n',
   ],
 
-  protocol: ['protocol/material-protocol', 'protocol/material-package-spec'],
+  // protocol: ['protocol/material-protocol', 'protocol/material-package-spec'],
 };
 
 module.exports = sidebars;

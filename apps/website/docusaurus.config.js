@@ -88,12 +88,6 @@ const config = {
             position: 'left',
             label: '应用框架',
           },
-          {
-            type: 'docSidebar',
-            sidebarId: 'protocol',
-            position: 'left',
-            label: '协议',
-          },
           { to: '/blog', label: '博客', position: 'left' },
           {
             type: 'html',

@@ -2,6 +2,23 @@
 
 属性设置器用于在配置面板中展示特定配置项的配置逻辑。Tango 内置了多种标准的属性设置器，对于一些特殊场景，内置的属性设置器可能无法满足你的需要，此时开发者可以扩展自己的属性设置。
 
+## 设置器组件
+
+### SettingPanel
+
+| 属性             | 说明                                   | 类型                         | 默认值 |
+| ---------------- | -------------------------------------- | ---------------------------- | ------ |
+| title            | 面板标题                               | string                       | -      |
+| defaultValue     | 默认值                                 | object                       | -      |
+| groupOptions     | 分组选项                               | object                       | -      |
+| model            | 表单状态管理实例                       | FormModel                    | -      |
+| onChange         | 值变化回调                             | (name, value, field) => void | -      |
+| prototype        | 组件的可配置描述                       | ComponentPrototype           | -      |
+| renderItemExtra  | 自定义渲染表单项的额外内容（标签右侧） | (props) => ReactNode         | -      |
+| showGroups       | 是否展示分组                           | boolean                      | -      |
+| showItemSubtitle | 是否展示表单项的副标题                 | boolean                      | -      |
+| showSearch       | 是否展示搜索框                         | boolean                      | -      |
+
 ## 内置属性设置器
 
 | 设置器名          | 接收值类型                           | 设置器说明                 | 可配置项           |
