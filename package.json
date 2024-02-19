@@ -8,10 +8,7 @@
   "scripts": {
     "start": "yarn workspace playground dev",
     "start:docs": "yarn workspace storybook storybook",
-    "start:site": "yarn workspace website start",
-    "deploy:site": "yarn workspace website deploy",
     "build": "lerna run build",
-    "build:site": "yarn workspace website build",
     "typedoc": "typedoc",
     "docs": "yarn typedoc && open docs/index.html",
     "test": "jest",

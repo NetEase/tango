@@ -20,7 +20,7 @@ English | [简体中文](/README.zh-CN.md)
 
 You can view the detailed usage guide through the following links:
 
-- Document site: <https://netease.github.io/tango/>
+- Document site: <https://netease.github.io/tango-site/>
 - Playground application: <https://tango-demo.musicfe.com/designer/>
 
 ## ✨ Features
