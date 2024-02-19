@@ -1,0 +1,135 @@
+# 组件库自定义
+
+Tango 提供了基于源码的低代码开发能力，默认不提供私有的内置组件库，仅提供了一个简单的示例用于说明如何将只有组件库接入到 Tango 中。
+
+:::tip
+**组件库接入**意味着开发者可以将自己的组件库接入到 Tango 中，以便于在设计器中使用自己的组件，包括拖拽、配置、生成等行为。
+:::
+
+## 基本的目录结构
+
+基本的组件库目录结构如下：
+
+```text
++ src
+  + button
+    - view.tsx     // 默认视图文件
+    - index.ts     // 渲染视图入口文件
+    - designer.ts  // 设计器视图入口文件
+    - prototype.ts // 【新增】组件描述文件
+  + date-picker
+  - index.ts       // 组件包默认入口文件
+  - designer.ts    // 【新增】组件包设计器视图入口文件
+```
+
+可以发现，相比正常的组件代码，Tango 对于接入的组件库要求提供 2 个全新的文件 `designer.ts` 和 `prototype.ts`。其中 `designer.ts` 为设计视图文件，用来实现在 Tango 设计器中的辅助搭建行为，如果无需定制，可以直接保持 `designer.ts` 文件和 `index.ts` 文件一致。而 `prototype.ts` 文件则是用来描述组件的属性和行为的，用于在设计器中渲染组件的配置项，和控制组件的拖拽行为等。
+
+一个可供参考的示例代码是 <https://github.com/NetEase/tango-components/tree/main/packages/antd/src>
+
+### designer.ts
+
+在 `designer.ts` 文件中，相比原有的组件库入口文件，还需要导出 `menuData` 和 `prototypes` 两个模块。
+
+```jsx
+export * from './button';
+export * from './card';
+//...
+
+// 组件的配置描述列表
+export const prototypes = [
+  {
+    title: '按钮',
+    name: 'Button',
+    props: [
+      {
+        name: 'size',
+        setter: 'textSetter',
+      },
+      //...
+    ],
+  },
+  //...
+];
+
+export const menuData = {
+  // 常用组件
+  common: [
+    {
+      title: '基本',
+      items: ['Button'],
+    },
+  ],
+};
+```
+
+其中 `menuData` 的 `key` 可选列表如下：
+
+| key     | 说明     |
+| ------- | -------- |
+| common  | 常用组件 |
+| atom    | 原子组件 |
+| snippet | 代码片段 |
+
+### prototype.ts
+
+组件的配置描述文件。
+
+## 组件配置描述
+
+### ComponentPrototypeType
+
+组件的配置描述。
+
+| 属性           | 说明                                            | 类型                                                                         | 默认值 |
+| -------------- | ----------------------------------------------- | ---------------------------------------------------------------------------- | ------ |
+| childrenName   | 子组件的名称                                    | `string`                                                                     | -      |
+| docs           | 组件的文档地址                                  | `string`                                                                     | -      |
+| exportType     | 组件的导出类型 `defaultExport` \| `namedExport` | `string`                                                                     | -      |
+| hasChildren    | 是否有子组件                                    | `boolean`                                                                    | -      |
+| help           | 组件的帮助文档                                  | `string`                                                                     | -      |
+| icon           | 组件的图标，图片地址或 iconfont 图标名          | string                                                                       | -      |
+| name           | 组件的名称                                      | `string`                                                                     | -      |
+| package        | 组件的包名，或引入路径                          | `string`                                                                     | -      |
+| props          | 组件的属性描述                                  | `ComponentPropType[]`                                                        | -      |
+| relatedImports | 组件的相关引入                                  | `string[]`                                                                   | -      |
+| rules          | 组件的规则                                      | `ComponentDndRulesType`                                                      | -      |
+| title          | 组件的标题                                      | `string`                                                                     | -      |
+| type           | 组件的类型                                      | "page" \| "container" \| "placeholder" \| "element" \| "snippet" \| "block"` | -      |
+| usage          | 组件的使用说明                                  | `string`                                                                     | -      |
+
+### ComponentPropType
+
+组件的属性描述。
+
+| 属性                  | 说明                                         | 类型                                        | 默认值 |
+| --------------------- | -------------------------------------------- | ------------------------------------------- | ------ |
+| autoCompleteOptions   | 自动补全的提示值，仅对 ExpressionSetter 有效 | `string[]`                                  | -      |
+| autoInitValue         | 如果没提供 initValue, 是否自动初始化值       | `boolean`                                   | -      |
+| defaultValue          | 组件的内置默认值                             | `any`                                       | -      |
+| disableVariableSetter | 是否禁用变量设置器                           | `boolean`                                   | -      |
+| docs                  | 属性的文档地址                               | `string`                                    | -      |
+| getProp               | 动态设置属性，覆盖已有的 prop 对象           | `(form) => any`                             | -      |
+| getSetterProps        | 动态设置属性，覆盖已有的 setterProps 对象    | `(form) => any`                             | -      |
+| getVisible            | 动态设置表单项是否展示                       | `(form) => boolean`                         | -      |
+| group                 | 属性的分组                                   | `basic` \| `event` \| `style` \| `advanced` | -      |
+| initValue             | 首次拖拽后用来初始化组件的属性值             | `any`                                       | -      |
+| name                  | 属性的名称                                   | `string`                                    | -      |
+| options               | 属性的选项                                   | `any[]`                                     | -      |
+| placeholder           | 属性的占位符                                 | `string`                                    | -      |
+| props                 | 如果是对象属性，这里声明子属性列表           | `ComponentPropType[]`                       | -      |
+| setter                | 属性的设置器                                 | `string`                                    | -      |
+| setterProps           | 设置器的属性设置                             | `any`                                       | -      |
+| tips                  | 属性的提示                                   | `string`                                    | -      |
+| title                 | 属性的标题                                   | `string`                                    | -      |
+
+### ComponentDndRulesType
+
+组件拖拽规则类型
+
+| 属性                      | 说明                                                                         | 类型                        | 默认值 |
+| ------------------------- | ---------------------------------------------------------------------------- | --------------------------- | ------ |
+| canDrag                   | 当前组件是否可以被拖拽                                                       | `() => boolean`             | -      |
+| canDrop                   | 当前节点是否可以拖拽到目标节点中                                             | `(targetName) => boolean`   | -      |
+| canMoveIn                 | 进来的节点是否可以落进来，仅适用于容器节点                                   | `(incomingName) => boolean` | -      |
+| canMoveOut                | 被拖拽的节点是否可以被拖离当前节点，仅适用于容器节点                         | `(outgoingName) => boolean` | -      |
+| childrenContainerSelector | 子节点的容器选择器，用于快速定位子节点容器，适合组件存在多个可搭建区域时使用 | `string`                    | -      |

@@ -1,0 +1,53 @@
+# 工具栏自定义
+
+提供了默认的设计器工具栏的布局设置。
+
+## 工具栏组件
+
+### Toolbar
+
+工具栏列表容器
+
+### Toolbar.Item
+
+工具栏子项
+
+| 属性        | 说明           | 类型                        | 默认值  |
+| ----------- | -------------- | --------------------------- | ------- |
+| key         | 子项的唯一标识 | `string`                    | -       |
+| placement   | 放置的位置     | `left` \| `right` \| `left` | `right` |
+| widgetProps | 子项的属性     | `object`                    | -       |
+
+### Toolbar.Separator
+
+工具栏分隔线，用来对工具栏子项进行分组展示。
+
+## 内置的工具栏组件
+
+设计器内置了一些基本的工具栏组件，当工具栏子项使用了特定的 `key` 值时，会自动的进行渲染。
+
+| key         | 组件                                 |
+| ----------- | ------------------------------------ |
+| routeSwitch | 路由切换                             |
+| history     | 历史记录                             |
+| preview     | 沙箱预览                             |
+| modeSwitch  | 工作区模式切换，在源码和设计模式切换 |
+| togglePanel | 切换布局面板的显示和隐藏             |
+
+例如，下面的代码会自动渲染为一个路由切换的工具项。
+
+```jsx
+<Toolbar.Item key="routeSwitch" />
+```
+
+## 自定义工具栏项
+
+可以直接在 `Toolbar.Item` 的子节点传入自定义的工具栏项，例如:
+
+```jsx
+<Toolbar.Item placement="right">
+  <Space>
+    <Button type="primary">发布</Button>
+  </Space>
+</Toolbar.Item>
+```

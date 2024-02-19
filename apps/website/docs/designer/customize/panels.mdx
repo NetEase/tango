@@ -1,0 +1,72 @@
+# 面板自定义
+
+Tango 设计器由多个可自定义的面板组成，默认提供了一个标准的低代码设计器布局，可以根据实际需求进行自定义。如下图所示，可以对设计器的多个区域进行自定义，包括工具栏、侧边栏、配置面板、选择工具栏等等。
+
+![panels](https://p5.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/33769559515/5564/0630/b437/02cd440a1789b8138ee64d058f86db20.png)
+
+- 工具栏（Toolbar）：设计器的顶部区域，通常用来放置一些全局信息和操作按钮，例如项目信息，顶部工具栏、发布按钮等等。
+- 侧边栏（Sidebar）：设计器的左侧区域，通常用来放置一些核心功能的入口，例如k组件库、页面列表、变量配置、数据源配置等。
+- 配置面板（Properties）：设计器的右侧区域，通常用来放置一些配置项，例如组件属性配置、页面属性配置等。
+- 选择工具栏（SelectionMenu）：设计器的底部区域，通常用来放置一些选择工具，例如复制、删除、定位等。
+
+除了使用预定义的设计器布局组件，Tango 支持完全使用开发者自行开发的组件进行替换。
+
+## 内置设计器布局组件介绍
+
+内置的设计器布局组件包括：
+
+- Designer：设计器的状态容器，用来提供设计器核心状态的上下文容器，包括主题、引擎状态、沙箱状态等。
+- DesignerPanel：设计器的主框架，提供了核心的布局容器，便于开发者进行后续的自定义。
+- Toolbar：工具栏容器组件，提供了默认的工具栏的布局设置，可以通过 `Toolbar.Item` 进行快捷的定义工具栏的子项。
+- Sidebar：侧边栏容器组件，提供了默认的侧边栏的布局设置，可以通过 `Sidebar.Item` 进行快捷的定义侧边栏的子项。
+- WorkspacePanel：工作区容器组件，设计器中央的区域，包括画布和编辑等用户核心工作区，提供了默认的工作区的布局配置。
+- WorkspaceView：工作区的视图组件，用于快捷定制工作区的多种视图模式，可以实例化多个工作区视图，但同一时间只能由一个工作区视图处于激活状态。
+- SettingPanel：配置面板组件，提供了默认的属性配置能力。
+
+## 基本的设计器布局
+
+一个基本的的设计器布局示例如下图所示：
+
+```jsx
+export default function App() {
+  return (
+    <Designer theme={themeLight} engine={engine} sandboxQuery={sandboxQuery}>
+      <DesignerPanel
+        logo={<Logo />}
+        description={<ProjectDetail />}
+        actions={
+          <Box px="l">
+            <Toolbar>
+              <Toolbar.Item key="routeSwitch" placement="left" />
+              <Toolbar.Item key="history" placement="left" />
+              <Toolbar.Item key="preview" placement="left" />
+              <Toolbar.Item key="modeSwitch" placement="right" />
+              <Toolbar.Item key="togglePanel" placement="right" />
+              <Toolbar.Separator />
+              <Toolbar.Item placement="right">
+                <Space>
+                  <Button type="primary">发布</Button>
+                </Space>
+              </Toolbar.Item>
+            </Toolbar>
+          </Box>
+        }
+      >
+        <Sidebar>
+          <Sidebar.Item key="components" label="组件" icon={<AppstoreAddOutlined />} />
+          <Sidebar.Item key="outline" label="结构" icon={<BuildOutlined />} />
+        </Sidebar>
+        <WorkspacePanel>
+          <WorkspaceView mode="design">
+            <CustomDesignView />
+          </WorkspaceView>
+          <WorkspaceView mode="code">
+            <CustomSourceCodeView />
+          </WorkspaceView>
+        </WorkspacePanel>
+        <SettingPanel />
+      </DesignerPanel>
+    </Designer>
+  );
+}
+```

@@ -24,30 +24,18 @@ function HomepageHeader() {
           {translate({ id: 'homepage.hero.tagline', message: siteConfig.tagline })}
         </p>
         <div className={styles.buttons}>
+          <Link className="button button--primary button--lg" to="/docs/intro">
+            {translate({
+              id: 'homepage.hero.button.document',
+              message: '快速开始',
+            })}
+          </Link>
           <Link
-            className="button button--primary button--lg"
+            className="button button--secondary button--lg"
             to="https://tango-demo.musicfe.com/designer/"
           >
             {translate({ id: 'homepage.hero.button.playground', message: '演示应用' })}
           </Link>
-          <Link className="button button--secondary button--lg" to="/docs/intro">
-            {translate({
-              id: 'homepage.hero.button.document',
-              message: '使用文档',
-            })}
-          </Link>
-          <a
-            href="https://www.producthunt.com/posts/tango-b8474917-fbce-4180-9fac-4ac7d7a6fa7d?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-tango&#0045;b8474917&#0045;fbce&#0045;4180&#0045;9fac&#0045;4ac7d7a6fa7d"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img
-              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=412854&theme=light"
-              alt="Tango - A&#0032;source&#0032;code&#0032;based&#0032;low&#0045;code&#0032;builder | Product Hunt"
-              width="250px"
-              height="54px"
-            />
-          </a>
         </div>
         <div className={styles.heroImageBox}>
           <img

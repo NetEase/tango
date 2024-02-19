@@ -20,28 +20,31 @@ const sidebars = {
   designer: [
     'intro',
     'designer/quick-start',
-    // {
-    //   type: 'category',
-    //   label: '模块',
-    //   items: [
-    //     'designer/modules/designer',
-    //     'designer/modules/designer-panel',
-    //     'designer/modules/sidebar-panel',
-    //     'designer/modules/setting-panel',
-    //     'designer/modules/workspace-panel',
-    //     'designer/modules/view-panel',
-    //     'designer/modules/sandbox',
-    //     'designer/modules/hooks',
-    //   ],
-    //   collapsible: false,
-    // },
-    // {
-    //   type: 'category',
-    //   label: '扩展',
-    //   items: ['designer/extend/overview', 'designer/extend/remote-service'],
-    //   collapsible: false,
-    // },
-    // 'designer/setters',
+    {
+      type: 'category',
+      label: '接入指南',
+      items: ['designer/deploy/designer', 'designer/deploy/sandbox', 'designer/deploy/server'],
+      collapsed: false,
+    },
+    {
+      type: 'category',
+      label: '设计器自定义',
+      items: [
+        'designer/customize/panels',
+        'designer/customize/tools',
+        'designer/customize/sidebar',
+        'designer/customize/setters',
+        'designer/customize/editor',
+        'designer/customize/components',
+      ],
+      collapsed: false,
+    },
+    {
+      type: 'category',
+      label: '设计原理',
+      items: ['designer/design/overview', 'designer/design/filesystem', 'designer/design/sandbox'],
+      collapsed: false,
+    },
   ],
 
   boot: [
@@ -59,7 +62,7 @@ const sidebars = {
     // 'boot/i18n',
   ],
 
-  protocol: ['protocol/material-protocol', 'protocol/material-package-spec'],
+  // protocol: ['protocol/material-protocol', 'protocol/material-package-spec'],
 };
 
 module.exports = sidebars;

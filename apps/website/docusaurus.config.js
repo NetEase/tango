@@ -62,13 +62,13 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/social-card.png',
-      // announcementBar: {
-      //   id: 'notion_alert',
-      //   content: '🏗 当前版本为测试版，请暂时不要用于生产环境，正式版将于2023年Q4发布！',
-      //   backgroundColor: 'var(--ifm-color-primary-contrast-background)',
-      //   textColor: 'var(--ifm-color-primary-contrast-foreground)',
-      //   isCloseable: false,
-      // },
+      announcementBar: {
+        id: 'notion_alert',
+        content: '🏗 当前版本为 alpha 版本，相关文档正在编写之中，敬请期待！',
+        backgroundColor: 'var(--ifm-color-primary-contrast-background)',
+        textColor: 'var(--ifm-color-primary-contrast-foreground)',
+        isCloseable: false,
+      },
       navbar: {
         title: '',
         logo: {
@@ -87,12 +87,6 @@ const config = {
             sidebarId: 'boot',
             position: 'left',
             label: '应用框架',
-          },
-          {
-            type: 'docSidebar',
-            sidebarId: 'protocol',
-            position: 'left',
-            label: '协议',
           },
           { to: '/blog', label: '博客', position: 'left' },
           {
@@ -127,8 +121,8 @@ const config = {
             title: '社区',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/netease-tango',
+                label: 'Discussions',
+                href: 'https://github.com/NetEase/tango/discussions',
               },
               {
                 label: 'Discord',
