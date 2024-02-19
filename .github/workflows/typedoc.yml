@@ -3,6 +3,8 @@ name: 'typedoc'
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -15,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - run: yarn install
       # Generate your TypeDoc documentation
       - run: npx typedoc
       # https://github.com/actions/upload-pages-artifact
