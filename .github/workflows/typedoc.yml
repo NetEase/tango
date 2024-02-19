@@ -2,9 +2,7 @@ name: 'typedoc'
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: [main, typedoc]
 
 permissions:
   contents: read
