@@ -1,3 +1,5 @@
+import { debounce } from 'lodash-es';
+
 const packageJson = {
   name: 'demo',
   private: true,
@@ -364,3 +366,28 @@ export const genDefaultPage = (index: number) => ({
   export default definePage(App);
   `,
 });
+
+const STORAGE_KEY = 'tango-playground-sample-files';
+export const getSampleFiles = () => {
+  const files = localStorage.getItem(STORAGE_KEY);
+  if (files) {
+    try {
+      const fileObj = JSON.parse(files);
+      if (Array.isArray(fileObj)) {
+        return fileObj;
+      }
+
+      return Object.keys(fileObj).map((filename) => ({
+        filename,
+        code: fileObj[filename],
+      }));
+    } catch (e) {
+      return sampleFiles;
+    }
+  }
+  return sampleFiles;
+};
+
+export const saveSampleFiles = debounce((files: Record<string, string>) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(files));
+}, 1000);

@@ -214,13 +214,13 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.files = new Map();
     this.isReady = false;
 
+    if (options?.files) {
+      this.addFiles(options.files);
+    }
+
     if (options?.onFilesChange) {
       // 使用用户提供的 onFilesChange
       this.onFilesChange = options.onFilesChange;
-    }
-
-    if (options?.files) {
-      this.addFiles(options.files);
     }
 
     if (options?.prototypes) {

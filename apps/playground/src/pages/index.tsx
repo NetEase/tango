@@ -13,9 +13,16 @@ import {
   Sandbox,
   DndQuery,
   themeLight,
+  registerWidget,
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
-import { Logo, ProjectDetail, bootHelperVariables, sampleFiles } from '../helpers';
+import {
+  Logo,
+  ProjectDetail,
+  bootHelperVariables,
+  getSampleFiles,
+  saveSampleFiles,
+} from '../helpers';
 import {
   ApiOutlined,
   AppstoreAddOutlined,
@@ -24,11 +31,17 @@ import {
   FunctionOutlined,
   createFromIconfontCN,
 } from '@ant-design/icons';
+import { Reset } from '../components';
+
+registerWidget('toolbar.reset', Reset);
 
 // 1. 实例化工作区
 const workspace = new Workspace({
   entry: '/src/index.js',
-  files: sampleFiles,
+  files: getSampleFiles(),
+  onFilesChange() {
+    saveSampleFiles(workspace.listFiles());
+  },
 });
 
 // 2. 引擎初始化
@@ -74,6 +87,7 @@ export default function App() {
               <Toolbar.Item key="routeSwitch" placement="left" />
               <Toolbar.Item key="history" placement="left" />
               <Toolbar.Item key="preview" placement="left" />
+              <Toolbar.Item key="reset" placement="left" />
               <Toolbar.Item key="modeSwitch" placement="right" />
               <Toolbar.Item key="togglePanel" placement="right" />
               <Toolbar.Separator />
