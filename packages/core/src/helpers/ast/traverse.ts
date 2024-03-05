@@ -1279,9 +1279,11 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
       const attributes = getJSXElementAttributes(path.node);
 
       // 获取组件的追踪属性
-      const trackId = attributes[SLOT.dnd];
+      const trackDnd = attributes[SLOT.dnd];
+      // 用户代码中的 id 标记
+      const codeId = attributes.tid;
 
-      let { component, id } = parseDndId(trackId);
+      let { component, id } = parseDndId(trackDnd);
       component = component || getJSXElementName(path.node);
       idGenerator.setItem(component);
 
@@ -1290,7 +1292,7 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
       }
 
       // 如果没有 ID，生成组件的追踪 ID
-      if (!trackId) {
+      if (!trackDnd) {
         id = idGenerator.generateId(component);
       }
 
@@ -1301,16 +1303,20 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
 
       // parentId 用于追溯上下游关系
       let parentId;
+      let parentCodeId;
       const parentNode = path.findParent((p) => p.isJSXElement());
 
       if (t.isJSXElement(parentNode?.node)) {
         const parentAttributes = getJSXElementAttributes(parentNode.node);
         parentId = parentAttributes[SLOT.dnd];
+        parentCodeId = parentAttributes.tid;
       }
 
       nodes.push({
         id,
+        codeId,
         parentId,
+        parentCodeId,
         component,
         rawNode: path.node,
       });

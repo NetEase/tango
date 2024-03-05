@@ -65,9 +65,17 @@ export interface ITangoViewNodeData<T = JSXElement> {
    */
   id: string;
   /**
+   * 代码中的 ID
+   */
+  codeId?: string;
+  /**
    * 父亲节点的 ID
    */
   parentId: string;
+  /**
+   * 父节点中的 tid
+   */
+  parentCodeId?: string;
   /**
    * 组件名
    */

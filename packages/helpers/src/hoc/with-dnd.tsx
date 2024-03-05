@@ -38,6 +38,13 @@ interface IWithDndOptions<T> {
   renderFooter?: (props: T) => React.ReactNode;
 }
 
+interface DraggableComponentProps {
+  /**
+   * 组件 ID
+   */
+  tid?: string;
+}
+
 const renderEmpty = (): React.ReactNode => null;
 
 export function withDnd(options: IWithDndOptions<any>) {
@@ -50,14 +57,17 @@ export function withDnd(options: IWithDndOptions<any>) {
     const override = options.overrideProps || {};
     const renderFooter = options.renderFooter || renderEmpty;
 
-    const Component = forwardRef<unknown, P>((props, refProp) => {
-      const dndId = props[SLOT.dnd];
+    const Component = forwardRef<unknown, P & DraggableComponentProps>((props, refProp) => {
       const dndProps = {
-        [SLOT.dnd]: dndId,
+        [SLOT.id]: props.tid, // id 作为唯一标记
+        [SLOT.dnd]: props[SLOT.dnd], // dnd 作为追踪标记
         draggable: draggable ? true : undefined,
       };
+
       const propsCopy = { ...props };
       delete propsCopy[SLOT.dnd];
+      delete propsCopy.tid;
+
       const ref = isFC ? undefined : refProp;
 
       if (!hasWrapper) {

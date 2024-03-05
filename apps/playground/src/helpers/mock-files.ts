@@ -161,12 +161,12 @@ class App extends React.Component {
   render() {
     return (
       <Page title={tango.stores.app.title}>
-       <Section title="Section Title">
+       <Section tid="section1" title="Section Title">
        </Section>
-       <Section>
-       <Space>
+       <Section tid="section2">
+       <Space tid="space1">
           <LocalButton />
-          <Button>button</Button>
+          <Button tid="button1">button</Button>
           <Input />
           </Space>
         </Section>
