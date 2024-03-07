@@ -2,8 +2,8 @@ const packageJson = {
   name: 'demo',
   private: true,
   dependencies: {
-    '@music163/antd': '0.1.6',
-    '@music163/tango-boot': '0.1.3',
+    '@music163/antd': '0.2.0',
+    '@music163/tango-boot': '0.2.5',
     react: '17.0.2',
     'react-dom': '17.0.2',
     'prop-types': '15.7.2',
@@ -50,25 +50,24 @@ const tangoConfigJson = {
       resources: ['https://cdn.jsdelivr.net/npm/moment@{{version}}/moment.js'],
     },
     '@music163/tango-boot': {
-      version: '0.2.1',
+      description: '云音乐低代码运行时框架',
+      version: '0.2.5',
       library: 'TangoBoot',
       type: 'baseDependency',
       resources: ['https://cdn.jsdelivr.net/npm/@music163/tango-boot@{{version}}/dist/boot.js'],
       // resources: ['http://localhost:9001/boot.js'],
-      description: '云音乐低代码运行时框架',
     },
     '@music163/antd': {
-      version: '0.1.7',
+      description: '云音乐低代码中后台应用基础物料',
+      version: '0.2.0',
       library: 'TangoAntd',
       type: 'baseDependency',
       resources: [
         'https://cdn.jsdelivr.net/npm/@music163/antd@{{version}}/dist/index.js',
         'https://cdn.jsdelivr.net/npm/antd@4.24.13/dist/antd.css',
       ],
-      description: '云音乐低代码中后台应用基础物料',
       designerResources: [
         'https://cdn.jsdelivr.net/npm/@music163/antd@{{version}}/dist/designer.js',
-        // 'http://localhost:9002/designer.js',
         'https://cdn.jsdelivr.net/npm/antd@4.24.13/dist/antd.css',
       ],
     },
@@ -162,12 +161,13 @@ class App extends React.Component {
     return (
       <Page title={tango.stores.app.title}>
        <Section tid="section1" title="Section Title">
+        your input: <Input tid="input1" defaultValue="hello" />
+        copy input: <Input value={tango.page.input1?.value} />
        </Section>
        <Section tid="section2">
        <Space tid="space1">
           <LocalButton />
           <Button tid="button1">button</Button>
-          <Input />
           </Space>
         </Section>
       </Page>
