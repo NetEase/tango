@@ -81,8 +81,8 @@ const OutlineTreeNode: React.FC<{ node: ITangoViewNodeData } & ComponentsTreePro
     const sandboxQuery = useSandboxQuery();
     const [visible, setVisible] = useState(true);
     const nodeLabel = (() => {
-      const { component } = parseDndId(node.id);
-      return `${component}${node.codeId ? `(${node.codeId})` : ''}`;
+      const { index } = parseDndId(node.id);
+      return index;
     })();
     const componentPrototype = workspace.componentPrototypes.get(node.component);
     const icon = componentPrototype?.icon || 'icon-placeholder';
