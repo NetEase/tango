@@ -15,6 +15,8 @@ describe('string', () => {
   it('camelCase', () => {
     expect(camelCase('foo')).toEqual('foo');
     expect(camelCase('foo-bar')).toEqual('fooBar');
+    expect(camelCase('Button')).toEqual('button');
+    expect(camelCase('DatePicker')).toEqual('datePicker');
   });
 
   it('upperCamelCase', () => {

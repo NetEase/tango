@@ -1040,7 +1040,8 @@ export class Workspace extends EventTarget implements IWorkspace {
       newNode = dragSource.getNode().cloneRawNode();
     } else {
       // 来自物料面板，创建新的初始化节点
-      newNode = prototype2jsxElement(dragSource.prototype);
+      const tid = this.activeViewModule.idGenerator.generateId(dragSource.prototype.name).id;
+      newNode = prototype2jsxElement(dragSource.prototype, { tid });
     }
 
     if (!newNode) {

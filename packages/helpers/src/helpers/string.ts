@@ -6,6 +6,7 @@
  * @returns
  */
 export function camelCase(str: string) {
+  str = str.charAt(0).toLowerCase() + str.slice(1);
   return str.replace(/\W+(.)/g, (match, chr) => {
     return chr.toUpperCase();
   });

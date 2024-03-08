@@ -96,6 +96,11 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   variables: string[];
 
   /**
+   * ID 生成器
+   */
+  idGenerator: IdGenerator;
+
+  /**
    * 节点列表
    */
   private _nodes: Map<string, TangoNode>;
@@ -104,11 +109,6 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * @deprecated
    */
   private _importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>;
-
-  /**
-   * ID 生成器
-   */
-  private _idGenerator: IdGenerator;
 
   get nodes() {
     return this._nodes;
@@ -125,7 +125,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this._nodes = new Map();
-    this._idGenerator = new IdGenerator({ prefix: props.filename });
+    this.idGenerator = new IdGenerator({ prefix: props.filename });
     this.update(props.code, true, false);
     makeObservable(this, {
       _nodesTree: observable,
@@ -152,7 +152,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       imports,
       importedModules,
       variables,
-    } = traverseViewFile(this.ast, this._idGenerator);
+    } = traverseViewFile(this.ast, this.idGenerator);
     this.ast = newAst;
 
     this._code = ast2code(newAst);

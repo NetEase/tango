@@ -1,5 +1,5 @@
 import { JSXElement, SourceLocation } from '@babel/types';
-import { cloneJSXElementWithoutTrackingData, getJSXElementAttributes } from '../helpers';
+import { cloneJSXElement, getJSXElementAttributes } from '../helpers';
 import { ITangoViewNodeData } from '../types';
 import { TangoViewModule } from './view-module';
 import { IViewNode } from './interfaces';
@@ -40,7 +40,8 @@ export class TangoNode implements IViewNode {
     this.id = props.id;
     this.component = props.component;
     this.rawNode = props.rawNode;
-    this.props = getJSXElementAttributes(cloneJSXElementWithoutTrackingData(props.rawNode));
+    // TODO: 为什么需要 clone 一次？感觉没必要
+    this.props = getJSXElementAttributes(props.rawNode);
   }
 
   /**
@@ -48,7 +49,7 @@ export class TangoNode implements IViewNode {
    * @returns
    */
   cloneRawNode() {
-    return cloneJSXElementWithoutTrackingData(this.rawNode);
+    return cloneJSXElement(this.rawNode, this.file.idGenerator);
   }
 
   /**

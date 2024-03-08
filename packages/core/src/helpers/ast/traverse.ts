@@ -1134,10 +1134,35 @@ function clearJSXElementTrackingData(node: t.JSXElement) {
  * @param node
  * @returns
  */
-function removeTrackingDataFromNodeAst(node: t.JSXElement) {
+function updateTrackingDataFromNodeAst(node: t.JSXElement, idGenerator: IdGenerator) {
   traverseExpressionNode(node, {
     JSXElement(path) {
-      clearJSXElementTrackingData(path.node);
+      const attributes = path.node.openingElement.attributes;
+      const newAttrs = [];
+      // 移除 tracking data
+      // 更新 tid 属性
+      let component;
+      let hasTid;
+      for (const attr of attributes) {
+        if (t.isJSXAttribute(attr)) {
+          const name = keyNode2value(attr.name);
+          if (name === SLOT.dnd) {
+            const value = node2value(attr.value);
+            component = parseDndId(value).component;
+            continue;
+          }
+          if (name === 'tid') {
+            hasTid = true;
+            continue;
+          }
+        }
+        newAttrs.push(attr);
+      }
+      if (hasTid) {
+        const newId = idGenerator.generateId(component).id;
+        newAttrs.push(makeJSXAttribute('tid', newId));
+      }
+      path.node.openingElement.attributes = newAttrs;
     },
   });
   return node;
@@ -1198,9 +1223,9 @@ export function removeUnusedImportSpecifiers(ast: t.File) {
  * @param node
  * @returns
  */
-export function cloneJSXElementWithoutTrackingData(node: t.JSXElement) {
+export function cloneJSXElement(node: t.JSXElement, idGenerator: IdGenerator) {
   let cloned = t.cloneNode(node, true, true);
-  cloned = removeTrackingDataFromNodeAst(cloned);
+  cloned = updateTrackingDataFromNodeAst(cloned, idGenerator);
   return cloned;
 }
 
@@ -1285,7 +1310,6 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
 
       let { component, id } = parseDndId(trackDnd);
       component = component || getJSXElementName(path.node);
-      idGenerator.setItem(component);
 
       if (!isValidComponentName(component)) {
         return;
@@ -1293,7 +1317,7 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
 
       // 如果没有 ID，生成组件的追踪 ID
       if (!trackDnd) {
-        id = idGenerator.generateId(component);
+        id = idGenerator.generateId(component, codeId).fullId;
       }
 
       // 在组件属性中添加追踪标记
