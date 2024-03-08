@@ -17,44 +17,38 @@ const tangoConfigJson = {
       version: '17.0.2',
       library: 'React',
       type: 'dependency',
-      resources: ['https://cdn.jsdelivr.net/npm/react@{{version}}/umd/react.development.js'],
+      resources: ['https://unpkg.com/react@{{version}}/umd/react.development.js'],
     },
     'react-dom': {
       version: '17.0.2',
       library: 'ReactDOM',
       type: 'dependency',
-      resources: [
-        'https://cdn.jsdelivr.net/npm/react-dom@{{version}}/umd/react-dom.development.js',
-      ],
+      resources: ['https://unpkg.com/react-dom@{{version}}/umd/react-dom.development.js'],
     },
     'react-is': {
       version: '16.13.1',
       library: 'ReactIs',
       type: 'dependency',
-      resources: [
-        'https://cdn.jsdelivr.net/npm/react-is@{{version}}/umd/react-is.production.min.js',
-      ],
+      resources: ['https://unpkg.com/react-is@{{version}}/umd/react-is.production.min.js'],
     },
     'styled-components': {
       version: '5.3.5',
       library: 'styled',
       type: 'dependency',
-      resources: [
-        'https://cdn.jsdelivr.net/npm/styled-components@{{version}}/dist/styled-components.min.js',
-      ],
+      resources: ['https://unpkg.com/styled-components@{{version}}/dist/styled-components.min.js'],
     },
     moment: {
       version: '2.29.4',
       library: 'moment',
       type: 'dependency',
-      resources: ['https://cdn.jsdelivr.net/npm/moment@{{version}}/moment.js'],
+      resources: ['https://unpkg.com/moment@{{version}}/moment.js'],
     },
     '@music163/tango-boot': {
       description: '云音乐低代码运行时框架',
       version: '0.2.5',
       library: 'TangoBoot',
       type: 'baseDependency',
-      resources: ['https://cdn.jsdelivr.net/npm/@music163/tango-boot@{{version}}/dist/boot.js'],
+      resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],
       // resources: ['http://localhost:9001/boot.js'],
     },
     '@music163/antd': {
@@ -63,12 +57,12 @@ const tangoConfigJson = {
       library: 'TangoAntd',
       type: 'baseDependency',
       resources: [
-        'https://cdn.jsdelivr.net/npm/@music163/antd@{{version}}/dist/index.js',
-        'https://cdn.jsdelivr.net/npm/antd@4.24.13/dist/antd.css',
+        'https://unpkg.com/@music163/antd@{{version}}/dist/index.js',
+        'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
       designerResources: [
-        'https://cdn.jsdelivr.net/npm/@music163/antd@{{version}}/dist/designer.js',
-        'https://cdn.jsdelivr.net/npm/antd@4.24.13/dist/antd.css',
+        'https://unpkg.com/@music163/antd@{{version}}/dist/designer.js',
+        'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
     },
   },
