@@ -15,7 +15,17 @@ import { FormControl } from './form-ui';
 import { Box, Text } from 'coral-system';
 
 export interface FormItemProps extends ComponentPropType {
+  /**
+   * 无样式模式，仅返回 setter 组件
+   */
+  noStyle?: boolean;
+  /**
+   * 表单项右侧自定义区域
+   */
   extra?: React.ReactNode;
+  /**
+   * 表单项底部自定义区域
+   */
   footer?: React.ReactNode;
 }
 
@@ -34,15 +44,15 @@ export interface IFormItemCreateOptions {
    */
   name: string;
   /**
-   * 别名列表
+   * 设置器别名列表，支持多个名字
    */
   alias?: string[];
   /**
-   * 渲染的组件
+   * 渲染设置器使用的组件
    */
   component?: React.ComponentType<FormItemComponentProps>;
   /**
-   * 自定义渲染器
+   * 自定义渲染器 render 函数，render 优先级高于 component
    */
   render?: (args: FormItemComponentProps) => React.ReactElement;
   /**
@@ -78,6 +88,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     getSetterProps: getSetterPropsProp,
     extra,
     footer,
+    noStyle,
   }: FormItemProps) {
     const { disableSwitchExpressionSetter, showItemSubtitle } = useFormVariable();
     const model = useFormModel();
@@ -136,6 +147,11 @@ export function createFormItem(options: IFormItemCreateOptions) {
     );
 
     const getVisible = getVisibleProp || defaultGetVisible;
+
+    if (noStyle) {
+      // 无样式模式
+      return getVisible(model) ? setterNode : <div data-setter={setterName} data-field={name} />;
+    }
 
     return (
       <FormControl

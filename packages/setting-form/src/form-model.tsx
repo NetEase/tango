@@ -210,6 +210,7 @@ export class Field {
 
     const actualValidate = async () => {
       if (validate) {
+        // FIXME: 重构 validate 的逻辑，和 antd Form 保持一致
         return validate(value, this, trigger);
       }
       return null;

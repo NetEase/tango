@@ -14,6 +14,10 @@ import { FormModelProvider, FormVariableProvider } from './context';
 import { FormModel, FormModelOptionsType } from './form-model';
 import { SettingFormObject } from './form-object';
 import { isValidNestProps } from './helpers';
+import { registerBuiltinSetters } from './setter';
+import { FormIdentifier } from './form-ui';
+
+registerBuiltinSetters();
 
 function normalizeComponentProps(props: ComponentPrototypeType['props']) {
   const groups: Record<string, ComponentPropType[]> = {};
@@ -88,6 +92,14 @@ export interface SettingFormProps {
    */
   prototype?: ComponentPrototypeType;
   /**
+   * 是否显示组件标识
+   */
+  showIdentifier?:
+    | false
+    | {
+        identifierKey: string;
+      };
+  /**
    * 是否显示搜索框
    */
   showSearch?: boolean;
@@ -119,6 +131,7 @@ export function SettingForm({
   model: modelProp,
   defaultValue,
   onChange = noop,
+  showIdentifier = false,
   showSearch = true,
   showGroups = true,
   showItemSubtitle = true,
@@ -186,16 +199,23 @@ export function SettingForm({
       <FormModelProvider value={model}>
         <Box className="SettingForm" mb="xl" css={formStyle}>
           <Box className="SettingFormHeader" position="sticky" top="0" bg="white" zIndex="2">
-            {showSearch && (
-              <Box className="SettingFormSearch" px="l" py="m">
-                <Search
-                  placeholder="搜索属性"
-                  onChange={(val) => {
-                    setKeyword(val?.trim());
-                  }}
-                />
-              </Box>
-            )}
+            <Box px="l" py="m">
+              {showIdentifier && (
+                <FormIdentifier title={prototype.title}>
+                  <SettingFormItem noStyle setter="idSetter" name={showIdentifier.identifierKey} />
+                </FormIdentifier>
+              )}
+              {showSearch && (
+                <Box className="SettingFormSearch" mt="m">
+                  <Search
+                    placeholder="搜索属性"
+                    onChange={(val) => {
+                      setKeyword(val?.trim());
+                    }}
+                  />
+                </Box>
+              )}
+            </Box>
             {!keyword && showGroups && (
               <Box className="SettingFormNav">
                 <Tabs activeKey={tabKey} onChange={setTabKey}>
