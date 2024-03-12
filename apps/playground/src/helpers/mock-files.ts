@@ -12,6 +12,9 @@ const packageJson = {
 };
 
 const tangoConfigJson = {
+  designerConfig: {
+    autoGenerateComponentId: true,
+  },
   packages: {
     react: {
       version: '17.0.2',

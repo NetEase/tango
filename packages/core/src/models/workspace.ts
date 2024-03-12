@@ -3,6 +3,7 @@ import { JSXElement } from '@babel/types';
 import {
   ComponentPrototypeType,
   Dict,
+  ITangoConfigJson,
   hasFileExtension,
   isStoreVariablePath,
   isString,
@@ -142,6 +143,13 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 拷贝的暂存区
    */
   private copyTempNodes: TangoNode[];
+
+  /**
+   * 项目配置，返回解析后的 tango.config.json 文件
+   */
+  get projectConfig() {
+    return this.tangoConfigJson?.json as ITangoConfigJson;
+  }
 
   /**
    * 当前激活的视图模块
@@ -880,6 +888,7 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   /**
    * 粘贴选中结点
+   * @deprecated 考虑废弃
    * TODO: 重构该逻辑，抽离出公共的方法
    */
   pasteSelectedNode() {
@@ -915,10 +924,19 @@ export class Workspace extends EventTarget implements IWorkspace {
    */
   cloneSelectedNode() {
     const file = this.selectSource.file;
+
+    let injectedProps;
+    if (this.projectConfig?.designerConfig?.autoGenerateComponentId) {
+      // 生成新的组件 id
+      injectedProps = {
+        tid: file.idGenerator.generateId(this.selectSource.firstNode.component).id,
+      };
+    }
+
     file
       .insertAfter(
         this.selectSource.first.id,
-        this.selectSource.firstNode.cloneRawNode() as JSXElement,
+        this.selectSource.firstNode.cloneRawNode(injectedProps) as JSXElement,
       )
       .update();
 
@@ -1034,14 +1052,20 @@ export class Workspace extends EventTarget implements IWorkspace {
     // TODO: 这里需要一个额外的信息，DropTarget 的最近容器节点，用于判断目标元素是否可以被置入容器中
     const dragSourcePrototype = dragSource.prototype;
 
+    let injectedProps; // 额外注入给节点的属性
+    if (this.projectConfig?.designerConfig?.autoGenerateComponentId) {
+      injectedProps = {
+        tid: this.activeViewModule.idGenerator.generateId(dragSource.prototype.name).id,
+      };
+    }
+
     let newNode;
     if (dragSource.id) {
       // 来自画布，完整的克隆该节点
       newNode = dragSource.getNode().cloneRawNode();
     } else {
       // 来自物料面板，创建新的初始化节点
-      const tid = this.activeViewModule.idGenerator.generateId(dragSource.prototype.name).id;
-      newNode = prototype2jsxElement(dragSource.prototype, { tid });
+      newNode = prototype2jsxElement(dragSource.prototype, injectedProps);
     }
 
     if (!newNode) {

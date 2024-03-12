@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dropdown, Space, Tree } from 'antd';
 import { Box, css } from 'coral-system';
 import { IconFont } from '@music163/tango-ui';

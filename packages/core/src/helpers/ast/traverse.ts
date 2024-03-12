@@ -21,6 +21,7 @@ import {
   makeJSXAttribute,
   code2expression,
   object2node,
+  makeJSXAttributes,
 } from './parse';
 import { getFullPath, isValidComponentName } from '../string';
 import { isDefineService, isDefineStore, isTangoVariable } from '../assert';
@@ -1110,76 +1111,75 @@ function getJSXElementName(node: t.JSXElement) {
   return keyNode2value(node.openingElement.name) as string;
 }
 
-/**
- * 从 JSXElement 中移除追踪属性
- * @param node
- * @returns
- */
-function clearJSXElementTrackingData(node: t.JSXElement) {
-  const attributes = node.openingElement.attributes.filter((attrNode) => {
-    if (t.isJSXAttribute(attrNode)) {
-      const attrName = keyNode2value(attrNode.name);
-      if (attrName === SLOT.dnd) {
-        return false;
+type JSXAttributeFilterType = (attrName: string | number, attrNode: t.JSXAttribute) => boolean;
+
+function createJSXElementAttributesFilter(filter: JSXAttributeFilterType) {
+  return (node: t.JSXElement) => {
+    const attributes = node.openingElement.attributes.filter((attrNode) => {
+      if (t.isJSXAttribute(attrNode)) {
+        const attrName = keyNode2value(attrNode.name);
+        return filter(attrName, attrNode);
       }
-    }
-    return true;
-  });
-  node.openingElement.attributes = attributes;
-  return node;
+      return true;
+    });
+    node.openingElement.attributes = attributes;
+    return node;
+  };
 }
 
 /**
- * 从 JSXElement 中移除追踪属性
+ * 清楚 JSXElement 的追踪属性
  * @param node
  * @returns
  */
-function updateTrackingDataFromNodeAst(node: t.JSXElement, idGenerator: IdGenerator) {
-  traverseExpressionNode(node, {
-    JSXElement(path) {
-      const attributes = path.node.openingElement.attributes;
-      const newAttrs = [];
-      // 移除 tracking data
-      // 更新 tid 属性
-      let component;
-      let hasTid;
-      for (const attr of attributes) {
-        if (t.isJSXAttribute(attr)) {
-          const name = keyNode2value(attr.name);
-          if (name === SLOT.dnd) {
-            const value = node2value(attr.value);
-            component = parseDndId(value).component;
-            continue;
-          }
-          if (name === 'tid') {
-            hasTid = true;
-            continue;
-          }
-        }
-        newAttrs.push(attr);
-      }
-      if (hasTid) {
-        const newId = idGenerator.generateId(component).id;
-        newAttrs.push(makeJSXAttribute('tid', newId));
-      }
-      path.node.openingElement.attributes = newAttrs;
-    },
-  });
-  return node;
-}
+const removeTrackingAttributes = createJSXElementAttributesFilter((attrName) => {
+  return attrName !== SLOT.dnd;
+});
 
 /**
- * 从视图文件的 ast 中移除追踪代码
+ * 从文件中移除所有 JSXElement 的追踪属性
  * @param ast
- * @warning TODO: 有 bug ，注释会重复生成，参考 https://github.com/babel/babel/issues/14549
+ * @returns
  */
-function removeTrackingDataFromViewAst(ast: t.File) {
+function clearTrackingData(ast: t.File) {
   traverse(ast, {
     JSXElement(path) {
-      clearJSXElementTrackingData(path.node);
+      path.node = removeTrackingAttributes(path.node);
     },
   });
   return ast;
+}
+
+/**
+ * 从 JSXElement 中移除追踪属性
+ * @param node
+ * @returns
+ */
+function clearJSXElementTrackingData(node: t.JSXElement, overrideProps?: Dict) {
+  traverseExpressionNode(node, {
+    JSXElement(path) {
+      const newNode = createJSXElementAttributesFilter((attrName) => {
+        if (attrName === SLOT.dnd) {
+          return false;
+        }
+        if (overrideProps && attrName in overrideProps) {
+          return false;
+        }
+        return true;
+      })(path.node);
+
+      if (overrideProps) {
+        const overrideAttributes = makeJSXAttributes(overrideProps);
+        newNode.openingElement.attributes = [
+          ...overrideAttributes,
+          ...path.node.openingElement.attributes,
+        ];
+      }
+
+      path.node = newNode;
+    },
+  });
+  return node;
 }
 
 /**
@@ -1223,9 +1223,9 @@ export function removeUnusedImportSpecifiers(ast: t.File) {
  * @param node
  * @returns
  */
-export function cloneJSXElement(node: t.JSXElement, idGenerator: IdGenerator) {
+export function cloneJSXElement(node: t.JSXElement, overrideProps?: Dict) {
   let cloned = t.cloneNode(node, true, true);
-  cloned = updateTrackingDataFromNodeAst(cloned, idGenerator);
+  cloned = clearJSXElementTrackingData(cloned, overrideProps);
   return cloned;
 }
 
@@ -1234,7 +1234,7 @@ export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
   const importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]> = {};
   const nodes: Array<ITangoViewNodeData<t.JSXElement>> = [];
   const cloneAst = t.cloneNode(ast, true, true);
-  const cleanAst = removeTrackingDataFromViewAst(cloneAst);
+  const cleanAst = clearTrackingData(cloneAst);
   const variables: string[] = []; // 使用的 tango 变量
 
   traverse(ast, {

@@ -8,6 +8,7 @@ import {
   isValidObjectString,
   getVariableContent,
   isPlainObject,
+  Dict,
 } from '@music163/tango-helpers';
 import { isWrappedByExpressionContainer } from '../assert';
 
@@ -253,6 +254,10 @@ export function value2jsxChildrenValueNode(value: any) {
  */
 export function makeJSXAttribute(name: string, value: any) {
   return t.jsxAttribute(t.jsxIdentifier(name), value2jsxAttributeValueNode(value));
+}
+
+export function makeJSXAttributes(props: Dict) {
+  return Object.keys(props).map((key) => makeJSXAttribute(key, props[key]));
 }
 
 /**

@@ -242,3 +242,38 @@ export type ComponentPrototypeType = {
    */
   usage?: string;
 };
+
+/**
+ * TangoConfigJson 类型配置
+ */
+export interface ITangoConfigJson {
+  /**
+   * 依赖包配置
+   */
+  packages?: Record<string, any>;
+  /**
+   * 数据源配置
+   */
+  dataSource?: Record<string, any>;
+  /**
+   * 代理配置
+   */
+  proxy?: Record<string, any>;
+  /**
+   * 外部资源，例如 js, css 文件等
+   */
+  externalResources?: Record<string, any>;
+  /**
+   * 设计器配置
+   */
+  designerConfig: {
+    /**
+     * 每次代码生成后是否自动格式化
+     */
+    autoFormatCode: boolean;
+    /**
+     * 是否自动生成组件 ID，会自动在组件代码中增加 tid 属性
+     */
+    autoGenerateComponentId: boolean;
+  };
+}
