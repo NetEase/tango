@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, css, Group } from 'coral-system';
-import { IconButton, ToggleButton } from '@music163/tango-ui';
+import { Action, ToggleButton } from '@music163/tango-ui';
 import { observer, useDesigner } from '@music163/tango-context';
 import { Input } from 'antd';
 import {
@@ -84,9 +84,9 @@ export class Navigator extends React.Component<NavigatorProps, NavigatorState> {
         css={navigatorStyle}
       >
         <Box>
-          <IconButton icon={<ArrowLeftOutlined />} onClick={onBack} title="返回" />
-          <IconButton icon={<ArrowRightOutlined />} onClick={onForward} title="前进" />
-          <IconButton icon={<ReloadOutlined />} onClick={onRefresh} title="刷新" />
+          <Action size="small" icon={<ArrowLeftOutlined />} onClick={onBack} title="返回" />
+          <Action size="small" icon={<ArrowRightOutlined />} onClick={onForward} title="前进" />
+          <Action size="small" icon={<ReloadOutlined />} onClick={onRefresh} title="刷新" />
         </Box>
         <Input
           className="navigatorInput"

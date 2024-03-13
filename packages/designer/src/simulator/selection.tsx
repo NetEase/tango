@@ -4,7 +4,7 @@ import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
 import { PlusSquareOutlined, HolderOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { IconButton } from '@music163/tango-ui';
+import { Action } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
 
@@ -166,11 +166,12 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
                   }}
                 />
                 {!isFromCurrentFile && (
-                  <IconButton
+                  <Action
                     as="span"
                     color="white"
                     tooltip={`该节点来自其他文件（${data.filename}）`}
                     icon={<InfoCircleOutlined />}
+                    size="small"
                   />
                 )}
               </>
