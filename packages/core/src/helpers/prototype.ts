@@ -2,6 +2,7 @@ import * as t from '@babel/types';
 import {
   ComponentPropType,
   ComponentPrototypeType,
+  Dict,
   isNil,
   logger,
   uuid,
@@ -135,18 +136,29 @@ function getPropKeyValuePair(item: ComponentPropType, generateValue: (...args: a
 }
 
 /**
- * prototype -> <Button>hello</Button>
+ * Button prototype -> <Button>hello</Button>
+ *
  * @param prototype
+ * @param extraProps
  */
-export function prototype2code(prototype: ComponentPrototypeType) {
+export function prototype2code(prototype: ComponentPrototypeType, extraProps?: Dict) {
   let code;
   switch (prototype.type) {
     case 'snippet':
       code = prototype.initChildren || prototype.defaultChildren;
       break;
     default: {
+      const propList: ComponentPropType[] = extraProps
+        ? Object.keys(extraProps).map((key) => ({
+            name: key,
+            initValue: extraProps[key],
+          }))
+        : [];
+      // merge extraProps to props
+      const props = [...prototype.props, ...propList];
+
       const keys =
-        prototype.props?.reduce((acc, item) => {
+        props.reduce((acc, item) => {
           const pair = getPropKeyValuePair(item, (fractionDigits: number) =>
             uuid(prototype.name, fractionDigits),
           );
@@ -170,9 +182,11 @@ export function prototype2code(prototype: ComponentPrototypeType) {
 /**
  * 基于 prototype 信息生成 t.JSXElement
  * @example ButtonPrototype -> <Button>hello</Button> -> t.JSXElement
- * @param code
+ *
+ * @param prototype 组件的配置信息
+ * @param props 额外的属性集
  */
-export function prototype2jsxElement(prototype: ComponentPrototypeType) {
-  const code = prototype2code(prototype);
+export function prototype2jsxElement(prototype: ComponentPrototypeType, props?: Dict) {
+  const code = prototype2code(prototype, props);
   return code2expression(code) as t.JSXElement;
 }

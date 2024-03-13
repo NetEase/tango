@@ -249,7 +249,13 @@ export function Basic() {
 
   return (
     <Box display="flex">
-      <SettingForm model={model} prototype={prototype} />
+      <SettingForm
+        model={model}
+        prototype={prototype}
+        showIdentifier={{
+          identifierKey: 'tid',
+        }}
+      />
       <Box position="relative">
         <Card title="表单状态预览" style={{ position: 'sticky', top: 0 }}>
           <FormValuePreview model={model} />

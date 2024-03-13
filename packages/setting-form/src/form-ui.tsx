@@ -230,3 +230,19 @@ export function FieldSet({ title, extra, children }: FieldSetProps) {
     </CollapsePanel>
   );
 }
+
+interface FormIdentifierProps {
+  title?: React.ReactNode;
+  children?: React.ReactNode;
+}
+
+export function FormIdentifier({ title, children }: FormIdentifierProps) {
+  return (
+    <Box className="FormIdentifier" display="flex" alignItems="center">
+      <Box fontSize="16px" fontWeight="500" mr="s">
+        {title}
+      </Box>
+      <Box>{children}</Box>
+    </Box>
+  );
+}

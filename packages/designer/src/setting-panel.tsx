@@ -16,7 +16,7 @@ const headerProps = {
   fontSize: '18px',
 };
 
-export const SettingPanel = observer(({ title = '设置面板', ...props }: SettingPanelProps) => {
+export const SettingPanel = observer((props: SettingPanelProps) => {
   const workspace = useWorkspace();
   const designer = useDesigner();
 
@@ -45,6 +45,11 @@ export const SettingPanel = observer(({ title = '设置面板', ...props }: Sett
   const formModel = new FormModel(formValue, {
     onChange(name, value, field) {
       if (!name) {
+        return;
+      }
+
+      if (name === 'tid' && workspace.activeViewModule.hasNodeByCodeId(value)) {
+        // 存在重复的 tid，不支持修改
         return;
       }
 
@@ -79,7 +84,6 @@ export const SettingPanel = observer(({ title = '设置面板', ...props }: Sett
 
   return (
     <Panel
-      title={prototype?.title || title}
       display={display}
       flexDirection="column"
       width="320px"
@@ -95,14 +99,15 @@ export const SettingPanel = observer(({ title = '设置面板', ...props }: Sett
             key={workspace.selectSource.first.id}
             model={formModel}
             prototype={prototype}
+            showIdentifier={{
+              identifierKey: 'tid',
+            }}
             {...props}
           />
         ) : (
-          <Box p="m">该节点没有可配置信息</Box>
+          <Box p="m">没有找到与该组件相关的配置信息</Box>
         )
-      ) : (
-        <Box p="m">请先选择一个节点</Box>
-      )}
+      ) : null}
     </Panel>
   );
 });

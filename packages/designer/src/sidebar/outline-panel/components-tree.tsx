@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dropdown, Space, Tree } from 'antd';
 import { Box, css } from 'coral-system';
 import { IconFont } from '@music163/tango-ui';
@@ -80,10 +80,10 @@ const OutlineTreeNode: React.FC<{ node: ITangoViewNodeData } & ComponentsTreePro
     const workspace = useWorkspace();
     const sandboxQuery = useSandboxQuery();
     const [visible, setVisible] = useState(true);
-    const nodeLabel = useMemo(() => {
-      const { component, index } = parseDndId(node.id);
-      return `${component}:${index}`;
-    }, [node.id]);
+    const nodeLabel = (() => {
+      const { index } = parseDndId(node.id);
+      return index;
+    })();
     const componentPrototype = workspace.componentPrototypes.get(node.component);
     const icon = componentPrototype?.icon || 'icon-placeholder';
 

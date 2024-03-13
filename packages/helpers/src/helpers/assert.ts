@@ -61,3 +61,10 @@ export function isStoreVariablePath(key: string) {
 export function isServiceVariablePath(key: string) {
   return /^services\.[a-zA-Z0-9]+/.test(key);
 }
+
+/**
+ * 是否在 Tango 设计模式
+ */
+export function isInTangoDesignMode() {
+  return '__TANGO_DESIGNER__' in window;
+}

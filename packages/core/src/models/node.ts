@@ -1,5 +1,6 @@
 import { JSXElement, SourceLocation } from '@babel/types';
-import { cloneJSXElementWithoutTrackingData, getJSXElementAttributes } from '../helpers';
+import { Dict } from '@music163/tango-helpers';
+import { cloneJSXElement, getJSXElementAttributes } from '../helpers';
 import { ITangoViewNodeData } from '../types';
 import { TangoViewModule } from './view-module';
 import { IViewNode } from './interfaces';
@@ -40,15 +41,16 @@ export class TangoNode implements IViewNode {
     this.id = props.id;
     this.component = props.component;
     this.rawNode = props.rawNode;
-    this.props = getJSXElementAttributes(cloneJSXElementWithoutTrackingData(props.rawNode));
+    this.props = getJSXElementAttributes(cloneJSXElement(props.rawNode));
   }
 
   /**
    * 返回克隆后的 ast 节点
+   * @param overrideProps 额外设置给克隆节点的属性
    * @returns
    */
-  cloneRawNode() {
-    return cloneJSXElementWithoutTrackingData(this.rawNode);
+  cloneRawNode(overrideProps?: Dict) {
+    return cloneJSXElement(this.rawNode, overrideProps);
   }
 
   /**

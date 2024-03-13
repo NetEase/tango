@@ -96,7 +96,17 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   variables: string[];
 
   /**
-   * 节点列表
+   * ID 生成器
+   */
+  idGenerator: IdGenerator;
+
+  /**
+   * codeId 列表
+   */
+  private _codeIdList: string[] = [];
+
+  /**
+   * 节点列表 <id, Node>
    */
   private _nodes: Map<string, TangoNode>;
   /**
@@ -104,11 +114,6 @@ export class TangoViewModule extends TangoModule implements IViewFile {
    * @deprecated
    */
   private _importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]>;
-
-  /**
-   * ID 生成器
-   */
-  private _idGenerator: IdGenerator;
 
   get nodes() {
     return this._nodes;
@@ -125,7 +130,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this._nodes = new Map();
-    this._idGenerator = new IdGenerator({ prefix: props.filename });
+    this.idGenerator = new IdGenerator({ prefix: props.filename });
     this.update(props.code, true, false);
     makeObservable(this, {
       _nodesTree: observable,
@@ -152,7 +157,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       imports,
       importedModules,
       variables,
-    } = traverseViewFile(this.ast, this._idGenerator);
+    } = traverseViewFile(this.ast, this.idGenerator);
     this.ast = newAst;
 
     this._code = ast2code(newAst);
@@ -164,6 +169,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     this.variables = variables;
 
     this._nodes.clear();
+    this._codeIdList = [];
 
     nodes.forEach((cur) => {
       const node = new TangoNode({
@@ -171,9 +177,16 @@ export class TangoViewModule extends TangoModule implements IViewFile {
         file: this,
       });
       this._nodes.set(cur.id, node);
+      if (cur.codeId) {
+        this._codeIdList.push(cur.codeId);
+      }
     });
 
     this._nodesTree = nodeListToTreeData(nodes);
+  }
+
+  hasNodeByCodeId(codeId: string) {
+    return this._codeIdList.includes(codeId);
   }
 
   /**

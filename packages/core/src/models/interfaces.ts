@@ -1,4 +1,4 @@
-import { ComponentPrototypeType, Dict } from '@music163/tango-helpers';
+import { ComponentPrototypeType, Dict, ITangoConfigJson } from '@music163/tango-helpers';
 import { TangoHistory } from './history';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
@@ -15,6 +15,7 @@ import { TangoFile, TangoJsonFile } from './file';
 import { TangoRouteModule } from './route-module';
 import { TangoStoreModule } from './store-module';
 import { TangoServiceModule } from './service-module';
+import { IdGenerator } from '../helpers';
 
 export interface IViewFile {
   readonly workspace: IWorkspace;
@@ -22,9 +23,21 @@ export interface IViewFile {
   readonly type: FileType;
 
   /**
+   * ID 生成器
+   */
+  idGenerator: IdGenerator;
+
+  /**
    * 通过导入组件名查找组件来自的包
    */
   importMap?: Dict<IImportSpecifierSourceData>;
+
+  /**
+   * 判断节点是否存在
+   * @param codeId 节点 ID
+   * @returns 存在返回 true，否则返回 false
+   */
+  hasNodeByCodeId?: (codeId: string) => boolean;
 
   listImportSources?: () => string[];
   listModals?: () => Array<{ label: string; value: string }>;
@@ -105,9 +118,10 @@ export interface IViewNode {
 
   /**
    * 克隆原始节点
+   * @param overrideProps 额外设置给克隆节点的属性
    * @returns
    */
-  cloneRawNode: () => unknown;
+  cloneRawNode: (overrideProps?: Dict) => unknown;
 
   /**
    * 销毁节点
@@ -134,9 +148,21 @@ export interface IWorkspace {
   activeViewFile: string;
   activeRoute: string;
 
+  /**
+   * 解析后的 tango.config.json 文件，如果要获取项目配置，推荐使用 projectConfig 获取
+   */
   tangoConfigJson: TangoJsonFile;
+  /**
+   * 解析后的路由模块
+   */
   routeModule?: TangoRouteModule;
+  /**
+   * 解析后的状态管理模块 Map
+   */
   storeModules?: Record<string, TangoStoreModule>;
+  /**
+   * 解析后的服务模块 Map
+   */
   serviceModules?: Record<string, TangoServiceModule>;
 
   ready: () => void;
@@ -259,7 +285,10 @@ export interface IWorkspace {
   removeBizComp?: (name: string) => void;
 
   // ----------------- getter -----------------
-
+  /**
+   * 解析后的项目配置信息
+   */
+  get projectConfig(): ITangoConfigJson;
   get activeViewModule(): IViewFile;
   get pages(): any[];
   get bizComps(): string[];

@@ -2,8 +2,8 @@ const packageJson = {
   name: 'demo',
   private: true,
   dependencies: {
-    '@music163/antd': '0.1.6',
-    '@music163/tango-boot': '0.1.3',
+    '@music163/antd': '0.2.1',
+    '@music163/tango-boot': '0.2.5',
     react: '17.0.2',
     'react-dom': '17.0.2',
     'prop-types': '15.7.2',
@@ -12,64 +12,60 @@ const packageJson = {
 };
 
 const tangoConfigJson = {
+  designerConfig: {
+    autoGenerateComponentId: true,
+  },
   packages: {
     react: {
       version: '17.0.2',
       library: 'React',
       type: 'dependency',
-      resources: ['https://cdn.jsdelivr.net/npm/react@{{version}}/umd/react.development.js'],
+      resources: ['https://unpkg.com/react@{{version}}/umd/react.development.js'],
     },
     'react-dom': {
       version: '17.0.2',
       library: 'ReactDOM',
       type: 'dependency',
-      resources: [
-        'https://cdn.jsdelivr.net/npm/react-dom@{{version}}/umd/react-dom.development.js',
-      ],
+      resources: ['https://unpkg.com/react-dom@{{version}}/umd/react-dom.development.js'],
     },
     'react-is': {
       version: '16.13.1',
       library: 'ReactIs',
       type: 'dependency',
-      resources: [
-        'https://cdn.jsdelivr.net/npm/react-is@{{version}}/umd/react-is.production.min.js',
-      ],
+      resources: ['https://unpkg.com/react-is@{{version}}/umd/react-is.production.min.js'],
     },
     'styled-components': {
       version: '5.3.5',
       library: 'styled',
       type: 'dependency',
-      resources: [
-        'https://cdn.jsdelivr.net/npm/styled-components@{{version}}/dist/styled-components.min.js',
-      ],
+      resources: ['https://unpkg.com/styled-components@{{version}}/dist/styled-components.min.js'],
     },
     moment: {
       version: '2.29.4',
       library: 'moment',
       type: 'dependency',
-      resources: ['https://cdn.jsdelivr.net/npm/moment@{{version}}/moment.js'],
+      resources: ['https://unpkg.com/moment@{{version}}/moment.js'],
     },
     '@music163/tango-boot': {
-      version: '0.2.1',
+      description: '云音乐低代码运行时框架',
+      version: '0.2.5',
       library: 'TangoBoot',
       type: 'baseDependency',
-      resources: ['https://cdn.jsdelivr.net/npm/@music163/tango-boot@{{version}}/dist/boot.js'],
+      resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],
       // resources: ['http://localhost:9001/boot.js'],
-      description: '云音乐低代码运行时框架',
     },
     '@music163/antd': {
-      version: '0.1.7',
+      description: '云音乐低代码中后台应用基础物料',
+      version: '0.2.1',
       library: 'TangoAntd',
       type: 'baseDependency',
       resources: [
-        'https://cdn.jsdelivr.net/npm/@music163/antd@{{version}}/dist/index.js',
-        'https://cdn.jsdelivr.net/npm/antd@4.24.13/dist/antd.css',
+        'https://unpkg.com/@music163/antd@{{version}}/dist/index.js',
+        'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
-      description: '云音乐低代码中后台应用基础物料',
       designerResources: [
-        'https://cdn.jsdelivr.net/npm/@music163/antd@{{version}}/dist/designer.js',
-        // 'http://localhost:9002/designer.js',
-        'https://cdn.jsdelivr.net/npm/antd@4.24.13/dist/antd.css',
+        'https://unpkg.com/@music163/antd@{{version}}/dist/designer.js',
+        'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
     },
   },
@@ -161,13 +157,14 @@ class App extends React.Component {
   render() {
     return (
       <Page title={tango.stores.app.title}>
-       <Section title="Section Title">
+       <Section tid="section1" title="Section Title">
+        your input: <Input tid="input1" defaultValue="hello" />
+        copy input: <Input value={tango.page.input1?.value} />
        </Section>
-       <Section>
-       <Space>
+       <Section tid="section2">
+       <Space tid="space1">
           <LocalButton />
-          <Button>button</Button>
-          <Input />
+          <Button tid="button1">button</Button>
           </Space>
         </Section>
       </Page>

@@ -456,6 +456,11 @@ function mergeTangoConfigJson(
   const userJs = getValue(json, 'sandbox.evaluateJavaScript') || '';
   let mergedUserJs = userJs;
 
+  const designerScript = !isPreview ? 'window.__TANGO_DESIGNER__ = {}' : '';
+  if (designerScript) {
+    mergedUserJs = `${designerScript};${mergedUserJs}`;
+  }
+
   if (injectScript) {
     mergedUserJs = `${mergedUserJs};${injectScript}`;
   }
