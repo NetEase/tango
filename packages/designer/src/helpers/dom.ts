@@ -75,6 +75,7 @@ export function getElementData(
   const display = getElementCSSDisplay(element);
   return {
     id: dnd.id,
+    codeId: dnd.index,
     name: dnd.component || element.tagName.toLowerCase(),
     filename: dnd.filename,
     bounding,

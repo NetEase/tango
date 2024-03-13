@@ -159,7 +159,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
             label={
               <>
                 <NameSelector
-                  label={data.name}
+                  label={data.codeId || data.name}
                   parents={data.parents}
                   onSelect={(item) => {
                     workspace.selectSource.select(item);

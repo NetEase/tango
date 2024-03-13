@@ -104,7 +104,14 @@ export type ElementBoundingType = {
  * 选中项数据类型
  */
 export interface ISelectedItemData {
+  /**
+   * 节点的 data-dnd 值
+   */
   id?: string;
+  /**
+   * 节点的 codeId
+   */
+  codeId?: string;
   /**
    * 组件名
    */
