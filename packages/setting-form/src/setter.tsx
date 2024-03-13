@@ -23,6 +23,8 @@ const idInputStyle = css`
   }
 `;
 
+const idPattern = /^[a-z]+[\w]*$/;
+
 export function IdSetter({
   value: valueProp,
   defaultValue,
@@ -31,6 +33,7 @@ export function IdSetter({
   ...rest
 }: FormItemComponentProps<string>) {
   const [value, setValue] = useState(valueProp || defaultValue);
+  const [error, setError] = useState('');
   const [editable, setEditable] = useState(false);
 
   // value controlled
@@ -40,12 +43,17 @@ export function IdSetter({
 
   const __props: InputProps = editable
     ? {
+        status: error ? 'error' : undefined,
         onBlur() {
           setEditable(false);
-          onChange?.(value);
+          if (!error) {
+            onChange?.(value || undefined);
+          }
         },
         onChange(e) {
+          const newValue = e.target.value;
           setValue(e.target.value);
+          setError(newValue && !idPattern.test(newValue) ? 'error' : '');
         },
       }
     : {
@@ -63,8 +71,6 @@ export function IdSetter({
   );
 }
 
-const idPattern = /^[a-z]+[\w]*$/;
-
 export function registerBuiltinSetters() {
   // 预注册基础 Setter
   register({
@@ -80,8 +86,5 @@ export function registerBuiltinSetters() {
   register({
     name: 'idSetter',
     component: IdSetter,
-    validate: (value) => {
-      return idPattern.test(value) ? undefined : '请输入合法的组件ID';
-    },
   });
 }

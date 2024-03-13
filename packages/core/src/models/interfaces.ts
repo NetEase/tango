@@ -32,6 +32,13 @@ export interface IViewFile {
    */
   importMap?: Dict<IImportSpecifierSourceData>;
 
+  /**
+   * 判断节点是否存在
+   * @param codeId 节点 ID
+   * @returns 存在返回 true，否则返回 false
+   */
+  hasNodeByCodeId?: (codeId: string) => boolean;
+
   listImportSources?: () => string[];
   listModals?: () => Array<{ label: string; value: string }>;
   listForms?: () => Record<string, string[]>;

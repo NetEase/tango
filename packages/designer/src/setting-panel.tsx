@@ -48,6 +48,11 @@ export const SettingPanel = observer((props: SettingPanelProps) => {
         return;
       }
 
+      if (name === 'tid' && workspace.activeViewModule.hasNodeByCodeId(value)) {
+        // 存在重复的 tid，不支持修改
+        return;
+      }
+
       let firstName = name;
       let realValue = value;
 
