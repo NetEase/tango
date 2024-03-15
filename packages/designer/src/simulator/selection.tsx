@@ -379,7 +379,7 @@ interface InsertedDropdownProps extends DropdownProps {
 function InsertedDropdown({ options = [], onSelect, ...props }: InsertedDropdownProps) {
   return (
     <Dropdown
-      open
+      trigger={['click']}
       dropdownRender={() => {
         return (
           <Box
