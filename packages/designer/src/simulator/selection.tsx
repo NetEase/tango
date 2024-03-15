@@ -1,10 +1,11 @@
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
+import { Dropdown, DropdownProps } from 'antd';
 import { PlusSquareOutlined, HolderOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { Action } from '@music163/tango-ui';
+import { Action, IconFont } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
 
@@ -58,6 +59,13 @@ const selectionBoxStyle = css`
   top: 0;
 `;
 
+interface IInsertedData {
+  name: string;
+  label: string;
+  icon: string;
+  description: string;
+}
+
 export interface SelectionBoxProps {
   /**
    * 是否显示操作按钮
@@ -90,15 +98,20 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   const isPage = prototype?.type === 'page';
 
   // 如果声明了 childrenName，提供快捷子元素创建入口
-  let insertedList: ISelectedItemData[] = [];
+  let insertedList: IInsertedData[] = [];
   if (prototype?.childrenName) {
     const names = Array.isArray(prototype?.childrenName)
       ? prototype.childrenName
       : [prototype.childrenName];
-    insertedList = names.map((child) => ({
-      id: child,
-      name: child,
-    }));
+    insertedList = names.map((child) => {
+      const proto = workspace.componentPrototypes.get(child);
+      return {
+        name: child,
+        label: proto?.title || child,
+        icon: proto?.icon,
+        description: proto?.help,
+      };
+    });
   }
 
   let selectionHelpersAlign: SelectionHelperAlignType = 'top-right';
@@ -177,31 +190,17 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
               </>
             }
           />
-          {insertedList.length > 0 && (
-            <SelectionHelper
-              icon={<PlusSquareOutlined />}
-              label={
-                insertedList.length === 1 ? (
-                  <span
-                    onClick={() => {
-                      workspace.insertToSelectedNode(insertedList[0].name);
-                    }}
-                  >
-                    添加 {insertedList[0].name}
-                  </span>
-                ) : (
-                  <NameSelector
-                    label="添加"
-                    parents={insertedList}
-                    onSelect={(item) => {
-                      workspace.insertToSelectedNode(item.name);
-                    }}
-                  />
-                )
-              }
-            />
-          )}
           <SelectionToolSet>{!isPage && actions}</SelectionToolSet>
+          {insertedList.length > 0 && (
+            <InsertedDropdown
+              options={insertedList}
+              onSelect={(name) => {
+                workspace.insertToSelectedNode(name);
+              }}
+            >
+              <SelectionHelper icon={<PlusSquareOutlined />} />
+            </InsertedDropdown>
+          )}
         </SelectionHelpers>
       )}
     </Box>
@@ -371,3 +370,83 @@ const NameSelector = ({ label, parents = [], onSelect = noop }: NameSelectorProp
     </NameSelectorWrapper>
   );
 };
+
+interface InsertedDropdownProps extends DropdownProps {
+  options?: IInsertedData[];
+  onSelect?: (name: string) => void;
+}
+
+function InsertedDropdown({ options = [], onSelect, ...props }: InsertedDropdownProps) {
+  return (
+    <Dropdown
+      open
+      dropdownRender={() => {
+        return (
+          <Box
+            bg="#FFF"
+            borderRadius="m"
+            boxShadow="lowDown"
+            border="solid"
+            borderColor="line2"
+            overflow="hidden"
+          >
+            <Box px="l" py="m" color="text2">
+              为当前节点添加子元素
+            </Box>
+            <Box>
+              {options.map((item) => (
+                <InsertedItem
+                  key={item.name}
+                  label={item.label}
+                  icon={item.icon}
+                  description={item.description}
+                  onClick={() => onSelect?.(item.name)}
+                />
+              ))}
+            </Box>
+          </Box>
+        );
+      }}
+      {...props}
+    />
+  );
+}
+
+const insertedItemStyle = css`
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--tango-colors-fill2);
+  }
+`;
+
+function InsertedItem({
+  label,
+  icon = 'icon-placeholder',
+  description,
+}: HTMLCoralProps<'div'> & Omit<IInsertedData, 'name'>) {
+  return (
+    <Box display="flex" columnGap="m" px="l" py="m" fontSize="12px" css={insertedItemStyle}>
+      <Box
+        size="35px"
+        fontSize="32px"
+        background="fill1"
+        border="1px solid"
+        borderColor="line2"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {icon.startsWith('icon-') ? (
+          <IconFont className="material-icon" type={icon} />
+        ) : (
+          <img src={icon} alt={label} />
+        )}
+      </Box>
+      <Box>
+        <Box fontWeight="500">{label}</Box>
+        <Box color="text2">{description}</Box>
+      </Box>
+    </Box>
+  );
+}
