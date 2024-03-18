@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.11](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.10...@music163/tango-setting-form@1.0.0-alpha.11) (2024-03-18)
+
+### Bug Fixes
+
+- add deprecated and data group to ComponentPropType ([#116](https://github.com/netease/tango/issues/116)) ([9f7441c](https://github.com/netease/tango/commit/9f7441c13400dba55c58b7dd6ce9429013edbc45))
+
 # [1.0.0-alpha.10](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.9...@music163/tango-setting-form@1.0.0-alpha.10) (2024-03-18)
 
 ### Bug Fixes

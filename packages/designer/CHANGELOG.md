@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.12...@music163/tango-designer@1.0.0-alpha.13) (2024-03-18)
+
+### Bug Fixes
+
+- add deprecated and data group to ComponentPropType ([#116](https://github.com/netease/tango/issues/116)) ([9f7441c](https://github.com/netease/tango/commit/9f7441c13400dba55c58b7dd6ce9429013edbc45))
+
 # [1.0.0-alpha.12](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.11...@music163/tango-designer@1.0.0-alpha.12) (2024-03-18)
 
 ### Bug Fixes
