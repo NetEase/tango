@@ -84,6 +84,8 @@ export function ModelSetter({
           if (!definedVariables.includes(keyPath)) {
             ret.showAddButton = false;
             ret.showRemoveButton = false;
+          } else if (/^stores\.[a-zA-Z0-9]+$/.test(keyPath)) {
+            ret.showAddButton = true;
           }
 
           return ret;

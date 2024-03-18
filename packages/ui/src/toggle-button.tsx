@@ -154,6 +154,9 @@ export interface ToggleButtonProps extends Omit<HTMLCoralProps<'button'>, 'type'
   dropdownProps?: DropDownProps;
 }
 
+/**
+ * TODO: 使用 Action 重构
+ */
 export function ToggleButton(props: ToggleButtonProps) {
   const {
     size = 'm',

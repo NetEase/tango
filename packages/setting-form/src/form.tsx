@@ -8,14 +8,15 @@ import {
   filterTreeData,
   mapTreeData,
 } from '@music163/tango-helpers';
-import { Search, Tabs } from '@music163/tango-ui';
+import { Action, Search, Tabs } from '@music163/tango-ui';
 import { SettingFormItem, register } from './form-item';
 import { FormModelProvider, FormVariableProvider } from './context';
 import { FormModel, FormModelOptionsType } from './form-model';
 import { SettingFormObject } from './form-object';
 import { isValidNestProps } from './helpers';
 import { registerBuiltinSetters } from './setter';
-import { FormIdentifier } from './form-ui';
+import { FormHeader } from './form-ui';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 registerBuiltinSetters();
 
@@ -169,8 +170,8 @@ export function SettingForm({
   }, [keyword, componentProps, tabKey, model, showGroups, componentPropGroups]);
 
   const renderProps = useCallback(
-    (props: ComponentPropType[]) =>
-      props.map((item) => {
+    (list: ComponentPropType[]) =>
+      list.map((item) => {
         const { getProp, ...rest } = item;
         const childProp = {
           ...rest,
@@ -201,9 +202,25 @@ export function SettingForm({
           <Box className="SettingFormHeader" position="sticky" top="0" bg="white" zIndex="2">
             <Box px="l" py="m">
               {showIdentifier && (
-                <FormIdentifier title={prototype.title}>
-                  <SettingFormItem noStyle setter="idSetter" name={showIdentifier.identifierKey} />
-                </FormIdentifier>
+                <FormHeader
+                  title={prototype.title}
+                  subTitle={
+                    <SettingFormItem
+                      noStyle
+                      setter="idSetter"
+                      name={showIdentifier.identifierKey}
+                    />
+                  }
+                  extra={
+                    prototype?.docs ? (
+                      <Action
+                        icon={<QuestionCircleOutlined />}
+                        tooltip="查看组件文档"
+                        href={prototype.docs}
+                      />
+                    ) : null
+                  }
+                />
               )}
               {showSearch && (
                 <Box className="SettingFormSearch" mt="m">

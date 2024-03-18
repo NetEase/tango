@@ -6,6 +6,7 @@ import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 export interface InputListProps {
   value?: string[];
   onChange?: (value: string[]) => void;
+  // TODO: 支持 unique value
 }
 
 export function InputList({ value = [], onChange }: InputListProps) {

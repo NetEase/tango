@@ -231,18 +231,24 @@ export function FieldSet({ title, extra, children }: FieldSetProps) {
   );
 }
 
-interface FormIdentifierProps {
+interface FormHeaderProps {
   title?: React.ReactNode;
-  children?: React.ReactNode;
+  subTitle?: React.ReactNode;
+  extra?: React.ReactNode;
 }
 
-export function FormIdentifier({ title, children }: FormIdentifierProps) {
+export function FormHeader({ title, extra, subTitle }: FormHeaderProps) {
   return (
-    <Box className="FormIdentifier" display="flex" alignItems="center">
-      <Box fontSize="16px" fontWeight="500" mr="s">
-        {title}
+    <Box className="FormHeader">
+      <Box display="flex" alignItems="center">
+        <Box flex="1" display="flex" alignItems="center">
+          <Box fontSize="16px" fontWeight="500" mr="s">
+            {title}
+          </Box>
+          {subTitle && <Box>{subTitle}</Box>}
+        </Box>
+        {extra && <Box>{extra}</Box>}
       </Box>
-      <Box>{children}</Box>
     </Box>
   );
 }

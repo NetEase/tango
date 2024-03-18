@@ -10,7 +10,7 @@ export function splitToPath(name: string) {
 }
 
 function isNumericKey(key: string) {
-  return String(Number.parseInt(key)) === key;
+  return String(Number.parseInt(key, 10)) === key;
 }
 
 /** lodash.get(...) for mobx observables */

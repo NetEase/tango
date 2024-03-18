@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 export const logger = {
   group(title: string, body: string) {
     console.groupCollapsed(title);

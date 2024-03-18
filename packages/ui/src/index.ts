@@ -1,4 +1,6 @@
 export * from './icons';
+export * from './action';
+export { Action as IconButton } from './action'; // 兼容旧版本
 export * from './action-select';
 export * from './code-editor';
 export * from './chat-input';
@@ -9,7 +11,6 @@ export * from './iconfont';
 export * from './menu';
 export * from './panel';
 export * from './toggle-button';
-export * from './icon-button';
 export * from './input-code';
 export * from './input-list';
 export * from './search';

@@ -14,7 +14,7 @@ import {
   IVariableTreeNode,
 } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
-import { IconButton, Panel, InputCode } from '@music163/tango-ui';
+import { Panel, InputCode, Action } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { VariableTree } from '../components';
@@ -130,10 +130,11 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
                 }}
               />
             )}
-            <IconButton
+            <Action
               tooltip="打开表达式变量选择面板"
               icon={<ExpandAltOutlined />}
               onClick={on}
+              size="small"
             />
           </Box>
         }

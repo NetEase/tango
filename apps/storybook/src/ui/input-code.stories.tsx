@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, InputCode } from '@music163/tango-ui';
+import { Action, InputCode } from '@music163/tango-ui';
 import { BlockOutlined } from '@ant-design/icons';
 
 export default {
@@ -22,7 +22,7 @@ const context = {
 export function Basic() {
   return (
     <InputCode
-      suffix={<IconButton icon={<BlockOutlined />} />}
+      suffix={<Action icon={<BlockOutlined />} size="small" />}
       autoCompleteContext={{ tango: context }}
     />
   );
