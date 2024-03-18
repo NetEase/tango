@@ -29,13 +29,13 @@ const eslintConfig = {
 };
 
 function completeProperties(from: number, object: Object) {
-  const options = [];
-  for (const name in object) {
+  const options: object[] = [];
+  Object.entries(object).forEach(([key, val]) => {
     options.push({
-      label: name,
-      type: typeof object[name] === 'function' ? 'function' : 'variable',
+      label: key,
+      type: typeof val === 'function' ? 'function' : 'variable',
     });
-  }
+  });
   return {
     from,
     options,
@@ -58,10 +58,10 @@ function buildAutoComplete(scope: any = window, customOptions: Array<{ label: st
 
     if (
       completePropertyAfter.includes(nodeBefore.name) &&
-      nodeBefore.parent?.name == 'MemberExpression'
+      nodeBefore.parent?.name === 'MemberExpression'
     ) {
       const object = nodeBefore.parent.getChild('Expression');
-      if (object?.name == 'VariableName') {
+      if (object?.name === 'VariableName') {
         const from = /\./.test(nodeBefore.name) ? nodeBefore.to : nodeBefore.from;
         const variableName = context.state.sliceDoc(object.from, object.to);
         if (typeof scope[variableName] === 'object') {
@@ -83,11 +83,11 @@ function buildAutoComplete(scope: any = window, customOptions: Array<{ label: st
           return completeProperties(from, result);
         }
       }
-    } else if (nodeBefore.name == 'VariableName') {
+    } else if (nodeBefore.name === 'VariableName') {
       return completeProperties(nodeBefore.from, scope);
     } else if (context.explicit && !dontCompleteIn.includes(nodeBefore.name)) {
       return completeProperties(context.pos, scope);
-    } else if (!context.explicit && nodeBefore.name == '{') {
+    } else if (!context.explicit && nodeBefore.name === '{') {
       return {
         from: context.pos,
         options: customOptions,
@@ -155,7 +155,6 @@ export function InputCode({
   }, [autoCompleteContext, autoCompleteOptions]);
   const extensions = [javascript({ jsx: true }), globalJavaScriptCompletions];
   if (enableESLint) {
-    // @ts-ignore
     extensions.push(lintGutter(), linter(esLint(new eslint.Linter(), eslintConfig)));
   }
   const { rootStyle, codeSetup } = useInputCode({ shape, status, showLineNumbers, showFoldGutter });

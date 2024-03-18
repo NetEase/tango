@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from 'coral-system';
+import { logger } from '@music163/tango-helpers';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -10,20 +11,20 @@ interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  static getDerivedStateFromError(error: any) {
+    // Update state so the next render will show the fallback UI.
+    logger.error(error);
+    return { hasError: true };
+  }
+
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: any) {
-    // Update state so the next render will show the fallback UI.
-    console.log(error);
-    return { hasError: true };
-  }
-
   componentDidCatch(error: any, errorInfo: any) {
     // You can also log the error to an error reporting service
-    console.error(error, errorInfo);
+    logger.error(error, errorInfo);
   }
 
   render() {

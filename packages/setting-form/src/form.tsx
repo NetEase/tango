@@ -170,8 +170,8 @@ export function SettingForm({
   }, [keyword, componentProps, tabKey, model, showGroups, componentPropGroups]);
 
   const renderProps = useCallback(
-    (props: ComponentPropType[]) =>
-      props.map((item) => {
+    (list: ComponentPropType[]) =>
+      list.map((item) => {
         const { getProp, ...rest } = item;
         const childProp = {
           ...rest,
