@@ -1,16 +1,27 @@
 import React from 'react';
 import { FormModel, SettingForm, register } from '@music163/tango-setting-form';
 import { ComponentPrototypeType } from '@music163/tango-helpers';
-import { BorderSetter } from '@music163/tango-designer/src/setters/style-setter';
+import { BorderSetter, DisplaySetter } from '@music163/tango-designer/src/setters/style-setter';
 import { Box } from 'coral-system';
 import { JsonView } from '@music163/tango-ui';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Card } from 'antd';
+import { createFromIconfontCN } from '@ant-design/icons';
 
+// 这里按需注入，因为部分 setter 依赖 Designer 的上下文
 register({
   name: 'borderSetter',
   component: BorderSetter,
+});
+
+register({
+  name: 'displaySetter',
+  component: DisplaySetter,
+});
+
+createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/c/font_2891794_cou9i7556tl.js',
 });
 
 export default {
@@ -34,6 +45,11 @@ const prototype: ComponentPrototypeType = {
       tip: '这是一个文本属性',
       docs: 'https://music-one.fn.netease.com/docs/button',
       deprecated: '使用 text2 替代',
+    },
+    {
+      name: 'display',
+      title: 'displaySetter',
+      setter: 'displaySetter',
     },
     {
       name: 'border',

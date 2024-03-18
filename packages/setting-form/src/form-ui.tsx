@@ -171,8 +171,11 @@ interface FormLabelProps extends HTMLCoralProps<'div'> {
    * 文档地址
    */
   docs?: string;
+  /**
+   * 是否显示废弃标记
+   */
   // eslint-disable-next-line react/no-unused-prop-types
-  deprecated?: boolean;
+  deprecated?: boolean | string;
 }
 
 function FormLabel({
@@ -199,7 +202,7 @@ function FormLabel({
         {deprecated ? (
           <Box color="#faad14">
             <WarningOutlined /> 废弃提示：
-            {typeof deprecated === 'string' ? deprecated : '该属性已废弃，请谨慎使用。'}
+            {isString(deprecated) ? deprecated : '该属性已废弃，请谨慎使用。'}
           </Box>
         ) : null}
       </Box>
