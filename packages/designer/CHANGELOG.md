@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.12](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.11...@music163/tango-designer@1.0.0-alpha.12) (2024-03-18)
+
+### Bug Fixes
+
+- add both mode to routerSetter ([#112](https://github.com/netease/tango/issues/112)) ([23c2e2e](https://github.com/netease/tango/commit/23c2e2e9b64d36a82efe559f4b1fedf91786b08d))
+- refactor action, formHeader, selectionDropdown ([#114](https://github.com/netease/tango/issues/114)) ([489118b](https://github.com/netease/tango/commit/489118b88aedc6672e2387f795253f94bcdf6f9b))
+
+### Features
+
+- support code id ([#111](https://github.com/netease/tango/issues/111)) ([6c65362](https://github.com/netease/tango/commit/6c65362a5d5b2297b22f30c093c7d21a979630a1))
+
 # [1.0.0-alpha.11](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.10...@music163/tango-designer@1.0.0-alpha.11) (2024-02-02)
 
 ### Features

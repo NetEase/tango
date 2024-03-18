@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.8](https://github.com/netease/tango/compare/@music163/tango-ui@1.0.0-alpha.7...@music163/tango-ui@1.0.0-alpha.8) (2024-03-18)
+
+### Bug Fixes
+
+- refactor action, formHeader, selectionDropdown ([#114](https://github.com/netease/tango/issues/114)) ([489118b](https://github.com/netease/tango/commit/489118b88aedc6672e2387f795253f94bcdf6f9b))
+
 # [1.0.0-alpha.7](https://github.com/netease/tango/compare/@music163/tango-ui@1.0.0-alpha.6...@music163/tango-ui@1.0.0-alpha.7) (2024-01-29)
 
 ### Bug Fixes
