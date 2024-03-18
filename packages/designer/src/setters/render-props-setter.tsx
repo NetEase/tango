@@ -70,20 +70,20 @@ const tableCellOptions: RenderSetterProps['options'] = [
   {
     label: '标签',
     value: 'Tag',
-    render: getRender('<Tag>tag</Tag>', 'tableCell'),
+    render: '{(value, record, index) => <Tag children={value} />}',
     relatedImports: ['Tag'],
+  },
+  {
+    label: '图片',
+    value: 'Image',
+    render: '{(value, record, index) => <Image width={150} src={value} />}',
+    relatedImports: ['Image'],
   },
   {
     label: '按钮',
     value: 'Button',
     render: getRender('<Button>button</Button>', 'tableCell'),
     relatedImports: ['Button'],
-  },
-  {
-    label: '图片',
-    value: 'Image',
-    render: getRender('<Image width={150} src="https://picsum.photos/100" />', 'tableCell'),
-    relatedImports: ['Image'],
   },
 ];
 

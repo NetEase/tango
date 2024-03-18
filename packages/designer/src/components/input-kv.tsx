@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, memo } from 'react';
 import { Input } from 'antd';
 import { css, Box } from 'coral-system';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { ExpressionSetter } from '../setters/expression-setter';
 
 const rowCss = css`
   display: flex;
@@ -40,8 +41,36 @@ const tipCss = css`
   margin-bottom: 8px;
 `;
 
+const SCENE_COMPONENTS = {
+  default: ['input', 'input'],
+  params: ['input', 'expression'],
+};
+
+const InputComponent = ({ component, ...props }: any) => {
+  switch (component) {
+    case 'expression':
+      return (
+        <Box overflowX="auto" minWidth="45%">
+          <ExpressionSetter {...props} placeholder="请选择或输入Value" />
+        </Box>
+      );
+    default:
+      return (
+        <Input
+          style={{ minWidth: '45%' }}
+          allowClear
+          {...props}
+          onChange={(ev) => {
+            props.onChange(ev.target?.value);
+          }}
+        />
+      );
+  }
+};
+
 const OneInputKV = (props: any) => {
   const {
+    scene = 'default', // dafault｜params
     keyInputProps,
     valueInputProps,
     format = 'simple',
@@ -49,7 +78,7 @@ const OneInputKV = (props: any) => {
     defaultValue,
     value,
   } = props;
-  const [data, setData] = useState<Array<any> | any>(
+  const [data, setData] = useState<any[] | any>(
     formatValue({
       data: defaultValue || value,
       format: 'original',
@@ -123,22 +152,22 @@ const OneInputKV = (props: any) => {
     data?.map((item: any, index: number) => (
       <>
         <Box key={item.index} css={rowCss}>
-          <Input
-            allowClear
-            placeholder="请输入 Key"
+          <InputComponent
+            component={SCENE_COMPONENTS[scene][0]}
+            placeholder="请输入Key"
             {...keyInputProps}
             value={item.key}
-            onChange={(ev) => {
-              handleInput('key', index, ev.target?.value);
+            onChange={(val: any) => {
+              handleInput('key', index, val);
             }}
           />
-          <Input
-            allowClear
-            placeholder="请输入 Value"
+          <InputComponent
+            component={SCENE_COMPONENTS[scene][1]}
+            placeholder="请输入Value"
             {...valueInputProps}
             value={item.value}
-            onChange={(ev) => {
-              handleInput('value', index, ev.target.value);
+            onChange={(val: any) => {
+              handleInput('value', index, val);
             }}
           />
           <DeleteOutlined
@@ -198,8 +227,8 @@ const formatValue = ({ format, data }: IFormatValueConfig) => {
   }
 };
 
-const compareValue = (origin: Array<any>, data: Array<any>) => {
-  const resolve = (list: Array<any>) => {
+const compareValue = (origin: any[], data: any[]) => {
+  const resolve = (list: any[]) => {
     let keyStr = '';
     let valueStr = '';
 
