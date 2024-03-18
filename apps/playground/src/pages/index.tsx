@@ -46,7 +46,7 @@ const sandboxQuery = new DndQuery({
 
 // 4. 图标库初始化（物料面板和组件树使用了 iconfont 里的图标）
 createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/c/font_2891794_lzc7rtwuzf.js',
+  scriptUrl: '//at.alicdn.com/t/c/font_2891794_cou9i7556tl.js',
 });
 
 /**
