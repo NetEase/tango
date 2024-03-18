@@ -31,6 +31,9 @@ const prototype: ComponentPrototypeType = {
       name: 'text',
       title: 'textSetter',
       setter: 'textSetter',
+      tip: '这是一个文本属性',
+      docs: 'https://music-one.fn.netease.com/docs/button',
+      deprecated: '使用 text2 替代',
     },
     {
       name: 'border',

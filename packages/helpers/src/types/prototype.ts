@@ -24,10 +24,11 @@ export type ComponentPropType<T = any> = {
    * 属性的分组
    * - basic 常用属性
    * - event 事件属性
+   * - data  数据属性
    * - style 样式属性
    * - advanced 高级属性
    */
-  group?: 'basic' | 'event' | 'style' | 'advanced';
+  group?: 'basic' | 'event' | 'style' | 'data' | 'advanced';
   /**
    * 帮助文档链接地址
    * @example https://foo.bar/help
@@ -91,6 +92,10 @@ export type ComponentPropType<T = any> = {
    * 动态设置表单项是否展示
    */
   getVisible?: (form: any) => boolean;
+  /**
+   * 标记属性是否已废弃
+   */
+  deprecated?: boolean | string;
 };
 
 /**

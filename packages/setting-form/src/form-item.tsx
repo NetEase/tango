@@ -86,6 +86,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     disableVariableSetter: disableVariableSetterProp = options.disableVariableSetter,
     getVisible: getVisibleProp,
     getSetterProps: getSetterPropsProp,
+    deprecated,
     extra,
     footer,
     noStyle,
@@ -160,6 +161,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
         note={showItemSubtitle ? name : null}
         tip={tip}
         docs={docs}
+        deprecated={deprecated}
         error={field.error}
         extra={
           <Box>

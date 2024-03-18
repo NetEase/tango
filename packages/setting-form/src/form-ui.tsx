@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { css, Box, HTMLCoralProps, Text } from 'coral-system';
+import { css, Box, HTMLCoralProps, Link } from 'coral-system';
 import { Checkbox, Tooltip } from 'antd';
 import { CollapsePanel } from '@music163/tango-ui';
 import { isNil, isString } from '@music163/tango-helpers';
+import { WarningOutlined } from '@ant-design/icons';
 
 export interface FormControlProps extends Omit<FormLabelProps, 'type'> {
   visible: boolean;
@@ -19,6 +20,7 @@ export function FormControl({
   tip,
   docs,
   extra,
+  deprecated,
   footer,
   error,
   children,
@@ -27,7 +29,7 @@ export function FormControl({
   return (
     <Box className="FormControl" display={visible ? 'block' : 'none'} {...rest}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb="s">
-        <FormLabel label={label} note={note} tip={tip} docs={docs} />
+        <FormLabel label={label} note={note} tip={tip} docs={docs} deprecated={deprecated} />
         {extra}
       </Box>
       <Box>{children}</Box>
@@ -138,12 +140,12 @@ const labelStyle = css`
 `;
 
 const tipStyle = css`
-  a:link {
-    color: #fff;
+  a {
+    text-decoration: underline;
   }
 
-  a:hover {
-    color: var(--tango-colors-brand);
+  a:link {
+    color: #fff;
   }
 `;
 
@@ -169,19 +171,42 @@ interface FormLabelProps extends HTMLCoralProps<'div'> {
    * 文档地址
    */
   docs?: string;
+  // eslint-disable-next-line react/no-unused-prop-types
+  deprecated?: boolean;
 }
 
-function FormLabel({ type = 'normal', label, note, tip, docs, ...rest }: FormLabelProps) {
-  const help = docs ? (
-    <Box css={tipStyle}>
-      <Text mr="m">{tip}</Text>
-      <a href={docs} target="_blank" rel="noreferrer">
-        帮助文档
-      </a>
-    </Box>
-  ) : (
-    tip
-  );
+function FormLabel({
+  type = 'normal',
+  label,
+  note,
+  tip,
+  docs,
+  deprecated,
+  ...rest
+}: FormLabelProps) {
+  let help: React.ReactNode;
+  if (deprecated || docs) {
+    help = (
+      <Box>
+        <Box css={tipStyle}>
+          {tip}
+          {docs ? (
+            <Link href={docs} isExternal ml="m">
+              查看属性文档
+            </Link>
+          ) : null}
+        </Box>
+        {deprecated ? (
+          <Box color="#faad14">
+            <WarningOutlined /> 废弃提示：
+            {typeof deprecated === 'string' ? deprecated : '该属性已废弃，请谨慎使用。'}
+          </Box>
+        ) : null}
+      </Box>
+    );
+  } else {
+    help = tip;
+  }
 
   const labelColor = {
     normal: 'text.body',
@@ -197,6 +222,7 @@ function FormLabel({ type = 'normal', label, note, tip, docs, ...rest }: FormLab
       css={labelStyle}
       title={isString(label) ? label : undefined}
     >
+      {deprecated ? <WarningOutlined style={{ color: '#faad14', marginRight: 4 }} /> : null}
       {label}
     </Box>
   );
