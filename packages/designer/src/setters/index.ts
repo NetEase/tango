@@ -4,6 +4,7 @@ import { ColumnSetter } from './column-setter';
 import { CssSetter } from './css-setter';
 import { DateRangeSetter, DateSetter, TimeRangeSetter } from './date-setter';
 import { EnumSetter } from './enum-setter';
+import { TagEnumMapSetter } from './tag-enum-map-setter';
 import { EventSetter } from './event-setter';
 import { ExpressionSetter } from './expression-setter';
 import { JSONSetter } from './json-setter';
@@ -166,6 +167,7 @@ const setters: IFormItemCreateOptions[] = [
   },
   { name: 'bgSetter', component: BgSetter },
   { name: 'borderSetter', component: BorderSetter },
+  { name: 'tagEnumMapSetter', component: TagEnumMapSetter },
 ];
 
 export function registerBuiltinSetters() {

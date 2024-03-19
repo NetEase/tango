@@ -50,14 +50,14 @@ const InputComponent = ({ component, ...props }: any) => {
   switch (component) {
     case 'expression':
       return (
-        <Box overflowX="auto" minWidth="45%">
-          <ExpressionSetter {...props} placeholder="请选择或输入Value" />
+        <Box overflowX="auto" minWidth="60%">
+          <ExpressionSetter {...props} placeholder="value" />
         </Box>
       );
     default:
       return (
         <Input
-          style={{ minWidth: '45%' }}
+          style={{ minWidth: '30%' }}
           allowClear
           {...props}
           onChange={(ev) => {
@@ -154,7 +154,7 @@ const OneInputKV = (props: any) => {
         <Box key={item.index} css={rowCss}>
           <InputComponent
             component={SCENE_COMPONENTS[scene][0]}
-            placeholder="请输入Key"
+            placeholder="key"
             {...keyInputProps}
             value={item.key}
             onChange={(val: any) => {
@@ -163,7 +163,7 @@ const OneInputKV = (props: any) => {
           />
           <InputComponent
             component={SCENE_COMPONENTS[scene][1]}
-            placeholder="请输入Value"
+            placeholder="value"
             {...valueInputProps}
             value={item.value}
             onChange={(val: any) => {
