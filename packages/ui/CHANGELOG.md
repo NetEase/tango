@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.10](https://github.com/netease/tango/compare/@music163/tango-ui@1.0.0-alpha.9...@music163/tango-ui@1.0.0-alpha.10) (2024-03-19)
+
+### Bug Fixes
+
+- select outline node & render dependency list ([#118](https://github.com/netease/tango/issues/118)) ([07febb3](https://github.com/netease/tango/commit/07febb385f710f9a0bc43639ce22787bb05e97ed))
+
 # [1.0.0-alpha.9](https://github.com/netease/tango/compare/@music163/tango-ui@1.0.0-alpha.8...@music163/tango-ui@1.0.0-alpha.9) (2024-03-18)
 
 **Note:** Version bump only for package @music163/tango-ui
