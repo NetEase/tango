@@ -1,11 +1,11 @@
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
-import { Dropdown, DropdownProps } from 'antd';
+import { Dropdown, DropdownProps, Tooltip } from 'antd';
 import { PlusSquareOutlined, HolderOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { Action, IconFont } from '@music163/tango-ui';
+import { IconFont } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
 
@@ -179,13 +179,9 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
                   }}
                 />
                 {!isFromCurrentFile && (
-                  <Action
-                    as="span"
-                    color="white"
-                    tooltip={`该节点来自其他文件（${data.filename}）`}
-                    icon={<InfoCircleOutlined />}
-                    size="small"
-                  />
+                  <Tooltip title={`该节点来自其他文件（${data.filename}）`}>
+                    <InfoCircleOutlined />
+                  </Tooltip>
                 )}
               </>
             }

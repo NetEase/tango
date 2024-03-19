@@ -10,7 +10,6 @@ import {
   Popconfirm,
   Radio,
   message,
-  Tag,
   Checkbox,
   ModalProps,
 } from 'antd';
@@ -18,7 +17,7 @@ import { FormListProps } from 'antd/lib/form';
 import { Box, Text } from 'coral-system';
 import semverLt from 'semver/functions/lt';
 import semverValid from 'semver/functions/valid';
-import { ConfigGroup, ConfigItem } from '@music163/tango-ui';
+import { ColorTag, ConfigGroup, ConfigItem } from '@music163/tango-ui';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useBoolean } from '@music163/tango-helpers';
 import { isUndefined } from 'lodash-es';
@@ -101,8 +100,8 @@ export const DependencyPanel = observer(
         />
         <ConfigGroup
           title={
-            <>
-              基础包&nbsp;
+            <div>
+              基础包
               <Tooltip
                 title={
                   <>
@@ -115,7 +114,7 @@ export const DependencyPanel = observer(
               >
                 <QuestionCircleOutlined />
               </Tooltip>
-            </>
+            </div>
           }
           key={DependencyItemType.基础包}
         >
@@ -332,25 +331,19 @@ function RenderItem({
     const packageJsonIncluded = !!dependencies?.[name];
     const tangoConfigJsonIncluded = !!packageInfo;
 
-    return [
-      hasUmd && (
-        <Tooltip title="该依赖拥有 UMD 资源，可优化加载速度">
-          <Tag key="hasUmd" color="green">
+    return (
+      <Box display="inline-block">
+        {hasUmd && (
+          <ColorTag key="hasUmd" color="green" tooltip="该依赖拥有 UMD 资源，可优化加载速度">
             UMD
-          </Tag>
-        </Tooltip>
-      ),
-      packageJsonIncluded && (
-        <Tooltip title="此依赖在 package.json 中存在">
-          <Tag key="packageJson">package</Tag>
-        </Tooltip>
-      ),
-      tangoConfigJsonIncluded && (
-        <Tooltip title="此依赖在 tango.config.json 中存在">
-          <Tag key="tangoConfigJson">tango.config</Tag>
-        </Tooltip>
-      ),
-    ].filter((e) => e);
+          </ColorTag>
+        )}
+        {packageJsonIncluded && <ColorTag tooltip="此依赖在 package.json 中存在">package</ColorTag>}
+        {tangoConfigJsonIncluded && (
+          <ColorTag tooltip="此依赖在 tango.config.json 中存在">tango.config</ColorTag>
+        )}
+      </Box>
+    );
   }, [showTags, workspace, record]);
 
   return (
