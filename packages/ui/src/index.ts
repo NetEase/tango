@@ -7,6 +7,7 @@ export * from './chat-input';
 export * from './error-boundary';
 export * from './file-explorer';
 export * from './collapse-panel';
+export * from './color-tag';
 export * from './iconfont';
 export * from './menu';
 export * from './panel';
