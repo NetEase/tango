@@ -15740,10 +15740,10 @@ react-monaco-editor-lite@^1.2.3:
     monaco-textmate "^3.0.1"
     onigasm "^2.2.5"
 
-react-monaco-editor-lite@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.npmmirror.com/react-monaco-editor-lite/-/react-monaco-editor-lite-1.2.4.tgz#d8616c137a1fb35456a703dc0c140dc43fe777ff"
-  integrity sha512-Hr4ozGVgv/zsWU0Lre8+S4khv1dLKHz/CGDSyNyvqEG323avkKyJ0ez4DG39wHGQ+Ax/bpgMb6b87UODeLq91w==
+react-monaco-editor-lite@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npmmirror.com/react-monaco-editor-lite/-/react-monaco-editor-lite-1.3.0.tgz#e118e35c04dfe632ac6462be4c978efe6dd9963b"
+  integrity sha512-9EF3puKOGpb6Kdv7DuOiLkSi1ZG5wd59us5pJoI8Jve0yIaIXR44yLU0PoQnteauimaTnr5vMQz1Veso3f3CVg==
   dependencies:
     monaco-editor "^0.38.0"
     monaco-editor-textmate "^4.0.0"
