@@ -244,10 +244,6 @@ const selectionHelperStyle = css`
   cursor: pointer;
   background: var(--color-active, var(--tango-colors-brand));
 
-  svg {
-    margin-right: 4px;
-  }
-
   &:hover {
     background: var(--color-active-hover, var(--tango-colors-primary-50));
   }
