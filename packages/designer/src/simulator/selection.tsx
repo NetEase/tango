@@ -395,7 +395,7 @@ function InsertedDropdown({ options = [], onSelect, ...props }: InsertedDropdown
                   key={item.name}
                   label={item.label}
                   icon={item.icon}
-                  description={item.description}
+                  description={item.description || '暂无组件描述'}
                   onClick={() => onSelect?.(item.name)}
                 />
               ))}
@@ -410,6 +410,7 @@ function InsertedDropdown({ options = [], onSelect, ...props }: InsertedDropdown
 
 const insertedItemStyle = css`
   cursor: pointer;
+  user-select: none;
 
   &:hover {
     background-color: var(--tango-colors-fill2);
@@ -420,9 +421,18 @@ function InsertedItem({
   label,
   icon = 'icon-placeholder',
   description,
+  ...rest
 }: HTMLCoralProps<'div'> & Omit<IInsertedData, 'name'>) {
   return (
-    <Box display="flex" columnGap="m" px="l" py="m" fontSize="12px" css={insertedItemStyle}>
+    <Box
+      display="flex"
+      columnGap="m"
+      px="l"
+      py="m"
+      fontSize="12px"
+      css={insertedItemStyle}
+      {...rest}
+    >
       <Box
         size="35px"
         fontSize="32px"
