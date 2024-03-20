@@ -8,7 +8,7 @@ import { Box, Text } from 'coral-system';
 const optionFormFields: NewOptionFormFieldType[] = [
   { label: 'value', name: 'value', required: true },
   { label: 'label', name: 'label', required: true },
-  { label: '颜色', name: 'color', component: <ColorSetter /> },
+  { label: '颜色', name: 'color', component: <ColorSetter onChange={() => {}} /> },
   {
     label: '状态',
     name: 'status',
