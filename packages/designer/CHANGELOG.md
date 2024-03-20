@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.15](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.14...@music163/tango-designer@1.0.0-alpha.15) (2024-03-20)
+
+### Bug Fixes
+
+- quick insert child ([d640429](https://github.com/netease/tango/commit/d64042922bc21723025b1a59586ef23f37f17ffc))
+- update selection helper style ([bceb7a5](https://github.com/netease/tango/commit/bceb7a5c9cea9dc2acb091bf7967e5d3b7ba5210))
+
 # [1.0.0-alpha.14](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.13...@music163/tango-designer@1.0.0-alpha.14) (2024-03-19)
 
 ### Bug Fixes
