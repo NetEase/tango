@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.16](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.15...@music163/tango-designer@1.0.0-alpha.16) (2024-03-21)
+
+### Bug Fixes
+
+- copy node path in variable tree ([6215ed9](https://github.com/netease/tango/commit/6215ed96f241adf6b67aa3019745bf7d40751787))
+
 # [1.0.0-alpha.15](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.14...@music163/tango-designer@1.0.0-alpha.15) (2024-03-20)
 
 ### Bug Fixes
