@@ -164,6 +164,8 @@ export function VariableTree(props: VariableTreeProps) {
 
   const state = { activeNode, mode, setMode, clear };
 
+  console.log(treeData);
+
   return (
     <Box display="flex" columnGap="l" className="VariableTree" css={varTreeStyle} {...rest}>
       <Box className="VariableList" width="40%">
@@ -184,6 +186,12 @@ export function VariableTree(props: VariableTreeProps) {
 
             if (isLeaf) {
               const showView = node.showViewButton ?? showViewButton;
+
+              let nodePath = node.key;
+              if (/^(stores|services)\./.test(nodePath)) {
+                nodePath = `tango.${node.key.replaceAll('.', '?.').replace('?.', '.')}`;
+              }
+
               return (
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Text flex="1" truncated>
@@ -216,7 +224,7 @@ export function VariableTree(props: VariableTreeProps) {
                         />
                       </Popconfirm>
                     )}
-                    <CopyClipboard text={`tango.${node.key.replaceAll('.', '?.')}`}>
+                    <CopyClipboard text={nodePath}>
                       {({ copied, onClick }) => {
                         const label = copied ? '已复制' : '复制变量路径';
                         return (
