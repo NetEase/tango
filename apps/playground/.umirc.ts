@@ -7,6 +7,7 @@ const resolvePackageIndex = (relativeEntry: string) =>
 export default defineConfig({
   routes: [
     { path: '/', component: 'index' },
+    { path: '/mail', component: 'mail' },
     { path: '/docs', component: 'docs' },
   ],
   npmClient: 'yarn',
