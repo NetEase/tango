@@ -1,13 +1,14 @@
-import React, { useImperativeHandle, ForwardedRef, useRef, useState, useEffect } from 'react';
-import { Box } from 'coral-system';
 import { CodeSandbox, CodeSandboxProps } from '@music163/tango-sandbox';
-import { getValue, isFunction, logger, pick, setValue } from '@music163/tango-helpers';
-import { observer, useWorkspace, useDesigner } from '@music163/tango-context';
-import { Simulator, Viewport } from '../simulator';
-import { useSandboxQuery } from '../context';
 import { DndQuery, useDnd } from '../dnd';
+import React, { ForwardedRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { Simulator, Viewport } from '../simulator';
+import { getValue, isFunction, logger, pick, setValue } from '@music163/tango-helpers';
+import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
+
+import { Box } from 'coral-system';
 import { Navigator } from './navigator';
 import { SelectionToolsProps } from '../simulator/selection';
+import { useSandboxQuery } from '../context';
 
 interface ISandboxEventHandlerConfig {
   sandboxQuery?: DndQuery;
@@ -303,6 +304,7 @@ export const Sandbox = observer(
     navigatorExtra,
     ...props
   }: SandboxProps) => {
+    // const bundlerUrl = bundlerURL ?? 'https://127.0.0.1:8001/';
     const bundlerUrl = bundlerURL ?? 'https://codesandbox.fn.netease.com';
     const lastScrollTopRef = useRef<number>();
     const sandboxRef = useRef<CodeSandbox>(null);

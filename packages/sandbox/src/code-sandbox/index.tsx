@@ -1,9 +1,10 @@
-import React from 'react';
-import { TangoEventName } from '@music163/tango-helpers';
+import { CodeSandboxProps, CodeSandboxState, IFiles, UnsubscribeFunction } from '../types';
+import { changeRoute, createMissingPackageJSON } from './helper';
+
 import Loading from './loading';
 import Manager from './manager';
-import { createMissingPackageJSON, changeRoute } from './helper';
-import { IFiles, CodeSandboxState, CodeSandboxProps, UnsubscribeFunction } from '../types';
+import React from 'react';
+import { TangoEventName } from '@music163/tango-helpers';
 
 // CodeSandbox 使用示例
 // <CodeSandbox files={files} entry={entry} template={template} bundlerURL={`${window.location.protocol}//codesandbox.fn.netease.com/`} />
@@ -146,8 +147,8 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
 
       el.onload = () => {
         // 修改 domain，以便让外部页面和 iframe 页面在同一个域名下，主要目的是为了直接监听 iframe 页面的事件
-        document.domain = window.location.hostname.split('.').slice(-2).join('.');
-
+        // document.domain = window.location.hostname.split('.').slice(-2).join('.');
+        document.domain = '127.0.0.1';
         // 执行沙箱页面加载后的回调函数
         if (this.props.onLoad) {
           this.props.onLoad(el);
