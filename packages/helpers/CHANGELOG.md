@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.5](https://github.com/netease/tango/compare/@music163/tango-helpers@1.0.0-alpha.4...@music163/tango-helpers@1.0.0-alpha.5) (2024-03-26)
+
+### Features
+
+- quick add sibling nodes ([#127](https://github.com/netease/tango/issues/127)) ([9ed6a7d](https://github.com/netease/tango/commit/9ed6a7d1a4944d69d96e034f243b61531862e317))
+
 # [1.0.0-alpha.4](https://github.com/netease/tango/compare/@music163/tango-helpers@1.0.0-alpha.3...@music163/tango-helpers@1.0.0-alpha.4) (2024-03-18)
 
 ### Bug Fixes

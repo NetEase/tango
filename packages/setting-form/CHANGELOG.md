@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.12...@music163/tango-setting-form@1.0.0-alpha.13) (2024-03-26)
+
+### Features
+
+- quick add sibling nodes ([#127](https://github.com/netease/tango/issues/127)) ([9ed6a7d](https://github.com/netease/tango/commit/9ed6a7d1a4944d69d96e034f243b61531862e317))
+
 # [1.0.0-alpha.12](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.11...@music163/tango-setting-form@1.0.0-alpha.12) (2024-03-19)
 
 **Note:** Version bump only for package @music163/tango-setting-form

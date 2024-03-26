@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.9](https://github.com/netease/tango/compare/@music163/tango-core@1.0.0-alpha.8...@music163/tango-core@1.0.0-alpha.9) (2024-03-26)
+
+### Features
+
+- quick add sibling nodes ([#127](https://github.com/netease/tango/issues/127)) ([9ed6a7d](https://github.com/netease/tango/commit/9ed6a7d1a4944d69d96e034f243b61531862e317))
+
 # [1.0.0-alpha.8](https://github.com/netease/tango/compare/@music163/tango-core@1.0.0-alpha.7...@music163/tango-core@1.0.0-alpha.8) (2024-03-18)
 
 **Note:** Version bump only for package @music163/tango-core
