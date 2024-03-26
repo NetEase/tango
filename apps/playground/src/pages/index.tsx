@@ -124,6 +124,10 @@ export default function App() {
                       setMenuData(sandboxWindow.TangoAntd.menuData);
                     }
                     if (sandboxWindow.TangoAntd.prototypes) {
+                      sandboxWindow.TangoAntd.prototypes['Section'].siblingNames = ['Section'];
+                      sandboxWindow.TangoAntd.prototypes['FormilyFormItem'].siblingNames = [
+                        'FormilyFormItem',
+                      ];
                       workspace.setComponentPrototypes(sandboxWindow.TangoAntd.prototypes);
                     }
                   }

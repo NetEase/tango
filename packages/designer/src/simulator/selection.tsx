@@ -59,6 +59,26 @@ const selectionBoxStyle = css`
   top: 0;
 `;
 
+const topAddSiblingBtnStyle = css`
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 0;
+  border-radius: 32px;
+  z-index: 999;
+  pointer-events: auto;
+`;
+
+const bottomAddSiblingBtnStyle = css`
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  bottom: 0;
+  border-radius: 32px;
+  z-index: 999;
+  pointer-events: auto;
+`;
+
 interface IInsertedData {
   name: string;
   label: string;
@@ -114,6 +134,19 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
     });
   }
 
+  let siblingList: IInsertedData[] = [];
+  if (prototype?.siblingNames) {
+    siblingList = prototype.siblingNames?.map((item) => {
+      const proto = workspace.componentPrototypes.get(item);
+      return {
+        name: item,
+        label: proto?.title || item,
+        icon: proto?.icon,
+        description: proto?.help,
+      };
+    });
+  }
+
   let selectionHelpersAlign: SelectionHelperAlignType = 'top-right';
   if (data.bounding) {
     if (data.bounding.left + data.bounding.width + boundingOffset < designer.viewport.width) {
@@ -150,6 +183,30 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
       css={selectionBoxStyle}
       style={style}
     >
+      {siblingList.length > 0 ? (
+        <>
+          <InsertedDropdown
+            options={siblingList}
+            onSelect={(name) => {
+              workspace.insertBeforeSelectedNode(name);
+            }}
+          >
+            <Tooltip title="在前方添加兄弟节点">
+              <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
+            </Tooltip>
+          </InsertedDropdown>
+          <InsertedDropdown
+            options={siblingList}
+            onSelect={(name) => {
+              workspace.insertAfterSelectedNode(name);
+            }}
+          >
+            <Tooltip title="在后方添加兄弟节点">
+              <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
+            </Tooltip>
+          </InsertedDropdown>
+        </>
+      ) : null}
       {showActions && (
         <SelectionHelpers align={selectionHelpersAlign}>
           <SelectionHelper
@@ -256,7 +313,13 @@ interface SelectionHelperProps extends HTMLCoralProps<'button'> {
   label?: React.ReactNode;
 }
 
-const SelectionHelper = ({ icon, label, children, ...rest }: SelectionHelperProps) => {
+const SelectionHelper = ({
+  icon,
+  label,
+  children,
+  css: customCss,
+  ...rest
+}: SelectionHelperProps) => {
   return (
     <Button
       position="relative"
@@ -266,7 +329,7 @@ const SelectionHelper = ({ icon, label, children, ...rest }: SelectionHelperProp
       border="0"
       borderRadius="s"
       fontSize="12px"
-      css={selectionHelperStyle}
+      css={[selectionHelperStyle, customCss]}
       {...rest}
     >
       {icon}
@@ -366,11 +429,17 @@ const NameSelector = ({ label, parents = [], onSelect = noop }: NameSelectorProp
 };
 
 interface InsertedDropdownProps extends DropdownProps {
+  title?: string;
   options?: IInsertedData[];
   onSelect?: (name: string) => void;
 }
 
-function InsertedDropdown({ options = [], onSelect, ...props }: InsertedDropdownProps) {
+function InsertedDropdown({
+  title = '为当前节点添加子元素',
+  options = [],
+  onSelect,
+  ...props
+}: InsertedDropdownProps) {
   return (
     <Dropdown
       trigger={['click']}
@@ -385,7 +454,7 @@ function InsertedDropdown({ options = [], onSelect, ...props }: InsertedDropdown
             overflow="hidden"
           >
             <Box px="l" py="m" color="text2">
-              为当前节点添加子元素
+              {title}
             </Box>
             <Box>
               {options.map((item) => (

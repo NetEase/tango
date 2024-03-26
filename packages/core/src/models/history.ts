@@ -11,6 +11,8 @@ export enum HistoryMessage {
   ReplaceNode = 'replaceNode',
   CloneNode = 'cloneNode',
   InsertNode = 'insertNode',
+  InsertBeforeNode = 'insertBeforeNode',
+  InsertAfterNode = 'insertAfterNode',
   DropNode = 'dropNode',
   UpdateAttribute = 'updateAttribute',
   UpdateCode = 'updateCode',

@@ -234,6 +234,10 @@ export type ComponentPrototypeType = {
    */
   childrenName?: string | string[];
   /**
+   * 兄弟节点的类型
+   */
+  siblingNames?: string[];
+  /**
    * 组件的可配置属性集
    */
   props?: ComponentPropType[];
