@@ -164,8 +164,6 @@ export function VariableTree(props: VariableTreeProps) {
 
   const state = { activeNode, mode, setMode, clear };
 
-  console.log(treeData);
-
   return (
     <Box display="flex" columnGap="l" className="VariableTree" css={varTreeStyle} {...rest}>
       <Box className="VariableList" width="40%">

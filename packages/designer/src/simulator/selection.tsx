@@ -186,22 +186,24 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
       {siblingList.length > 0 ? (
         <>
           <InsertedDropdown
+            title="在当前节点的前方添加兄弟节点"
             options={siblingList}
             onSelect={(name) => {
               workspace.insertBeforeSelectedNode(name);
             }}
           >
-            <Tooltip title="在前方添加兄弟节点">
+            <Tooltip title="在当前节点的前方添加兄弟节点">
               <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
             </Tooltip>
           </InsertedDropdown>
           <InsertedDropdown
+            title="在当前节点的后方添加兄弟节点"
             options={siblingList}
             onSelect={(name) => {
               workspace.insertAfterSelectedNode(name);
             }}
           >
-            <Tooltip title="在后方添加兄弟节点">
+            <Tooltip title="在当前节点的后方添加兄弟节点">
               <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
             </Tooltip>
           </InsertedDropdown>
@@ -452,11 +454,12 @@ function InsertedDropdown({
             border="solid"
             borderColor="line2"
             overflow="hidden"
+            width="320px"
           >
             <Box px="l" py="m" color="text2">
               {title}
             </Box>
-            <Box>
+            <Box maxHeight={360} overflowY="auto">
               {options.map((item) => (
                 <InsertedItem
                   key={item.name}
