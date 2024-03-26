@@ -149,29 +149,34 @@ import {
   Button,
   Input,
   FormilyForm,
+  FormilyFormItem,
 } from "@music163/antd";
-import { Space } from '@music163/antd';
-import { LocalButton } from '../components';
-
+import { Space } from "@music163/antd";
+import { LocalButton } from "../components";
 class App extends React.Component {
   render() {
     return (
       <Page title={tango.stores.app.title}>
-       <Section tid="section1" title="Section Title">
-        your input: <Input tid="input1" defaultValue="hello" />
-        copy input: <Input value={tango.page.input1?.value} />
-       </Section>
-       <Section tid="section2">
-       <Space tid="space1">
-          <LocalButton />
-          <Button tid="button1">button</Button>
+        <Section tid="section1" title="Section Title">
+          your input: <Input tid="input1" defaultValue="hello" />
+          copy input: <Input value={tango.page.input1?.value} />
+        </Section>
+        <Section tid="section2">
+          <Space tid="space1">
+            <LocalButton />
+            <Button tid="button1">button</Button>
           </Space>
+        </Section>
+        <Section title="区块标题" tid="section3">
+          <FormilyForm tid="formilyForm1">
+            <FormilyFormItem name="input1" component="Input" label="表单项" />
+            <FormilyFormItem name="select1" component="Select" label="表单项" />
+          </FormilyForm>
         </Section>
       </Page>
     );
   }
 }
-
 export default definePage(App);
 `;
 

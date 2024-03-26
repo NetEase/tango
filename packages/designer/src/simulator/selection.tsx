@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
 import { Dropdown, DropdownProps, Tooltip } from 'antd';
-import { PlusSquareOutlined, HolderOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { HolderOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { IconFont } from '@music163/tango-ui';
@@ -194,7 +194,9 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
                 workspace.insertToSelectedNode(name);
               }}
             >
-              <SelectionHelper icon={<PlusSquareOutlined />} />
+              <Tooltip title="快捷添加子元素">
+                <SelectionHelper icon={<PlusOutlined />} />
+              </Tooltip>
             </InsertedDropdown>
           )}
         </SelectionHelpers>
