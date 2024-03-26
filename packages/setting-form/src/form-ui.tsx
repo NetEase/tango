@@ -86,6 +86,7 @@ export function FormControlGroup({
       collapsed={collapsed}
       onCollapse={setCollapsed}
       className="FormControlGroup"
+      stickyHeader
       title={
         <Box display="flex" columnGap="s">
           <Checkbox
@@ -109,6 +110,7 @@ export function FormControlGroup({
       borderColor="line.normal"
       headerProps={{
         bg: 'fill1',
+        zIndex: 2,
       }}
     >
       <Box
