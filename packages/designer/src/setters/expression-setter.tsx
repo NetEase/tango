@@ -13,7 +13,13 @@ import {
   getValue,
   IVariableTreeNode,
 } from '@music163/tango-helpers';
-import { CloseCircleFilled, ExpandAltOutlined, InfoOutlined, KeyOutlined } from '@ant-design/icons';
+import {
+  CloseCircleFilled,
+  ExpandAltOutlined,
+  InfoOutlined,
+  KeyOutlined,
+  MenuOutlined,
+} from '@ant-design/icons';
 import { Panel, InputCode, Action, CodeOutlined } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
@@ -152,7 +158,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
                   })),
                 }}
               >
-                <Action tooltip="使用预设代码片段" icon={<InfoOutlined />} size="small" />
+                <Action tooltip="使用预设代码片段" icon={<MenuOutlined />} size="small" />
               </Dropdown>
             )}
             <Action
