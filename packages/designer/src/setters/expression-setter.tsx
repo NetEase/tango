@@ -81,7 +81,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     modalTitle,
     modalTip,
     autoCompleteOptions,
-    placeholder = '输入JS表达式代码',
+    placeholder = '输入JS代码',
     value: valueProp,
     status,
     allowClear = true,

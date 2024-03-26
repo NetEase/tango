@@ -1022,6 +1022,46 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
   }
 
+  insertBeforeSelectedNode(sourceName: string | ComponentPrototypeType) {
+    if (!sourceName) {
+      return;
+    }
+    const targetNodeId = this.selectSource.first.id;
+    const sourcePrototype = this.getPrototype(sourceName);
+    const newNode = prototype2jsxElement(sourcePrototype);
+    const file = this.getNode(targetNodeId).file;
+    const { source, specifiers } = prototype2importDeclarationData(sourcePrototype, file.filename);
+
+    file.insertBefore(targetNodeId, newNode).addImportSpecifiers(source, specifiers).update();
+
+    this.history.push({
+      message: HistoryMessage.InsertBeforeNode,
+      data: {
+        [file.filename]: file.code,
+      },
+    });
+  }
+
+  insertAfterSelectedNode(sourceName: string | ComponentPrototypeType) {
+    if (!sourceName) {
+      return;
+    }
+    const targetNodeId = this.selectSource.first.id;
+    const sourcePrototype = this.getPrototype(sourceName);
+    const newNode = prototype2jsxElement(sourcePrototype);
+    const file = this.getNode(targetNodeId).file;
+    const { source, specifiers } = prototype2importDeclarationData(sourcePrototype, file.filename);
+
+    file.insertAfter(targetNodeId, newNode).addImportSpecifiers(source, specifiers).update();
+
+    this.history.push({
+      message: HistoryMessage.InsertAfterNode,
+      data: {
+        [file.filename]: file.code,
+      },
+    });
+  }
+
   updateSelectedNodeAttributes(
     attributes: Record<string, any> = {},
     relatedImports: string[] = [],

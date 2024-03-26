@@ -170,7 +170,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
               <ToggleButton
                 borderRadius="s"
                 size="s"
-                shape="outline"
+                shape="ghost"
                 type="primary"
                 tooltip={isVariable ? '关闭 JS 表达式' : '使用 JS 表达式'}
                 tooltipPlacement="left"

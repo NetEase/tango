@@ -15,27 +15,19 @@ import {
   themeLight,
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
+import { Logo, ProjectDetail, bootHelperVariables } from '@/helpers';
 import {
-  Logo,
-  ProjectDetail,
-  bootHelperVariables,
-  extendPrototypes,
-  sampleFiles,
-} from '../helpers';
-import {
-  ApiOutlined,
   AppstoreAddOutlined,
   BuildOutlined,
   ClusterOutlined,
-  FunctionOutlined,
   createFromIconfontCN,
 } from '@ant-design/icons';
+import { mailFiles } from '@/helpers/mail-files';
 
 // 1. 实例化工作区
 const workspace = new Workspace({
   entry: '/src/index.js',
-  files: sampleFiles,
-  prototypes: extendPrototypes,
+  files: mailFiles,
 });
 
 // 2. 引擎初始化
@@ -44,7 +36,7 @@ const engine = createEngine({
 });
 
 // @ts-ignore
-window.__workspace__ = workspace;
+window.__mailWorkspace__ = workspace;
 
 // 3. 沙箱初始化
 const sandboxQuery = new DndQuery({
@@ -56,39 +48,12 @@ createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/c/font_2891794_cou9i7556tl.js',
 });
 
-const menuData = {
-  common: [
-    {
-      title: '基本',
-      items: [
-        'Button',
-        'Section',
-        'Columns',
-        'Column',
-        'Box',
-        'Space',
-        'Typography',
-        'Title',
-        'Paragraph',
-      ],
-    },
-    {
-      title: '输入',
-      items: ['Input', 'InputNumber', 'Select'],
-    },
-    {
-      title: 'Formily表单',
-      items: ['FormilyForm', 'FormilyFormItem', 'FormilySubmit', 'FormilyReset'],
-    },
-  ],
-};
-
 /**
  * 5. 平台初始化，访问 https://local.netease.com:6006/
  */
 export default function App() {
   const [menuLoading, setMenuLoading] = useState(true);
-  // const [menuData, setMenuData] = useState(false);
+  const [menuData, setMenuData] = useState(false);
   return (
     <Designer
       theme={themeLight}
@@ -105,7 +70,6 @@ export default function App() {
         actions={
           <Box px="l">
             <Toolbar>
-              <Toolbar.Item key="routeSwitch" placement="left" />
               <Toolbar.Item key="history" placement="left" />
               <Toolbar.Item key="preview" placement="left" />
               <Toolbar.Item key="modeSwitch" placement="right" />
@@ -126,19 +90,11 @@ export default function App() {
             label="组件"
             icon={<AppstoreAddOutlined />}
             widgetProps={{
-              menuData,
+              menuData: menuData as any,
               loading: menuLoading,
             }}
           />
           <Sidebar.Item key="outline" label="结构" icon={<BuildOutlined />} />
-          <Sidebar.Item
-            key="variables"
-            label="变量"
-            icon={<FunctionOutlined />}
-            isFloat
-            width={800}
-          />
-          <Sidebar.Item key="dataSource" label="接口" icon={<ApiOutlined />} isFloat width={800} />
           <Sidebar.Item
             key="dependency"
             label="依赖"
@@ -153,29 +109,13 @@ export default function App() {
               onMessage={(e) => {
                 if (e.type === 'done') {
                   const sandboxWindow: any = sandboxQuery.window;
-                  if (sandboxWindow.TangoAntd) {
-                    // if (sandboxWindow.TangoAntd.menuData) {
-                    //   setMenuData(sandboxWindow.TangoAntd.menuData);
-                    // }
-                    if (sandboxWindow.TangoAntd.prototypes) {
-                      sandboxWindow.TangoAntd.prototypes['Section'].siblingNames = [
-                        'SnippetButtonGroup',
-                        'Section',
-                        'Section',
-                        'Section',
-                        'Section',
-                        'Section',
-                        'Section',
-                        'Section',
-                      ];
-                      sandboxWindow.TangoAntd.prototypes['FormilyFormItem'].siblingNames = [
-                        'FormilyFormItem',
-                      ];
-                      workspace.setComponentPrototypes(sandboxWindow.TangoAntd.prototypes);
+                  if (sandboxWindow.TangoMail) {
+                    if (sandboxWindow.TangoMail.menuData) {
+                      setMenuData(sandboxWindow.TangoMail.menuData);
                     }
-                  }
-                  if (sandboxWindow.localTangoComponentPrototypes) {
-                    workspace.setComponentPrototypes(sandboxWindow.localTangoComponentPrototypes);
+                    if (sandboxWindow.TangoMail.prototypes) {
+                      workspace.setComponentPrototypes(sandboxWindow.TangoMail.prototypes);
+                    }
                   }
                   setMenuLoading(false);
                 }

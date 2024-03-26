@@ -136,7 +136,7 @@ const SnippetButtonGroup: ComponentPrototypeType = {
   relatedImports: ['Space', 'Button'],
 };
 
-export const prototypes = {
+export const extendPrototypes = {
   CtPcToggleButton: bizToggleButtonPrototype,
   SnippetSuccessResult,
   Snippet2ColumnLayout,
