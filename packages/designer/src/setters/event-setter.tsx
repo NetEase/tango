@@ -8,6 +8,7 @@ import { ExpressionModal, getWrappedExpressionCode } from './expression-setter';
 
 enum EventAction {
   NoAction = 'noAction',
+  ConsoleLog = 'consoleLog',
   BindExpression = 'bindExpression',
   OpenModal = 'openModal',
   CloseModal = 'closeModal',
@@ -24,6 +25,7 @@ const wrapperStyle = css`
 
 const options = [
   { label: '无动作', value: EventAction.NoAction },
+  { label: '打印事件', value: EventAction.ConsoleLog },
   { label: '绑定 JS 表达式', value: EventAction.BindExpression },
   { label: '打开页面', value: EventAction.NavigateTo },
   { label: '打开弹窗', value: EventAction.OpenModal },
@@ -36,7 +38,7 @@ export type EventSetterProps = FormItemComponentProps<string>;
  * 事件监听函数绑定器
  */
 export function EventSetter(props: EventSetterProps) {
-  const { value, onChange, modalTitle } = props;
+  const { value, onChange, modalTitle, toggleIsVariable } = props;
   const [type, setType] = useState<EventAction>(); // 事件类型
   const [temp, setTemp] = useState(''); // 二级暂存值
   const [expModalVisible, setExpModalVisible] = useState(false); // 弹窗是否显示
@@ -50,6 +52,8 @@ export function EventSetter(props: EventSetterProps) {
       const ret = getWrappedExpressionCode(nextValue);
       if (ret !== value) {
         onChange(ret, ...args);
+        // 默认切换至源码模式
+        toggleIsVariable();
       }
     },
     [onChange, value],
@@ -62,6 +66,9 @@ export function EventSetter(props: EventSetterProps) {
     switch (key) {
       case EventAction.BindExpression:
         setExpModalVisible(true);
+        break;
+      case EventAction.ConsoleLog:
+        handleChange('(...args) => console.log(...args)');
         break;
       case EventAction.NoAction:
         handleChange(undefined);

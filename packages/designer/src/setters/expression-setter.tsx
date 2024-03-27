@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text, css } from 'coral-system';
-import { Modal } from 'antd';
+import { Dropdown, Modal } from 'antd';
 import {
   isValidExpressionCode,
   isWrappedByExpressionContainer,
@@ -13,8 +13,14 @@ import {
   getValue,
   IVariableTreeNode,
 } from '@music163/tango-helpers';
-import { CloseCircleFilled, ExpandAltOutlined } from '@ant-design/icons';
-import { Panel, InputCode, Action } from '@music163/tango-ui';
+import {
+  CloseCircleFilled,
+  ExpandAltOutlined,
+  InfoOutlined,
+  KeyOutlined,
+  MenuOutlined,
+} from '@ant-design/icons';
+import { Panel, InputCode, Action, CodeOutlined } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { VariableTree } from '../components';
@@ -60,6 +66,8 @@ export function getWrappedExpressionCode(code: string) {
 }
 
 const suffixStyle = css`
+  display: flex;
+  align-items: center;
   .anticon-close-circle {
     color: rgba(0, 0, 0, 0.25);
     &:hover {
@@ -73,6 +81,7 @@ export interface ExpressionSetterProps extends FormItemComponentProps<string> {
   modalTip?: string;
   autoCompleteOptions?: string[];
   allowClear?: boolean;
+  showOptionsDropDown?: boolean;
 }
 
 export function ExpressionSetter(props: ExpressionSetterProps) {
@@ -86,6 +95,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     status,
     allowClear = true,
     newStoreTemplate,
+    showOptionsDropDown = true,
   } = props;
   const [visible, { on, off }] = useBoolean();
   const [inputValue, setInputValue] = useState(() => {
@@ -118,6 +128,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
 
   return (
     <Box className="ExpressionSetter">
+      {/* 同时支持下拉框展示 */}
       <InputCode
         placeholder={placeholder}
         suffix={
@@ -129,6 +140,26 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
                   change('');
                 }}
               />
+            )}
+            {showOptionsDropDown && autoCompleteOptions?.length && (
+              <Dropdown
+                menu={{
+                  items: autoCompleteOptions.map((option) => ({
+                    key: option,
+                    label: (
+                      <Text
+                        onClick={() => {
+                          change(option);
+                        }}
+                      >
+                        {option}
+                      </Text>
+                    ),
+                  })),
+                }}
+              >
+                <Action tooltip="使用预设代码片段" icon={<MenuOutlined />} size="small" />
+              </Dropdown>
             )}
             <Action
               tooltip="打开表达式变量选择面板"

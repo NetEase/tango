@@ -47,7 +47,9 @@ function filterComponentProps(props: ComponentPrototypeType['props'], keyword: s
 
 const formStyle = css`
   position: relative;
-
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   > .SettingFormMain > :first-child:is(.FormControl) {
     margin-top: var(--tango-space-m);
   }
@@ -199,7 +201,7 @@ export function SettingForm({
     <FormVariableProvider value={{ disableSwitchExpressionSetter, showItemSubtitle }}>
       <FormModelProvider value={model}>
         <Box className="SettingForm" mb="xl" css={formStyle}>
-          <Box className="SettingFormHeader" position="sticky" top="0" bg="white" zIndex="2">
+          <Box className="SettingFormHeader" bg="white">
             <Box px="l" py="m">
               {showIdentifier && (
                 <FormHeader
@@ -247,7 +249,14 @@ export function SettingForm({
               </Box>
             )}
           </Box>
-          <Box className="SettingFormMain" display="flex" flexDirection="column" rowGap="m">
+          <Box
+            className="SettingFormMain"
+            display="flex"
+            flexDirection="column"
+            paddingBottom="m"
+            rowGap="m"
+            overflow="auto"
+          >
             {renderProps(filterProps)}
             {filterProps.length === 0 && (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="未找到配置项" />
