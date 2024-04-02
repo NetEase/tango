@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormModel, SettingForm, register } from '@music163/tango-setting-form';
-import { ComponentPrototypeType } from '@music163/tango-helpers';
+import { IComponentPrototype } from '@music163/tango-helpers';
 import { BorderSetter, DisplaySetter } from '@music163/tango-designer/src/setters/style-setter';
 import { JsxSetter } from '@music163/tango-designer/src/setters/jsx-setter';
 import { RenderSetter, TableCellSetter } from '@music163/tango-designer/src/setters/render-setter';
@@ -45,7 +45,7 @@ export default {
   title: 'SettingForm',
 };
 
-const prototype: ComponentPrototypeType = {
+const prototype: IComponentPrototype = {
   name: 'Test',
   exportType: 'namedExport',
   title: '测试',

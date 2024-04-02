@@ -2,8 +2,8 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { Box, css } from 'coral-system';
 import { Empty } from 'antd';
 import {
-  ComponentPrototypeType,
-  ComponentPropType,
+  IComponentPrototype,
+  IComponentProp,
   noop,
   filterTreeData,
   mapTreeData,
@@ -21,10 +21,10 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 registerBuiltinSetters();
 
 function normalizeComponentProps(
-  props: ComponentPrototypeType['props'],
+  props: IComponentPrototype['props'],
   groupOptions: IFormTabsGroupOption[],
 ) {
-  const groups: Record<string, ComponentPropType[]> = groupOptions.reduce((prev, cur) => {
+  const groups: Record<string, IComponentProp[]> = groupOptions.reduce((prev, cur) => {
     prev[cur.value] = [];
     return prev;
   }, {});
@@ -37,7 +37,7 @@ function normalizeComponentProps(
   return groups;
 }
 
-function filterComponentProps(props: ComponentPrototypeType['props'], keyword: string) {
+function filterComponentProps(props: IComponentPrototype['props'], keyword: string) {
   if (!keyword) {
     return props;
   }
@@ -95,7 +95,7 @@ export interface SettingFormProps {
   /**
    * 组件的可配置描述
    */
-  prototype?: ComponentPrototypeType;
+  prototype?: IComponentPrototype;
   /**
    * 是否显示组件标识
    */
@@ -123,7 +123,7 @@ export interface SettingFormProps {
   /**
    * 自定义渲染表单项的额外内容（标签右侧）
    */
-  renderItemExtra?: (props: ComponentPropType) => React.ReactNode;
+  renderItemExtra?: (props: IComponentProp) => React.ReactNode;
   /**
    * 是否允许表单项切换到表达式设置器
    */
@@ -174,7 +174,7 @@ export function SettingForm({
   }, [keyword, componentProps, tabKey, model, showGroups, componentPropGroups]);
 
   const renderProps = useCallback(
-    (list: ComponentPropType[]) =>
+    (list: IComponentProp[]) =>
       list.map((item) => {
         const { getProp, ...rest } = item;
         const childProp = {

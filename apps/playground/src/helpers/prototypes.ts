@@ -1,5 +1,5 @@
 import * as basePrototypes from '@music163/antd/prototypes';
-import type { ComponentPrototypeType, Dict } from '@music163/tango-helpers';
+import type { IComponentPrototype, Dict } from '@music163/tango-helpers';
 
 const sampleBlockCode = `
 <Section>
@@ -17,7 +17,7 @@ const sampleBlockCode = `
 </Section>
 `;
 
-const SnippetSuccessResult: ComponentPrototypeType = {
+const SnippetSuccessResult: IComponentPrototype = {
   name: 'SnippetSuccessResult',
   title: '成功结果',
   icon: 'icon-tupian',
@@ -27,7 +27,7 @@ const SnippetSuccessResult: ComponentPrototypeType = {
   relatedImports: ['Section', 'Result', 'Button'],
 };
 
-const Snippet2ColumnLayout: ComponentPrototypeType = {
+const Snippet2ColumnLayout: IComponentPrototype = {
   name: 'Snippet2ColumnLayout',
   title: '两列布局',
   icon: 'icon-columns',
@@ -42,7 +42,7 @@ const Snippet2ColumnLayout: ComponentPrototypeType = {
   relatedImports: ['Columns', 'Column'],
 };
 
-const Snippet3ColumnLayout: ComponentPrototypeType = {
+const Snippet3ColumnLayout: IComponentPrototype = {
   name: 'Snippet3ColumnLayout',
   title: '三列布局',
   icon: 'icon-column3',
@@ -58,7 +58,7 @@ const Snippet3ColumnLayout: ComponentPrototypeType = {
   relatedImports: ['Columns', 'Column'],
 };
 
-const SnippetButtonGroup: ComponentPrototypeType = {
+const SnippetButtonGroup: IComponentPrototype = {
   name: 'SnippetButtonGroup',
   title: '按钮组',
   icon: 'icon-anniuzu',
@@ -86,7 +86,7 @@ basePrototypes['Section'].siblingNames = [
 ];
 
 // iconfont: https://www.iconfont.cn/manage/index?manage_type=myprojects&projectId=2891794
-const prototypes: Dict<ComponentPrototypeType> = {
+const prototypes: Dict<IComponentPrototype> = {
   ...(basePrototypes as any),
   SnippetSuccessResult,
   Snippet2ColumnLayout,

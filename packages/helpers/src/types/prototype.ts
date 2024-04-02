@@ -5,9 +5,24 @@
 import { OptionType } from './advanced';
 
 /**
+ * @deprecated 请使用 IComponentProp 代替
+ */
+export type ComponentPropType<T = any> = IComponentProp<T>;
+
+/**
+ * @deprecated
+ */
+export type ComponentDndRulesType = IComponentDndRules;
+
+/**
+ * @deprecated
+ */
+export type ComponentPrototypeType = IComponentPrototype;
+
+/**
  * 组件属性类型
  */
-export type ComponentPropType<T = any> = {
+export interface IComponentProp<T = any> {
   /**
    * 属性名
    */
@@ -23,10 +38,10 @@ export type ComponentPropType<T = any> = {
   /**
    * 属性的分组
    * - basic 常用属性
-   * - event 事件属性
-   * - data  数据属性
    * - style 样式属性
    * - advanced 高级属性
+   * - event 事件属性
+   * - data  数据属性
    */
   group?: 'basic' | 'event' | 'style' | 'data' | 'advanced';
   /**
@@ -50,7 +65,7 @@ export type ComponentPropType<T = any> = {
   /**
    * 如果是对象属性，这里声明子属性列表
    */
-  props?: ComponentPropType[];
+  props?: IComponentProp[];
   /**
    * 输入提示
    */
@@ -79,7 +94,7 @@ export type ComponentPropType<T = any> = {
   /**
    * 动态设置属性，覆盖已有的 prop 对象
    */
-  getProp?: (form: any) => Partial<Omit<ComponentPropType<T>, 'getProp'>>;
+  getProp?: (form: any) => Partial<Omit<IComponentProp<T>, 'getProp'>>;
   /**
    * 配置项的可选值，setterProps.options 的简写
    */
@@ -96,12 +111,12 @@ export type ComponentPropType<T = any> = {
    * 标记属性是否已废弃
    */
   deprecated?: boolean | string;
-};
+}
 
 /**
  * 组件拖拽规则类型
  */
-export type ComponentDndRulesType = {
+export interface IComponentDndRules {
   /**
    * 当前节点是否可以被拖拽
    */
@@ -122,12 +137,12 @@ export type ComponentDndRulesType = {
    * 子节点的容器选择器，用于快速定位子节点容器，适合组件存在多个可搭建区域时使用
    */
   childrenContainerSelector?: string;
-};
+}
 
 /**
  * 组件原型类型
  */
-export type ComponentPrototypeType = {
+export interface IComponentPrototype {
   /**
    * 组件名
    * @example Button
@@ -240,17 +255,17 @@ export type ComponentPrototypeType = {
   /**
    * 组件的可配置属性集
    */
-  props?: ComponentPropType[];
+  props?: IComponentProp[];
   /**
    * 组件的拖拽规则
    */
-  rules?: ComponentDndRulesType;
+  rules?: IComponentDndRules;
   /**
    * 用法
    * @example import { Button } from 'antd';
    */
   usage?: string;
-};
+}
 
 /**
  * TangoConfigJson 类型配置

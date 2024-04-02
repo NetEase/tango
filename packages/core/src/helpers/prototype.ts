@@ -1,7 +1,7 @@
 import * as t from '@babel/types';
 import {
-  ComponentPropType,
-  ComponentPrototypeType,
+  IComponentProp,
+  IComponentPrototype,
   Dict,
   isNil,
   logger,
@@ -13,7 +13,7 @@ import { code2expression } from './ast';
 import { isWrappedByExpressionContainer } from './assert';
 
 export function prototype2importDeclarationData(
-  prototype: ComponentPrototypeType,
+  prototype: IComponentPrototype,
   relativeFilepath?: string,
 ): { source: string; specifiers: IImportSpecifierData[] } {
   let source = prototype.package;
@@ -51,7 +51,7 @@ export function prototype2importDeclarationData(
  * @deprecated
  */
 export function getImportDeclarationPayloadByPrototype(
-  prototype: ComponentPrototypeType,
+  prototype: IComponentPrototype,
   relativeFilepath?: string,
 ): IImportDeclarationPayload {
   let defaultSpecifier;
@@ -88,7 +88,7 @@ export function getImportDeclarationPayloadByPrototype(
  * @param value
  * @returns
  */
-function getPropKeyValuePair(item: ComponentPropType, generateValue: (...args: any[]) => string) {
+function getPropKeyValuePair(item: IComponentProp, generateValue: (...args: any[]) => string) {
   const key = item.name;
 
   let value = item.initValue;
@@ -141,14 +141,14 @@ function getPropKeyValuePair(item: ComponentPropType, generateValue: (...args: a
  * @param prototype
  * @param extraProps
  */
-export function prototype2code(prototype: ComponentPrototypeType, extraProps?: Dict) {
+export function prototype2code(prototype: IComponentPrototype, extraProps?: Dict) {
   let code;
   switch (prototype.type) {
     case 'snippet':
       code = prototype.initChildren || prototype.defaultChildren;
       break;
     default: {
-      const propList: ComponentPropType[] = extraProps
+      const propList: IComponentProp[] = extraProps
         ? Object.keys(extraProps).map((key) => ({
             name: key,
             initValue: extraProps[key],
@@ -186,7 +186,7 @@ export function prototype2code(prototype: ComponentPrototypeType, extraProps?: D
  * @param prototype 组件的配置信息
  * @param props 额外的属性集
  */
-export function prototype2jsxElement(prototype: ComponentPrototypeType, props?: Dict) {
+export function prototype2jsxElement(prototype: IComponentPrototype, props?: Dict) {
   const code = prototype2code(prototype, props);
   return code2expression(code) as t.JSXElement;
 }

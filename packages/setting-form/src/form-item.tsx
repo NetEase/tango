@@ -1,20 +1,16 @@
 import React from 'react';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import {
-  clone,
-  ComponentPropType,
-  SetterOnChangeDetailType,
-  useBoolean,
-} from '@music163/tango-helpers';
+import { clone, IComponentProp, useBoolean } from '@music163/tango-helpers';
 import { isWrappedByExpressionContainer } from '@music163/tango-core';
 import { ToggleButton, CodeOutlined } from '@music163/tango-ui';
 import { InputProps } from 'antd';
 import { useFormModel, useFormVariable } from './context';
 import { FormControl } from './form-ui';
 import { Box, Text } from 'coral-system';
+import { ISetterOnChangeCallbackDetail } from './types';
 
-export interface FormItemProps extends ComponentPropType {
+export interface FormItemProps extends IComponentProp {
   /**
    * 无样式模式，仅返回 setter 组件
    */
@@ -31,7 +27,7 @@ export interface FormItemProps extends ComponentPropType {
 
 export interface FormItemComponentProps<T = any> {
   value?: T;
-  onChange: (value: T, detail?: SetterOnChangeDetailType) => void;
+  onChange: (value: T, detail?: ISetterOnChangeCallbackDetail) => void;
   readOnly?: boolean;
   disabled?: boolean;
   status?: InputProps['status'];

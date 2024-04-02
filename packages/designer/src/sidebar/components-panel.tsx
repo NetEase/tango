@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Box, Grid, Text } from 'coral-system';
 import styled from 'styled-components';
 import {
-  ComponentPrototypeType,
+  IComponentPrototype,
   logger,
   PartialRecord,
   upperCamelCase,
@@ -194,7 +194,7 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
 }
 
 interface MaterialProps {
-  data: ComponentPrototypeType;
+  data: IComponentPrototype;
 }
 
 const StyledCommonGridItem = styled.div`
@@ -295,7 +295,7 @@ function MaterialGrid({ data }: MaterialProps) {
   );
 }
 
-function CommonMaterialInfoBox({ help, docs }: ComponentPrototypeType) {
+function CommonMaterialInfoBox({ help, docs }: IComponentPrototype) {
   return (
     <Box maxWidth={300}>
       {!!help && <Box mb="m">{help}</Box>}
