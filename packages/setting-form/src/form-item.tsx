@@ -95,7 +95,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const model = useFormModel();
     const field = model.getField(name);
     const value = toJS(field.value ?? defaultValue);
-    const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp;
+    const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp; // Form 的设置优先
     const [isVariable, { toggle: toggleIsVariable }] = useBoolean(
       () => !disableVariableSetter && isWrappedByExpressionContainer(value),
     );
@@ -170,7 +170,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
               <ToggleButton
                 borderRadius="s"
                 size="s"
-                shape="ghost"
+                shape="text"
                 type="primary"
                 tooltip={isVariable ? '关闭 JS 表达式' : '使用 JS 表达式'}
                 tooltipPlacement="left"

@@ -39,10 +39,11 @@ const buttonStyle = css`
   }
 
   &.shape-text {
-    padding: 0px 8px;
+    padding: 0px 4px;
+    height: auto;
     border: 0;
     border-radius: var(--tango-radii-s);
-    color: var(--tango-colors-gray-40);
+    color: var(--tango-colors-text2);
     background: transparent;
 
     &.selected.type-normal {
@@ -50,7 +51,8 @@ const buttonStyle = css`
     }
 
     &.selected.type-primary {
-      color: var(--tango-colors-brand);
+      color: var(--tango-colors-white);
+      background-color: var(--tango-colors-brand);
     }
 
     &:hover {
@@ -87,7 +89,7 @@ const buttonStyle = css`
 
   &.shape-ghost {
     background-color: var(--tango-colors-custom-toolbarButtonBg, rgba(223, 223, 223, 0.08));
-    color: var(--tango-colors-custom-toolbarButtonTextColor, #fff);
+    color: var(--tango-colors-custom-toolbarButtonTextColor, #999);
     border: 0;
     border-radius: var(--tango-radii-m);
 

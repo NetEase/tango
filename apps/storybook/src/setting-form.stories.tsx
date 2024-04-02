@@ -2,6 +2,11 @@ import React from 'react';
 import { FormModel, SettingForm, register } from '@music163/tango-setting-form';
 import { ComponentPrototypeType } from '@music163/tango-helpers';
 import { BorderSetter, DisplaySetter } from '@music163/tango-designer/src/setters/style-setter';
+import { JsxSetter } from '@music163/tango-designer/src/setters/jsx-setter';
+import {
+  RenderSetter,
+  TableCellSetter,
+} from '@music163/tango-designer/src/setters/render-props-setter';
 import { Box } from 'coral-system';
 import { JsonView } from '@music163/tango-ui';
 import { toJS } from 'mobx';
@@ -18,6 +23,21 @@ register({
 register({
   name: 'displaySetter',
   component: DisplaySetter,
+});
+
+register({
+  name: 'jsxSetter',
+  component: JsxSetter,
+});
+
+register({
+  name: 'renderSetter',
+  component: RenderSetter,
+});
+
+register({
+  name: 'tableCellSetter',
+  component: TableCellSetter,
 });
 
 createFromIconfontCN({
@@ -55,6 +75,21 @@ const prototype: ComponentPrototypeType = {
       name: 'border',
       title: 'borderSetter',
       setter: 'borderSetter',
+    },
+    {
+      name: 'children',
+      title: 'jsxSetter',
+      setter: 'jsxSetter',
+    },
+    {
+      name: 'render',
+      title: 'renderSetter',
+      setter: 'renderSetter',
+    },
+    {
+      name: 'cell',
+      title: 'tableCellSetter',
+      setter: 'tableCellSetter',
     },
     {
       name: 'router',
