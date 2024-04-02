@@ -3,7 +3,7 @@ import { Box, Group } from 'coral-system';
 import { Avatar, Space, Switch } from 'antd';
 import { BranchesOutlined, MenuOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { registerSetter } from '@music163/tango-designer';
-import type { ComponentPrototypeType, IVariableTreeNode } from '@music163/tango-helpers';
+import type { IVariableTreeNode } from '@music163/tango-helpers';
 import { FooSetter } from '../components';
 
 export * from './mock-files';
@@ -36,113 +36,6 @@ export const bootHelperVariables: IVariableTreeNode[] = [
     ],
   },
 ];
-
-// folder-name
-// 物料列表定义
-const bizToggleButtonPrototype: ComponentPrototypeType = {
-  name: 'CtPcToggleButton',
-  exportType: 'defaultExport',
-  title: '示例业务组件',
-  icon: 'icon-tupian',
-  type: 'element',
-  docs: 'https://redstone.fn.netease.com/mt/fe-comp/w8bq8px7n5/toggle-button',
-  hasChildren: false,
-  props: [
-    {
-      name: 'checked',
-      title: '是否选中',
-      setter: 'boolSetter',
-      defaultValue: false,
-    },
-    {
-      name: 'children',
-      title: '文本',
-      setter: 'textSetter',
-      initValue: '按钮',
-    },
-  ],
-  package: '@music/ct-pc-toggle-button',
-};
-
-const sampleBlockCode = `
-<Section>
-  <Result
-      status="success"
-      title="Successfully Purchased Cloud Server ECS!"
-      subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
-      extra={[
-        <Button type="primary" key="console">
-          Go Console
-        </Button>,
-        <Button key="buy">Buy Again</Button>,
-      ]}
-    />
-</Section>
-`;
-
-const SnippetSuccessResult: ComponentPrototypeType = {
-  name: 'SnippetSuccessResult',
-  title: '成功结果',
-  icon: 'icon-tupian',
-  type: 'snippet',
-  package: '@music163/antd',
-  initChildren: sampleBlockCode,
-  relatedImports: ['Section', 'Result', 'Button'],
-};
-
-const Snippet2ColumnLayout: ComponentPrototypeType = {
-  name: 'Snippet2ColumnLayout',
-  title: '两列布局',
-  icon: 'icon-columns',
-  type: 'snippet',
-  package: '@music163/antd',
-  initChildren: `
-  <Columns columns={12}>
-    <Column colSpan={6}></Column>
-    <Column colSpan={6}></Column>
-  </Columns>
-  `,
-  relatedImports: ['Columns', 'Column'],
-};
-
-const Snippet3ColumnLayout: ComponentPrototypeType = {
-  name: 'Snippet3ColumnLayout',
-  title: '三列布局',
-  icon: 'icon-column3',
-  type: 'snippet',
-  package: '@music163/antd',
-  initChildren: `
-  <Columns columns={12}>
-    <Column colSpan={4}></Column>
-    <Column colSpan={4}></Column>
-    <Column colSpan={4}></Column>
-  </Columns>
-  `,
-  relatedImports: ['Columns', 'Column'],
-};
-
-const SnippetButtonGroup: ComponentPrototypeType = {
-  name: 'SnippetButtonGroup',
-  title: '按钮组',
-  icon: 'icon-anniuzu',
-  type: 'snippet',
-  package: '@music163/antd',
-  initChildren: `
-  <Space>
-    <Button type="primary">按钮1</Button>
-    <Button>按钮2</Button>
-  </Space>
-  `,
-  relatedImports: ['Space', 'Button'],
-};
-
-export const extendPrototypes = {
-  CtPcToggleButton: bizToggleButtonPrototype,
-  SnippetSuccessResult,
-  Snippet2ColumnLayout,
-  Snippet3ColumnLayout,
-  SnippetButtonGroup,
-};
 
 // 注册自定义 setter
 registerSetter({
