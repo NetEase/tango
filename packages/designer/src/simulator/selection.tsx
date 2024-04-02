@@ -489,10 +489,19 @@ const insertedItemStyle = css`
 
 function InsertedItem({
   label,
-  icon = 'icon-placeholder',
+  icon,
   description,
   ...rest
 }: HTMLCoralProps<'div'> & Omit<IInsertedData, 'name'>) {
+  let iconNode;
+  if (!icon) {
+    iconNode = <IconFont className="material-icon" type="icon-placeholder" />;
+  } else if (icon.startsWith('icon-')) {
+    iconNode = <IconFont className="material-icon" type={icon} />;
+  } else {
+    iconNode = <img src={icon} alt={label} />;
+  }
+
   return (
     <Box
       display="flex"
@@ -513,11 +522,7 @@ function InsertedItem({
         alignItems="center"
         justifyContent="center"
       >
-        {icon.startsWith('icon-') ? (
-          <IconFont className="material-icon" type={icon} />
-        ) : (
-          <img src={icon} alt={label} />
-        )}
+        {iconNode}
       </Box>
       <Box>
         <Box fontWeight="500">{label}</Box>
