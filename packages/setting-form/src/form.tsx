@@ -2,8 +2,8 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { Box, css } from 'coral-system';
 import { Empty } from 'antd';
 import {
-  ComponentPrototypeType,
-  ComponentPropType,
+  IComponentPrototype,
+  IComponentProp,
   noop,
   filterTreeData,
   mapTreeData,
@@ -20,20 +20,24 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 
 registerBuiltinSetters();
 
-function normalizeComponentProps(props: ComponentPrototypeType['props']) {
-  const groups: Record<string, ComponentPropType[]> = {};
+function normalizeComponentProps(
+  props: IComponentPrototype['props'],
+  groupOptions: IFormTabsGroupOption[],
+) {
+  const groups: Record<string, IComponentProp[]> = groupOptions.reduce((prev, cur) => {
+    prev[cur.value] = [];
+    return prev;
+  }, {});
+
   props.forEach((prop) => {
-    const group = prop.group || 'basic';
-    if (!groups[group]) {
-      groups[group] = [];
-    }
+    const group = groups[prop.group] ? prop.group : 'basic';
     groups[group].push(prop);
   });
 
   return groups;
 }
 
-function filterComponentProps(props: ComponentPrototypeType['props'], keyword: string) {
+function filterComponentProps(props: IComponentPrototype['props'], keyword: string) {
   if (!keyword) {
     return props;
   }
@@ -69,8 +73,8 @@ interface IFormTabsGroupOption {
 }
 
 const internalGroups: IFormTabsGroupOption[] = [
-  { label: '常用', value: 'basic' },
-  { label: '事件', value: 'event' },
+  { label: '基本', value: 'basic' },
+  // { label: '事件', value: 'event' },
   { label: '样式', value: 'style' },
   { label: '高级', value: 'advanced' },
 ];
@@ -91,7 +95,7 @@ export interface SettingFormProps {
   /**
    * 组件的可配置描述
    */
-  prototype?: ComponentPrototypeType;
+  prototype?: IComponentPrototype;
   /**
    * 是否显示组件标识
    */
@@ -109,17 +113,17 @@ export interface SettingFormProps {
    */
   showGroups?: boolean;
   /**
+   * 选项分组信息，用于对表单项进行分组展示，如未提供，则使用内置的分组信息
+   */
+  groupOptions?: IFormTabsGroupOption[];
+  /**
    * 是否显示表单项的副标题
    */
   showItemSubtitle?: boolean;
   /**
    * 自定义渲染表单项的额外内容（标签右侧）
    */
-  renderItemExtra?: (props: ComponentPropType) => React.ReactNode;
-  /**
-   * 选项分组信息，用于对表单项进行分组展示，如未提供，则使用内置的分组信息
-   */
-  groupOptions?: IFormTabsGroupOption[];
+  renderItemExtra?: (props: IComponentProp) => React.ReactNode;
   /**
    * 是否允许表单项切换到表达式设置器
    */
@@ -144,8 +148,8 @@ export function SettingForm({
   const [model, setModel] = useState(modelProp ?? new FormModel(defaultValue, { onChange }));
   const { props: componentProps = [] } = prototype;
   const componentPropGroups = useMemo(() => {
-    return normalizeComponentProps(componentProps);
-  }, [componentProps]);
+    return normalizeComponentProps(componentProps, groupOptions);
+  }, [componentProps, groupOptions]);
 
   const filterProps = useMemo(() => {
     const computedProps = mapTreeData(componentProps, (node) => {
@@ -170,7 +174,7 @@ export function SettingForm({
   }, [keyword, componentProps, tabKey, model, showGroups, componentPropGroups]);
 
   const renderProps = useCallback(
-    (list: ComponentPropType[]) =>
+    (list: IComponentProp[]) =>
       list.map((item) => {
         const { getProp, ...rest } = item;
         const childProp = {
@@ -240,7 +244,7 @@ export function SettingForm({
                     <Tabs.TabPane
                       key={group.value}
                       tab={group.label}
-                      disabled={!componentPropGroups[group.value]?.length}
+                      disabled={!componentPropGroups[group.value].length}
                     />
                   ))}
                 </Tabs>

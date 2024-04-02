@@ -1,6 +1,6 @@
 import { makeObservable, observable, computed, action, toJS } from 'mobx';
-import { SetterOnChangeDetailType } from '@music163/tango-helpers';
 import { observableGetIn, observableSetIn } from './helpers';
+import { ISetterOnChangeCallbackDetail } from './types';
 
 export interface IFormModel {
   values: any;
@@ -171,7 +171,7 @@ export class Field {
 
   state: FieldStateType = {};
 
-  detail: SetterOnChangeDetailType = {};
+  detail: ISetterOnChangeCallbackDetail = {};
 
   get value() {
     return this.parent.getValue(this.name);

@@ -132,8 +132,3 @@ export interface ISelectedItemData {
   element?: HTMLElement;
   parents?: ISelectedItemData[];
 }
-
-export type SetterOnChangeDetailType = {
-  relatedImports?: string[];
-  isRawCode?: boolean;
-};

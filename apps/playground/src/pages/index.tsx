@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Box } from 'coral-system';
 import { Button, Space } from 'antd';
 import {
@@ -15,13 +14,8 @@ import {
   themeLight,
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
-import {
-  Logo,
-  ProjectDetail,
-  bootHelperVariables,
-  extendPrototypes,
-  sampleFiles,
-} from '../helpers';
+import prototypes from '../helpers/prototypes';
+import { Logo, ProjectDetail, bootHelperVariables, sampleFiles } from '../helpers';
 import {
   ApiOutlined,
   AppstoreAddOutlined,
@@ -35,8 +29,11 @@ import {
 const workspace = new Workspace({
   entry: '/src/index.js',
   files: sampleFiles,
-  prototypes: extendPrototypes,
+  prototypes,
 });
+
+// inject workspace to window for debug
+(window as any).__workspace__ = workspace;
 
 // 2. 引擎初始化
 const engine = createEngine({
@@ -53,13 +50,13 @@ const sandboxQuery = new DndQuery({
 
 // 4. 图标库初始化（物料面板和组件树使用了 iconfont 里的图标）
 createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/c/font_2891794_cou9i7556tl.js',
+  scriptUrl: '//at.alicdn.com/t/c/font_2891794_6d4hj5u0bjx.js',
 });
 
 const menuData = {
   common: [
     {
-      title: '基本',
+      title: '常用',
       items: [
         'Button',
         'Section',
@@ -70,6 +67,8 @@ const menuData = {
         'Typography',
         'Title',
         'Paragraph',
+        'Table',
+        'Each',
       ],
     },
     {
@@ -87,8 +86,6 @@ const menuData = {
  * 5. 平台初始化，访问 https://local.netease.com:6006/
  */
 export default function App() {
-  const [menuLoading, setMenuLoading] = useState(true);
-  // const [menuData, setMenuData] = useState(false);
   return (
     <Designer
       theme={themeLight}
@@ -127,7 +124,6 @@ export default function App() {
             icon={<AppstoreAddOutlined />}
             widgetProps={{
               menuData,
-              loading: menuLoading,
             }}
           />
           <Sidebar.Item key="outline" label="结构" icon={<BuildOutlined />} />
@@ -153,31 +149,17 @@ export default function App() {
               onMessage={(e) => {
                 if (e.type === 'done') {
                   const sandboxWindow: any = sandboxQuery.window;
-                  if (sandboxWindow.TangoAntd) {
-                    // if (sandboxWindow.TangoAntd.menuData) {
-                    //   setMenuData(sandboxWindow.TangoAntd.menuData);
-                    // }
-                    if (sandboxWindow.TangoAntd.prototypes) {
-                      sandboxWindow.TangoAntd.prototypes['Section'].siblingNames = [
-                        'SnippetButtonGroup',
-                        'Section',
-                        'Section',
-                        'Section',
-                        'Section',
-                        'Section',
-                        'Section',
-                        'Section',
-                      ];
-                      sandboxWindow.TangoAntd.prototypes['FormilyFormItem'].siblingNames = [
-                        'FormilyFormItem',
-                      ];
-                      workspace.setComponentPrototypes(sandboxWindow.TangoAntd.prototypes);
-                    }
-                  }
+                  // if (sandboxWindow.TangoAntd) {
+                  // if (sandboxWindow.TangoAntd.menuData) {
+                  //   setMenuData(sandboxWindow.TangoAntd.menuData);
+                  // }
+                  // if (sandboxWindow.TangoAntd.prototypes) {
+                  //   workspace.setComponentPrototypes(sandboxWindow.TangoAntd.prototypes);
+                  // }
+                  // }
                   if (sandboxWindow.localTangoComponentPrototypes) {
                     workspace.setComponentPrototypes(sandboxWindow.localTangoComponentPrototypes);
                   }
-                  setMenuLoading(false);
                 }
               }}
               navigatorExtra={<Button size="small">hello world</Button>}

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Box } from 'coral-system';
 import { observer } from 'mobx-react-lite';
-import { ComponentPropType } from '@music163/tango-helpers';
+import { IComponentProp } from '@music163/tango-helpers';
 import { SettingFormItem } from './form-item';
 import { FormModelProvider, useFormModel } from './context';
 import { FormControlGroup } from './form-ui';
 import { isValidNestProps } from './helpers';
 
-export type SettingFormObjectProps = ComponentPropType;
+export type SettingFormObjectProps = IComponentProp;
 
 const defaultGetVisible = () => true;
 

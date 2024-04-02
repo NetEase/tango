@@ -1,7 +1,8 @@
 import React from 'react';
 import { isPlainString } from '@music163/tango-helpers';
-import { ActionSelect } from '@music163/tango-ui';
+import { ActionSelect, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { Box } from 'coral-system';
 
 const options = [
   { label: '取消自定义', value: '' },
@@ -25,26 +26,27 @@ interface JsxSetterProps extends FormItemComponentProps {
 }
 
 const defaultGetTemplate = (key: string) => {
-  let ret;
-  const deps = [];
+  let ret: [string, string[]];
   switch (key) {
     case 'Box':
-      ret = '<Box></Box>';
+      ret = ['<Box></Box>', ['Box']];
       break;
     case 'Text':
-      ret = '<Text>示例文本</Text>';
+      ret = ['<Text>示例文本</Text>', ['Text']];
       break;
     case 'Placeholder':
-      ret = '<Placeholder text="拖拽到此进行替换" />';
+      ret = ['<Placeholder text="拖拽到此进行替换" />', ['Placeholder']];
       break;
     case 'ButtonGroup':
-      ret = '<ButtonGroup><Button>按钮1</Button><Button>按钮2</Button></ButtonGroup>';
-      deps.push('Button');
+      ret = [
+        '<ButtonGroup><Button>按钮1</Button><Button>按钮2</Button></ButtonGroup>',
+        ['ButtonGroup', 'Button'],
+      ];
       break;
     default:
       break;
   }
-  return [ret, deps];
+  return ret;
 };
 
 /**
@@ -53,20 +55,23 @@ const defaultGetTemplate = (key: string) => {
 export function JsxSetter(props: JsxSetterProps) {
   const { showInput, getTemplate = defaultGetTemplate, value, onChange } = props;
   return (
-    <ActionSelect
-      showInput={showInput}
-      defaultInputValue={isPlainString(value) ? value : undefined}
-      options={options}
-      text="将此区域初始化为"
-      onInputChange={onChange}
-      onSelect={(key) => {
-        const [tpl, deps] = getTemplate(key);
-        if (tpl) {
-          onChange(`{${tpl}}`, { relatedImports: [...deps, key] });
-        } else {
-          onChange(undefined);
-        }
-      }}
-    />
+    <Box>
+      <ActionSelect
+        showInput={showInput}
+        defaultInputValue={isPlainString(value) ? value : undefined}
+        options={options}
+        text="设置此区域为"
+        onInputChange={onChange}
+        onSelect={(key) => {
+          const [tpl, deps] = getTemplate(key);
+          if (tpl) {
+            onChange(`{${tpl}}`, { relatedImports: deps });
+          } else {
+            onChange(undefined);
+          }
+        }}
+      />
+      {value && <InputCode value={value} readOnly editable={false} />}
+    </Box>
   );
 }

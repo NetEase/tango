@@ -1,7 +1,9 @@
 import React from 'react';
 import { FormModel, SettingForm, register } from '@music163/tango-setting-form';
-import { ComponentPrototypeType } from '@music163/tango-helpers';
+import { IComponentPrototype } from '@music163/tango-helpers';
 import { BorderSetter, DisplaySetter } from '@music163/tango-designer/src/setters/style-setter';
+import { JsxSetter } from '@music163/tango-designer/src/setters/jsx-setter';
+import { RenderSetter, TableCellSetter } from '@music163/tango-designer/src/setters/render-setter';
 import { Box } from 'coral-system';
 import { JsonView } from '@music163/tango-ui';
 import { toJS } from 'mobx';
@@ -20,6 +22,21 @@ register({
   component: DisplaySetter,
 });
 
+register({
+  name: 'jsxSetter',
+  component: JsxSetter,
+});
+
+register({
+  name: 'renderSetter',
+  component: RenderSetter,
+});
+
+register({
+  name: 'tableCellSetter',
+  component: TableCellSetter,
+});
+
 createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/c/font_2891794_cou9i7556tl.js',
 });
@@ -28,7 +45,7 @@ export default {
   title: 'SettingForm',
 };
 
-const prototype: ComponentPrototypeType = {
+const prototype: IComponentPrototype = {
   name: 'Test',
   exportType: 'namedExport',
   title: '测试',
@@ -55,6 +72,28 @@ const prototype: ComponentPrototypeType = {
       name: 'border',
       title: 'borderSetter',
       setter: 'borderSetter',
+    },
+    {
+      name: 'onClick',
+      title: 'eventSetter',
+      tip: '当点击按钮时',
+      setter: 'eventSetter',
+      group: 'event',
+    },
+    {
+      name: 'children',
+      title: 'jsxSetter',
+      setter: 'jsxSetter',
+    },
+    {
+      name: 'render',
+      title: 'renderSetter',
+      setter: 'renderSetter',
+    },
+    {
+      name: 'cell',
+      title: 'tableCellSetter',
+      setter: 'tableCellSetter',
     },
     {
       name: 'router',
@@ -127,13 +166,7 @@ const prototype: ComponentPrototypeType = {
       title: 'iconTypeSetter',
       setter: 'iconTypeSetter',
     },
-    {
-      name: 'onClick',
-      title: 'eventSetter',
-      tip: '当点击按钮时',
-      setter: 'eventSetter',
-      group: 'event',
-    },
+
     {
       name: 'onClick2',
       title: 'actionSetter',
@@ -268,13 +301,15 @@ export function Basic() {
 
   return (
     <Box display="flex">
-      <SettingForm
-        model={model}
-        prototype={prototype}
-        showIdentifier={{
-          identifierKey: 'tid',
-        }}
-      />
+      <Box flex="0 0 400px" overflow="hidden">
+        <SettingForm
+          model={model}
+          prototype={prototype}
+          showIdentifier={{
+            identifierKey: 'tid',
+          }}
+        />
+      </Box>
       <Box position="relative">
         <Card title="表单状态预览" style={{ position: 'sticky', top: 0 }}>
           <FormValuePreview model={model} />

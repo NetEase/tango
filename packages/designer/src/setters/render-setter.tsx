@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo } from 'react';
-import { ActionSelect } from '@music163/tango-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActionSelect, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { Box } from 'coral-system';
 
 interface IRenderOption {
   label: string;
@@ -19,11 +20,18 @@ export interface RenderSetterProps {
  * Render Props Setters
  */
 export function RenderSetter({
+  value,
   onChange,
   text = '自定义渲染为',
   options = [],
   fallbackOption,
 }: FormItemComponentProps & RenderSetterProps) {
+  const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
   const optionsMap = useMemo(() => {
     return options.reduce((prev, cur) => {
       prev[cur.value] = cur;
@@ -42,7 +50,18 @@ export function RenderSetter({
     },
     [optionsMap, fallbackOption, onChange],
   );
-  return <ActionSelect text={text} options={options} onSelect={onSelect} />;
+  return (
+    <Box>
+      <ActionSelect text={text} options={options} onSelect={onSelect} />
+      {value && (
+        <InputCode
+          value={value}
+          onChange={(val) => setInputValue(val)}
+          onBlur={() => onChange(inputValue)}
+        />
+      )}
+    </Box>
+  );
 }
 
 const getRender = (content: string, type?: 'tableCell' | 'tableExpandable') => {

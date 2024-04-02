@@ -1,4 +1,4 @@
-import { ComponentPrototypeType, Dict, ITangoConfigJson } from '@music163/tango-helpers';
+import { IComponentPrototype, Dict, ITangoConfigJson } from '@music163/tango-helpers';
 import { TangoHistory } from './history';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
@@ -141,7 +141,7 @@ export interface IWorkspace {
   dragSource: DragSource;
 
   files: Map<string, TangoFile>;
-  componentPrototypes: Map<string, ComponentPrototypeType>;
+  componentPrototypes: Map<string, IComponentPrototype>;
 
   entry: string;
   activeFile: string;
@@ -171,8 +171,8 @@ export interface IWorkspace {
   setActiveRoute: (path: string) => void;
   setActiveFile: (filename: string) => void;
 
-  setComponentPrototypes: (prototypes: Record<string, ComponentPrototypeType>) => void;
-  getPrototype: (name: string | ComponentPrototypeType) => ComponentPrototypeType;
+  setComponentPrototypes: (prototypes: Record<string, IComponentPrototype>) => void;
+  getPrototype: (name: string | IComponentPrototype) => IComponentPrototype;
 
   // ----------------- 文件操作 -----------------
   addFiles: (files: IFileConfig[]) => void;
@@ -204,18 +204,12 @@ export interface IWorkspace {
   cloneSelectedNode: () => void;
   copySelectedNode: () => void;
   pasteSelectedNode: () => void;
-  insertToSelectedNode: (childNameOrPrototype: string | ComponentPrototypeType) => void;
-  insertBeforeSelectedNode: (sourceNameOrPrototype: string | ComponentPrototypeType) => void;
-  insertAfterSelectedNode: (sourceNameOrPrototype: string | ComponentPrototypeType) => void;
+  insertToSelectedNode: (childNameOrPrototype: string | IComponentPrototype) => void;
+  insertBeforeSelectedNode: (sourceNameOrPrototype: string | IComponentPrototype) => void;
+  insertAfterSelectedNode: (sourceNameOrPrototype: string | IComponentPrototype) => void;
   dropNode: () => void;
-  insertToNode: (
-    targetNodeId: string,
-    sourceNameOrPrototype: string | ComponentPrototypeType,
-  ) => void;
-  replaceNode: (
-    targetNodeId: string,
-    sourceNameOrPrototype: string | ComponentPrototypeType,
-  ) => void;
+  insertToNode: (targetNodeId: string, sourceNameOrPrototype: string | IComponentPrototype) => void;
+  replaceNode: (targetNodeId: string, sourceNameOrPrototype: string | IComponentPrototype) => void;
   updateSelectedNodeAttributes: (
     attributes: Record<string, any>,
     relatedImports?: string[],

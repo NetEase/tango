@@ -12,7 +12,7 @@ import { ListSetter } from './list-setter';
 import { ModelSetter } from './model-setter';
 import { OptionSetter } from './option-setter';
 import { PickerSetter } from './picker-setter';
-import { RenderSetter, TableCellSetter, TableExpandableSetter } from './render-props-setter';
+import { RenderSetter, TableCellSetter, TableExpandableSetter } from './render-setter';
 import { RouterSetter } from './router-setter';
 import {
   SpacingSetter,

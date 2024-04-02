@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { JSXElement } from '@babel/types';
 import {
-  ComponentPrototypeType,
+  IComponentPrototype,
   Dict,
   ITangoConfigJson,
   hasFileExtension,
@@ -52,7 +52,7 @@ export interface IWorkspaceOptions {
   /**
    * 组件描述列表
    */
-  prototypes?: Record<string, ComponentPrototypeType>;
+  prototypes?: Record<string, IComponentPrototype>;
   /**
    * 工作区文件变更事件
    */
@@ -75,7 +75,7 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 组件配置
    */
-  componentPrototypes: Map<string, ComponentPrototypeType>;
+  componentPrototypes: Map<string, IComponentPrototype>;
 
   /**
    * 入口文件
@@ -249,11 +249,11 @@ export class Workspace extends EventTarget implements IWorkspace {
     });
   }
 
-  getPrototype(name: string | ComponentPrototypeType) {
+  getPrototype(name: string | IComponentPrototype) {
     if (isString(name)) {
       return this.componentPrototypes.get(name);
     }
-    return name as ComponentPrototypeType;
+    return name as IComponentPrototype;
   }
 
   /**
@@ -299,7 +299,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
   }
 
-  setComponentPrototypes(prototypes: Record<string, ComponentPrototypeType>) {
+  setComponentPrototypes(prototypes: Record<string, IComponentPrototype>) {
     Object.keys(prototypes).forEach((name) => {
       this.componentPrototypes.set(name, prototypes[name]);
     });
@@ -954,7 +954,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param sourceName 插入的组件名称
    * @returns
    */
-  insertToNode(targetNodeId: string, sourceName: string | ComponentPrototypeType) {
+  insertToNode(targetNodeId: string, sourceName: string | IComponentPrototype) {
     if (!targetNodeId || !sourceName) {
       return;
     }
@@ -978,7 +978,7 @@ export class Workspace extends EventTarget implements IWorkspace {
   /**
    * 替换目标节点
    */
-  replaceNode(targetNodeId: string, sourceName: string | ComponentPrototypeType) {
+  replaceNode(targetNodeId: string, sourceName: string | IComponentPrototype) {
     if (!targetNodeId || !sourceName) {
       return;
     }
@@ -1000,7 +1000,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 在选中节点中插入子节点
    * @param childName 节点名
    */
-  insertToSelectedNode(childName: string | ComponentPrototypeType) {
+  insertToSelectedNode(childName: string | IComponentPrototype) {
     const insertedPrototype = this.getPrototype(childName);
     if (insertedPrototype) {
       const newNode = prototype2jsxElement(insertedPrototype);
@@ -1022,7 +1022,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
   }
 
-  insertBeforeSelectedNode(sourceName: string | ComponentPrototypeType) {
+  insertBeforeSelectedNode(sourceName: string | IComponentPrototype) {
     if (!sourceName) {
       return;
     }
@@ -1042,7 +1042,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     });
   }
 
-  insertAfterSelectedNode(sourceName: string | ComponentPrototypeType) {
+  insertAfterSelectedNode(sourceName: string | IComponentPrototype) {
     if (!sourceName) {
       return;
     }

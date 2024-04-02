@@ -1,20 +1,16 @@
 import React from 'react';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import {
-  clone,
-  ComponentPropType,
-  SetterOnChangeDetailType,
-  useBoolean,
-} from '@music163/tango-helpers';
+import { clone, IComponentProp, useBoolean } from '@music163/tango-helpers';
 import { isWrappedByExpressionContainer } from '@music163/tango-core';
 import { ToggleButton, CodeOutlined } from '@music163/tango-ui';
 import { InputProps } from 'antd';
 import { useFormModel, useFormVariable } from './context';
 import { FormControl } from './form-ui';
 import { Box, Text } from 'coral-system';
+import { ISetterOnChangeCallbackDetail } from './types';
 
-export interface FormItemProps extends ComponentPropType {
+export interface FormItemProps extends IComponentProp {
   /**
    * 无样式模式，仅返回 setter 组件
    */
@@ -31,7 +27,7 @@ export interface FormItemProps extends ComponentPropType {
 
 export interface FormItemComponentProps<T = any> {
   value?: T;
-  onChange: (value: T, detail?: SetterOnChangeDetailType) => void;
+  onChange: (value: T, detail?: ISetterOnChangeCallbackDetail) => void;
   readOnly?: boolean;
   disabled?: boolean;
   status?: InputProps['status'];
@@ -95,7 +91,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const model = useFormModel();
     const field = model.getField(name);
     const value = toJS(field.value ?? defaultValue);
-    const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp;
+    const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp; // Form 的设置优先
     const [isVariable, { toggle: toggleIsVariable }] = useBoolean(
       () => !disableVariableSetter && isWrappedByExpressionContainer(value),
     );
@@ -170,7 +166,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
               <ToggleButton
                 borderRadius="s"
                 size="s"
-                shape="ghost"
+                shape="text"
                 type="primary"
                 tooltip={isVariable ? '关闭 JS 表达式' : '使用 JS 表达式'}
                 tooltipPlacement="left"
