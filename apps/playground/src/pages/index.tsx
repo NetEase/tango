@@ -56,7 +56,7 @@ createFromIconfontCN({
 const menuData = {
   common: [
     {
-      title: '基本',
+      title: '常用',
       items: [
         'Button',
         'Section',
@@ -67,6 +67,8 @@ const menuData = {
         'Typography',
         'Title',
         'Paragraph',
+        'Table',
+        'Each',
       ],
     },
     {

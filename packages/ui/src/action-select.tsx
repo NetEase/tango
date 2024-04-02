@@ -50,6 +50,7 @@ const actionInputStyle = css`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: var(--tango-colors-text2);
   }
 
   .anticon-down {

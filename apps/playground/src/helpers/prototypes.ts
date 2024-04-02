@@ -124,6 +124,18 @@ const prototypes: Dict<ComponentPrototypeType> = {
     package: '@music163/antd',
     initChildren: '文本内容',
   },
+  Placeholder: {
+    name: 'Placeholder',
+    type: 'element',
+    package: '@music163/antd',
+  },
+  ButtonGroup: {
+    name: 'ButtonGroup',
+    type: 'element',
+    package: '@music163/antd',
+    hasChildren: true,
+    childrenNames: ['Button'],
+  },
 };
 
 export default prototypes;
