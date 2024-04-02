@@ -2514,13 +2514,13 @@
   resolved "https://registry.npmmirror.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
-"@lerna/create@8.0.1":
-  version "8.0.1"
-  resolved "https://registry.npmmirror.com/@lerna/create/-/create-8.0.1.tgz#cc0ab19163c67269552292d95f23568468fa9921"
-  integrity sha512-PDYNUF8Nv5j7DbGvVbizEuYuQbNFZ0+wVOtRPvBQOkC2dMNryi3dJjktEd1QeDX6Wa/JkJWvZ5SMHyr+7H3Rtg==
+"@lerna/create@8.1.2":
+  version "8.1.2"
+  resolved "https://registry.npmmirror.com/@lerna/create/-/create-8.1.2.tgz#4dc8b3f59c963275bfb8b390491068751101f477"
+  integrity sha512-GzScCIkAW3tg3+Yn/MKCH9963bzG+zpjGz2NdfYDlYWI7p0f/SH46v1dqpPpYmZ2E/m3JK8HjTNNNL8eIm8/YQ==
   dependencies:
     "@npmcli/run-script" "7.0.2"
-    "@nx/devkit" ">=17.1.2 < 18"
+    "@nx/devkit" ">=17.1.2 < 19"
     "@octokit/plugin-enterprise-rest" "6.0.1"
     "@octokit/rest" "19.0.11"
     byte-size "8.1.1"
@@ -2557,7 +2557,7 @@
     npm-packlist "5.1.1"
     npm-registry-fetch "^14.0.5"
     npmlog "^6.0.2"
-    nx ">=17.1.2 < 18"
+    nx ">=17.1.2 < 19"
     p-map "4.0.0"
     p-map-series "2.1.0"
     p-queue "6.6.2"
@@ -2895,19 +2895,19 @@
     read-package-json-fast "^3.0.0"
     which "^4.0.0"
 
-"@nrwl/devkit@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nrwl/devkit/-/devkit-17.2.6.tgz#ab283bc16fde0b3c4a73ce59c1364b89d9b73468"
-  integrity sha512-uZVqc2qhi+WdSqLV9aIcE+5ck+IUSQ47Cc5bslWrssQjBncqGavHYDuU4ZLuKK5HxCuZqlQjvo7TsF7LeOjNiA==
+"@nrwl/devkit@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nrwl/devkit/-/devkit-18.2.1.tgz#4c0e60a5c5e73ca7b2b69a772ecd03630d45892e"
+  integrity sha512-D//NSihg/hyoinB+CpNMjecwdMIagoQgLlc2HLZtEpmBxM9b3ilX6J7js9HOqEO+jY5YBJWwHg20+qPDYz1Kqw==
   dependencies:
-    "@nx/devkit" "17.2.6"
+    "@nx/devkit" "18.2.1"
 
-"@nrwl/tao@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nrwl/tao/-/tao-17.2.6.tgz#eab09ad1c5751e4310bb8c21796e25df1e8310b1"
-  integrity sha512-cgtUKTRSxDZ94S9IpC27/qYZJ1YttJDET+veKrtRYvwnHFgkq1peyeTTtnM25yJon7PRdm2lYrlIVdPm0vXupw==
+"@nrwl/tao@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nrwl/tao/-/tao-18.2.1.tgz#dfa24e2d02c7c17f3c8dc296544947dd56bf7293"
+  integrity sha512-QOk9pCNBtu8Qk8Cr7WVbI4+Q/PdxXX+nWMU+xk1KyTjH+XYdAvVksrMqFndPAThIsPvC1fP2XCcMCxOX10F3rQ==
   dependencies:
-    nx "17.2.6"
+    nx "18.2.1"
     tslib "^2.3.0"
 
 "@nx-js/observer-util@^4.2.2":
@@ -2915,68 +2915,69 @@
   resolved "https://registry.npmmirror.com/@nx-js/observer-util/-/observer-util-4.2.2.tgz#faea1bc61936653486d1b5dec7485220991e628d"
   integrity sha512-9OayX1xkdGjdnsDiO2YdaYJ6aMyCF7/NY4QWVgIgjSAZJ4OX2fD766Ts79hEzBscenQy2DCaSoY8VkguIMB1ZA==
 
-"@nx/devkit@17.2.6", "@nx/devkit@>=17.1.2 < 18":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/devkit/-/devkit-17.2.6.tgz#e65d8386ca7467d49de2193bc963a78561134623"
-  integrity sha512-a9GPw0KiLhvv2RBLPlWgaVDZRvgww4ANBwv7LuGvk8FNgxF5vkQMM5WyKpvxKJhmh1EZ+T9JsGWAFrK7skW9Bw==
+"@nx/devkit@18.2.1", "@nx/devkit@>=17.1.2 < 19":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/devkit/-/devkit-18.2.1.tgz#ea409c13be5fde073eee7378194b069c997764c0"
+  integrity sha512-zEWm/lYgD0fHUU2Qgdd1OkIuBDbp8sCIiwv0iMITJy9CZf+fxg3rzRaUwVSbIXXSdeaSIFT75WI4zoI+7EQ/9w==
   dependencies:
-    "@nrwl/devkit" "17.2.6"
+    "@nrwl/devkit" "18.2.1"
     ejs "^3.1.7"
     enquirer "~2.3.6"
     ignore "^5.0.4"
-    semver "7.5.3"
+    semver "^7.5.3"
     tmp "~0.2.1"
     tslib "^2.3.0"
+    yargs-parser "21.1.1"
 
-"@nx/nx-darwin-arm64@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-darwin-arm64/-/nx-darwin-arm64-17.2.6.tgz#8f5a4cc579158388ec98e0bf26996d9c0457da00"
-  integrity sha512-ezU5u7hkEwI2xzsFSjyr53uNURBvga40LQlpEnS/CbqRifHHhTKisCy+r2+kRhiOwTeR+I+/2D3zPyIyN3aEHQ==
+"@nx/nx-darwin-arm64@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-darwin-arm64/-/nx-darwin-arm64-18.2.1.tgz#b59468e4c82bd5d83044fa683cb099a94b5a6306"
+  integrity sha512-s6ilEYpzyBoeyjM4PkK0nOPWu2uBL2TPDAVIwVh7J2RuM3xINy45zgbmYBUwC4JZUCSJv7e0GQ7OpxEQVlOjDA==
 
-"@nx/nx-darwin-x64@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-darwin-x64/-/nx-darwin-x64-17.2.6.tgz#4ca7b4fb5ab03b786d8bcdfb9e5780abd1f31faf"
-  integrity sha512-wUIwbM/7LMxlFkEOlbxR/s2qaRuD69yXc70f2rtxsskwJ4GOF5kfc1jk2YaDs9qswI+FgQVgbeZu8pgF+slY7Q==
+"@nx/nx-darwin-x64@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-darwin-x64/-/nx-darwin-x64-18.2.1.tgz#7f643015ff2cd2df73eb6f488bca4292c039be66"
+  integrity sha512-WpsnI+Z4qfqs0uyFyERLGKZSw3OIpKx3yr7fgFEyfUQS9pqIzqngh2gnoAnf/eYHKBZ2GNPjJ1n+fPHIuLP/dw==
 
-"@nx/nx-freebsd-x64@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-freebsd-x64/-/nx-freebsd-x64-17.2.6.tgz#59e0189d14f9b021644b123c16315ba1e09a808b"
-  integrity sha512-uBKEGqG4txVCpBirRzt1QwuOLzfA0s9dlUP7n5t4qJuaf9OXuVcDXay8g84WT1jx4PPtipyv/wyIFu3r7v8kZw==
+"@nx/nx-freebsd-x64@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-freebsd-x64/-/nx-freebsd-x64-18.2.1.tgz#e694bc8fc7e39112652f173ebd104b06c27b09b6"
+  integrity sha512-AnbYoxvGHQPDXA5A+nPsVTYEQnXayKnC+NLUcxwoH5gW0Io4oBpck+RW4yf8Dt3zoB/RUw4X/TMKPAMXbD7HuA==
 
-"@nx/nx-linux-arm-gnueabihf@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-linux-arm-gnueabihf/-/nx-linux-arm-gnueabihf-17.2.6.tgz#e1bebfb4bf8e24b7d4f2072bde077de988317461"
-  integrity sha512-dSDVz2BktaPHMkrJojFCx+V+QFLDF0KzoHorESzZmHZTfumr0xtJ1COWCU+gYmLptc+8OgwCzCPWXHhcDgji/A==
+"@nx/nx-linux-arm-gnueabihf@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-linux-arm-gnueabihf/-/nx-linux-arm-gnueabihf-18.2.1.tgz#6b6d72518d55b046add163429a8aaa93845fabff"
+  integrity sha512-01M5fq1hYQQPlSJ7VIJ+ADmadlRvrvrOngbhBWPdWM70XKNz46Z8Z8JrOq1n67QviAPwIYELBMR2c8Bi/NU7FQ==
 
-"@nx/nx-linux-arm64-gnu@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-linux-arm64-gnu/-/nx-linux-arm64-gnu-17.2.6.tgz#b830f581ab5afc2ae30ec2f8bd27a750c1a66753"
-  integrity sha512-AD99Kk47Yxn3IJ89aCT1oVpNX1XNECAYay97yhqf2tiBsDv9hC43PppOdjI0dNP5VRBTrr6EsWdhvE0uNJ3RJw==
+"@nx/nx-linux-arm64-gnu@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-linux-arm64-gnu/-/nx-linux-arm64-gnu-18.2.1.tgz#91cc02c62c0113cf0d50ffabd5cdd6e743661f2e"
+  integrity sha512-mQf0/NAAYDrvhhkHbw8/xFiIJ8ldzMxT0sHe2syYbWdnAYWxbXUlDvaalHgILZNiELNsLopbZ6zyKbyj7gTMbw==
 
-"@nx/nx-linux-arm64-musl@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-linux-arm64-musl/-/nx-linux-arm64-musl-17.2.6.tgz#c3865d4386097190f3c7fd1840999e3cc6fbb8cf"
-  integrity sha512-MOX/EJyzseEnzbFxY7V6es/xta6WQ0cDDrl6i6qjCRnoRTFFVMsL0Fb4dtVbv7fd75O41P+OBGpG70MYx2SOxw==
+"@nx/nx-linux-arm64-musl@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-linux-arm64-musl/-/nx-linux-arm64-musl-18.2.1.tgz#e893f35e17f3b458d5abefd6d22b34199a2f4855"
+  integrity sha512-iP2vKQfiCNNUZm81jbIVz2IshtyUUFw7BLi4vTWYIxcknbRJIchNb0dubJBmJUx4593z3O3wst252rg2QlP+cw==
 
-"@nx/nx-linux-x64-gnu@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-linux-x64-gnu/-/nx-linux-x64-gnu-17.2.6.tgz#3520364998256a628a861ad1427754504fc585a6"
-  integrity sha512-16xTSszGPY25INDUr4pzLXWcO3va1764iVFiHRTuJr5siDymY7zSj+DPKFmewzqF2358Y5m8AtMotY0FqKciYg==
+"@nx/nx-linux-x64-gnu@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-linux-x64-gnu/-/nx-linux-x64-gnu-18.2.1.tgz#50fcb0398506070a7674c52fbb788b4da3b406d5"
+  integrity sha512-LHO+MlMgnm/v1CR0E/UfCUD9bfQWrA8btohv1ju/uHw32wW5P/MiMuLk0jrythWk++NZxpMzBIqcZrO2AcQgUg==
 
-"@nx/nx-linux-x64-musl@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-linux-x64-musl/-/nx-linux-x64-musl-17.2.6.tgz#f3c89d7d5c5336735bf31eb2ae0dd2e5ab6a9f25"
-  integrity sha512-F/nIq8bcZd2cNuBiQbyJwur7CpeRBCt0qKDF38HQ2l3HhQv+jwk4T6115LMQqwZb9e6kt6BAFsY+6O7I6t3pCw==
+"@nx/nx-linux-x64-musl@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-linux-x64-musl/-/nx-linux-x64-musl-18.2.1.tgz#0d68185b8e2c809097714c0e35dec6decf82d86a"
+  integrity sha512-dXNf2P5bRg+u+xDCkqmmP5OABlHZ+zw7D5++uOnGT0D3Y9ZfNl7LVrTqKrTAFJlR6Ycb4ffjhauXF5Yh2tedeA==
 
-"@nx/nx-win32-arm64-msvc@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-win32-arm64-msvc/-/nx-win32-arm64-msvc-17.2.6.tgz#1e432cdbf55ba816d04fec776227e7d459dc4cc4"
-  integrity sha512-1lAKKKiH7eduzqcPDB03iPz38yNXn3Y4Q/3jULjaRc3EFAplfBsYVwJ9kGjXPZSrpt/AY7w5ATY55/r5B3gQnA==
+"@nx/nx-win32-arm64-msvc@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-win32-arm64-msvc/-/nx-win32-arm64-msvc-18.2.1.tgz#6c0aeb65f593a764c87f01adaad6d1d9182f3dbb"
+  integrity sha512-6Dt3/qU2qKwzfXeaB+dS+oEasMbC16ZMC7E6pZTsiXqyjkh25lomiOYLBxBlHdGR4M06CzhFI3Vxtk8Hr7ltuQ==
 
-"@nx/nx-win32-x64-msvc@17.2.6":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/@nx/nx-win32-x64-msvc/-/nx-win32-x64-msvc-17.2.6.tgz#07fde42a0fe1f8f103aa7afd1db83cb76a72951f"
-  integrity sha512-LrJySMWrO5oWMrP4VOWM1hr3c4rtxHGCcRy19VwqvaAPDrnsg0qfPjv4q1C9YyIU8sj+T3oJs1yZdnNntlN8ew==
+"@nx/nx-win32-x64-msvc@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/@nx/nx-win32-x64-msvc/-/nx-win32-x64-msvc-18.2.1.tgz#5027e833c368a15609d24ae11df9c077d9d0f7ff"
+  integrity sha512-FsX7Y22WezvH+Z2sUUXSTKUyG8MGL7ObmIRTZxacY2sV1IiaXY5i3J/46AKkJ+lfp6ALULJ4lRlLwXo9jDHbiA==
 
 "@octokit/auth-token@^3.0.0":
   version "3.0.4"
@@ -6176,12 +6177,21 @@ axe-core@=4.7.0:
   resolved "https://registry.npmmirror.com/axe-core/-/axe-core-4.7.0.tgz#34ba5a48a8b564f67e103f0aa5768d76e15bbbbf"
   integrity sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==
 
-axios@^1.4.0, axios@^1.5.1:
+axios@^1.4.0:
   version "1.6.2"
   resolved "https://registry.npmmirror.com/axios/-/axios-1.6.2.tgz#de67d42c755b571d3e698df1b6504cde9b0ee9f2"
   integrity sha512-7i24Ri4pmDRfJTR7LDBhsOTtcm+9kjX5WiY1X3wIisx6G9So3pfMkEiU7emUBe46oceVImccTEM3k6C5dbVW8A==
   dependencies:
     follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
+axios@^1.6.0:
+  version "1.6.8"
+  resolved "https://registry.npmmirror.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
+  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
+  dependencies:
+    follow-redirects "^1.15.6"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
@@ -9721,6 +9731,11 @@ follow-redirects@^1.0.0, follow-redirects@^1.15.0:
   resolved "https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.3.tgz#fe2f3ef2690afce7e82ed0b44db08165b207123a"
   integrity sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==
 
+follow-redirects@^1.15.6:
+  version "1.15.6"
+  resolved "https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
+  integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
+
 for-each@^0.3.3:
   version "0.3.3"
   resolved "https://registry.npmmirror.com/for-each/-/for-each-0.3.3.tgz#69b447e88a0a5d32c3e7084f3f1710034b21376e"
@@ -10189,18 +10204,6 @@ glob-to-regexp@^0.4.1:
   version "0.4.1"
   resolved "https://registry.npmmirror.com/glob-to-regexp/-/glob-to-regexp-0.4.1.tgz#c75297087c851b9a578bd217dd59a92f59fe546e"
   integrity sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==
-
-glob@7.1.4:
-  version "7.1.4"
-  resolved "https://registry.npmmirror.com/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
-  integrity sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
-  dependencies:
-    fs.realpath "^1.0.0"
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "^3.0.4"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
 
 glob@^10.2.2, glob@^10.3.10:
   version "10.3.10"
@@ -12411,14 +12414,14 @@ lazy-universal-dotenv@^3.0.1:
     dotenv "^8.0.0"
     dotenv-expand "^5.1.0"
 
-lerna@^8.0.0:
-  version "8.0.1"
-  resolved "https://registry.npmmirror.com/lerna/-/lerna-8.0.1.tgz#cc705467c5507c38c76ae293fe976e5d438aa876"
-  integrity sha512-ZxFMmOqwkP4e+q6BrMzxkAhixi6n0GVD2jAAnAfDkIFnwumB4/7X5/If6fqTlXXshtB2dQtN5OAtzafqVq8cwA==
+lerna@^8.1.2:
+  version "8.1.2"
+  resolved "https://registry.npmmirror.com/lerna/-/lerna-8.1.2.tgz#441e8078d0b68557b4ef5b33202a16a6bc2a50d3"
+  integrity sha512-RCyBAn3XsqqvHbz3TxLfD7ylqzCi1A2UJnFEZmhURgx589vM3qYWQa/uOMeEEf565q6cAdtmulITciX1wgkAtw==
   dependencies:
-    "@lerna/create" "8.0.1"
+    "@lerna/create" "8.1.2"
     "@npmcli/run-script" "7.0.2"
-    "@nx/devkit" ">=17.1.2 < 18"
+    "@nx/devkit" ">=17.1.2 < 19"
     "@octokit/plugin-enterprise-rest" "6.0.1"
     "@octokit/rest" "19.0.11"
     byte-size "8.1.1"
@@ -12461,7 +12464,7 @@ lerna@^8.0.0:
     npm-packlist "5.1.1"
     npm-registry-fetch "^14.0.5"
     npmlog "^6.0.2"
-    nx ">=17.1.2 < 18"
+    nx ">=17.1.2 < 19"
     p-map "4.0.0"
     p-map-series "2.1.0"
     p-pipe "3.1.0"
@@ -12627,26 +12630,26 @@ lines-and-columns@^2.0.3, lines-and-columns@~2.0.3:
   resolved "https://registry.npmmirror.com/lines-and-columns/-/lines-and-columns-2.0.4.tgz#d00318855905d2660d8c0822e3f5a4715855fc42"
   integrity sha512-wM1+Z03eypVAVUCE7QdSqpVIvelbOakn1M0bPDoA4SGWPx3sNDVUiMo3L6To6WWGClB7VyXnhQ4Sn7gxiJbE6A==
 
-lint-staged@^15.2.0:
-  version "15.2.0"
-  resolved "https://registry.npmmirror.com/lint-staged/-/lint-staged-15.2.0.tgz#3111534ca58096a3c8f70b044b6e7fe21b36f859"
-  integrity sha512-TFZzUEV00f+2YLaVPWBWGAMq7So6yQx+GG8YRMDeOEIf95Zn5RyiLMsEiX4KTNl9vq/w+NqRJkLA1kPIo15ufQ==
+lint-staged@^15.2.2:
+  version "15.2.2"
+  resolved "https://registry.npmmirror.com/lint-staged/-/lint-staged-15.2.2.tgz#ad7cbb5b3ab70e043fa05bff82a09ed286bc4c5f"
+  integrity sha512-TiTt93OPh1OZOsb5B7k96A/ATl2AjIZo+vnzFZ6oHK5FuTk63ByDtxGQpHm+kFETjEWqgkF95M8FRXKR/LEBcw==
   dependencies:
     chalk "5.3.0"
     commander "11.1.0"
     debug "4.3.4"
     execa "8.0.1"
     lilconfig "3.0.0"
-    listr2 "8.0.0"
+    listr2 "8.0.1"
     micromatch "4.0.5"
     pidtree "0.6.0"
     string-argv "0.3.2"
     yaml "2.3.4"
 
-listr2@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.npmmirror.com/listr2/-/listr2-8.0.0.tgz#aa7c230995f8ce378585f7c96c0c6d1cefa4700d"
-  integrity sha512-u8cusxAcyqAiQ2RhYvV7kRKNLgUvtObIbhOX2NCXqvp1UU32xIg5CT22ykS2TPKJXZWJwtK3IKLiqAGlGNE+Zg==
+listr2@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.npmmirror.com/listr2/-/listr2-8.0.1.tgz#4d3f50ae6cec3c62bdf0e94f5c2c9edebd4b9c34"
+  integrity sha512-ovJXBXkKGfq+CwmKTjluEqFi3p4h8xvkxGQQAQan22YCgef4KZ1mKGjzfGh6PL6AW5Csw0QiQPNuQyH+6Xk3hA==
   dependencies:
     cli-truncate "^4.0.0"
     colorette "^2.0.20"
@@ -12851,7 +12854,7 @@ lodash@^4.0.1, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.2
   resolved "https://registry.npmmirror.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
-log-symbols@^4.1.0:
+log-symbols@^4.0.0, log-symbols@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmmirror.com/log-symbols/-/log-symbols-4.1.0.tgz#3fbdbb95b4683ac9fc785111e792e558d4abd503"
   integrity sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==
@@ -13276,6 +13279,13 @@ minimatch@3.0.5:
   dependencies:
     brace-expansion "^1.1.7"
 
+minimatch@9.0.3, minimatch@^9.0.0, minimatch@^9.0.1, minimatch@^9.0.3:
+  version "9.0.3"
+  resolved "https://registry.npmmirror.com/minimatch/-/minimatch-9.0.3.tgz#a6e00c3de44c3a542bfaae70abfc22420a6da825"
+  integrity sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==
+  dependencies:
+    brace-expansion "^2.0.1"
+
 minimatch@^3.0.2, minimatch@^3.0.3, minimatch@^3.0.4, minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   version "3.1.2"
   resolved "https://registry.npmmirror.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
@@ -13294,13 +13304,6 @@ minimatch@^8.0.2:
   version "8.0.4"
   resolved "https://registry.npmmirror.com/minimatch/-/minimatch-8.0.4.tgz#847c1b25c014d4e9a7f68aaf63dedd668a626229"
   integrity sha512-W0Wvr9HyFXZRGIDgCicunpQ299OKXs9RgZfaukz4qAW/pJhcpUfupc9c+OObPOFueNy8VSrZgEmDtk6Kh4WzDA==
-  dependencies:
-    brace-expansion "^2.0.1"
-
-minimatch@^9.0.0, minimatch@^9.0.1, minimatch@^9.0.3:
-  version "9.0.3"
-  resolved "https://registry.npmmirror.com/minimatch/-/minimatch-9.0.3.tgz#a6e00c3de44c3a542bfaae70abfc22420a6da825"
-  integrity sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==
   dependencies:
     brace-expansion "^2.0.1"
 
@@ -13958,16 +13961,16 @@ nwsapi@^2.2.2:
   resolved "https://registry.npmmirror.com/nwsapi/-/nwsapi-2.2.7.tgz#738e0707d3128cb750dddcfe90e4610482df0f30"
   integrity sha512-ub5E4+FBPKwAZx0UwIQOjYWGHTEq5sPqHQNRN8Z9e4A7u3Tj1weLJsL59yH9vmvqEtBHaOmT6cYQKIZOxp35FQ==
 
-nx@17.2.6, "nx@>=17.1.2 < 18":
-  version "17.2.6"
-  resolved "https://registry.npmmirror.com/nx/-/nx-17.2.6.tgz#717297e0757237aa010f2e07aa8fdf68e77ea104"
-  integrity sha512-lBHp0e0AMBwYwpT44a8b0j29szspmYUhY1okqNctz/3ifuonNFG9WGfbzRO4YKOrVkfNsuaomHVAE6gtqo55ng==
+nx@18.2.1, "nx@>=17.1.2 < 19":
+  version "18.2.1"
+  resolved "https://registry.npmmirror.com/nx/-/nx-18.2.1.tgz#6eab05216615acc83e2f888f6aed11d4e1303bf0"
+  integrity sha512-wUYr1x6GnPvtHMY5pHVijuJbD077ObwGCX+pHZc1IreugAQBLmQ6bxPNCxuI0YjGeM39PD9ME+rxi6aAcJbUKw==
   dependencies:
-    "@nrwl/tao" "17.2.6"
+    "@nrwl/tao" "18.2.1"
     "@yarnpkg/lockfile" "^1.1.0"
     "@yarnpkg/parsers" "3.0.0-rc.46"
     "@zkochan/js-yaml" "0.0.6"
-    axios "^1.5.1"
+    axios "^1.6.0"
     chalk "^4.1.0"
     cli-cursor "3.1.0"
     cli-spinners "2.6.1"
@@ -13978,17 +13981,17 @@ nx@17.2.6, "nx@>=17.1.2 < 18":
     figures "3.2.0"
     flat "^5.0.2"
     fs-extra "^11.1.0"
-    glob "7.1.4"
     ignore "^5.0.4"
     jest-diff "^29.4.1"
     js-yaml "4.1.0"
     jsonc-parser "3.2.0"
     lines-and-columns "~2.0.3"
-    minimatch "3.0.5"
+    minimatch "9.0.3"
     node-machine-id "1.1.12"
     npm-run-path "^4.0.1"
     open "^8.4.0"
-    semver "7.5.3"
+    ora "5.3.0"
+    semver "^7.5.3"
     string-width "^4.2.3"
     strong-log-transformer "^2.1.0"
     tar-stream "~2.2.0"
@@ -13998,16 +14001,16 @@ nx@17.2.6, "nx@>=17.1.2 < 18":
     yargs "^17.6.2"
     yargs-parser "21.1.1"
   optionalDependencies:
-    "@nx/nx-darwin-arm64" "17.2.6"
-    "@nx/nx-darwin-x64" "17.2.6"
-    "@nx/nx-freebsd-x64" "17.2.6"
-    "@nx/nx-linux-arm-gnueabihf" "17.2.6"
-    "@nx/nx-linux-arm64-gnu" "17.2.6"
-    "@nx/nx-linux-arm64-musl" "17.2.6"
-    "@nx/nx-linux-x64-gnu" "17.2.6"
-    "@nx/nx-linux-x64-musl" "17.2.6"
-    "@nx/nx-win32-arm64-msvc" "17.2.6"
-    "@nx/nx-win32-x64-msvc" "17.2.6"
+    "@nx/nx-darwin-arm64" "18.2.1"
+    "@nx/nx-darwin-x64" "18.2.1"
+    "@nx/nx-freebsd-x64" "18.2.1"
+    "@nx/nx-linux-arm-gnueabihf" "18.2.1"
+    "@nx/nx-linux-arm64-gnu" "18.2.1"
+    "@nx/nx-linux-arm64-musl" "18.2.1"
+    "@nx/nx-linux-x64-gnu" "18.2.1"
+    "@nx/nx-linux-x64-musl" "18.2.1"
+    "@nx/nx-win32-arm64-msvc" "18.2.1"
+    "@nx/nx-win32-x64-msvc" "18.2.1"
 
 object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
@@ -14221,6 +14224,20 @@ optionator@^0.9.3:
     levn "^0.4.1"
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
+
+ora@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.npmmirror.com/ora/-/ora-5.3.0.tgz#fb832899d3a1372fe71c8b2c534bbfe74961bb6f"
+  integrity sha512-zAKMgGXUim0Jyd6CXK9lraBnD3H5yPGBPPOkC23a2BG6hsm4Zu6OQSjQuEtV0BHDf4aKHcUFvJiGRrFuW3MG8g==
+  dependencies:
+    bl "^4.0.3"
+    chalk "^4.1.0"
+    cli-cursor "^3.1.0"
+    cli-spinners "^2.5.0"
+    is-interactive "^1.0.0"
+    log-symbols "^4.0.0"
+    strip-ansi "^6.0.0"
+    wcwidth "^1.0.1"
 
 ora@^5.4.1:
   version "5.4.1"
@@ -15211,10 +15228,10 @@ prettier-plugin-packagejson@2.4.3:
   resolved "https://registry.npmmirror.com/prettier/-/prettier-2.3.0.tgz#b6a5bf1284026ae640f17f7ff5658a7567fc0d18"
   integrity sha512-kXtO4s0Lz/DW/IJ9QdWhAf7/NmPWQXkFr/r/WkR3vyI+0v8amTDxiaQSLzs8NBlytfLWX/7uQUMIW677yLKl4w==
 
-prettier@^3.1.0:
-  version "3.1.1"
-  resolved "https://registry.npmmirror.com/prettier/-/prettier-3.1.1.tgz#6ba9f23165d690b6cbdaa88cb0807278f7019848"
-  integrity sha512-22UbSzg8luF4UuZtzgiUOfcGM8s4tjBv6dJRT7j275NXsy2jb4aJa4NNveul5x4eqlF1wuhuR2RElK71RvmVaw==
+prettier@^3.2.5:
+  version "3.2.5"
+  resolved "https://registry.npmmirror.com/prettier/-/prettier-3.2.5.tgz#e52bc3090586e824964a8813b09aba6233b28368"
+  integrity sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==
 
 pretty-error@^2.1.1:
   version "2.1.2"
@@ -16909,13 +16926,6 @@ select-hose@^2.0.0:
   version "5.7.2"
   resolved "https://registry.npmmirror.com/semver/-/semver-5.7.2.tgz#48d55db737c3287cd4835e17fa13feace1c41ef8"
   integrity sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==
-
-semver@7.5.3:
-  version "7.5.3"
-  resolved "https://registry.npmmirror.com/semver/-/semver-7.5.3.tgz#161ce8c2c6b4b3bdca6caadc9fa3317a4c4fe88e"
-  integrity sha512-QBlUtyVk/5EeHbi7X0fw6liDZc7BBmEaSYn01fMU1OUYbf6GPsbTtd8WmnqbI20SeycoHSeiybkE/q1Q+qlThQ==
-  dependencies:
-    lru-cache "^6.0.0"
 
 semver@7.5.4, semver@^7.0.0, semver@^7.1.1, semver@^7.3.2, semver@^7.3.4, semver@^7.3.5, semver@^7.3.7, semver@^7.3.8, semver@^7.5.2, semver@^7.5.3, semver@^7.5.4:
   version "7.5.4"
