@@ -162,7 +162,12 @@ export function InputCode({
   return (
     <Box className="InputCode" display="flex" alignItems="center" overflow="hidden" {...rootStyle}>
       <Box flex="1" overflow="auto">
-        <CodeMirror extensions={extensions} basicSetup={codeSetup} {...rest} />
+        <CodeMirror
+          extensions={extensions}
+          basicSetup={codeSetup}
+          placeholder="//输入 javascript 代码"
+          {...rest}
+        />
       </Box>
       {suffix}
     </Box>
@@ -184,6 +189,7 @@ function useInputCode({
       border: 'solid',
       borderColor: status === 'error' ? 'error.60' : 'line.normal',
       borderRadius: 's',
+      minHeight: 32,
     };
     lineNumbers = false;
     foldGutter = false;
