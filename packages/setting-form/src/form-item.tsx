@@ -34,7 +34,6 @@ export interface FormItemComponentProps<T = any> {
   onChange: (value: T, detail?: SetterOnChangeDetailType) => void;
   readOnly?: boolean;
   disabled?: boolean;
-  toggleIsVariable?: () => void;
   status?: InputProps['status'];
   [prop: string]: any;
 }
@@ -145,7 +144,6 @@ export function createFormItem(options: IFormItemCreateOptions) {
         ...baseComponentProps,
         ...setterProps, // setterProps 优先级大于快捷属性
         ...getSetterProps(model),
-        toggleIsVariable, // 是否显示源码模式
       })
     );
 

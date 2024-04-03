@@ -38,7 +38,7 @@ export type EventSetterProps = FormItemComponentProps<string>;
  * 事件监听函数绑定器
  */
 export function EventSetter(props: EventSetterProps) {
-  const { value, onChange, modalTitle, toggleIsVariable } = props;
+  const { value, onChange, modalTitle } = props;
   const [type, setType] = useState<EventAction>(); // 事件类型
   const [temp, setTemp] = useState(''); // 二级暂存值
   const [expModalVisible, setExpModalVisible] = useState(false); // 弹窗是否显示
@@ -52,8 +52,6 @@ export function EventSetter(props: EventSetterProps) {
       const ret = getWrappedExpressionCode(nextValue);
       if (ret !== value) {
         onChange(ret, ...args);
-        // 默认切换至源码模式
-        toggleIsVariable();
       }
     },
     [onChange, value],

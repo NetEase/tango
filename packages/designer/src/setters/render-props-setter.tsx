@@ -23,7 +23,6 @@ export function RenderSetter({
   text = '自定义渲染为',
   options = [],
   fallbackOption,
-  toggleIsVariable,
 }: FormItemComponentProps & RenderSetterProps) {
   const optionsMap = useMemo(() => {
     return options.reduce((prev, cur) => {
@@ -38,7 +37,6 @@ export function RenderSetter({
       if (option?.render) {
         onChange(option.render, { relatedImports: option.relatedImports });
         // 默认切换至源码模式
-        toggleIsVariable();
       } else {
         onChange(undefined);
       }
