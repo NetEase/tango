@@ -91,6 +91,9 @@ export const SettingPanel = observer((props: SettingPanelProps) => {
       borderLeftColor="line2"
       bg="white"
       headerProps={headerProps}
+      bodyProps={{
+        overflowY: 'hidden',
+      }}
       className="SettingPanel"
     >
       {prototype ? (

@@ -8,6 +8,7 @@ import { ExpressionModal, getWrappedExpressionCode } from './expression-setter';
 
 enum EventAction {
   NoAction = 'noAction',
+  ConsoleLog = 'consoleLog',
   BindExpression = 'bindExpression',
   OpenModal = 'openModal',
   CloseModal = 'closeModal',
@@ -24,6 +25,7 @@ const wrapperStyle = css`
 
 const options = [
   { label: '无动作', value: EventAction.NoAction },
+  { label: '打印事件', value: EventAction.ConsoleLog },
   { label: '绑定 JS 表达式', value: EventAction.BindExpression },
   { label: '打开页面', value: EventAction.NavigateTo },
   { label: '打开弹窗', value: EventAction.OpenModal },
@@ -62,6 +64,9 @@ export function EventSetter(props: EventSetterProps) {
     switch (key) {
       case EventAction.BindExpression:
         setExpModalVisible(true);
+        break;
+      case EventAction.ConsoleLog:
+        handleChange('(...args) => console.log(...args)');
         break;
       case EventAction.NoAction:
         handleChange(undefined);
