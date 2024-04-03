@@ -36,7 +36,6 @@ export function RenderSetter({
       const option = optionsMap[key] || fallbackOption;
       if (option?.render) {
         onChange(option.render, { relatedImports: option.relatedImports });
-        // 默认切换至源码模式
       } else {
         onChange(undefined);
       }
