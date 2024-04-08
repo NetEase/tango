@@ -66,5 +66,5 @@ export function isServiceVariablePath(key: string) {
  * 是否在 Tango 设计模式
  */
 export function isInTangoDesignMode() {
-  return '__TANGO_DESIGNER__' in window;
+  return !!(window as any).__TANGO_DESIGNER__;
 }
