@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.14](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.13...@music163/tango-setting-form@1.0.0-alpha.14) (2024-04-09)
+
+### Bug Fixes
+
+- update setters and use tabOptions to filter props ([#129](https://github.com/netease/tango/issues/129)) ([93608d1](https://github.com/netease/tango/commit/93608d1037327afa4f755976b86427b6128ae3d0))
+- update SettingForm style ([#125](https://github.com/netease/tango/issues/125)) ([3f42516](https://github.com/netease/tango/commit/3f42516816968888554f719332d3cef7d8576aa8))
+
 # [1.0.0-alpha.13](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.0-alpha.12...@music163/tango-setting-form@1.0.0-alpha.13) (2024-03-26)
 
 ### Features

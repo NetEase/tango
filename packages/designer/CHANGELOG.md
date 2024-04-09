@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.18](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.17...@music163/tango-designer@1.0.0-alpha.18) (2024-04-09)
+
+### Bug Fixes
+
+- render invalid icon in inserted dropdown ([#128](https://github.com/netease/tango/issues/128)) ([41a61cc](https://github.com/netease/tango/commit/41a61cce4e6a1f9d42c7a3f4e357c5acdcd6db5f))
+- update setters and use tabOptions to filter props ([#129](https://github.com/netease/tango/issues/129)) ([93608d1](https://github.com/netease/tango/commit/93608d1037327afa4f755976b86427b6128ae3d0))
+- update SettingForm style ([#125](https://github.com/netease/tango/issues/125)) ([3f42516](https://github.com/netease/tango/commit/3f42516816968888554f719332d3cef7d8576aa8))
+
 # [1.0.0-alpha.17](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.16...@music163/tango-designer@1.0.0-alpha.17) (2024-03-26)
 
 ### Features

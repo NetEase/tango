@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-sandbox",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "sandbox of tango apps",
   "author": "wwsun <ww.sun@outlook.com>",
   "homepage": "",
@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
-    "@music163/tango-core": "^1.0.0-alpha.9",
-    "@music163/tango-helpers": "^1.0.0-alpha.5",
+    "@music163/tango-core": "^1.0.0-alpha.10",
+    "@music163/tango-helpers": "^1.0.0-alpha.6",
     "crypto-js": "^4.1.1",
     "lodash.isequal": "4.5.0",
     "react-frame-component": "^5.2.4"

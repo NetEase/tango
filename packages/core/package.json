@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-core",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "tango core",
   "author": "wwsun <ww.sun@outlook.com>",
   "homepage": "",
@@ -28,7 +28,7 @@
     "@babel/parser": "^7.23.5",
     "@babel/traverse": "^7.23.5",
     "@babel/types": "^7.23.5",
-    "@music163/tango-helpers": "^1.0.0-alpha.5",
+    "@music163/tango-helpers": "^1.0.0-alpha.6",
     "@types/babel__generator": "^7.6.7",
     "@types/babel__traverse": "^7.20.4",
     "mobx": "6.12.0",

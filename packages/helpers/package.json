@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-helpers",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "Shared types, helpers, and hooks of tango-apps",
   "keywords": [
     "shared",

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.6](https://github.com/netease/tango/compare/@music163/tango-helpers@1.0.0-alpha.5...@music163/tango-helpers@1.0.0-alpha.6) (2024-04-09)
+
+### Bug Fixes
+
+- check is in design mode ([cb6aabf](https://github.com/netease/tango/commit/cb6aabf6ce45a33ba9055c45734f7db0fba540ec))
+- update setters and use tabOptions to filter props ([#129](https://github.com/netease/tango/issues/129)) ([93608d1](https://github.com/netease/tango/commit/93608d1037327afa4f755976b86427b6128ae3d0))
+
 # [1.0.0-alpha.5](https://github.com/netease/tango/compare/@music163/tango-helpers@1.0.0-alpha.4...@music163/tango-helpers@1.0.0-alpha.5) (2024-03-26)
 
 ### Features
