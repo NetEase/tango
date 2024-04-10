@@ -21,7 +21,7 @@ export function SelectAction({ tooltip, children, ...rest }: SelectActionProps) 
         bg="brand"
         color="white"
         px="s"
-        fontSize="body"
+        fontSize="subtitle"
         css={selectionActionStyle}
         {...rest}
       >
