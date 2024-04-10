@@ -62,10 +62,6 @@ export interface FormControlGroupProps extends FormLabelProps {
    * 是否勾选
    */
   checked?: boolean;
-  /**
-   * checkbox 默认是否勾选
-   */
-  defaultChecked?: boolean;
 }
 
 export function FormControlGroup({
@@ -78,9 +74,9 @@ export function FormControlGroup({
   children,
   onCheck,
   checked,
-  defaultChecked = false,
 }: FormControlGroupProps) {
-  const [collapsed, setCollapsed] = useState(isNil(checked) ? !defaultChecked : !checked);
+  // 默认折叠
+  const [collapsed, setCollapsed] = useState(true);
   return (
     <CollapsePanel
       collapsed={collapsed}
