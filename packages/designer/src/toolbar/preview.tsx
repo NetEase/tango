@@ -13,7 +13,7 @@ export const PreviewTool = observer(() => {
       onClick={() => {
         const nextIsPreview = !designer.isPreview;
         designer.toggleIsPreview(nextIsPreview);
-        if (nextIsPreview) {
+        if (nextIsPreview && designer.activeView === 'code') {
           designer.setActiveView('design');
         }
       }}
