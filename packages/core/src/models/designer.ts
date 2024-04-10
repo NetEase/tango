@@ -3,7 +3,7 @@ import { IWorkspace } from './interfaces';
 
 export type SimulatorNameType = 'desktop' | 'phone';
 
-export type DesignerViewType = 'design' | 'code';
+export type DesignerViewType = 'design' | 'code' | 'dual';
 
 interface ISimulatorType {
   name: SimulatorNameType;

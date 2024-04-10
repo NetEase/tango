@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer, useDesigner } from '@music163/tango-context';
-import { SelectAction } from '@music163/tango-ui';
-import { CodeOutlined } from '@ant-design/icons';
+import { SelectAction, CodeOutlined } from '@music163/tango-ui';
 
 export const ViewSourceAction = observer(() => {
   const designer = useDesigner();
