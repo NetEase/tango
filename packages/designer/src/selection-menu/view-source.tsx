@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useDesigner } from '@music163/tango-context';
 import { SelectAction } from '@music163/tango-ui';
-import { AimOutlined } from '@ant-design/icons';
+import { CodeOutlined } from '@ant-design/icons';
 
 export const ViewSourceAction = observer(() => {
   const designer = useDesigner();
@@ -12,7 +12,7 @@ export const ViewSourceAction = observer(() => {
         designer.setActiveView('code');
       }}
     >
-      <AimOutlined />
+      <CodeOutlined />
     </SelectAction>
   );
 });
