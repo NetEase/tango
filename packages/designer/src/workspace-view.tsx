@@ -21,7 +21,7 @@ export const WorkspaceView = observer((props: WorkspaceViewProps) => {
   return (
     <Box
       className={`ViewPanel ${mode}`}
-      display={display}
+      display={designer.activeView === 'dual' ? 'block' : display}
       flex="1"
       overflow={overflow}
       position="relative"

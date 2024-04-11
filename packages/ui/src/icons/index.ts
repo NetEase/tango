@@ -8,3 +8,4 @@ export * from './open-panel-left-outlined';
 export * from './open-panel-right-outlined';
 export * from './undo-outlined';
 export * from './redo-outlined';
+export * from './dual-outlined';

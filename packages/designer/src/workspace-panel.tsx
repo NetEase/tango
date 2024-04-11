@@ -9,7 +9,6 @@ export function WorkspacePanel({ children }: WorkspacePanelProps) {
     <Box
       flex="1"
       display="flex"
-      flexDirection="column"
       overflow="hidden"
       bg="colors.custom.viewportBg"
       position="relative"
