@@ -75,7 +75,8 @@ export function inferFileType(filename: string): FileType {
 /**
  * 判断组件名是否合法
  * @example Button -> valid
- * @example div -> invalid
+ * @example div -> valid
+ * @example undefined | null -> invalid
  * @param name
  * @returns
  */
@@ -83,9 +84,7 @@ export function isValidComponentName(name: string) {
   if (!name) {
     return false;
   }
-
-  const firstChar = name.charAt(0);
-  return firstChar === firstChar.toUpperCase();
+  return true;
 }
 
 /**

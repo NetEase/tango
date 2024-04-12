@@ -85,8 +85,82 @@ basePrototypes['Section'].siblingNames = [
   'Section',
 ];
 
+export const nativeDomPrototypes = () => {
+  const doms = [
+    'div',
+    'span',
+    'h1',
+    'h2',
+    'p',
+    'a',
+    'img',
+    'ul',
+    'ol',
+    'li',
+    'input',
+    'button',
+    'form',
+    'table',
+    'tr',
+    'td',
+    'header',
+    'footer',
+    'nav',
+    'section',
+    'article',
+    'aside',
+    'main',
+    'video',
+    'audio',
+    'label',
+    'select',
+    'option',
+    'textarea',
+    'iframe',
+  ];
+  const componentPrototypes: Dict<IComponentPrototype> = doms.reduce(
+    (acc: Dict<IComponentPrototype>, tag) => {
+      acc[tag] = {
+        name: tag,
+        title: tag,
+        hasChildren: true,
+        package: '',
+        type: 'element',
+        props: [
+          {
+            name: 'style',
+            title: '样式',
+            group: 'style',
+            setter: 'expressionSetter',
+          },
+          {
+            name: 'className',
+            title: '类名',
+            setter: 'textSetter',
+          },
+          {
+            name: 'id',
+            title: 'ID',
+            setter: 'textSetter',
+          },
+          {
+            name: 'onClick',
+            title: '点击事件',
+            setter: 'actionSetter',
+            group: 'event',
+          },
+        ],
+      };
+      return acc;
+    },
+    {},
+  );
+  return componentPrototypes;
+};
+
 // iconfont: https://www.iconfont.cn/manage/index?manage_type=myprojects&projectId=2891794
 const prototypes: Dict<IComponentPrototype> = {
+  ...nativeDomPrototypes(),
   ...(basePrototypes as any),
   SnippetSuccessResult,
   Snippet2ColumnLayout,

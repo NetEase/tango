@@ -173,6 +173,60 @@ class App extends React.Component {
             <FormilyFormItem name="select1" component="Select" label="表单项" />
           </FormilyForm>
         </Section>
+        <Section title="原生 DOM" tid="section3">
+          <div
+            style={{
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              backgroundColor: "#f4f4f4",
+            }}
+          >
+            <form onSubmit={tango.stores.app.submitForm} style={{
+              padding: "10px",
+            }}>
+              <div>
+                <label>Username:</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  style={{ margin: "5px" }}
+                />
+              </div>
+              <div>
+                <label>Password:</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  style={{ margin: "5px" }}
+                />
+              </div>
+              <div>
+                <label>Role:</label>
+                <select id="role" name="role" style={{ margin: "5px" }}>
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                </select>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  style={{
+                    marginTop: '5px',
+                    padding: "3px 10px",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </Section>
       </Page>
     );
   }
@@ -227,38 +281,21 @@ const storeApp = `
 import { defineStore } from '@music163/tango-boot';
 
 export default defineStore({
-
   title: 'Page Title',
 
   array: [1, 2, 3],
 
   test: function() {
     console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
-    console.log('test');
+  },
+
+  submitForm: function(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const username = formData.get("username");
+    const password = formData.get("password");
+    const role = formData.get("role");
+    console.log("Submitted Data:", { username, password, role });
   }
 }, 'app');
 `;
