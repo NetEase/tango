@@ -1374,7 +1374,7 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@codemirror/autocomplete@^6.0.0", "@codemirror/autocomplete@^6.10.2", "@codemirror/autocomplete@^6.11.1":
+"@codemirror/autocomplete@^6.0.0", "@codemirror/autocomplete@^6.11.1":
   version "6.11.1"
   resolved "https://registry.npmmirror.com/@codemirror/autocomplete/-/autocomplete-6.11.1.tgz#c733900eee58ac2de817317b9fd1e91b857c4329"
   integrity sha512-L5UInv8Ffd6BPw0P3EF7JLYAMeEbclY7+6Q11REt8vhih8RuLreKtPy/xk8wPxs4EQgYqzI7cdgpiYwWlbS/ow==
@@ -1428,7 +1428,7 @@
     "@codemirror/view" "^6.0.0"
     crelt "^1.0.5"
 
-"@codemirror/search@^6.0.0", "@codemirror/search@^6.5.4", "@codemirror/search@^6.5.5":
+"@codemirror/search@^6.0.0", "@codemirror/search@^6.5.5":
   version "6.5.5"
   resolved "https://registry.npmmirror.com/@codemirror/search/-/search-6.5.5.tgz#cf97e201da364da2285c2a250167af25bbd2a4a2"
   integrity sha512-PIEN3Ke1buPod2EHbJsoQwlbpkz30qGZKcnmH1eihq9+bPQx8gelauUwLYaY4vBOuBAuEhmpDLii4rj/uO0yMA==
@@ -2725,63 +2725,6 @@
     react-error-boundary "^4.0.11"
     react-router "5"
     react-router-config "5"
-
-"@music163/tango-core@^0.2.11":
-  version "0.2.11"
-  resolved "https://registry.npmjs.org/@music163/tango-core/-/tango-core-0.2.11.tgz#b3fba390b69d3b3feeb6ec6c587622abbabbdbf4"
-  integrity sha512-Lxeztkcbb8suhQVgEtcoFmiPVlGtFk4iliqgTzapInJJe2IabaBJR/JHiBLcCsfDsL8ajoG+GX8gh4VoJNAPTg==
-  dependencies:
-    "@babel/generator" "^7.23.0"
-    "@babel/parser" "^7.23.0"
-    "@babel/traverse" "^7.23.2"
-    "@babel/types" "^7.23.0"
-    "@music163/tango-helpers" "^0.1.8"
-    "@types/babel__generator" "^7.6.6"
-    "@types/babel__traverse" "^7.20.3"
-    mobx "6.9.0"
-    path-browserify "^1.0.1"
-
-"@music163/tango-helpers@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.npmjs.org/@music163/tango-helpers/-/tango-helpers-0.1.8.tgz#158171fa2255814cacb8d91aea48e119915a8421"
-  integrity sha512-fxL7lcrg46trH6HwCg6UyAR2JnCHbmnqsrYr4yZ7duk5O6muPKsw1FXJ32LdlMg1nIYQ9TkkKRO9f78ggRPhBA==
-  dependencies:
-    hoist-non-react-statics "^3.3.2"
-    lodash.get "^4.4.2"
-    lodash.set "^4.3.2"
-
-"@music163/tango-setting-form@*":
-  version "0.2.16"
-  resolved "https://registry.npmjs.org/@music163/tango-setting-form/-/tango-setting-form-0.2.16.tgz#71176e0e667a8beb17d53ce334ea6661799ddb76"
-  integrity sha512-h0xIGsdr0Vy4vQhSEeFhrBT1Ve+72HLU0+QyyILKDnHZKYf+NYwo/5LEF7zbmsjIO0E1qdjm/H9OVlI4kM9oYg==
-  dependencies:
-    "@ant-design/icons" "^4.8.0"
-    "@music163/tango-core" "^0.2.11"
-    "@music163/tango-helpers" "^0.1.8"
-    "@music163/tango-ui" "^0.1.12"
-    antd "^4.24.2"
-    coral-system "^1.0.5"
-    mobx "6.9.0"
-    mobx-react-lite "4.0.2"
-
-"@music163/tango-ui@*", "@music163/tango-ui@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.npmjs.org/@music163/tango-ui/-/tango-ui-0.1.12.tgz#0831cb8b56c56f71dfc9db0f4d014b611c989982"
-  integrity sha512-51SYOEeUey/ffPaM1y55hWZTelu5CwER4YzAbfQYrQ61wfR2+pGm19xkhKsnAH2GrxR7ON7F+GoujwlzyduAbA==
-  dependencies:
-    "@ant-design/icons" "^4.8.0"
-    "@codemirror/autocomplete" "^6.10.2"
-    "@codemirror/lang-javascript" "^6.2.1"
-    "@codemirror/lint" "^6.4.2"
-    "@codemirror/search" "^6.5.4"
-    "@music163/tango-helpers" "^0.1.8"
-    "@uiw/react-codemirror" "^4.21.20"
-    antd "^4.24.2"
-    antd-easy-form "^1.1.3"
-    coral-system "^1.0.5"
-    eslint-linter-browserify "^8.51.0"
-    react-json-view "^1.21.3"
-    react-monaco-editor-lite "^1.2.3"
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
@@ -4174,7 +4117,7 @@
     "@types/babel__template" "*"
     "@types/babel__traverse" "*"
 
-"@types/babel__generator@*", "@types/babel__generator@^7.6.6", "@types/babel__generator@^7.6.7":
+"@types/babel__generator@*", "@types/babel__generator@^7.6.7":
   version "7.6.8"
   resolved "https://registry.npmmirror.com/@types/babel__generator/-/babel__generator-7.6.8.tgz#f836c61f48b1346e7d2b0d93c6dacc5b9535d3ab"
   integrity sha512-ASsj+tpEDsEiFr1arWrlN6V3mdfjRMZt6LtK/Vp/kreFLnr5QH5+DhvD5nINYZXzwJvXeGq+05iUXcAzVrqWtw==
@@ -4189,7 +4132,7 @@
     "@babel/parser" "^7.1.0"
     "@babel/types" "^7.0.0"
 
-"@types/babel__traverse@*", "@types/babel__traverse@^7.0.6", "@types/babel__traverse@^7.20.3", "@types/babel__traverse@^7.20.4":
+"@types/babel__traverse@*", "@types/babel__traverse@^7.0.6", "@types/babel__traverse@^7.20.4":
   version "7.20.4"
   resolved "https://registry.npmmirror.com/@types/babel__traverse/-/babel__traverse-7.20.4.tgz#ec2c06fed6549df8bc0eb4615b683749a4a92e1b"
   integrity sha512-mSM/iKUk5fDDrEV/e83qY+Cr3I1+Q3qqTuEn++HAWYjEa1+NxZr6CNrcJGf2ZTnq4HoFGC3zaTPZTobCzCFukA==
@@ -4814,7 +4757,7 @@
     "@codemirror/state" "^6.0.0"
     "@codemirror/view" "^6.0.0"
 
-"@uiw/react-codemirror@^4.21.20", "@uiw/react-codemirror@^4.21.21":
+"@uiw/react-codemirror@^4.21.21":
   version "4.21.21"
   resolved "https://registry.npmmirror.com/@uiw/react-codemirror/-/react-codemirror-4.21.21.tgz#986b18dbd6dc69aa470fc3d4e47b89b504af6778"
   integrity sha512-PaxBMarufMWoR0qc5zuvBSt76rJ9POm9qoOaJbqRmnNL2viaF+d+Paf2blPSlm1JSnqn7hlRjio+40nZJ9TKzw==
@@ -5700,14 +5643,6 @@ ansi-to-html@^0.6.11:
   integrity sha512-28ijx2aHJGdzbs+O5SNQF65r6rrKYnkuwTYm8lZlChuoJ9P1vVzIpWO20sQTqTPDXYp6NFwk326vApTtLVFXpQ==
   dependencies:
     entities "^2.0.0"
-
-antd-easy-form@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmmirror.com/antd-easy-form/-/antd-easy-form-1.1.3.tgz#84fa26f05310d8d34e80b617801e88097da57a6d"
-  integrity sha512-jkTzV9qP8ECbSqwrU0/VxuFPsmBnHWCCLlFu3HA26/jQNXtBTKEuS5c26LGfCXwpuf/Z1YBtA6qWlVESASIUBQ==
-  dependencies:
-    "@ant-design/icons" "^4.8.0"
-    react-is "^18.2.0"
 
 antd@4:
   version "4.24.16"
@@ -13441,13 +13376,6 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.npmmirror.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mobx-react-lite@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.npmmirror.com/mobx-react-lite/-/mobx-react-lite-4.0.2.tgz#bf4df238d17491cddb1021a49f79f8af50ed4260"
-  integrity sha512-5o7for7/5QLpgzKvA3ZjrO8TmfkZgVcSjwYalGlW6OkK/fCxmVlwbFeoWJQzWbkWSxlcaatTO0j4riAUvWoqMg==
-  dependencies:
-    use-sync-external-store "^1.2.0"
-
 mobx-react-lite@4.0.5:
   version "4.0.5"
   resolved "https://registry.npmmirror.com/mobx-react-lite/-/mobx-react-lite-4.0.5.tgz#e2cb98f813e118917bcc463638f5bf6ea053a67b"
@@ -13459,11 +13387,6 @@ mobx@6.12.0:
   version "6.12.0"
   resolved "https://registry.npmmirror.com/mobx/-/mobx-6.12.0.tgz#72b2685ca5af031aaa49e77a4d76ed67fcbf9135"
   integrity sha512-Mn6CN6meXEnMa0a5u6a5+RKrqRedHBhZGd15AWLk9O6uFY4KYHzImdt8JI8WODo1bjTSRnwXhJox+FCUZhCKCQ==
-
-mobx@6.9.0:
-  version "6.9.0"
-  resolved "https://registry.npmmirror.com/mobx/-/mobx-6.9.0.tgz#8a894c26417c05bed2cf7499322e589ee9787397"
-  integrity sha512-HdKewQEREEJgsWnErClfbFoVebze6rGazxFLU/XUyrII8dORfVszN1V0BMRnQSzcgsNNtkX8DHj3nC6cdWE9YQ==
 
 modify-values@^1.0.1:
   version "1.0.1"
@@ -16080,20 +16003,10 @@ react-merge-refs@^1.1.0:
   resolved "https://registry.npmmirror.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
 
-react-monaco-editor-lite@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.npmmirror.com/react-monaco-editor-lite/-/react-monaco-editor-lite-1.2.3.tgz#a5da8813d45973bf9014624a65c2e07106d5205c"
-  integrity sha512-/rH3YDN5orsv55FY2zkvLnBBvISEHvAPGRflqtseMzPgQY0Dd1Mc+x8XMHXt9WRUnZbkJGgGfLAA1LDMEY8zLw==
-  dependencies:
-    monaco-editor "^0.38.0"
-    monaco-editor-textmate "^4.0.0"
-    monaco-textmate "^3.0.1"
-    onigasm "^2.2.5"
-
-react-monaco-editor-lite@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.npmmirror.com/react-monaco-editor-lite/-/react-monaco-editor-lite-1.2.4.tgz#d8616c137a1fb35456a703dc0c140dc43fe777ff"
-  integrity sha512-Hr4ozGVgv/zsWU0Lre8+S4khv1dLKHz/CGDSyNyvqEG323avkKyJ0ez4DG39wHGQ+Ax/bpgMb6b87UODeLq91w==
+react-monaco-editor-lite@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.npmmirror.com/react-monaco-editor-lite/-/react-monaco-editor-lite-1.3.2.tgz#cc39c2ecca0a35c35b6b26ba99e092e050cb76f9"
+  integrity sha512-yC293ekxOrrhAgDETNGL9MaKN5C8AYJnetTJx68PWFO7B2f3rLkdV9W23bIly3oHXgWAfAilurj0n2WZk1Pvpg==
   dependencies:
     monaco-editor "^0.38.0"
     monaco-editor-textmate "^4.0.0"
