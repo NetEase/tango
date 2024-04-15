@@ -161,6 +161,10 @@ describe('string helpers', () => {
   it('isValidComponentName', () => {
     expect(isValidComponentName('Button')).toBeTruthy();
     expect(isValidComponentName('Button.Group')).toBeTruthy();
+    expect(isValidComponentName('div')).toBeTruthy();
+    expect(isValidComponentName('')).toBeFalsy();
+    expect(isValidComponentName(null)).toBeFalsy();
+    expect(isValidComponentName(undefined)).toBeFalsy();
   });
 
   it('inferFileType', () => {
