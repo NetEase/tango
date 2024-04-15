@@ -75,16 +75,22 @@ export function inferFileType(filename: string): FileType {
 /**
  * 判断组件名是否合法
  * @example Button -> valid
- * @example div -> valid
- * @example undefined | null -> invalid
+ * @example isStrict ? div -> invalid : div -> valid
  * @param name
+ * @param isStrict 是否严格模式（严格模式不匹配原生标签）
  * @returns
  */
-export function isValidComponentName(name: string) {
+export function isValidComponentName(name: string, isStrict = false) {
   if (!name) {
     return false;
   }
-  return true;
+
+  if (!isStrict) {
+    return true;
+  }
+
+  const firstChar = name.charAt(0);
+  return firstChar === firstChar.toUpperCase();
 }
 
 /**
