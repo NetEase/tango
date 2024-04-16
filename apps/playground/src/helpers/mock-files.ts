@@ -173,7 +173,7 @@ class App extends React.Component {
             <FormilyFormItem name="select1" component="Select" label="表单项" />
           </FormilyForm>
         </Section>
-        <Section title="原生 DOM" tid="section3">
+        <Section title="原生 DOM" tid="section4">
           <div
             style={{
               border: "1px solid #ccc",
