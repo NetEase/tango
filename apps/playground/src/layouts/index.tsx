@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { Outlet } from 'umi';
 import './index.less';
 
 export default function Layout() {
   return (
-    <div>
+    <StrictMode>
       <Outlet />
-    </div>
+    </StrictMode>
   );
 }
