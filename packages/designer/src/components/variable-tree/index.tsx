@@ -204,7 +204,8 @@ export function VariableTree(props: VariableTreeProps) {
                     {node.showRemoveButton && (
                       <Popconfirm
                         title={`确认删除吗 ${node.title}？该操作会导致引用此模型的代码报错，请谨慎操作！`}
-                        onConfirm={() => {
+                        onConfirm={(e) => {
+                          e.stopPropagation();
                           if (isStoreVariablePath(node.key)) {
                             onRemoveStoreVariable(node.key);
                           } else {
