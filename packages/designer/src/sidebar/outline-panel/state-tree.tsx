@@ -26,7 +26,7 @@ export const StateTree = observer(() => {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
   const tangoContext = pick(sandboxQuery.window['tango'] || {}, [
     'stores',
-    'page',
+    'pageStore',
     'services',
     'config',
   ]);
