@@ -1,7 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
 import { observer } from '@music163/tango-context';
 import { isFunction, isObject, pick } from '@music163/tango-helpers';
-import { JsonView } from '@music163/tango-ui';
+import { CollapsePanel, IconButton, JsonView } from '@music163/tango-ui';
+import { ReloadOutlined } from '@ant-design/icons';
 import { useSandboxQuery } from '../../context';
 
 function processTango(obj: any = {}, index = 0) {
@@ -34,6 +35,7 @@ export const StateTree = observer(() => {
     forceUpdate();
   };
   useEffect(() => {
+    // FIXME: 优化这段代码，应该监听 tangoContext 的变化，来刷新
     const settingForm = document.querySelector('.SettingPanel');
     const ob = new MutationObserver(callback);
     if (settingForm) {
@@ -48,13 +50,31 @@ export const StateTree = observer(() => {
     };
   }, []);
   return (
-    <JsonView
-      src={processTango(tangoContext)}
-      collapsed={1}
-      name="tango"
-      displayObjectSize={false}
-      indentWidth={2}
-      enableCopy
-    />
+    <CollapsePanel
+      title="页面状态"
+      stickyHeader
+      maxHeight="90%"
+      overflowY="auto"
+      extra={
+        <IconButton
+          tooltip="同步状态"
+          size="small"
+          icon={<ReloadOutlined />}
+          onClick={(e) => {
+            e.stopPropagation();
+            forceUpdate();
+          }}
+        />
+      }
+    >
+      <JsonView
+        src={processTango(tangoContext)}
+        collapsed={1}
+        name="tango"
+        displayObjectSize={false}
+        indentWidth={2}
+        enableCopy
+      />
+    </CollapsePanel>
   );
 });

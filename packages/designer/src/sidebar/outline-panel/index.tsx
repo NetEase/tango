@@ -23,11 +23,7 @@ export function OutlinePanel({ showStateView = true, ...treeProps }: OutlineView
       >
         <ComponentsTree {...treeProps} />
       </CollapsePanel>
-      {showStateView && (
-        <CollapsePanel title="页面状态" stickyHeader maxHeight="90%" overflowY="auto">
-          <StateTree />
-        </CollapsePanel>
-      )}
+      {showStateView && <StateTree />}
     </Box>
   );
 }
