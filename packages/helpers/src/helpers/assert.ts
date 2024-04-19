@@ -50,7 +50,7 @@ export function isNil(val: any) {
  * @returns
  */
 export function isStoreVariablePath(key: string) {
-  return /^stores\.[a-zA-Z0-9]+\.\w+$/.test(key);
+  return key === 'pageStore' || /^stores\.[a-zA-Z0-9]+\.\w+$/.test(key);
 }
 
 /**
