@@ -1,7 +1,7 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "name": "Tango LowCode Builder",
-  "entryPoints": ["packages/core", "packages/designer", "packages/helpers"],
+  "entryPoints": ["packages/core", "packages/designer","packages/setting-form", "packages/helpers"],
   "entryPointStrategy": "packages",
   "exclude": ["packages/**/tests/**/*"],
   "out": "docs",
