@@ -155,7 +155,7 @@ export function prototype2code(prototype: IComponentPrototype, extraProps?: Dict
           }))
         : [];
       // merge extraProps to props
-      const props = [...prototype.props, ...propList];
+      const props = [...(prototype.props || []), ...propList];
 
       const keys =
         props.reduce((acc, item) => {
