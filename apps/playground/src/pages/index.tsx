@@ -63,6 +63,7 @@ const menuData = {
         'Columns',
         'Column',
         'Box',
+        'Text',
         'Space',
         'Typography',
         'Title',
