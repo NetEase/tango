@@ -269,7 +269,14 @@ export function FormHeader({ title, extra, subTitle }: FormHeaderProps) {
     <Box className="FormHeader">
       <Box display="flex" alignItems="center">
         <Box flex="1" display="flex" alignItems="center">
-          <Box fontSize="16px" fontWeight="500" mr="s">
+          <Box
+            fontSize="16px"
+            fontWeight="500"
+            mr="s"
+            textOverflow="ellipsis"
+            overflow="hidden"
+            whiteSpace="nowrap"
+          >
             {title}
           </Box>
           {subTitle && <Box>{subTitle}</Box>}
