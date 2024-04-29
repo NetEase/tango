@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActionSelect, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { Box } from 'coral-system';
+import { value2expressionCode } from '@music163/tango-core';
 
 interface IRenderOption {
   label: string;
@@ -26,10 +27,11 @@ export function RenderSetter({
   options = [],
   fallbackOption,
 }: FormItemComponentProps & RenderSetterProps) {
-  const [inputValue, setInputValue] = useState(value);
-
+  const [inputValue, setInputValue] = useState(() => {
+    return value2expressionCode(value);
+  });
   useEffect(() => {
-    setInputValue(value);
+    setInputValue(value2expressionCode(value));
   }, [value]);
 
   const optionsMap = useMemo(() => {
@@ -53,9 +55,9 @@ export function RenderSetter({
   return (
     <Box>
       <ActionSelect text={text} options={options} onSelect={onSelect} />
-      {value && (
+      {inputValue && (
         <InputCode
-          value={value}
+          value={inputValue}
           onChange={(val) => setInputValue(val)}
           onBlur={() => onChange(inputValue)}
         />

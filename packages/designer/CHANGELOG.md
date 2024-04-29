@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.1...@music163/tango-designer@1.0.2) (2024-04-22)
+
+### Bug Fixes
+
+- allow reload state tree & display pageStore in variable tree ([#135](https://github.com/netease/tango/issues/135)) ([2664613](https://github.com/netease/tango/commit/2664613ab263aead2a5239fa012454fc7fd5ff99))
+
+## [1.0.1](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0...@music163/tango-designer@1.0.1) (2024-04-16)
+
+### Bug Fixes
+
+- render-setter expression value bug ([#133](https://github.com/netease/tango/issues/133)) ([27166ec](https://github.com/netease/tango/commit/27166ec94976979cb59130788399d90977cf0aec))
+- variable tree remove button event handling ([#134](https://github.com/netease/tango/issues/134)) ([52864b5](https://github.com/netease/tango/commit/52864b540095025232ae237134d6be5701d20549))
+
 # [1.0.0-alpha.18](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.0-alpha.17...@music163/tango-designer@1.0.0-alpha.18) (2024-04-09)
 
 ### Bug Fixes

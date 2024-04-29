@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/netease/tango/compare/@music163/tango-context@1.0.0...@music163/tango-context@1.0.1) (2024-04-22)
+
+### Bug Fixes
+
+- allow reload state tree & display pageStore in variable tree ([#135](https://github.com/netease/tango/issues/135)) ([2664613](https://github.com/netease/tango/commit/2664613ab263aead2a5239fa012454fc7fd5ff99))
+
 # [1.0.0-alpha.10](https://github.com/netease/tango/compare/@music163/tango-context@1.0.0-alpha.9...@music163/tango-context@1.0.0-alpha.10) (2024-04-09)
 
 **Note:** Version bump only for package @music163/tango-context

@@ -35,7 +35,13 @@ export const useWorkspaceData = () => {
   const modelVariables: IVariableTreeNode[] = []; // 绑定变量列表
   const storeActionVariables: IVariableTreeNode[] = []; // 模型中的所有 actions
   const storeVariables: IVariableTreeNode[] = []; // 模型中的所有变量
+  const pageStoreVariables: IVariableTreeNode[] = []; // 页面中的组件实例变量
   const serviceVariables: IVariableTreeNode[] = []; // 服务中的所有变量
+
+  pageStoreVariables.push({
+    title: 'pageStore',
+    key: 'pageStore',
+  });
 
   Object.values(workspace.storeModules).forEach((file) => {
     const prefix = `stores.${file.name}`;
@@ -109,6 +115,7 @@ export const useWorkspaceData = () => {
   }
 
   let expressionVariables: IVariableTreeNode[] = [
+    buildVariableOptions('当前页面组件实例', '$pageStore', pageStoreVariables),
     buildVariableOptions('数据模型', '$stores', storeVariables),
     buildVariableOptions('服务函数', '$services', serviceVariables),
   ];

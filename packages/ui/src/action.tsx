@@ -68,6 +68,7 @@ export interface ActionProps extends HTMLCoralProps<any> {
    */
   className?: string;
   children?: React.ReactNode;
+  onClick?: React.MouseEventHandler;
 }
 
 export function Action({
