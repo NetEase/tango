@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { css, Box, HTMLCoralProps, Link } from 'coral-system';
 import { Checkbox, Tooltip } from 'antd';
 import { CollapsePanel } from '@music163/tango-ui';
-import { isNil, isString } from '@music163/tango-helpers';
+import { isString } from '@music163/tango-helpers';
 import { WarningOutlined } from '@ant-design/icons';
 
 export interface FormControlProps extends Omit<FormLabelProps, 'type'> {
@@ -94,7 +94,7 @@ export function FormControlGroup({
               onCheck?.(nextChecked);
             }}
           />
-          <FormLabel type="secondary" label={label} note={note} tip={tip} docs={docs} />
+          <FormLabel label={label} note={note} tip={tip} docs={docs} />
         </Box>
       }
       extra={
@@ -149,11 +149,6 @@ const tipStyle = css`
 
 interface FormLabelProps extends HTMLCoralProps<'div'> {
   /**
-   * 类型
-   */
-  // eslint-disable-next-line react/no-unused-prop-types
-  type?: 'normal' | 'secondary';
-  /**
    * 标签
    */
   label?: string;
@@ -176,15 +171,7 @@ interface FormLabelProps extends HTMLCoralProps<'div'> {
   deprecated?: boolean | string;
 }
 
-function FormLabel({
-  type = 'normal',
-  label,
-  note,
-  tip,
-  docs,
-  deprecated,
-  ...rest
-}: FormLabelProps) {
+function FormLabel({ label, note, tip, docs, deprecated, ...rest }: FormLabelProps) {
   let help: React.ReactNode;
   if (deprecated || docs) {
     help = (
@@ -209,16 +196,11 @@ function FormLabel({
     help = tip;
   }
 
-  const labelColor = {
-    normal: 'text.body',
-    secondary: 'text.note',
-  }[type];
-
   let labelNode = (
     <Box
       as="span"
       display="inline-block"
-      color={labelColor}
+      color="text2"
       className={help ? 'hasHelp' : ''}
       css={labelStyle}
       title={isString(label) ? label : undefined}
@@ -236,7 +218,7 @@ function FormLabel({
     <Box fontSize="14px" {...rest}>
       {labelNode}
       {note && (
-        <Box as="i" display="inline-block" fontSize="12px" color="text.note" ml="m">
+        <Box as="i" display="inline-block" fontSize="12px" color="text3" ml="m">
           {note}
         </Box>
       )}

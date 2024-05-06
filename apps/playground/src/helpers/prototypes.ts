@@ -174,6 +174,30 @@ const prototypes: Dict<IComponentPrototype> = {
     package: '@music163/antd',
     hasChildren: true,
     siblingNames: ['Box'],
+    props: [
+      {
+        name: 'aaa',
+        title: 'aaa',
+        setter: 'textSetter',
+      },
+      {
+        name: 'bbb',
+        title: 'bbb',
+        setter: 'textSetter',
+        deprecated: true,
+      },
+      {
+        name: 'ccc',
+        title: 'ccc',
+        setter: 'textSetter',
+        deprecated: true,
+      },
+      {
+        name: 'd',
+        title: 'd',
+        setter: 'textSetter',
+      },
+    ],
   },
   Columns: {
     name: 'Columns',

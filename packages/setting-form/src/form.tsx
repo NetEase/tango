@@ -165,7 +165,15 @@ export function SettingForm({
     // 没有进行搜索的情况
     if (!keyword) {
       if (showGroups) {
-        return componentPropGroups[tabKey] || [];
+        return (
+          componentPropGroups[tabKey].sort((a, b) => {
+            // TIP: 将废弃属性往后移
+            if (!a.deprecated && b.deprecated) {
+              return -1;
+            }
+            return 1;
+          }) || []
+        );
       } else {
         return computedProps;
       }
