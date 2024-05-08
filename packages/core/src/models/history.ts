@@ -58,7 +58,7 @@ export class TangoHistory {
   }
 
   get couldBack() {
-    return this._records.length > 0 && this._index > -1;
+    return this._records.length > 0 && this._index > 0;
   }
 
   get couldForward() {
