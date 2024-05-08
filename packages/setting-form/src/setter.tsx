@@ -76,6 +76,7 @@ export function registerBuiltinSetters() {
   register({
     name: 'expressionSetter',
     component: ExpressionSetter,
+    disableVariableSetter: true,
   });
 
   register({
