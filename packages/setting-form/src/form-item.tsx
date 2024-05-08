@@ -1,7 +1,7 @@
 import React from 'react';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { clone, IComponentProp, useBoolean } from '@music163/tango-helpers';
+import { clone, ComponentPropValidate, IComponentProp, useBoolean } from '@music163/tango-helpers';
 import { isWrappedByExpressionContainer } from '@music163/tango-core';
 import { ToggleButton, CodeOutlined } from '@music163/tango-ui';
 import { InputProps } from 'antd';
@@ -58,7 +58,7 @@ export interface IFormItemCreateOptions {
   /**
    * 默认的表单值校验逻辑
    */
-  validate?: (value: string) => string | Promise<any>;
+  validate?: ComponentPropValidate;
 }
 
 const defaultGetSetterProps = () => ({});
@@ -86,6 +86,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     extra,
     footer,
     noStyle,
+    validate,
   }: FormItemProps) {
     const { disableSwitchExpressionSetter, showItemSubtitle } = useFormVariable();
     const model = useFormModel();
@@ -99,7 +100,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const setterName = isVariable ? 'expressionSetter' : setter;
 
     field.setConfig({
-      validate: options.validate,
+      validate: validate || options.validate,
     });
 
     const baseComponentProps = clone(
