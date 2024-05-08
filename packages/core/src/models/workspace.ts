@@ -145,6 +145,13 @@ export class Workspace extends EventTarget implements IWorkspace {
   private copyTempNodes: TangoNode[];
 
   /**
+   * 是否是合法的项目
+   */
+  get isValid() {
+    return !!this.tangoConfigJson && !!this.activeViewModule;
+  }
+
+  /**
    * 项目配置，返回解析后的 tango.config.json 文件
    */
   get projectConfig() {

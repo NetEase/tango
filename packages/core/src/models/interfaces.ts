@@ -285,9 +285,16 @@ export interface IWorkspace {
    * 解析后的项目配置信息
    */
   get projectConfig(): ITangoConfigJson;
+  /**
+   * 当前活动的视图文件
+   */
   get activeViewModule(): IViewFile;
   get pages(): any[];
   get bizComps(): string[];
   get baseComps(): string[];
   get localComps(): string[];
+  /**
+   * 是否是合法的项目
+   */
+  get isValid(): boolean;
 }

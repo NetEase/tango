@@ -43,6 +43,7 @@ const setters: IFormItemCreateOptions[] = [
     name: 'expSetter',
     alias: ['expressionSetter'],
     component: ExpressionSetter,
+    disableVariableSetter: true,
   },
   {
     name: 'numberSetter',
