@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
 import { Dropdown, DropdownProps, Tooltip } from 'antd';
@@ -8,6 +8,7 @@ import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { IconFont } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
+import { ComponentsPanel } from '../sidebar';
 
 /**
  * 选择辅助工具的对齐方式
@@ -117,7 +118,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   const prototype = workspace.componentPrototypes.get(data.name);
   const isPage = prototype?.type === 'page';
 
-  // 如果声明了 childrenName，提供快捷子元素创建入口
+  // 如果声明了 childrenName，提供 推荐使用的 子元素
   let insertedList: IInsertedData[] = [];
   if (prototype?.childrenName) {
     const names = Array.isArray(prototype?.childrenName)
@@ -159,6 +160,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   }
 
   const isFromCurrentFile = data.filename === workspace.activeViewFile;
+  const selectedNodeName = workspace.selectSource.selected?.[0]?.name ?? '未选中';
 
   let style: React.CSSProperties;
   if (data.bounding) {
@@ -183,32 +185,30 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
       css={selectionBoxStyle}
       style={style}
     >
-      {siblingList.length > 0 ? (
-        <>
-          <InsertedDropdown
-            title="在当前节点的前方添加兄弟节点"
-            options={siblingList}
-            onSelect={(name) => {
-              workspace.insertBeforeSelectedNode(name);
-            }}
-          >
-            <Tooltip title="在当前节点的前方添加兄弟节点">
-              <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
-            </Tooltip>
-          </InsertedDropdown>
-          <InsertedDropdown
-            title="在当前节点的后方添加兄弟节点"
-            options={siblingList}
-            onSelect={(name) => {
-              workspace.insertAfterSelectedNode(name);
-            }}
-          >
-            <Tooltip title="在当前节点的后方添加兄弟节点">
-              <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
-            </Tooltip>
-          </InsertedDropdown>
-        </>
-      ) : null}
+      <>
+        <InsertedDropdown
+          footer={`点击，在 ${selectedNodeName} 的前方添加兄弟节点`}
+          siblingList={siblingList}
+          onSelect={(name) => {
+            workspace.insertBeforeSelectedNode(name);
+          }}
+        >
+          <Tooltip title={`在 ${selectedNodeName} 的前方添加兄弟节点`}>
+            <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
+          </Tooltip>
+        </InsertedDropdown>
+        <InsertedDropdown
+          footer={`点击，在 ${selectedNodeName} 的后方添加兄弟节点`}
+          siblingList={siblingList}
+          onSelect={(name) => {
+            workspace.insertAfterSelectedNode(name);
+          }}
+        >
+          <Tooltip title={`在 ${selectedNodeName} 的后方添加兄弟节点`}>
+            <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
+          </Tooltip>
+        </InsertedDropdown>
+      </>
       {showActions && (
         <SelectionHelpers align={selectionHelpersAlign}>
           <SelectionHelper
@@ -246,9 +246,11 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
             }
           />
           <SelectionToolSet>{!isPage && actions}</SelectionToolSet>
-          {insertedList.length > 0 && (
+          {prototype.hasChildren !== false && (
             <InsertedDropdown
-              options={insertedList}
+              footer={`点击，在 ${selectedNodeName} 中添加子元素`}
+              insertedList={insertedList}
+              siblingList={siblingList}
               onSelect={(name) => {
                 workspace.insertToSelectedNode(name);
               }}
@@ -432,19 +434,41 @@ const NameSelector = ({ label, parents = [], onSelect = noop }: NameSelectorProp
 
 interface InsertedDropdownProps extends DropdownProps {
   title?: string;
-  options?: IInsertedData[];
+  footer?: string;
+  insertedList?: IInsertedData[];
+  siblingList?: IInsertedData[];
   onSelect?: (name: string) => void;
 }
 
 function InsertedDropdown({
-  title = '为当前节点添加子元素',
-  options = [],
+  title,
+  insertedList = [],
+  siblingList = [],
   onSelect,
+  footer,
   ...props
 }: InsertedDropdownProps) {
+  const workspace = useWorkspace();
+
+  useEffect(() => {
+    if (insertedList?.length) {
+      workspace.menuData['common'].unshift({
+        title: '推荐使用',
+        items: insertedList.map((i) => i.name),
+      });
+    }
+    return () => {
+      workspace.menuData['common'] = workspace.menuData['common'].filter(
+        (i) => i.title !== '推荐使用',
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Dropdown
       trigger={['click']}
+      placement="bottomCenter"
       dropdownRender={() => {
         return (
           <Box
@@ -454,22 +478,64 @@ function InsertedDropdown({
             border="solid"
             borderColor="line2"
             overflow="hidden"
-            width="320px"
+            width="330px"
           >
-            <Box px="l" py="m" color="text2">
-              {title}
-            </Box>
-            <Box maxHeight={360} overflowY="auto">
-              {options.map((item) => (
-                <InsertedItem
-                  key={item.name}
-                  label={item.label}
-                  icon={item.icon}
-                  description={item.description || '暂无组件描述'}
-                  onClick={() => onSelect?.(item.name)}
-                />
-              ))}
-            </Box>
+            {title && (
+              <Box px="l" py="m" color="text2">
+                {title}
+              </Box>
+            )}
+            <ComponentsPanel
+              showBizComps={false}
+              menuData={workspace.menuData}
+              tabProps={{
+                defaultActiveKey: 'siblingList',
+              }}
+              isScope
+              onItemSelect={onSelect}
+              style={{
+                maxHeight: '400px',
+                overflow: 'auto',
+              }}
+              customTabPanels={
+                siblingList?.length
+                  ? [
+                      {
+                        key: 'siblingList',
+                        label: '代码片段',
+                        children: (
+                          <>
+                            {siblingList.map((item) => (
+                              <InsertedItem
+                                key={item.name}
+                                label={item.label}
+                                icon={item.icon}
+                                description={item.description || '暂无组件描述'}
+                                onClick={() => onSelect?.(item.name)}
+                              />
+                            ))}
+                          </>
+                        ),
+                      },
+                    ]
+                  : []
+              }
+            />
+            {footer && (
+              <Box
+                px="l"
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                background="var(--tango-colors-line1)"
+                fontSize="12px"
+                fontWeight={400}
+                py="m"
+                borderTop="1px solid var(--tango-colors-line2)"
+              >
+                {footer}
+              </Box>
+            )}
           </Box>
         );
       }}
@@ -513,10 +579,13 @@ function InsertedItem({
       {...rest}
     >
       <Box
-        size="35px"
+        p="m"
         fontSize="32px"
+        width="46px"
+        height="46px"
         background="fill1"
         border="1px solid"
+        borderRadius="4px"
         borderColor="line2"
         display="flex"
         alignItems="center"
@@ -526,7 +595,9 @@ function InsertedItem({
       </Box>
       <Box>
         <Box fontWeight="500">{label}</Box>
-        <Box color="text2">{description}</Box>
+        <Box color="text2" fontStyle="italic">
+          {description}
+        </Box>
       </Box>
     </Box>
   );

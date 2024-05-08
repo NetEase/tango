@@ -11,6 +11,7 @@ import {
   parseServiceVariablePath,
   parseStoreVariablePath,
   uniq,
+  MenuDataType,
 } from '@music163/tango-helpers';
 import {
   prototype2jsxElement,
@@ -54,6 +55,10 @@ export interface IWorkspaceOptions {
    */
   prototypes?: Record<string, IComponentPrototype>;
   /**
+   * 菜单列表
+   */
+  menuData?: MenuDataType;
+  /**
    * 工作区文件变更事件
    */
   onFilesChange?: IWorkspace['onFilesChange'];
@@ -76,6 +81,11 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 组件配置
    */
   componentPrototypes: Map<string, IComponentPrototype>;
+
+  /**
+   * 菜单配置
+   */
+  menuData: MenuDataType;
 
   /**
    * 入口文件
@@ -235,6 +245,10 @@ export class Workspace extends EventTarget implements IWorkspace {
       this.setComponentPrototypes(options.prototypes);
     }
 
+    if (options?.menuData) {
+      this.setMenuData(options.menuData);
+    }
+
     makeObservable(this, {
       files: observable,
       activeRoute: observable,
@@ -303,6 +317,10 @@ export class Workspace extends EventTarget implements IWorkspace {
     Object.keys(prototypes).forEach((name) => {
       this.componentPrototypes.set(name, prototypes[name]);
     });
+  }
+
+  setMenuData(menuData: MenuDataType) {
+    this.menuData = menuData;
   }
 
   /**

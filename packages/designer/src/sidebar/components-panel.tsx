@@ -3,19 +3,26 @@ import { Box, Grid, Text } from 'coral-system';
 import styled from 'styled-components';
 import {
   IComponentPrototype,
+  MenuDataType,
+  MenuValueType,
+  createContext,
   logger,
-  PartialRecord,
   upperCamelCase,
 } from '@music163/tango-helpers';
 import { CollapsePanel, IconFont, Search, Tabs } from '@music163/tango-ui';
 import { observer, useWorkspace } from '@music163/tango-context';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Empty, Spin, Popover } from 'antd';
+import { Button, Empty, Spin, Popover, TabsProps } from 'antd';
 import { getDragGhostElement } from '../helpers';
 
-type MenuKeyType = 'common' | 'atom' | 'snippet' | 'bizComp' | 'localComp';
-type MenuValueType = Array<{ title: string; items: string[] }>;
-export type MenuDataType = PartialRecord<MenuKeyType, MenuValueType>;
+type IComponentsPanelContext = {
+  isScope: boolean;
+  onItemSelect: (name: string) => void;
+};
+
+const [ComponentsPanelProvider, usePanelContext] = createContext<IComponentsPanelContext>({
+  name: 'ComponentsPanelContext',
+});
 
 export interface ComponentsPanelProps {
   /**
@@ -36,6 +43,30 @@ export interface ComponentsPanelProps {
    * @returns
    */
   getBizCompName?: (name: string) => string;
+  /**
+   * 是否局部模式 (快捷添加组件面板中使用)
+   */
+  isScope?: boolean;
+  /**
+   * 组件选中回调
+   */
+  onItemSelect?: (name: string) => void;
+  /**
+   * 自定义 Tab 面板
+   */
+  customTabPanels?: Array<{
+    key: string;
+    label: any;
+    children: React.JSX.Element;
+  }>;
+  /**
+   * 自定义样式
+   */
+  style?: React.CSSProperties;
+  /**
+   * tabProps
+   */
+  tabProps?: TabsProps;
 }
 
 const localeMap = {
@@ -72,10 +103,15 @@ export function useFlatMenuData<T>(menuData: T) {
 
 export const ComponentsPanel = observer(
   ({
+    isScope = false,
     menuData = emptyMenuData,
     showBizComps = true,
     getBizCompName = upperCamelCase,
     loading = false,
+    style,
+    tabProps,
+    customTabPanels,
+    onItemSelect,
   }: ComponentsPanelProps) => {
     const [keyword, setKeyword] = useState<string>('');
     const allList = useFlatMenuData<MenuDataType>(menuData);
@@ -88,7 +124,7 @@ export const ComponentsPanel = observer(
       [workspace.bizComps, workspace.localComps, getBizCompName],
     );
 
-    const tabs = Object.keys(menuData).map((key) => ({
+    let tabs = Object.keys(menuData).map((key) => ({
       key,
       label: localeMap[key],
       children: <MaterialList data={menuData[key]} />,
@@ -109,27 +145,45 @@ export const ComponentsPanel = observer(
         children: <MaterialList data={localCompData} />,
       });
     }
+    // 自定义 tab panel
+    if (customTabPanels?.length) {
+      tabs = tabs.concat(customTabPanels);
+    }
     const contentNode =
       tabs.length === 1 ? (
         tabs[0].children
       ) : (
-        <Tabs centered isTabBarSticky tabBarStickyOffset={48} items={tabs} />
+        <Tabs centered isTabBarSticky tabBarStickyOffset={48} items={tabs} {...tabProps} />
       );
 
     return (
-      <Box className="ComponentsView" overflowY="auto">
-        <Box px="l" py="m" position="sticky" top="0" zIndex={1} bg="white">
-          <Search placeholder="搜索物料" onChange={setKeyword} />
+      <ComponentsPanelProvider
+        value={{
+          isScope,
+          onItemSelect,
+        }}
+      >
+        <Box className="ComponentsView" overflowY="auto" style={style}>
+          <Box px="l" py="m" position="sticky" top="0" zIndex={3} bg="white">
+            <Search
+              style={{
+                borderRadius: '4px',
+              }}
+              placeholder="搜索物料"
+              onChange={setKeyword}
+            />
+          </Box>
+          <Spin spinning={loading} tip="正在加载物料列表...">
+            {!keyword ? contentNode : <MaterialList data={allList} filterKeyword={keyword} />}
+          </Spin>
         </Box>
-        <Spin spinning={loading} tip="正在加载物料列表...">
-          {!keyword ? contentNode : <MaterialList data={allList} filterKeyword={keyword} />}
-        </Spin>
-      </Box>
+      </ComponentsPanelProvider>
     );
   },
 );
 
 interface MaterialListProps {
+  isScope?: boolean;
   /**
    * 数据集
    */
@@ -144,7 +198,12 @@ interface MaterialListProps {
   type?: 'common' | 'bizComp' | 'localComp';
 }
 
-function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProps) {
+function MaterialList({
+  data,
+  filterKeyword,
+  type = 'common',
+  isScope = false,
+}: MaterialListProps) {
   const workspace = useWorkspace();
   return (
     <Box className="ComponentsViewList">
@@ -166,15 +225,22 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
               title={cate.title}
               borderBottom="solid"
               borderColor="line.normal"
+              isCollapsed={false}
+              showBottomBorder={false}
+              bodyProps={{
+                padding: '4px 12px 12px',
+              }}
             >
               {!items.length && (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="没有匹配到任何组件" />
               )}
               <Grid
-                columns={type === 'localComp' ? 1 : 2}
+                templateColumns="repeat(auto-fit,minmax(55px,1fr))"
                 spacing="1px"
                 bg="background.normal"
                 padding="0"
+                gap="12px 8px"
+                backgroundColor="white"
               >
                 {items.map((item) => {
                   const prototype = workspace.componentPrototypes.get(item);
@@ -202,9 +268,8 @@ const StyledCommonGridItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 8px;
-  cursor: move;
+  justify-content: start;
+  cursor: grab;
   text-align: center;
   color: var(--tango-colors-text-body);
   background-color: #fff;
@@ -213,7 +278,19 @@ const StyledCommonGridItem = styled.div`
   white-space: nowrap;
 
   .material-icon {
-    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    border: 1px solid #ebebeb;
+    width: 100%;
+    height: 52px;
+    position: relative;
+    transition: 0.15s ease-in-out;
+    transition-property: transform;
+    will-change: transform;
   }
 
   .info {
@@ -225,19 +302,13 @@ const StyledCommonGridItem = styled.div`
 
   .anticon-question-circle {
     display: none;
+    font-size: 13px;
     position: absolute;
-    top: 8px;
-    right: 8px;
-  }
-
-  img {
-    height: 40px;
-    width: 40px;
+    top: 4px;
+    right: 4px;
   }
 
   &:hover {
-    box-shadow: 0 0 10px rgb(0 0 0 / 10%);
-
     > span {
       color: var(--tango-colors-brand);
     }
@@ -245,11 +316,15 @@ const StyledCommonGridItem = styled.div`
     .anticon-question-circle {
       display: inline-block;
     }
+    .material-icon {
+      border-color: #c7c7c7;
+    }
   }
 `;
 
 function MaterialGrid({ data }: MaterialProps) {
   const workspace = useWorkspace();
+  const { isScope, onItemSelect } = usePanelContext();
 
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.effectAllowed = 'move';
@@ -266,24 +341,31 @@ function MaterialGrid({ data }: MaterialProps) {
     workspace.dragSource.clear();
   };
 
+  const handleSelect = () => {
+    if (isScope) {
+      onItemSelect(data.name);
+    }
+  };
+
   const icon = data.icon || 'icon-placeholder';
 
   return (
     <StyledCommonGridItem
-      draggable
+      draggable={!isScope}
       data-name={data.name}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onClick={handleSelect}
     >
       {icon.startsWith('icon-') ? (
         <IconFont className="material-icon" type={data.icon || 'icon-placeholder'} />
       ) : (
-        <img src={icon} alt={data.name} />
+        <img className="material-icon" src={icon} alt={data.name} />
       )}
-      <Text fontSize="12px" lineHeight="1.5">
-        {data.title}
+      <Text fontSize="12px" marginTop="4px">
+        {data.title ?? data.name}
       </Text>
-      <Text fontSize="12px" color="gray.50">
+      <Text fontSize="10px" color="gray.50">
         {data.name}
       </Text>
       {data.docs || data.help ? (

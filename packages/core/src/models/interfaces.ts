@@ -1,4 +1,4 @@
-import { IComponentPrototype, Dict, ITangoConfigJson } from '@music163/tango-helpers';
+import { IComponentPrototype, Dict, ITangoConfigJson, MenuDataType } from '@music163/tango-helpers';
 import { TangoHistory } from './history';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
@@ -142,7 +142,7 @@ export interface IWorkspace {
 
   files: Map<string, TangoFile>;
   componentPrototypes: Map<string, IComponentPrototype>;
-
+  menuData: MenuDataType;
   entry: string;
   activeFile: string;
   activeViewFile: string;
@@ -172,6 +172,8 @@ export interface IWorkspace {
   setActiveFile: (filename: string) => void;
 
   setComponentPrototypes: (prototypes: Record<string, IComponentPrototype>) => void;
+  setMenuData: (menuData: MenuDataType) => void;
+
   getPrototype: (name: string | IComponentPrototype) => IComponentPrototype;
 
   // ----------------- 文件操作 -----------------
