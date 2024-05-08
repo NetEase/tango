@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
+import { Box, Button, Group, HTMLCoralProps, Text } from 'coral-system';
 import { Dropdown, DropdownProps, Tooltip } from 'antd';
+import Draggable from 'react-draggable';
 import { HolderOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
@@ -441,7 +442,7 @@ interface InsertedDropdownProps extends DropdownProps {
 }
 
 function InsertedDropdown({
-  title,
+  title = '添加组件',
   insertedList = [],
   siblingList = [],
   onSelect,
@@ -471,72 +472,81 @@ function InsertedDropdown({
       placement="bottomCenter"
       dropdownRender={() => {
         return (
-          <Box
-            bg="#FFF"
-            borderRadius="m"
-            boxShadow="lowDown"
-            border="solid"
-            borderColor="line2"
-            overflow="hidden"
-            width="330px"
-          >
-            {title && (
-              <Box px="l" py="m" color="text2">
-                {title}
-              </Box>
-            )}
-            <ComponentsPanel
-              showBizComps={false}
-              menuData={workspace.menuData}
-              tabProps={{
-                defaultActiveKey: 'siblingList',
-              }}
-              isScope
-              onItemSelect={onSelect}
-              style={{
-                maxHeight: '400px',
-                overflow: 'auto',
-              }}
-              customTabPanels={
-                siblingList?.length
-                  ? [
-                      {
-                        key: 'siblingList',
-                        label: '代码片段',
-                        children: (
-                          <>
-                            {siblingList.map((item) => (
-                              <InsertedItem
-                                key={item.name}
-                                label={item.label}
-                                icon={item.icon}
-                                description={item.description || '暂无组件描述'}
-                                onClick={() => onSelect?.(item.name)}
-                              />
-                            ))}
-                          </>
-                        ),
-                      },
-                    ]
-                  : []
-              }
-            />
-            {footer && (
+          <Draggable handle=".selection-drag-bar">
+            <Box
+              bg="#FFF"
+              borderRadius="m"
+              boxShadow="lowDown"
+              border="solid"
+              borderColor="line2"
+              overflow="hidden"
+              width="330px"
+            >
               <Box
                 px="l"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                textOverflow="ellipsis"
-                background="var(--tango-colors-line1)"
-                fontSize="12px"
-                fontWeight={400}
-                py="m"
-                borderTop="1px solid var(--tango-colors-line2)"
+                py="s"
+                className="selection-drag-bar"
+                borderBottom="1px solid var(--tango-colors-line2)"
+                cursor="move"
               >
-                {footer}
+                <IconFont type="icon-applications" />
+                <Text fontSize="12px" marginLeft={'5px'} color="text2">
+                  {title}
+                </Text>
               </Box>
-            )}
-          </Box>
+              <ComponentsPanel
+                showBizComps={false}
+                menuData={workspace.menuData}
+                tabProps={{
+                  defaultActiveKey: 'siblingList',
+                }}
+                isScope
+                onItemSelect={onSelect}
+                style={{
+                  maxHeight: '400px',
+                  overflow: 'auto',
+                }}
+                customTabPanels={
+                  siblingList?.length
+                    ? [
+                        {
+                          key: 'siblingList',
+                          label: '代码片段',
+                          children: (
+                            <>
+                              {siblingList.map((item) => (
+                                <InsertedItem
+                                  key={item.name}
+                                  label={item.label}
+                                  icon={item.icon}
+                                  description={item.description || '暂无组件描述'}
+                                  onClick={() => onSelect?.(item.name)}
+                                />
+                              ))}
+                            </>
+                          ),
+                        },
+                      ]
+                    : []
+                }
+              />
+              {footer && (
+                <Box
+                  px="l"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  background="var(--tango-colors-line1)"
+                  fontSize="12px"
+                  fontWeight={400}
+                  py="m"
+                  borderTop="1px solid var(--tango-colors-line2)"
+                >
+                  {footer}
+                </Box>
+              )}
+            </Box>
+          </Draggable>
         );
       }}
       {...props}

@@ -74,7 +74,7 @@ export interface SidebarPanelItemProps
   widgetProps?: object;
 }
 
-function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 265, footer, children }: SidebarProps) {
+function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 266, footer, children }: SidebarProps) {
   const designer = useDesigner();
 
   const items = useMemo(() => {
