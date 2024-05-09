@@ -183,7 +183,6 @@ export const ComponentsPanel = observer(
 );
 
 interface MaterialListProps {
-  isScope?: boolean;
   /**
    * 数据集
    */
@@ -198,12 +197,7 @@ interface MaterialListProps {
   type?: 'common' | 'bizComp' | 'localComp';
 }
 
-function MaterialList({
-  data,
-  filterKeyword,
-  type = 'common',
-  isScope = false,
-}: MaterialListProps) {
+function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProps) {
   const workspace = useWorkspace();
   return (
     <Box className="ComponentsViewList">
@@ -269,7 +263,7 @@ const StyledCommonGridItem = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  cursor: grab;
+  cursor: ${(props) => (props.draggable ? 'grab' : 'pointer')};
   text-align: center;
   color: var(--tango-colors-text-body);
   background-color: #fff;
