@@ -330,7 +330,7 @@ export function ExpressionPanel({
         </>
       }
       footer={(close) => (
-        <Box display="flex" justifyContent="flex-end">
+        <Box display="flex" justifyContent="flex-end" gap="5px">
           <Button
             type="primary"
             size="small"

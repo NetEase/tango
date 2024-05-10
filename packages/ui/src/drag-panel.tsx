@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
-import { Box, Text } from 'coral-system';
+import { Box, Text, styled } from 'coral-system';
 import { Dropdown, DropdownProps } from 'antd';
 import Draggable from 'react-draggable';
 import { IconFont } from '@music163/tango-ui';
 import { CloseOutlined } from '@ant-design/icons';
+
+const CloseIcon = styled(CloseOutlined)`
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 2px;
+  font-size: 13px;
+  &:hover {
+    color: var(--tango-colors-text1);
+    background-color: var(--tango-colors-line1);
+    border-radius: 4px;
+  }
+`;
 
 interface DragPanelProps extends DropdownProps {
   // 标题
@@ -63,13 +75,7 @@ export function DragPanel({
                 </Box>
                 <Box color="text2" fontSize="12px" display="flex" alignItems="center">
                   {extra}
-                  <CloseOutlined
-                    onClick={() => setOpen(false)}
-                    style={{
-                      cursor: 'pointer',
-                      marginLeft: '10px',
-                    }}
-                  />
+                  <CloseIcon onClick={() => setOpen(false)} />
                 </Box>
               </Box>
               {/* 主体区域 */}
