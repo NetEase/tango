@@ -1,12 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { Box, Button, Group, HTMLCoralProps, Text } from 'coral-system';
-import { Dropdown, DropdownProps, Tooltip } from 'antd';
-import Draggable from 'react-draggable';
+import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
+import { DropdownProps, Tooltip } from 'antd';
 import { HolderOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { IconFont } from '@music163/tango-ui';
+import { DragPanel, IconFont } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
 import { ComponentsPanel } from '../sidebar';
@@ -188,6 +187,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
     >
       <>
         <InsertedDropdown
+          title="添加兄弟组件"
           footer={`点击，在 ${selectedNodeName} 的前方添加兄弟节点`}
           siblingList={siblingList}
           onSelect={(name) => {
@@ -199,6 +199,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
           </Tooltip>
         </InsertedDropdown>
         <InsertedDropdown
+          title="添加兄弟组件"
           footer={`点击，在 ${selectedNodeName} 的后方添加兄弟节点`}
           siblingList={siblingList}
           onSelect={(name) => {
@@ -249,6 +250,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
           <SelectionToolSet>{!isPage && actions}</SelectionToolSet>
           {prototype.hasChildren !== false && (
             <InsertedDropdown
+              title="添加子组件"
               footer={`点击，在 ${selectedNodeName} 中添加子元素`}
               insertedList={insertedList}
               siblingList={siblingList}
@@ -447,6 +449,7 @@ function InsertedDropdown({
   siblingList = [],
   onSelect,
   footer,
+  children,
   ...props
 }: InsertedDropdownProps) {
   const workspace = useWorkspace();
@@ -467,90 +470,53 @@ function InsertedDropdown({
   }, []);
 
   return (
-    <Dropdown
-      trigger={['click']}
+    <DragPanel
+      title={title}
+      footer={footer}
+      width="330px"
       placement="bottomCenter"
-      dropdownRender={() => {
-        return (
-          <Draggable handle=".selection-drag-bar">
-            <Box
-              bg="#FFF"
-              borderRadius="m"
-              boxShadow="lowDown"
-              border="solid"
-              borderColor="line2"
-              overflow="hidden"
-              width="330px"
-            >
-              <Box
-                px="l"
-                py="s"
-                className="selection-drag-bar"
-                borderBottom="1px solid var(--tango-colors-line2)"
-                cursor="move"
-              >
-                <IconFont type="icon-applications" />
-                <Text fontSize="12px" marginLeft={'5px'} color="text2">
-                  {title}
-                </Text>
-              </Box>
-              <ComponentsPanel
-                showBizComps={false}
-                menuData={workspace.menuData}
-                tabProps={{
-                  defaultActiveKey: 'siblingList',
-                }}
-                isScope
-                onItemSelect={onSelect}
-                style={{
-                  maxHeight: '400px',
-                  overflow: 'auto',
-                }}
-                customTabPanels={
-                  siblingList?.length
-                    ? [
-                        {
-                          key: 'siblingList',
-                          label: '代码片段',
-                          children: (
-                            <>
-                              {siblingList.map((item) => (
-                                <InsertedItem
-                                  key={item.name}
-                                  label={item.label}
-                                  icon={item.icon}
-                                  description={item.description || '暂无组件描述'}
-                                  onClick={() => onSelect?.(item.name)}
-                                />
-                              ))}
-                            </>
-                          ),
-                        },
-                      ]
-                    : []
-                }
-              />
-              {footer && (
-                <Box
-                  px="l"
-                  whiteSpace="nowrap"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  background="var(--tango-colors-line1)"
-                  fontSize="12px"
-                  fontWeight={400}
-                  py="m"
-                  borderTop="1px solid var(--tango-colors-line2)"
-                >
-                  {footer}
-                </Box>
-              )}
-            </Box>
-          </Draggable>
-        );
-      }}
+      body={
+        <ComponentsPanel
+          showBizComps={false}
+          menuData={workspace.menuData}
+          tabProps={{
+            defaultActiveKey: 'siblingList',
+          }}
+          isScope
+          onItemSelect={onSelect}
+          style={{
+            maxHeight: '400px',
+            overflow: 'auto',
+          }}
+          customTabPanels={
+            siblingList?.length
+              ? [
+                  {
+                    key: 'siblingList',
+                    label: '代码片段',
+                    children: (
+                      <>
+                        {siblingList.map((item) => (
+                          <InsertedItem
+                            key={item.name}
+                            label={item.label}
+                            icon={item.icon}
+                            description={item.description || '暂无组件描述'}
+                            onClick={() => onSelect?.(item.name)}
+                          />
+                        ))}
+                      </>
+                    ),
+                  },
+                ]
+              : []
+          }
+        />
+      }
       {...props}
-    />
+    >
+      {children}
+    </DragPanel>
   );
 }
 

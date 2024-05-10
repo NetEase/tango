@@ -4,7 +4,7 @@ import { Button, Dropdown, Input, Menu } from 'antd';
 import { DownOutlined, PlusSquareOutlined } from '@ant-design/icons';
 
 type ActionOptionType = {
-  label?: string;
+  label?: string | React.ReactNode;
   value?: string;
   [key: string]: any;
 };
