@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
 import { DropdownProps, Tooltip } from 'antd';
 import { HolderOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { DragPanel, IconFont } from '@music163/tango-ui';
+import { DragPanel } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
 import { ComponentsPanel } from '../sidebar';
@@ -118,35 +118,13 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   const prototype = workspace.componentPrototypes.get(data.name);
   const isPage = prototype?.type === 'page';
 
-  // 如果声明了 childrenName，提供 推荐使用的 子元素
-  let insertedList: IInsertedData[] = [];
-  if (prototype?.childrenName) {
-    const names = Array.isArray(prototype?.childrenName)
-      ? prototype.childrenName
-      : [prototype.childrenName];
-    insertedList = names.map((child) => {
-      const proto = workspace.componentPrototypes.get(child);
-      return {
-        name: child,
-        label: proto?.title || child,
-        icon: proto?.icon,
-        description: proto?.help,
-      };
-    });
-  }
+  // 推荐使用的子组件
+  const insertedList = Array.isArray(prototype?.childrenName)
+    ? prototype.childrenName
+    : [prototype.childrenName];
 
-  let siblingList: IInsertedData[] = [];
-  if (prototype?.siblingNames) {
-    siblingList = prototype.siblingNames?.map((item) => {
-      const proto = workspace.componentPrototypes.get(item);
-      return {
-        name: item,
-        label: proto?.title || item,
-        icon: proto?.icon,
-        description: proto?.help,
-      };
-    });
-  }
+  // 推荐使用的代码片段
+  const siblingList = prototype.siblingNames ?? [];
 
   let selectionHelpersAlign: SelectionHelperAlignType = 'top-right';
   if (data.bounding) {
@@ -160,7 +138,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   }
 
   const isFromCurrentFile = data.filename === workspace.activeViewFile;
-  const selectedNodeName = workspace.selectSource.selected?.[0]?.name ?? '未选中';
+  const selectedNodeName = workspace.selectSource.selected?.[0]?.codeId ?? '未选中';
 
   let style: React.CSSProperties;
   if (data.bounding) {
@@ -438,8 +416,8 @@ const NameSelector = ({ label, parents = [], onSelect = noop }: NameSelectorProp
 interface InsertedDropdownProps extends DropdownProps {
   title?: string;
   footer?: string;
-  insertedList?: IInsertedData[];
-  siblingList?: IInsertedData[];
+  insertedList?: string[];
+  siblingList?: string[];
   onSelect?: (name: string) => void;
 }
 
@@ -454,20 +432,25 @@ function InsertedDropdown({
 }: InsertedDropdownProps) {
   const workspace = useWorkspace();
 
-  useEffect(() => {
-    if (insertedList?.length) {
-      workspace.menuData['common'].unshift({
-        title: '推荐使用',
-        items: insertedList.map((i) => i.name),
+  const menuData = useMemo(() => {
+    const menuList = JSON.parse(JSON.stringify(workspace.menuData));
+    const commonList = menuList['common'];
+    if (siblingList?.length) {
+      commonList.unshift({
+        title: '代码片段',
+        items: siblingList,
       });
     }
-    return () => {
-      workspace.menuData['common'] = workspace.menuData['common'].filter(
-        (i) => i.title !== '推荐使用',
-      );
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    if (insertedList?.length) {
+      commonList.unshift({
+        title: '推荐使用',
+        items: insertedList,
+      });
+    }
+
+    return menuList;
+  }, [insertedList, siblingList, workspace.menuData]);
 
   return (
     <DragPanel
@@ -477,104 +460,19 @@ function InsertedDropdown({
       placement="bottomCenter"
       body={
         <ComponentsPanel
-          showBizComps={false}
-          menuData={workspace.menuData}
-          tabProps={{
-            defaultActiveKey: 'siblingList',
-          }}
           isScope
+          showBizComps={false}
+          menuData={menuData}
           onItemSelect={onSelect}
           style={{
             maxHeight: '400px',
             overflow: 'auto',
           }}
-          customTabPanels={
-            siblingList?.length
-              ? [
-                  {
-                    key: 'siblingList',
-                    label: '代码片段',
-                    children: (
-                      <>
-                        {siblingList.map((item) => (
-                          <InsertedItem
-                            key={item.name}
-                            label={item.label}
-                            icon={item.icon}
-                            description={item.description || '暂无组件描述'}
-                            onClick={() => onSelect?.(item.name)}
-                          />
-                        ))}
-                      </>
-                    ),
-                  },
-                ]
-              : []
-          }
         />
       }
       {...props}
     >
       {children}
     </DragPanel>
-  );
-}
-
-const insertedItemStyle = css`
-  cursor: pointer;
-  user-select: none;
-
-  &:hover {
-    background-color: var(--tango-colors-fill2);
-  }
-`;
-
-function InsertedItem({
-  label,
-  icon,
-  description,
-  ...rest
-}: HTMLCoralProps<'div'> & Omit<IInsertedData, 'name'>) {
-  let iconNode;
-  if (!icon) {
-    iconNode = <IconFont className="material-icon" type="icon-placeholder" />;
-  } else if (icon.startsWith('icon-')) {
-    iconNode = <IconFont className="material-icon" type={icon} />;
-  } else {
-    iconNode = <img src={icon} alt={label} />;
-  }
-
-  return (
-    <Box
-      display="flex"
-      columnGap="m"
-      px="l"
-      py="m"
-      fontSize="12px"
-      css={insertedItemStyle}
-      {...rest}
-    >
-      <Box
-        p="m"
-        fontSize="32px"
-        width="46px"
-        height="46px"
-        background="fill1"
-        border="1px solid"
-        borderRadius="4px"
-        borderColor="line2"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {iconNode}
-      </Box>
-      <Box>
-        <Box fontWeight="500">{label}</Box>
-        <Box color="text2" fontStyle="italic">
-          {description}
-        </Box>
-      </Box>
-    </Box>
   );
 }

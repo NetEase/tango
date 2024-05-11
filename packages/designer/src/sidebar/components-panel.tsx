@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Box, Grid, Text } from 'coral-system';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   IComponentPrototype,
   MenuDataType,
@@ -17,7 +17,9 @@ import { getDragGhostElement } from '../helpers';
 
 type IComponentsPanelContext = {
   isScope: boolean;
+  isCollapsed: boolean;
   onItemSelect: (name: string) => void;
+  layout: 'grid' | 'line';
 };
 
 const [ComponentsPanelProvider, usePanelContext] = createContext<IComponentsPanelContext>({
@@ -48,17 +50,13 @@ export interface ComponentsPanelProps {
    */
   isScope?: boolean;
   /**
+   * 是否折叠
+   */
+  isCollapsed?: boolean;
+  /**
    * 组件选中回调
    */
   onItemSelect?: (name: string) => void;
-  /**
-   * 自定义 Tab 面板
-   */
-  customTabPanels?: Array<{
-    key: string;
-    label: any;
-    children: React.JSX.Element;
-  }>;
   /**
    * 自定义样式
    */
@@ -67,6 +65,10 @@ export interface ComponentsPanelProps {
    * tabProps
    */
   tabProps?: TabsProps;
+  /**
+   * 布局模式，默认网格布局
+   */
+  layout?: 'grid' | 'line';
 }
 
 const localeMap = {
@@ -104,14 +106,15 @@ export function useFlatMenuData<T>(menuData: T) {
 export const ComponentsPanel = observer(
   ({
     isScope = false,
+    isCollapsed = true,
     menuData = emptyMenuData,
     showBizComps = true,
     getBizCompName = upperCamelCase,
     loading = false,
     style,
     tabProps,
-    customTabPanels,
     onItemSelect,
+    layout = 'grid',
   }: ComponentsPanelProps) => {
     const [keyword, setKeyword] = useState<string>('');
     const allList = useFlatMenuData<MenuDataType>(menuData);
@@ -124,7 +127,7 @@ export const ComponentsPanel = observer(
       [workspace.bizComps, workspace.localComps, getBizCompName],
     );
 
-    let tabs = Object.keys(menuData).map((key) => ({
+    const tabs = Object.keys(menuData).map((key) => ({
       key,
       label: localeMap[key],
       children: <MaterialList data={menuData[key]} />,
@@ -145,22 +148,28 @@ export const ComponentsPanel = observer(
         children: <MaterialList data={localCompData} />,
       });
     }
-    // 自定义 tab panel
-    if (customTabPanels?.length) {
-      tabs = tabs.concat(customTabPanels);
-    }
+
     const contentNode =
       tabs.length === 1 ? (
         tabs[0].children
       ) : (
-        <Tabs centered isTabBarSticky tabBarStickyOffset={48} items={tabs} {...tabProps} />
+        <Tabs
+          size={isScope ? 'small' : 'middle'}
+          centered
+          isTabBarSticky
+          tabBarStickyOffset={48}
+          items={tabs}
+          {...tabProps}
+        />
       );
 
     return (
       <ComponentsPanelProvider
         value={{
+          isCollapsed,
           isScope,
           onItemSelect,
+          layout,
         }}
       >
         <Box className="ComponentsView" overflowY="auto" style={style}>
@@ -199,6 +208,9 @@ interface MaterialListProps {
 
 function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProps) {
   const workspace = useWorkspace();
+  const { isCollapsed, layout } = usePanelContext();
+  const isGrid = layout === 'grid';
+
   return (
     <Box className="ComponentsViewList">
       {data.map((cate) => {
@@ -219,21 +231,21 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
               title={cate.title}
               borderBottom="solid"
               borderColor="line.normal"
-              isCollapsed={false}
+              isCollapsed={isCollapsed}
               showBottomBorder={false}
               bodyProps={{
-                padding: '4px 12px 12px',
+                padding: isGrid ? '4px 12px 12px' : '0',
               }}
             >
               {!items.length && (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="没有匹配到任何组件" />
               )}
               <Grid
-                templateColumns="repeat(auto-fit,minmax(55px,1fr))"
+                templateColumns={isGrid ? 'repeat(auto-fit,minmax(55px,1fr))' : '1fr'}
                 spacing="1px"
                 bg="background.normal"
                 padding="0"
-                gap="12px 8px"
+                gap={isGrid ? '12px 8px' : '0'}
                 backgroundColor="white"
               >
                 {items.map((item) => {
@@ -316,9 +328,20 @@ const StyledCommonGridItem = styled.div`
   }
 `;
 
+const GridLineItemStyle = css`
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: var(--tango-colors-fill2);
+  }
+`;
+
 function MaterialGrid({ data }: MaterialProps) {
   const workspace = useWorkspace();
-  const { isScope, onItemSelect } = usePanelContext();
+  const { isScope, onItemSelect, layout } = usePanelContext();
+
+  const isLine = layout === 'line';
 
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.effectAllowed = 'move';
@@ -336,12 +359,61 @@ function MaterialGrid({ data }: MaterialProps) {
   };
 
   const handleSelect = () => {
-    if (isScope) {
-      onItemSelect(data.name);
-    }
+    onItemSelect?.(data.name);
   };
 
   const icon = data.icon || 'icon-placeholder';
+  if (isLine) {
+    return (
+      <Box
+        display="flex"
+        columnGap="m"
+        px="l"
+        py="m"
+        fontSize="12px"
+        css={GridLineItemStyle}
+        onClick={handleSelect}
+      >
+        <Box
+          p="m"
+          fontSize="32px"
+          width="46px"
+          height="46px"
+          background="fill1"
+          border="1px solid"
+          borderRadius="4px"
+          borderColor="line2"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {icon.startsWith('icon-') ? (
+            <IconFont className="material-icon" type={data.icon || 'icon-placeholder'} />
+          ) : (
+            <img className="material-icon" src={icon} alt={data.name} />
+          )}
+        </Box>
+        <Box flex={1}>
+          <Box fontWeight="500" display="flex" justifyContent="space-between">
+            <Text flex={1}>{data.title}</Text>
+            {data.docs ? (
+              <Popover
+                zIndex={9999}
+                placement="right"
+                title={data.title}
+                content={<CommonMaterialInfoBox docs={data.docs} />}
+              >
+                <QuestionCircleOutlined />
+              </Popover>
+            ) : null}
+          </Box>
+          <Box color="text2" fontStyle="italic">
+            {data.help ?? data.title}
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <StyledCommonGridItem
@@ -363,7 +435,12 @@ function MaterialGrid({ data }: MaterialProps) {
         {data.name}
       </Text>
       {data.docs || data.help ? (
-        <Popover placement="right" title={data.title} content={<CommonMaterialInfoBox {...data} />}>
+        <Popover
+          zIndex={9999}
+          placement="right"
+          title={data.title}
+          content={<CommonMaterialInfoBox {...data} />}
+        >
           <QuestionCircleOutlined />
         </Popover>
       ) : null}
@@ -371,7 +448,7 @@ function MaterialGrid({ data }: MaterialProps) {
   );
 }
 
-function CommonMaterialInfoBox({ help, docs }: IComponentPrototype) {
+function CommonMaterialInfoBox({ help, docs }: Pick<IComponentPrototype, 'help' | 'docs'>) {
   return (
     <Box maxWidth={300}>
       {!!help && <Box mb="m">{help}</Box>}
