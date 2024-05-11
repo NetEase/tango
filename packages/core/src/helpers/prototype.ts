@@ -17,6 +17,7 @@ export function prototype2importDeclarationData(
   relativeFilepath?: string,
 ): { source: string; specifiers: IImportSpecifierData[] } {
   let source = prototype.package;
+  const isSnippet = prototype.type === 'snippet';
   if (relativeFilepath && isFilepath(source)) {
     source = getRelativePath(relativeFilepath, source);
   }
@@ -32,12 +33,15 @@ export function prototype2importDeclarationData(
       type: 'ImportDefaultSpecifier',
     });
   } else {
-    [prototype.name, ...(prototype.relatedImports || [])].forEach((item) => {
-      specifiers.push({
-        localName: item,
-        type: 'ImportSpecifier',
-      });
-    });
+    // 忽略代码片段 name
+    [...(isSnippet ? [] : [prototype.name]), ...(prototype.relatedImports || [])].forEach(
+      (item) => {
+        specifiers.push({
+          localName: item,
+          type: 'ImportSpecifier',
+        });
+      },
+    );
   }
 
   return {
