@@ -80,15 +80,22 @@ describe('helpers', () => {
 
   it('expressionCode2ast', () => {
     expect(expressionCode2ast('<Button>hello</Button>').type).toEqual('File');
-    expect(expressionCode2ast('{<Button>hello</Button>}').type).toEqual('File');
     expect(expressionCode2ast('() => <Button>hello</Button>').type).toEqual('File');
-    expect(expressionCode2ast('{() => <Button>hello</Button>}').type).toEqual('File');
   });
 });
 
 describe('string helpers', () => {
   it('value2code: empty array', () => {
     expect(value2code([])).toEqual('[]');
+    expect(value2code({})).toEqual('{}');
+    expect(value2code(() => {})).toEqual('() => {}');
+    expect(value2code(true)).toEqual('true');
+    expect(value2code(false)).toEqual('false');
+    expect(value2code(1)).toEqual('1');
+    expect(value2code('hello')).toEqual('"hello"');
+    expect(value2code('{{window.tango}}')).toEqual('window.tango');
+    expect(value2code('{{() => {}}}')).toEqual('() => {}');
+    expect(value2code('{{1111}}')).toEqual('1111');
   });
 
   it('value2code: array', () => {

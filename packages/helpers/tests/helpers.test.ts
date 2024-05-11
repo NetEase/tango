@@ -35,22 +35,22 @@ describe('string', () => {
   });
 
   it('isVariableString', () => {
-    expect(isVariableString('{this.foo}')).toBeTruthy();
-    expect(isVariableString('{!false}')).toBeTruthy();
-    expect(isVariableString('{[]}')).toBeTruthy();
-    expect(isVariableString('{{ foo: "bar" }}')).toBeTruthy();
-    expect(isVariableString('{[{ foo: "bar" }]}')).toBeTruthy();
-    expect(isVariableString('{123}')).toBeTruthy();
-    expect(isVariableString('{value}')).toBeTruthy();
-    expect(isVariableString('{"hello"}')).toBeTruthy();
+    expect(isVariableString('{{this.foo}}')).toBeTruthy();
+    expect(isVariableString('{{!false}}')).toBeTruthy();
+    expect(isVariableString('{{[]}}')).toBeTruthy();
+    expect(isVariableString('{{{ foo: "bar" }}}')).toBeTruthy();
+    expect(isVariableString('{{[{ foo: "bar" }]}}')).toBeTruthy();
+    expect(isVariableString('{{123}}')).toBeTruthy();
+    expect(isVariableString('{{value}}')).toBeTruthy();
+    expect(isVariableString('{{"hello"}}')).toBeTruthy();
     expect(isVariableString('{ foo: "bar" }')).toBeFalsy();
     expect(isVariableString('{ type: tango.stores?.homePage?.tabKey }')).toBeFalsy();
-    // expect(isVariableString('{ type: tango.stores.homePage.tabKey }')).toBeFalsy(); // TIP: failed
+    expect(isVariableString('{ type: tango.stores.homePage.tabKey }')).toBeFalsy();
     expect(isVariableString('{ foo: "bar" }')).toBeFalsy();
   });
 
   it('getVariableContent', () => {
-    expect(getVariableContent('{!false}')).toBe('!false');
+    expect(getVariableContent('{{!false}}')).toBe('!false');
   });
 
   it('isValidObjectString', () => {

@@ -7,5 +7,6 @@ export * from './events';
 export * from './function';
 export * from './logger';
 export * from './string';
-export * from './react-helper';
 export * from './object';
+export * from './react-helper';
+export * from './code-helper';

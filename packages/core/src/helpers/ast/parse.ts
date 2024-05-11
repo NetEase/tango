@@ -5,12 +5,12 @@ import { parse, parseExpression, ParserOptions } from '@babel/parser';
 import * as t from '@babel/types';
 import {
   logger,
-  isValidObjectString,
   getVariableContent,
   isPlainObject,
   Dict,
+  isWrappedCode,
+  getCodeOfWrappedCode,
 } from '@music163/tango-helpers';
-import { isWrappedByExpressionContainer } from '../assert';
 
 // @see https://babeljs.io/docs/en/babel-parser#pluginss
 const babelParserConfig: ParserOptions = {
@@ -109,9 +109,6 @@ export function code2expression(code: string) {
  * @returns File
  */
 export function expressionCode2ast(code: string) {
-  if (isWrappedByExpressionContainer(code)) {
-    code = getVariableContent(code);
-  }
   const node = code2expression(code);
   return t.file(t.program([t.blockStatement([t.expressionStatement(node)])]));
 }
@@ -136,11 +133,12 @@ export function value2node(
       ret = t.numericLiteral(value);
       break;
     case 'string':
-      if (isWrappedByExpressionContainer(value)) {
-        // 再检查是否是表达式容器，例如 {this.foo}, {1}
-        const innerString = getVariableContent(value);
-        ret = code2expression(innerString);
+      if (isWrappedCode(value)) {
+        // 再检查是否是代码 {{code}}，例如 {{this.foo}}, {{1}}
+        const innerCode = getCodeOfWrappedCode(value);
+        ret = code2expression(innerCode);
       } else {
+        // 否则当成字符串处理
         ret = t.stringLiteral(value);
       }
       break;
@@ -167,7 +165,7 @@ export function value2node(
       ret = t.identifier('undefined');
       break;
     default: {
-      logger.error(`value2node: unsupport value <${value}>`);
+      logger.error(`value2node: value <${value}> transform failed!`);
       break;
     }
   }
@@ -196,21 +194,17 @@ export function code2jsxAttributeValueNode(code: string) {
   return t.jsxExpressionContainer(code2expression(code));
 }
 
+// FIXME: 统一处理为 code2jsxAttributeValueNode
 export function value2jsxAttributeValueNode(value: any) {
   let ret;
   switch (typeof value) {
-    // FIXME: 重构这个逻辑，是不是统一当成 code 处理
     case 'string': {
       if (value.length > 1) {
         value = value.trim();
       }
-      if (isValidObjectString(value)) {
-        // 先检查是否是对象字符串
-        ret = t.jsxExpressionContainer(code2expression(value));
-      } else if (isWrappedByExpressionContainer(value)) {
-        // 再检查是否是表达式容器，例如 {this.foo}, {1}
-        const innerString = getVariableContent(value);
-        ret = t.jsxExpressionContainer(code2expression(innerString));
+      if (isWrappedCode(value)) {
+        const innerCode = getCodeOfWrappedCode(value);
+        ret = t.jsxExpressionContainer(code2expression(innerCode));
       } else {
         ret = t.stringLiteral(value);
       }
@@ -227,7 +221,7 @@ export function value2jsxChildrenValueNode(value: any) {
   let ret: t.JSXElement | t.JSXFragment | t.JSXExpressionContainer | t.JSXSpreadChild | t.JSXText;
   switch (typeof value) {
     case 'string':
-      if (isWrappedByExpressionContainer(value)) {
+      if (isValidExpressionCode(value)) {
         const innerString = getVariableContent(value);
         ret = t.jsxExpressionContainer(code2expression(innerString));
       } else {

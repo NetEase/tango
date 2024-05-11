@@ -3,7 +3,7 @@
  */
 import generator, { GeneratorOptions } from '@babel/generator';
 import * as t from '@babel/types';
-import { logger } from '@music163/tango-helpers';
+import { logger, wrapCode } from '@music163/tango-helpers';
 import { formatCode } from '../string';
 
 const defaultGeneratorOptions: GeneratorOptions = {
@@ -186,7 +186,7 @@ export function node2value(node: t.Node, hasExpressionWrapper = true): any {
     case 'JSXFragment': // <><Box /></>
       ret = expression2code(node);
       if (hasExpressionWrapper) {
-        ret = `{${ret}}`;
+        ret = wrapCode(ret);
       }
       break;
     case 'ObjectExpression': {

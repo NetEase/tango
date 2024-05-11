@@ -1,27 +1,8 @@
-import { getVariableContent } from '@music163/tango-helpers';
-import { value2node, expression2code, isValidExpressionCode } from './ast';
-import { isWrappedByExpressionContainer } from './assert';
+import { getCodeOfWrappedCode, isWrappedCode } from '@music163/tango-helpers';
+import { value2node, expression2code } from './ast';
 
 /**
- * 将 js value 转换为代码字符串
- */
-export function value2code(value: any) {
-  const node = value2node(value);
-  const code = expression2code(node);
-  return code;
-}
-
-/**
- * 是否是字符串代码
- * @param code
- * @returns
- */
-function isStringCode(code: string) {
-  return /^".*"$/.test(code?.trim());
-}
-
-/**
- * js value 转为表达式代码
+ * js value 转为代码字符串
  * @example 1 => 1
  * @example hello => "hello"
  * @example { foo: bar } => {{ foo: bar }}
@@ -30,34 +11,39 @@ function isStringCode(code: string) {
  * @param val js value
  * @returns 表达式代码
  */
-export function value2expressionCode(val: any) {
-  if (!val) return '';
+export function value2code(val: any) {
+  if (val === undefined) {
+    return '';
+  }
+
+  if (val === null) {
+    return 'null';
+  }
 
   let ret;
-
   switch (typeof val) {
     case 'string': {
-      if (isValidExpressionCode(val)) {
-        ret = val;
-      } else if (isWrappedByExpressionContainer(val, false)) {
-        ret = getVariableContent(val);
-      } else if (isStringCode(val)) {
-        ret = val;
+      if (isWrappedCode(val)) {
+        ret = getCodeOfWrappedCode(val);
       } else {
         ret = `"${val}"`;
       }
       break;
     }
+    case 'boolean':
+    case 'function':
     case 'number':
       ret = String(val);
       break;
-    case 'object':
-      ret = value2code(val);
+    default: {
+      // other cases, including array, object, null, undefined
+      const node = value2node(val);
+      ret = expression2code(node);
       break;
-    default:
-      ret = '';
-      break;
+    }
   }
 
   return ret;
 }
+
+export const value2expressionCode = value2code;

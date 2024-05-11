@@ -1,26 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text, css } from 'coral-system';
 import { Dropdown, Modal } from 'antd';
-import {
-  isValidExpressionCode,
-  isWrappedByExpressionContainer,
-  value2expressionCode,
-} from '@music163/tango-core';
-import {
-  getVariableContent,
-  noop,
-  useBoolean,
-  getValue,
-  IVariableTreeNode,
-} from '@music163/tango-helpers';
-import {
-  CloseCircleFilled,
-  ExpandAltOutlined,
-  InfoOutlined,
-  KeyOutlined,
-  MenuOutlined,
-} from '@ant-design/icons';
-import { Panel, InputCode, Action, CodeOutlined } from '@music163/tango-ui';
+import { isValidExpressionCode, value2expressionCode } from '@music163/tango-core';
+import { noop, useBoolean, getValue, IVariableTreeNode, wrapCode } from '@music163/tango-helpers';
+import { CloseCircleFilled, ExpandAltOutlined, MenuOutlined } from '@ant-design/icons';
+import { Panel, InputCode, Action } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { VariableTree } from '../components';
@@ -29,41 +13,18 @@ import { CODE_TEMPLATES } from '../helpers';
 import { shapeServiceValues } from '../sidebar/datasource-panel/interface-config';
 
 export const expressionValueValidate = (value: string) => {
-  if (isWrappedByExpressionContainer(value)) {
-    const exp = getVariableContent(value);
-    if (!isValidExpressionCode(exp)) {
-      return '表达式存在语法错误！';
-    }
+  if (!isValidExpressionCode(value)) {
+    return '表达式存在语法错误！';
   }
 };
 
 export const jsonValueValidate = (value: string) => {
-  if (isWrappedByExpressionContainer(value)) {
-    const jsonStr = getVariableContent(value);
-    try {
-      JSON.parse(jsonStr);
-    } catch (e) {
-      return '不是合法的 JSON 语法！';
-    }
+  try {
+    JSON.parse(value);
+  } catch (e) {
+    return '不是合法的 JSON 语法！';
   }
 };
-
-/**
- * 返回 `{}` 包裹后的表达式代码
- * @param code 原始代码
- * @returns
- */
-export function getWrappedExpressionCode(code: string) {
-  let ret;
-  if (!code) {
-    // do nothing
-  } else if (isWrappedByExpressionContainer(code)) {
-    ret = code;
-  } else {
-    ret = `{${code}}`;
-  }
-  return ret;
-}
 
 const suffixStyle = css`
   display: flex;
@@ -90,41 +51,37 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     modalTitle,
     modalTip,
     autoCompleteOptions,
-    placeholder = '输入JS代码',
+    placeholder = '在这里输入JS代码',
     value: valueProp,
     status,
     allowClear = true,
     newStoreTemplate,
     showOptionsDropDown = true,
   } = props;
+  const codeValue = value2expressionCode(valueProp);
+  const [inputValue, setInputValue] = useState(codeValue);
   const [visible, { on, off }] = useBoolean();
-  const [inputValue, setInputValue] = useState(() => {
-    return value2expressionCode(valueProp);
-  });
-  const sandbox = useSandboxQuery();
-  const evaluateContext = sandbox.window;
 
   // when receive new value, sync state
   useEffect(() => {
-    setInputValue(value2expressionCode(valueProp));
+    const nextCodeValue = value2expressionCode(valueProp);
+    setInputValue(nextCodeValue);
   }, [valueProp]);
 
   const change = useCallback(
     (code: string) => {
-      if (code === valueProp) {
+      if (code === codeValue) {
         return;
       }
 
-      const ret = getWrappedExpressionCode(code);
-
-      if (ret === valueProp) {
-        return;
-      }
-
-      onChange(ret);
+      // FIXME: 这里要加提示，告诉用户应该怎么写
+      onChange(code ? wrapCode(code) : undefined);
     },
-    [valueProp, onChange],
+    [codeValue, onChange],
   );
+
+  const sandbox = useSandboxQuery();
+  const evaluateContext = sandbox.window;
 
   return (
     <Box className="ExpressionSetter">
@@ -276,7 +233,16 @@ export function ExpressionModal({
           autoCompleteContext={evaluateContext}
           autoCompleteOptions={autoCompleteOptions}
         />
-        {error ? <Text color="red">输入的表达式存在语法错误，请修改后再提交！</Text> : null}
+        {error ? (
+          <Text color="red" fontSize="12px">
+            出错了！输入的表达式存在语法错误，请修改后再提交！
+          </Text>
+        ) : (
+          <Text fontSize="12px" color="text3">
+            说明：你可以在上面的代码输入框里输入常规的 javascript 代码，还可以直接使用 jsx
+            代码，但需要符合该属性的接受值定义。
+          </Text>
+        )}
       </Panel>
       <Panel
         title="从变量列表中选中"
@@ -310,9 +276,9 @@ export function ExpressionModal({
             }
             let str;
             if (/^(stores|services)\./.test(node.key)) {
-              str = `{tango.${node.key.replaceAll('.', '?.')}}`;
+              str = `tango.${node.key.replaceAll('.', '?.')}`;
             } else {
-              str = `{${node.key}}`;
+              str = `${node.key}`;
             }
             setExp(str);
           }}

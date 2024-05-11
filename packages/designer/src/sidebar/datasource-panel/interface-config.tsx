@@ -1,8 +1,6 @@
 import React from 'react';
 import { observer, useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { Box } from 'coral-system';
-import { getVariableContent } from '@music163/tango-helpers';
-import { isWrappedByExpressionContainer } from '@music163/tango-core';
 import { VariableTree } from '../../components';
 import { useSandboxQuery } from '../../context';
 
@@ -10,10 +8,6 @@ import { useSandboxQuery } from '../../context';
 export function shapeServiceValues(val: any) {
   const shapeValues = { ...val };
   delete shapeValues.type;
-  // 兼容旧版，如果 formatter 包裹了 {} 则删掉首尾
-  if (shapeValues.formatter && isWrappedByExpressionContainer(shapeValues.formatter)) {
-    shapeValues.formatter = getVariableContent(shapeValues.formatter);
-  }
   return shapeValues;
 }
 

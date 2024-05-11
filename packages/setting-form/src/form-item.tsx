@@ -1,9 +1,14 @@
 import React from 'react';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { clone, ComponentPropValidate, IComponentProp, useBoolean } from '@music163/tango-helpers';
-import { isWrappedByExpressionContainer } from '@music163/tango-core';
-import { ToggleButton, CodeOutlined } from '@music163/tango-ui';
+import {
+  clone,
+  ComponentPropValidate,
+  IComponentProp,
+  isWrappedCode,
+  useBoolean,
+} from '@music163/tango-helpers';
+import { ToggleButton, CodeOutlined, ErrorBoundary } from '@music163/tango-ui';
 import { InputProps } from 'antd';
 import { useFormModel, useFormVariable } from './context';
 import { FormControl } from './form-ui';
@@ -94,7 +99,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const value = toJS(field.value ?? defaultValue);
     const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp; // Form 的设置优先
     const [isVariable, { toggle: toggleIsVariable }] = useBoolean(
-      () => !disableVariableSetter && isWrappedByExpressionContainer(value),
+      () => !disableVariableSetter && isWrappedCode(value),
     );
 
     const setterName = isVariable ? 'expressionSetter' : setter;
@@ -183,7 +188,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
         data-setter={setterName}
         data-field={name}
       >
-        {setterNode}
+        <ErrorBoundary>{setterNode}</ErrorBoundary>
       </FormControl>
     );
   }

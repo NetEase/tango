@@ -76,7 +76,7 @@ interface IFormTabsGroupOption {
 
 const internalGroups: IFormTabsGroupOption[] = [
   { label: '基本', value: 'basic' },
-  // { label: '事件', value: 'event' },
+  { label: '事件', value: 'event' },
   { label: '样式', value: 'style' },
   { label: '高级', value: 'advanced' },
 ];
