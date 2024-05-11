@@ -35,27 +35,38 @@ const Snippet2ColumnLayout: IComponentPrototype = {
   package: '@music163/antd',
   initChildren: `
   <Columns columns={12}>
-    <Column colSpan={6}></Column>
-    <Column colSpan={6}></Column>
+    <Column colSpan={6}>
+      <Box />
+    </Column>
+    <Column colSpan={6}>
+      <Box />
+    </Column>
   </Columns>
   `,
-  relatedImports: ['Columns', 'Column'],
+  relatedImports: ['Columns', 'Column', 'Box'],
 };
 
 const Snippet3ColumnLayout: IComponentPrototype = {
   name: 'Snippet3ColumnLayout',
   title: '三列布局',
-  icon: 'icon-column3',
+  icon: 'icon-column-3',
   type: 'snippet',
   package: '@music163/antd',
+  // FIXME: Column 组件 需要更新为 defineComponent
   initChildren: `
   <Columns columns={12}>
-    <Column colSpan={4}></Column>
-    <Column colSpan={4}></Column>
-    <Column colSpan={4}></Column>
+    <Column colSpan={4}>
+      <Box />
+    </Column>
+    <Column colSpan={4}>
+      <Box />
+    </Column>
+    <Column colSpan={4}>
+    <Box />
+  </Column>
   </Columns>
   `,
-  relatedImports: ['Columns', 'Column'],
+  relatedImports: ['Columns', 'Column', 'Box'],
 };
 
 const SnippetButtonGroup: IComponentPrototype = {
@@ -76,13 +87,9 @@ const SnippetButtonGroup: IComponentPrototype = {
 // hack some prototypes
 basePrototypes['Section'].siblingNames = [
   'SnippetButtonGroup',
-  'Section',
-  'Section',
-  'Section',
-  'Section',
-  'Section',
-  'Section',
-  'Section',
+  'Snippet2ColumnLayout',
+  'Snippet3ColumnLayout',
+  'SnippetSuccessResult',
 ];
 
 export const nativeDomPrototypes = () => {
