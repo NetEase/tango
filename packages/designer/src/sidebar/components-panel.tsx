@@ -366,6 +366,7 @@ function MaterialGrid({ data }: MaterialProps) {
   if (isLine) {
     return (
       <Box
+        key={data.name}
         display="flex"
         columnGap="m"
         px="l"
@@ -417,6 +418,7 @@ function MaterialGrid({ data }: MaterialProps) {
 
   return (
     <StyledCommonGridItem
+      key={data.name}
       draggable={!isScope}
       data-name={data.name}
       onDragStart={handleDragStart}

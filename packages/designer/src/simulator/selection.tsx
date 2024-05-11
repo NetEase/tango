@@ -1,14 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
 import { DropdownProps, Tooltip } from 'antd';
 import { HolderOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { DragPanel } from '@music163/tango-ui';
+import { DragPanel, IconFont } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
-import { ComponentsPanel } from '../sidebar';
+import { ComponentsPanel, ComponentsPanelProps } from '../sidebar';
 
 /**
  * 选择辅助工具的对齐方式
@@ -80,13 +80,6 @@ const bottomAddSiblingBtnStyle = css`
   pointer-events: auto;
 `;
 
-interface IInsertedData {
-  name: string;
-  label: string;
-  icon: string;
-  description: string;
-}
-
 export interface SelectionBoxProps {
   /**
    * 是否显示操作按钮
@@ -121,7 +114,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   // 推荐使用的子组件
   const insertedList = Array.isArray(prototype?.childrenName)
     ? prototype.childrenName
-    : [prototype.childrenName];
+    : [prototype.childrenName].filter(Boolean);
 
   // 推荐使用的代码片段
   const siblingList = prototype.siblingNames ?? [];
@@ -228,7 +221,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
           <SelectionToolSet>{!isPage && actions}</SelectionToolSet>
           {prototype.hasChildren !== false && (
             <InsertedDropdown
-              title="添加子组件"
+              title="添加子元素"
               footer={`点击，在 ${selectedNodeName} 中添加子元素`}
               insertedList={insertedList}
               siblingList={siblingList}
@@ -432,6 +425,12 @@ function InsertedDropdown({
 }: InsertedDropdownProps) {
   const workspace = useWorkspace();
 
+  const [layout, setLayout] = useState<ComponentsPanelProps['layout']>('grid');
+
+  const changeLayout = () => {
+    setLayout(layout === 'grid' ? 'line' : 'grid');
+  };
+
   const menuData = useMemo(() => {
     const menuList = JSON.parse(JSON.stringify(workspace.menuData));
     const commonList = menuList['common'];
@@ -455,6 +454,15 @@ function InsertedDropdown({
   return (
     <DragPanel
       title={title}
+      extra={
+        <Box fontSize="12px">
+          {layout === 'grid' ? (
+            <IconFont type="icon-liebiaoitem" onClick={changeLayout} />
+          ) : (
+            <IconFont type="icon-grid1" onClick={changeLayout} />
+          )}
+        </Box>
+      }
       footer={footer}
       width="330px"
       placement="bottomCenter"
@@ -463,6 +471,7 @@ function InsertedDropdown({
           isScope
           showBizComps={false}
           menuData={menuData}
+          layout={layout}
           onItemSelect={onSelect}
           style={{
             maxHeight: '400px',
