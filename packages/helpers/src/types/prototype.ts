@@ -301,6 +301,19 @@ export interface ITangoConfigJson {
    */
   externalResources?: Record<string, any>;
   /**
+   * 沙箱配置
+   */
+  sandbox?: {
+    /**
+     * 在沙箱中执行的脚本
+     */
+    evaluateJavaScript?: string;
+    /**
+     * 模块的别名
+     */
+    alias?: Record<string, string>;
+  };
+  /**
    * 设计器配置
    */
   designerConfig: {
