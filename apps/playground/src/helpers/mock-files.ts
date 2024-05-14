@@ -151,6 +151,7 @@ import {
   Input,
   FormilyForm,
   FormilyFormItem,
+  Table,
 } from "@music163/antd";
 import { Space } from "@music163/antd";
 import { LocalButton } from "../components";
@@ -161,6 +162,14 @@ class App extends React.Component {
         <Section tid="section1" title="Section Title">
           your input: <Input tid="input1" defaultValue="hello" />
           copy input: <Input value={tango.page.input1?.value} />
+          <Table
+          columns={[
+            { title: "姓名", dataIndex: "name", key: "name" },
+            { title: "年龄", dataIndex: "age", key: "age" },
+            { title: "住址", dataIndex: "address", key: "address" },
+          ]}
+          tid="table1"
+        />
         </Section>
         <Section tid="section2">
           <Space tid="space1">
@@ -175,6 +184,9 @@ class App extends React.Component {
           </FormilyForm>
         </Section>
         <Section title="原生 DOM" tid="section4">
+          <h1 style={{ ...{ color: "red" }, fontSize: 64 }}>
+          hello world
+          </h1>
           <div
             style={{
               border: "1px solid #ccc",

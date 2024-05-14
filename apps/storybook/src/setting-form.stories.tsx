@@ -5,6 +5,9 @@ import { BorderSetter, DisplaySetter } from '@music163/tango-designer/src/setter
 import { JsxSetter } from '@music163/tango-designer/src/setters/jsx-setter';
 import { RenderSetter, TableCellSetter } from '@music163/tango-designer/src/setters/render-setter';
 import { NumberSetter } from '@music163/tango-designer/src/setters/number-setter';
+import { ActionListSetter } from '@music163/tango-designer/src/setters/action-list-setter';
+import { ListSetter } from '@music163/tango-designer/src/setters/list-setter';
+import { EnumSetter } from '@music163/tango-designer/src/setters/enum-setter';
 import { Box } from 'coral-system';
 import { JsonView } from '@music163/tango-ui';
 import { toJS } from 'mobx';
@@ -21,6 +24,21 @@ register({
 register({
   name: 'displaySetter',
   component: DisplaySetter,
+});
+
+register({
+  name: 'listSetter',
+  component: ListSetter as any,
+});
+
+register({
+  name: 'actionListSetter',
+  component: ActionListSetter,
+});
+
+register({
+  name: 'enumSetter',
+  component: EnumSetter,
 });
 
 register({
@@ -51,7 +69,7 @@ export default {
   title: 'SettingForm',
 };
 
-const prototype: IComponentPrototype = {
+const prototypeTest: IComponentPrototype = {
   name: 'Test',
   exportType: 'namedExport',
   title: '测试',
@@ -68,6 +86,16 @@ const prototype: IComponentPrototype = {
       tip: '这是一个文本属性',
       docs: 'https://music-one.fn.netease.com/docs/button',
       deprecated: '使用 text2 替代',
+    },
+    {
+      name: 'list',
+      title: 'listSetter',
+      setter: 'listSetter',
+    },
+    {
+      name: 'actionList',
+      title: 'actionListSetter',
+      setter: 'actionListSetter',
     },
     {
       name: 'display',
@@ -307,20 +335,13 @@ const FormValuePreview = observer(({ model }: { model: FormModel }) => {
   return <JsonView src={data} />;
 });
 
-export function Basic() {
-  const model = new FormModel(
-    {
-      router: 'www.163.com',
-      expression: `{ foo: 'foo' }`,
-      object: {
-        name: 'Alice',
-      },
-      image:
-        'https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/13270238619/2cc5/0782/1d6e/009b96bf90c557b9bbde09b1687a2c80.png',
-    },
-    { onChange: console.log },
-  );
+interface SettingFormDemoProps {
+  initValues?: object;
+  prototype?: IComponentPrototype;
+}
 
+function SettingFormDemo({ initValues, prototype }: SettingFormDemoProps) {
+  const model = new FormModel(initValues, { onChange: console.log });
   return (
     <Box display="flex">
       <Box flex="0 0 400px" overflow="hidden">
@@ -341,6 +362,94 @@ export function Basic() {
   );
 }
 
+export function Basic() {
+  return (
+    <SettingFormDemo
+      initValues={{
+        bool: true,
+        enum: {
+          aaa: 'aaa',
+          bbb: 'bbb',
+          ccc: 'ccc',
+        },
+        list: [{ key: 1 }, { key: 2 }],
+      }}
+      prototype={{
+        name: 'Sample',
+        package: 'sample-pkg',
+        type: 'element',
+        props: [
+          {
+            name: 'bool',
+            title: 'boolSetter',
+            setter: 'boolSetter',
+          },
+          {
+            name: 'enum',
+            title: 'enumSetter',
+            setter: 'enumSetter',
+          },
+          {
+            name: 'list',
+            title: 'listSetter',
+            setter: 'listSetter',
+          },
+        ],
+      }}
+    />
+  );
+}
+
+export function InitValues() {
+  return (
+    <SettingFormDemo
+      initValues={{
+        bool: true,
+        bool1: '{{true}}',
+      }}
+      prototype={{
+        name: 'Sample',
+        package: 'sample-pkg',
+        type: 'element',
+        props: [
+          {
+            name: 'bool',
+            title: 'value初始化',
+            setter: 'boolSetter',
+          },
+          {
+            name: 'bool1',
+            title: 'value初始化',
+            setter: 'boolSetter',
+          },
+          {
+            name: 'bool2',
+            title: '无初值',
+            setter: 'boolSetter',
+          },
+        ],
+      }}
+    />
+  );
+}
+
+export function SetterList() {
+  return (
+    <SettingFormDemo
+      initValues={{
+        router: 'www.163.com',
+        expression: `{ foo: 'foo' }`,
+        object: {
+          name: 'Alice',
+        },
+        image:
+          'https://p6.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/13270238619/2cc5/0782/1d6e/009b96bf90c557b9bbde09b1687a2c80.png',
+      }}
+      prototype={prototypeTest}
+    />
+  );
+}
+
 export function Lite() {
   return (
     <Box width={320} border="solid">
@@ -348,7 +457,7 @@ export function Lite() {
         showSearch={false}
         showGroups={false}
         showItemSubtitle={false}
-        prototype={prototype}
+        prototype={prototypeTest}
         disableSwitchExpressionSetter
       />
     </Box>
@@ -359,7 +468,7 @@ export function NoExpressionSwitch() {
   const model = new FormModel({});
   return (
     <Box>
-      <SettingForm model={model} prototype={prototype} disableSwitchExpressionSetter />
+      <SettingForm model={model} prototype={prototypeTest} disableSwitchExpressionSetter />
     </Box>
   );
 }

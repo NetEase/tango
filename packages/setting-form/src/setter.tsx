@@ -1,11 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { Input, InputProps } from 'antd';
+import { Input, InputProps, Switch } from 'antd';
 import { InputCode } from '@music163/tango-ui';
-import { FormItemComponentProps, register } from './form-item';
+import { FormItemComponentProps, IFormItemCreateOptions, register } from './form-item';
 import { Box, css } from 'coral-system';
+import { getCodeOfWrappedCode, wrapCode } from '@music163/tango-helpers';
 
-export function ExpressionSetter({ value, onChange, ...rest }: FormItemComponentProps<string>) {
-  return <InputCode onChange={(val) => onChange?.(val)} value={value || ''} {...rest} />;
+// TODO: 独立到单独的文件夹中
+export function ExpressionSetter({
+  value: valueProp,
+  onChange,
+  ...rest
+}: FormItemComponentProps<string>) {
+  const [value, setValue] = useState(getCodeOfWrappedCode(valueProp) || '');
+  return (
+    <InputCode
+      onChange={(val) => {
+        setValue(val);
+      }}
+      onBlur={() => {
+        const newCode = value ? wrapCode(value) : undefined;
+        onChange?.(newCode);
+      }}
+      value={value}
+      {...rest}
+    />
+  );
+}
+
+export function BoolSetter({ value, onChange, ...props }: FormItemComponentProps<boolean>) {
+  return <Switch checked={value} onChange={(val) => onChange?.(val)} {...props} />;
 }
 
 export function TextSetter({ onChange, ...rest }: FormItemComponentProps<string>) {
@@ -71,21 +94,28 @@ export function IdSetter({
   );
 }
 
-export function registerBuiltinSetters() {
-  // 预注册基础 Setter
-  register({
+const BASIC_SETTERS: IFormItemCreateOptions[] = [
+  {
     name: 'expressionSetter',
     component: ExpressionSetter,
     disableVariableSetter: true,
-  });
-
-  register({
+  },
+  {
     name: 'textSetter',
     component: TextSetter,
-  });
-
-  register({
+  },
+  {
+    name: 'boolSetter',
+    component: BoolSetter,
+  },
+  // TODO: numberSetter
+  {
     name: 'idSetter',
     component: IdSetter,
-  });
+  },
+];
+
+export function registerBuiltinSetters() {
+  // 预注册基础 Setter
+  BASIC_SETTERS.forEach(register);
 }

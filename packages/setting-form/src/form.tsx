@@ -217,7 +217,7 @@ export function SettingForm({
             <Box px="l" py="m">
               {showIdentifier && (
                 <FormHeader
-                  title={prototype.title}
+                  title={prototype.title || prototype.name}
                   subTitle={
                     <SettingFormItem
                       noStyle

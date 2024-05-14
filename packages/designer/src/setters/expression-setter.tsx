@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text, css } from 'coral-system';
 import { Dropdown, Modal } from 'antd';
-import { isValidExpressionCode, value2expressionCode } from '@music163/tango-core';
-import { noop, useBoolean, getValue, IVariableTreeNode, wrapCode } from '@music163/tango-helpers';
+import { isValidExpressionCode } from '@music163/tango-core';
+import {
+  noop,
+  useBoolean,
+  getValue,
+  IVariableTreeNode,
+  wrapCode,
+  getCodeOfWrappedCode,
+} from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined, MenuOutlined } from '@ant-design/icons';
 import { Panel, InputCode, Action } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
@@ -58,13 +65,13 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     newStoreTemplate,
     showOptionsDropDown = true,
   } = props;
-  const codeValue = value2expressionCode(valueProp);
+  const codeValue = getCodeOfWrappedCode(valueProp);
   const [inputValue, setInputValue] = useState(codeValue);
   const [visible, { on, off }] = useBoolean();
 
   // when receive new value, sync state
   useEffect(() => {
-    const nextCodeValue = value2expressionCode(valueProp);
+    const nextCodeValue = getCodeOfWrappedCode(valueProp);
     setInputValue(nextCodeValue);
   }, [valueProp]);
 

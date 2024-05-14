@@ -30,7 +30,7 @@ import { ChoiceSetter } from './choice-setter';
 import { NumberSetter, SliderSetter } from './number-setter';
 import { TextAreaSetter, TextSetter } from './text-setter';
 
-const setters: IFormItemCreateOptions[] = [
+export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
   {
     name: 'boolSetter',
     component: BoolSetter,
@@ -170,5 +170,5 @@ const setters: IFormItemCreateOptions[] = [
 ];
 
 export function registerBuiltinSetters() {
-  setters.forEach(register);
+  BUILT_IN_SETTERS.forEach(register);
 }

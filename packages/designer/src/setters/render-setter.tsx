@@ -3,6 +3,7 @@ import { ActionSelect, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { Box } from 'coral-system';
 import { value2expressionCode } from '@music163/tango-core';
+import { wrapCode } from '@music163/tango-helpers';
 
 interface IRenderOption {
   label: string;
@@ -67,17 +68,22 @@ export function RenderSetter({
 }
 
 const getRender = (content: string, type?: 'tableCell' | 'tableExpandable') => {
+  let code;
   switch (type) {
     case 'tableCell':
-      return `{(value, record, index) => ${content}}`;
+      code = `(value, record, index) => ${content}`;
+      break;
     case 'tableExpandable':
-      return `{{
-      expandedRowRender: (record) =>  ${content},
-      rowExpandable: (record) => true
-    }}`;
+      code = `{
+        expandedRowRender: (record) =>  ${content},
+        rowExpandable: (record) => true
+      }`;
+      break;
     default:
-      return `{() => ${content}}`;
+      code = `() => ${content}`;
+      break;
   }
+  return wrapCode(code);
 };
 
 const tableCellOptions: RenderSetterProps['options'] = [
