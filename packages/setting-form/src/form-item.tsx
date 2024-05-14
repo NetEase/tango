@@ -121,7 +121,7 @@ function useSetterValue({ fieldValue, setter }: UseSetterValueProps) {
     setterValue: isCodeSetter ? code : value,
     value,
     code,
-    setter: isCodeSetter ? 'expressionSetter' : setter,
+    setter: isCodeSetter ? 'codeSetter' : setter,
     isCodeSetter,
     toggleSetter,
   };
@@ -161,7 +161,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
       setter: setterProp,
     });
 
-    const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp; // Form 的设置优先
+    const showToggleCodeButton = !(disableSwitchExpressionSetter || disableVariableSetterProp);
 
     field.setConfig({
       validate: validate || options.validate,
@@ -183,7 +183,9 @@ export function createFormItem(options: IFormItemCreateOptions) {
 
     // FIXME: 重新考虑这段代码的位置，外置这个逻辑
     if (
-      ['expressionSetter', 'expSetter', 'actionSetter', 'eventSetter'].includes(setter) ||
+      ['codeSetter', 'expressionSetter', 'expSetter', 'actionSetter', 'eventSetter'].includes(
+        setter,
+      ) ||
       isCodeSetter
     ) {
       expProps = {
@@ -195,10 +197,10 @@ export function createFormItem(options: IFormItemCreateOptions) {
 
     const getSetterProps = getSetterPropsProp || defaultGetSetterProps;
     // 从注册表中获取 expSetter
-    const ExpressionSetter = REGISTERED_FORM_ITEM_MAP['expressionSetter']?.config?.component;
+    const CodeSetter = REGISTERED_FORM_ITEM_MAP['codeSetter']?.config?.component;
 
     const setterNode = isCodeSetter ? (
-      <ExpressionSetter {...expProps} {...baseComponentProps} />
+      <CodeSetter {...expProps} {...baseComponentProps} />
     ) : (
       renderSetter({
         ...expProps,
@@ -227,7 +229,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
         extra={
           <Box>
             {extra}
-            {!disableVariableSetter ? (
+            {showToggleCodeButton ? (
               <ToggleButton
                 borderRadius="s"
                 size="s"
@@ -266,9 +268,9 @@ const REGISTERED_FORM_ITEM_MAP: Record<string, ReturnType<typeof createFormItem>
  * @param config 注册选项
  */
 export function register(config: IFormItemCreateOptions) {
-  const names = [config.name, ...(config.alias ?? [])];
-  names.forEach((name) => {
-    REGISTERED_FORM_ITEM_MAP[name] = createFormItem(config);
+  REGISTERED_FORM_ITEM_MAP[config.name] = createFormItem(config);
+  (Array.isArray(config.alias) ? config.alias : []).forEach((alias) => {
+    REGISTERED_FORM_ITEM_MAP[alias] = REGISTERED_FORM_ITEM_MAP[config.name];
   });
 }
 
@@ -276,7 +278,7 @@ export function SettingFormItem(props: FormItemProps) {
   const { setter } = props;
   const Comp = REGISTERED_FORM_ITEM_MAP[setter];
   if (Comp == null) {
-    const Fallback = REGISTERED_FORM_ITEM_MAP.expressionSetter;
+    const Fallback = REGISTERED_FORM_ITEM_MAP.codeSetter;
     return (
       <Fallback
         {...props}

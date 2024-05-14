@@ -127,7 +127,7 @@ export interface SettingFormProps {
    */
   renderItemExtra?: (props: IComponentProp) => React.ReactNode;
   /**
-   * 是否允许表单项切换到表达式设置器
+   * 是否禁用 codeSetter 切换，默认所有的 setter 都支持切换到 codeSetter
    */
   disableSwitchExpressionSetter?: boolean;
 }

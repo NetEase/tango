@@ -25,38 +25,18 @@ import {
   FlexAlignItemsSetter,
   FlexDirectionSetter,
 } from './style-setter';
-import { BoolSetter } from './bool-setter';
 import { ChoiceSetter } from './choice-setter';
-import { NumberSetter, SliderSetter } from './number-setter';
-import { TextAreaSetter, TextSetter } from './text-setter';
 
 export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
   {
-    name: 'boolSetter',
-    component: BoolSetter,
-  },
-  {
-    name: 'choiceSetter',
-    component: ChoiceSetter,
-  },
-  {
-    name: 'expSetter',
-    alias: ['expressionSetter'],
+    name: 'codeSetter',
+    alias: ['expSetter', 'expressionSetter'],
     component: ExpressionSetter,
     disableVariableSetter: true,
   },
   {
-    name: 'numberSetter',
-    component: NumberSetter,
-  },
-  {
-    name: 'textSetter',
-    component: TextSetter,
-  },
-  { name: 'textAreaSetter', component: TextAreaSetter },
-  {
-    name: 'sliderSetter',
-    component: SliderSetter,
+    name: 'choiceSetter',
+    component: ChoiceSetter,
   },
   {
     name: 'actionListSetter',

@@ -4,7 +4,6 @@ import { IComponentPrototype } from '@music163/tango-helpers';
 import { BorderSetter, DisplaySetter } from '@music163/tango-designer/src/setters/style-setter';
 import { JsxSetter } from '@music163/tango-designer/src/setters/jsx-setter';
 import { RenderSetter, TableCellSetter } from '@music163/tango-designer/src/setters/render-setter';
-import { NumberSetter } from '@music163/tango-designer/src/setters/number-setter';
 import { ActionListSetter } from '@music163/tango-designer/src/setters/action-list-setter';
 import { ListSetter } from '@music163/tango-designer/src/setters/list-setter';
 import { EnumSetter } from '@music163/tango-designer/src/setters/enum-setter';
@@ -54,11 +53,6 @@ register({
 register({
   name: 'tableCellSetter',
   component: TableCellSetter,
-});
-
-register({
-  name: 'numberSetter',
-  component: NumberSetter,
 });
 
 createFromIconfontCN({
@@ -388,6 +382,11 @@ export function Basic() {
             name: 'text',
             title: 'textSetter',
             setter: 'textSetter',
+          },
+          {
+            name: 'text2',
+            title: 'textAreaSetter',
+            setter: 'textAreaSetter',
           },
           {
             name: 'number',

@@ -1,7 +1,7 @@
 import { CodeSetter } from './code-setter';
 import { BoolSetter } from './bool-setter';
 import { IdSetter } from './id-setter';
-import { TextSetter } from './text-setter';
+import { TextAreaSetter, TextSetter } from './text-setter';
 import { NumberSetter, SliderSetter } from './number-setter';
 import { IFormItemCreateOptions, register } from '../form-item';
 
@@ -15,6 +15,10 @@ const BASIC_SETTERS: IFormItemCreateOptions[] = [
   {
     name: 'textSetter',
     component: TextSetter,
+  },
+  {
+    name: 'textAreaSetter',
+    component: TextAreaSetter,
   },
   {
     name: 'boolSetter',
