@@ -14,7 +14,7 @@ import { FormModelProvider, FormVariableProvider } from './context';
 import { FormModel, FormModelOptionsType } from './form-model';
 import { SettingFormObject } from './form-object';
 import { isValidNestProps } from './helpers';
-import { registerBuiltinSetters } from './setter';
+import { registerBuiltinSetters } from './setters/register';
 import { FormHeader } from './form-ui';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 

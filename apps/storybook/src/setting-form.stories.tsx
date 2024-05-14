@@ -380,6 +380,26 @@ export function Basic() {
         type: 'element',
         props: [
           {
+            name: 'code',
+            title: 'codeSetter',
+            setter: 'codeSetter',
+          },
+          {
+            name: 'text',
+            title: 'textSetter',
+            setter: 'textSetter',
+          },
+          {
+            name: 'number',
+            title: 'numberSetter',
+            setter: 'numberSetter',
+          },
+          {
+            name: 'number2',
+            title: 'sliderSetter',
+            setter: 'sliderSetter',
+          },
+          {
             name: 'bool',
             title: 'boolSetter',
             setter: 'boolSetter',
