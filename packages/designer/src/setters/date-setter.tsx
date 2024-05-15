@@ -25,13 +25,18 @@ const style = {
   width: '100%',
 };
 
-export function DateSetter({ value, onChange, format = 'YYYY-MM-DD', ...rest }: FormItemComponentProps<string>) {
+export function DateSetter({
+  value,
+  onChange,
+  format = 'YYYY-MM-DD',
+  ...rest
+}: FormItemComponentProps<string>) {
   return (
     <DatePicker
       {...rest}
       format={format}
       style={style}
-      value={toMoment(value, format)}
+      value={value ? toMoment(value, format) : undefined}
       onChange={(val, str) => {
         onChange && onChange(str);
       }}
@@ -46,7 +51,12 @@ function toMoments(value: string[], format: string): moment.Moment[] {
   return [];
 }
 
-export function DateRangeSetter({ value, onChange, format = 'YYYY-MM-DD', ...rest }: FormItemComponentProps<string[]>) {
+export function DateRangeSetter({
+  value,
+  onChange,
+  format = 'YYYY-MM-DD',
+  ...rest
+}: FormItemComponentProps<string[]>) {
   return (
     <DatePicker.RangePicker
       {...rest}
@@ -60,7 +70,12 @@ export function DateRangeSetter({ value, onChange, format = 'YYYY-MM-DD', ...res
   );
 }
 
-export function TimeSetter({ value, onChange, format = 'HH:mm:ss', ...rest }: FormItemComponentProps<string>) {
+export function TimeSetter({
+  value,
+  onChange,
+  format = 'HH:mm:ss',
+  ...rest
+}: FormItemComponentProps<string>) {
   return (
     <TimePicker
       {...rest}
@@ -74,7 +89,12 @@ export function TimeSetter({ value, onChange, format = 'HH:mm:ss', ...rest }: Fo
   );
 }
 
-export function TimeRangeSetter({ value, onChange, format = 'HH:mm:ss', ...rest }: FormItemComponentProps<string[]>) {
+export function TimeRangeSetter({
+  value,
+  onChange,
+  format = 'HH:mm:ss',
+  ...rest
+}: FormItemComponentProps<string[]>) {
   return (
     <TimePicker.RangePicker
       {...rest}

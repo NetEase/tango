@@ -2,14 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text, css } from 'coral-system';
 import { Dropdown, Modal } from 'antd';
 import { isValidExpressionCode } from '@music163/tango-core';
-import {
-  noop,
-  useBoolean,
-  getValue,
-  IVariableTreeNode,
-  wrapCode,
-  getCodeOfWrappedCode,
-} from '@music163/tango-helpers';
+import { noop, useBoolean, getValue, IVariableTreeNode } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined, MenuOutlined } from '@ant-design/icons';
 import { Panel, InputCode, Action } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
@@ -65,26 +58,23 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     newStoreTemplate,
     showOptionsDropDown = true,
   } = props;
-  const codeValue = getCodeOfWrappedCode(valueProp);
-  const [inputValue, setInputValue] = useState(codeValue);
+  // const codeValue = getCodeOfWrappedCode(valueProp);
+  const [inputValue, setInputValue] = useState(valueProp);
   const [visible, { on, off }] = useBoolean();
 
   // when receive new value, sync state
   useEffect(() => {
-    const nextCodeValue = getCodeOfWrappedCode(valueProp);
-    setInputValue(nextCodeValue);
+    setInputValue(valueProp);
   }, [valueProp]);
 
   const change = useCallback(
     (code: string) => {
-      if (code === codeValue) {
+      if (code === valueProp) {
         return;
       }
-
-      // FIXME: 这里要加提示，告诉用户应该怎么写
-      onChange(code ? wrapCode(code) : undefined);
+      onChange(code);
     },
-    [codeValue, onChange],
+    [valueProp, onChange],
   );
 
   const sandbox = useSandboxQuery();

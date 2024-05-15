@@ -1,9 +1,7 @@
-import React, { useMemo } from 'react';
-import { wrapCode } from '@music163/tango-helpers';
+import React, { useEffect, useState } from 'react';
 import { ActionSelect, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { Box } from 'coral-system';
-import { value2expressionCode } from '@music163/tango-core';
 
 const options = [
   { label: '取消自定义', value: '' },
@@ -55,25 +53,36 @@ const defaultGetTemplate = (key: string) => {
  */
 export function JsxSetter(props: JsxSetterProps) {
   const { showInput, getTemplate = defaultGetTemplate, value, onChange } = props;
-  const inputCode = useMemo(() => value2expressionCode(value), [value]);
+  const [inputValue, setInputValue] = useState(value);
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
   return (
     <Box>
       <ActionSelect
         showInput={showInput}
-        defaultInputValue={inputCode}
+        defaultInputValue={value}
         options={options}
         text="设置此区域为"
         onInputChange={onChange}
         onSelect={(key) => {
           const [tpl, deps] = getTemplate(key);
           if (tpl) {
-            onChange(wrapCode(tpl), { relatedImports: deps });
+            onChange(tpl, { relatedImports: deps });
           } else {
             onChange(undefined);
           }
         }}
       />
-      {value && <InputCode value={inputCode} readOnly editable={false} />}
+      {value && (
+        <InputCode
+          value={value}
+          onChange={(val) => setInputValue(val)}
+          onBlur={() => {
+            onChange(inputValue);
+          }}
+        />
+      )}
     </Box>
   );
 }

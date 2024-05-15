@@ -15,12 +15,13 @@ function getRawCssValue(value: string) {
   return value;
 }
 
+// TODO: style object setter
+
 /**
  * 不稳定，暂不推荐使用
  */
 export function CssCodeSetter({ value, onChange }: FormItemComponentProps<string>) {
   const contentValue = getRawCssValue(value);
-  // TODO: relatedImports
   return (
     <Popover
       placement="leftBottom"
@@ -32,9 +33,7 @@ export function CssCodeSetter({ value, onChange }: FormItemComponentProps<string
             value={contentValue}
             onBlur={(newCode) => {
               if (newCode != contentValue) {
-                onChange(`{css\`${newCode}\`}`, {
-                  // relatedImports: ['']
-                });
+                onChange(`{css\`${newCode}\`}`, {});
               }
             }}
           />

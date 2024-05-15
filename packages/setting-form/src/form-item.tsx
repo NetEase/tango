@@ -54,6 +54,10 @@ export interface IFormItemCreateOptions {
    */
   alias?: string[];
   /**
+   * 设置器类型，value类设置器支持切换到codeSetter，默认为 value setter
+   */
+  type?: 'code' | 'value';
+  /**
    * 渲染设置器使用的组件
    */
   component?: React.ComponentType<FormItemComponentProps>;
@@ -84,12 +88,10 @@ function parseFieldValue(fieldValue: any) {
 
   const isCodeString = isString(fieldValue) && isWrappedCode(fieldValue);
   if (isCodeString) {
-    code = fieldValue;
-    const innerCode = getCodeOfWrappedCode(code);
-    value = runCode(innerCode);
+    code = getCodeOfWrappedCode(fieldValue);
+    value = runCode(code);
   } else {
-    const innerCode = value2code(fieldValue);
-    code = innerCode ? wrapCode(innerCode) : '';
+    code = value2code(fieldValue);
     value = fieldValue;
   }
   return [value, code];
@@ -98,15 +100,17 @@ function parseFieldValue(fieldValue: any) {
 interface UseSetterValueProps {
   fieldValue: any;
   setter: string;
+  setterType: IFormItemCreateOptions['type'];
 }
 
-function useSetterValue({ fieldValue, setter }: UseSetterValueProps) {
+function useSetterValue({ fieldValue, setter, setterType }: UseSetterValueProps) {
   const [value, code] = parseFieldValue(fieldValue);
   const [isCodeSetter, setIsCodeSetter] = useState(() => {
     // 同时不存在，表示是空置
     if (!code && !value) {
       return false;
     }
+
     // value 解析出错的情况，使用 codeSetter
     if (isNil(value)) {
       return true;
@@ -117,19 +121,37 @@ function useSetterValue({ fieldValue, setter }: UseSetterValueProps) {
     setIsCodeSetter(!isCodeSetter);
   };
 
+  let fixedSetter: string;
+  let setterValue: any;
+  if (setterType === 'code') {
+    fixedSetter = setter;
+    setterValue = code;
+  } else {
+    fixedSetter = isCodeSetter ? 'codeSetter' : setter;
+    setterValue = isCodeSetter ? code : value;
+  }
+
   return {
-    setterValue: isCodeSetter ? code : value,
-    value,
-    code,
-    setter: isCodeSetter ? 'codeSetter' : setter,
-    isCodeSetter,
-    toggleSetter,
+    setter: fixedSetter,
+    setterValue, // setter value
+    isCodeSetter, // 是否为 codeSetter
+    toggleSetter, // 切换 setter
   };
 }
 
 export function createFormItem(options: IFormItemCreateOptions) {
   const renderSetter =
     options.render ?? ((props: any) => React.createElement(options.component, props));
+  const setterType = options.type ?? 'value'; // 设置器的模式
+
+  function getShowToggleCodeButton(disableVariableSetter = options.disableVariableSetter) {
+    if (setterType === 'code') {
+      // codeSetter 无需切换按钮
+      return false;
+    }
+    // 如果用户设置了 disableVariableSetter，则不显示切换按钮
+    return !disableVariableSetter;
+  }
 
   function FormItem({
     name,
@@ -142,7 +164,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     setterProps,
     defaultValue,
     options: setterOptions,
-    disableVariableSetter: disableVariableSetterProp = options.disableVariableSetter,
+    disableVariableSetter,
     getVisible: getVisibleProp,
     getSetterProps: getSetterPropsProp,
     deprecated,
@@ -159,25 +181,27 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const { setterValue, setter, isCodeSetter, toggleSetter } = useSetterValue({
       fieldValue,
       setter: setterProp,
+      setterType,
     });
-
-    const showToggleCodeButton = !(disableSwitchExpressionSetter || disableVariableSetterProp);
 
     field.setConfig({
       validate: validate || options.validate,
     });
 
-    const baseComponentProps = clone(
-      {
-        value: setterValue,
-        defaultValue,
-        onChange: field.handleChange,
-        status: field.error ? 'error' : undefined,
-        placeholder,
-        options: setterOptions,
+    let baseComponentProps: FormItemComponentProps = {
+      value: setterValue,
+      defaultValue,
+      onChange(value, detail) {
+        if (setterType === 'code' && isString(value) && value) {
+          value = wrapCode(value);
+        }
+        field.handleChange(value, detail);
       },
-      false,
-    ) as FormItemComponentProps;
+      status: field.error ? 'error' : undefined,
+      placeholder,
+      options: setterOptions,
+    };
+    baseComponentProps = clone(baseComponentProps, false);
 
     let expProps = {};
 
@@ -185,8 +209,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     if (
       ['codeSetter', 'expressionSetter', 'expSetter', 'actionSetter', 'eventSetter'].includes(
         setter,
-      ) ||
-      isCodeSetter
+      )
     ) {
       expProps = {
         modalTitle: title,
@@ -216,6 +239,10 @@ export function createFormItem(options: IFormItemCreateOptions) {
       // 无样式模式
       return getVisible(model) ? setterNode : <div data-setter={setter} data-field={name} />;
     }
+
+    const showToggleCodeButton = getShowToggleCodeButton(
+      disableSwitchExpressionSetter || disableVariableSetter,
+    );
 
     return (
       <FormControl

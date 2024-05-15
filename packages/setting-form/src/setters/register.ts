@@ -10,7 +10,7 @@ const BASIC_SETTERS: IFormItemCreateOptions[] = [
     name: 'codeSetter',
     alias: ['expSetter', 'expressionSetter'],
     component: CodeSetter,
-    disableVariableSetter: true,
+    type: 'code',
   },
   {
     name: 'textSetter',

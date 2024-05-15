@@ -35,7 +35,7 @@ export function FormControl({
       <Box>{children}</Box>
       {footer}
       {!!error && (
-        <Box mt="m" color="red">
+        <Box mt="m" color="red" fontSize="12px">
           {error}
         </Box>
       )}
