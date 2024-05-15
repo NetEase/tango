@@ -12,11 +12,11 @@ import {
   runCode,
   wrapCode,
 } from '@music163/tango-helpers';
-import { ToggleButton, CodeOutlined, ErrorBoundary } from '@music163/tango-ui';
+import { ErrorBoundary } from '@music163/tango-ui';
 import { value2code } from '@music163/tango-core';
 import { InputProps } from 'antd';
 import { useFormModel, useFormVariable } from './context';
-import { FormControl } from './form-ui';
+import { FormControl, ToggleCodeButton } from './form-ui';
 import { Box, Text } from 'coral-system';
 import { ISetterOnChangeCallbackDetail } from './types';
 
@@ -89,6 +89,7 @@ function parseFieldValue(fieldValue: any) {
   const isCodeString = isString(fieldValue) && isWrappedCode(fieldValue);
   if (isCodeString) {
     code = getCodeOfWrappedCode(fieldValue);
+    // FIXME: runCode 的逻辑有问题，拿到的是解析的后的结果，不是真正的代码，这里应该是 code2value
     value = runCode(code);
   } else {
     code = value2code(fieldValue);
@@ -99,14 +100,27 @@ function parseFieldValue(fieldValue: any) {
 
 interface UseSetterValueProps {
   fieldValue: any;
-  setter: string;
-  setterType: IFormItemCreateOptions['type'];
+  setter?: string;
+  setterType?: IFormItemCreateOptions['type'];
+  /**
+   * 强制初始化为 codeSetter，适用于外部需要特别干预的情况
+   */
+  forceCodeSetter?: boolean;
 }
 
-function useSetterValue({ fieldValue, setter, setterType }: UseSetterValueProps) {
+export function useSetterValue({
+  fieldValue,
+  setter,
+  setterType,
+  forceCodeSetter,
+}: UseSetterValueProps) {
   const [value, code] = parseFieldValue(fieldValue);
   const [isCodeSetter, setIsCodeSetter] = useState(() => {
-    // 同时不存在，表示是空置
+    if (forceCodeSetter) {
+      return true;
+    }
+
+    // 同时不存在，表示是空置，使用默认模式
     if (!code && !value) {
       return false;
     }
@@ -115,6 +129,9 @@ function useSetterValue({ fieldValue, setter, setterType }: UseSetterValueProps)
     if (isNil(value)) {
       return true;
     }
+
+    // 其他情况，均使用默认模式
+    return false;
   });
 
   const toggleSetter = () => {
@@ -132,6 +149,8 @@ function useSetterValue({ fieldValue, setter, setterType }: UseSetterValueProps)
   }
 
   return {
+    value,
+    code,
     setter: fixedSetter,
     setterValue, // setter value
     isCodeSetter, // 是否为 codeSetter
@@ -195,7 +214,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
         if ((setterType === 'code' || isCodeSetter) && isString(value) && value) {
           value = wrapCode(value);
         }
-        field.handleChange(value, detail);
+        field.setValue(value, detail);
       },
       status: field.error ? 'error' : undefined,
       placeholder,
@@ -257,18 +276,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
           <Box>
             {extra}
             {showToggleCodeButton ? (
-              <ToggleButton
-                borderRadius="s"
-                size="s"
-                shape="text"
-                type="primary"
-                tooltip={isCodeSetter ? '关闭 JS 表达式' : '使用 JS 表达式'}
-                tooltipPlacement="left"
-                selected={isCodeSetter}
-                onClick={() => toggleSetter()}
-              >
-                <CodeOutlined />
-              </ToggleButton>
+              <ToggleCodeButton selected={isCodeSetter} onToggle={toggleSetter} />
             ) : null}
           </Box>
         }

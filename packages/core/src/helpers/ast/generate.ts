@@ -204,7 +204,6 @@ export function node2value(node: t.Node, hasExpressionWrapper = true): any {
       break;
     }
     case 'ArrayExpression': {
-      // FIXME: array 统一按照 code 进行处理
       ret = node.elements.map((elementNode) => node2value(elementNode, hasExpressionWrapper));
       break;
     }
@@ -216,6 +215,7 @@ export function node2value(node: t.Node, hasExpressionWrapper = true): any {
 }
 
 /**
+ * TODO: 是不是要和 node2value 的逻辑合并
  * jsx prop value 节点转为 js value
  */
 export function jsxAttributeValueNode2value(node: t.Node): any {
@@ -243,7 +243,20 @@ export function jsxAttributeValueNode2value(node: t.Node): any {
     case 'NullLiteral':
       ret = null;
       break;
-    case 'ObjectExpression': // { key }
+    case 'ObjectExpression': {
+      const isSimpleObject = node.properties.every(
+        (propertyNode) => propertyNode.type === 'ObjectProperty',
+      );
+      if (isSimpleObject) {
+        // simple object: { key1, key2, key3 }
+        ret = node2value(node);
+      } else {
+        // mixed object: { key1, ...obj1 }
+        ret = expression2code(node);
+        ret = wrapCode(ret);
+      }
+      break;
+    }
     case 'ArrayExpression': // [{ key }]
     case 'Identifier': // tango
     case 'MemberExpression': // this.props.data

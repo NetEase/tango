@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box } from 'coral-system';
 import { observer } from 'mobx-react-lite';
-import { IComponentProp } from '@music163/tango-helpers';
-import { SettingFormItem } from './form-item';
+import { IComponentProp, isString, wrapCode } from '@music163/tango-helpers';
+import { SettingFormItem, useSetterValue } from './form-item';
 import { FormModelProvider, useFormModel } from './context';
-import { FormControlGroup } from './form-ui';
+import { FormControlGroup, ToggleCodeButton } from './form-ui';
 import { isValidNestProps } from './helpers';
+import { CodeSetter } from './setters';
 
 export type SettingFormObjectProps = IComponentProp;
 
@@ -27,6 +28,12 @@ export const SettingFormObject = observer(
     const parent = useFormModel();
     const visible = getVisible(parent);
     const subModel = parent.getSubModel(name);
+    const subModelValue = subModel.values || defaultValue;
+    const forceCodeSetter = isString(subModelValue);
+    const { setterValue, isCodeSetter, toggleSetter } = useSetterValue({
+      fieldValue: subModelValue,
+      forceCodeSetter, // TODO: 最好是在内部 code2value 失败，而不是在这里强制设置
+    });
     return (
       <FormModelProvider value={subModel}>
         <Box className="FormObject" display={visible ? 'block' : 'none'}>
@@ -41,13 +48,30 @@ export const SettingFormObject = observer(
               parent.setValue(name, nextValue);
               parent.onChange(name, nextValue); // 非 Field 发起， 主动调一次
             }}
+            extra={
+              <ToggleCodeButton
+                confirm={forceCodeSetter}
+                selected={isCodeSetter}
+                onToggle={toggleSetter}
+              />
+            }
           >
-            {props.map((prop) => {
-              if (isValidNestProps(prop.props)) {
-                return <SettingFormObject key={prop.name} {...prop} />;
-              }
-              return <SettingFormItem key={prop.name} {...prop} />;
-            })}
+            {isCodeSetter ? (
+              <CodeSetter
+                value={setterValue}
+                onChange={(val) => {
+                  const nextVal = val ? wrapCode(val) : undefined;
+                  parent.setValue(name, nextVal);
+                }}
+              />
+            ) : (
+              props.map((prop) => {
+                if (isValidNestProps(prop.props)) {
+                  return <SettingFormObject key={prop.name} {...prop} />;
+                }
+                return <SettingFormItem key={prop.name} {...prop} />;
+              })
+            )}
           </FormControlGroup>
         </Box>
       </FormModelProvider>

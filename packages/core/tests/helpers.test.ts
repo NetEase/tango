@@ -17,6 +17,7 @@ import {
   getJSXElementAttributes,
   inferFileType,
   deepCloneNode,
+  code2value,
 } from '../src/helpers';
 import { FileType } from '../src/types';
 
@@ -208,10 +209,22 @@ describe('schema helpers', () => {
       },
     ],
   };
-  const cloned = deepCloneNode(schema);
-  expect(cloned.props.id).toBe(schema.props.id);
-  expect(cloned.children[0].props.id).toBe(schema.children[0].props.id);
+  it('deepCloneNode', () => {
+    const cloned = deepCloneNode(schema);
+    expect(cloned.props.id).toBe(schema.props.id);
+    expect(cloned.children[0].props.id).toBe(schema.children[0].props.id);
+    expect(cloned.id).not.toBe(schema.id);
+    expect(cloned.children[0].id).not.toBe(schema.children[0].id);
+  });
+});
 
-  expect(cloned.id).not.toBe(schema.id);
-  expect(cloned.children[0].id).not.toBe(schema.children[0].id);
+describe('code helper', () => {
+  it('code2value', () => {
+    expect(code2value('1')).toBe(1);
+    expect(code2value('{{1}}')).toBe(1);
+    expect(code2value('{{false}}')).toEqual(false);
+    expect(code2value('{{"foo"}}')).toBe('foo');
+    // TODO: 这种情况需要考虑下
+    expect(code2value('{ foo: "foo", ...{ bar: "bar"} }')).toBe('foo');
+  });
 });

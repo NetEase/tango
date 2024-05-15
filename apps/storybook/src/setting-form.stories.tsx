@@ -121,39 +121,6 @@ export function Basic() {
   );
 }
 
-export function InitValues() {
-  return (
-    <SettingFormDemo
-      initValues={{
-        bool: true,
-        bool1: '{{true}}',
-      }}
-      prototype={{
-        name: 'Sample',
-        package: 'sample-pkg',
-        type: 'element',
-        props: [
-          {
-            name: 'bool',
-            title: 'value初始化',
-            setter: 'boolSetter',
-          },
-          {
-            name: 'bool1',
-            title: 'value初始化',
-            setter: 'boolSetter',
-          },
-          {
-            name: 'bool2',
-            title: '无初值',
-            setter: 'boolSetter',
-          },
-        ],
-      }}
-    />
-  );
-}
-
 export function DeprecatedProp() {
   return (
     <SettingFormDemo
@@ -247,6 +214,102 @@ export function ObjectSetter() {
   );
 }
 
+export function InitValues() {
+  return (
+    <SettingFormDemo
+      initValues={{
+        bool: true,
+        bool1: '{{true}}',
+        style: {
+          background: 'red',
+        },
+        object: {
+          text: 'text',
+          number: 10,
+        },
+        object1: {
+          text: 'text',
+          number: '{{tango.stores.user?.age}}',
+        },
+        // 只会有一种情况传下来的是字符串，就是用户代码里存在 rest operator，这时候不需要额外处理，提示用户就使用代码模式
+        object2: '{{{ text: "text22", number: 22, ...{ extra: "some" } }}}',
+      }}
+      prototype={{
+        name: 'Sample',
+        package: 'sample-pkg',
+        type: 'element',
+        props: [
+          {
+            name: 'bool',
+            title: 'value初始化',
+            setter: 'boolSetter',
+          },
+          {
+            name: 'bool1',
+            title: 'value初始化',
+            setter: 'boolSetter',
+          },
+          {
+            name: 'bool2',
+            title: '无初值',
+            setter: 'boolSetter',
+          },
+          {
+            name: 'style',
+            title: 'codeSetter',
+            setter: 'codeSetter',
+          },
+          {
+            name: 'object',
+            props: [
+              {
+                name: 'text',
+                title: 'text',
+                setter: 'textSetter',
+              },
+              {
+                name: 'number',
+                title: 'number',
+                setter: 'numberSetter',
+              },
+            ],
+          },
+          {
+            name: 'object1',
+            props: [
+              {
+                name: 'text',
+                title: 'text',
+                setter: 'textSetter',
+              },
+              {
+                name: 'number',
+                title: 'number',
+                setter: 'numberSetter',
+              },
+            ],
+          },
+          {
+            name: 'object2',
+            props: [
+              {
+                name: 'text',
+                title: 'text',
+                setter: 'textSetter',
+              },
+              {
+                name: 'number',
+                title: 'number',
+                setter: 'numberSetter',
+              },
+            ],
+          },
+        ],
+      }}
+    />
+  );
+}
+
 export function Lite() {
   return (
     <Box width={320} border="solid" borderColor="line2">
@@ -261,7 +324,7 @@ export function Lite() {
   );
 }
 
-export function NoExpressionSwitch() {
+export function HideToggleCode() {
   const model = new FormModel({});
   return (
     <Box width={320} border="solid" borderColor="line2">

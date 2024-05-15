@@ -150,6 +150,8 @@ const objectWrapperPattern = /^[{\[].*[}\]]$/s;
 
 /**
  * 将代码片段转成 js 对象
+ * FIXME: 这个逻辑有问题，不严谨
+ * @warning 不严谨，待优化
  * @param code 代码文本
  * @param isStrict 是否为严格模式（是否废弃）
  * @returns

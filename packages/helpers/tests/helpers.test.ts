@@ -9,6 +9,7 @@ import {
   isValidUrl,
   getCodeBlockFormMarkdown,
   upperCamelCase,
+  runCode,
 } from '../src/helpers';
 
 describe('string', () => {
@@ -101,5 +102,12 @@ describe('string', () => {
     expect(getCodeBlockFormMarkdown('```json\n{\n  "disabled": true\n}\n```')).toBe(
       '\n{\n  "disabled": true\n}\n',
     );
+  });
+});
+
+describe('code helper', () => {
+  it('runCode', () => {
+    expect(runCode('{}')).toEqual({});
+    expect(runCode('{ foo: "foo" }')).toEqual({ foo: 'foo' });
   });
 });

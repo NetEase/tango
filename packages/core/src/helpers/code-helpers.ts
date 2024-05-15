@@ -1,5 +1,5 @@
 import { getCodeOfWrappedCode, isWrappedCode } from '@music163/tango-helpers';
-import { value2node, expression2code } from './ast';
+import { value2node, expression2code, code2expression, node2value } from './ast';
 
 /**
  * js value 转为代码字符串
@@ -47,3 +47,16 @@ export function value2code(val: any) {
 }
 
 export const value2expressionCode = value2code;
+
+/**
+ * 代码字符串转为 js value
+ * TODO: 暂时还没有使用，需要测试充分
+ */
+export function code2value(code: string) {
+  if (isWrappedCode(code)) {
+    code = getCodeOfWrappedCode(code);
+  }
+  const node = code2expression(code);
+  const value = node2value(node);
+  return value;
+}
