@@ -62,6 +62,7 @@ export const SettingFormObject = observer(
                 onChange={(val) => {
                   const nextVal = val ? wrapCode(val) : undefined;
                   parent.setValue(name, nextVal);
+                  parent.onChange(name, nextVal); // 非 Field 发起， 主动调一次
                 }}
               />
             ) : (
