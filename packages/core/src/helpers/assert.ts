@@ -40,7 +40,7 @@ const templatePattern = /^{(.+)}$/s;
 /**
  * 判断给定字符串是否被表达式容器`{expCode}`包裹
  * @param code
- * @deprecated 新版改为 {{code}} 作为容器
+ * @deprecated 新版改为 {{code}} 作为容器，使用 isWrappedCode 代替
  */
 export function isWrappedByExpressionContainer(code: string, isStrict = true) {
   if (isStrict && isValidExpressionCode(code)) {

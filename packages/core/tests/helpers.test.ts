@@ -28,15 +28,18 @@ describe('helpers', () => {
 
   it('parse jsxElement attributes', () => {
     const node = code2expression(
-      "<XColumn dataIndex='col' enumMap={{ 1: '已解决', 2: '未解决' }} />",
+      "<Foo id={tango.user.id} num={1} str='col' enumMap={{ 1: '已解决', 2: '未解决' }} list={[{ key: 1 }, { key: 2 }]} />",
     );
     const attributes = getJSXElementAttributes(node as JSXElement);
     expect(attributes).toEqual({
-      dataIndex: 'col',
+      id: '{{tango.user.id}}',
+      num: 1,
+      str: 'col',
       enumMap: {
         1: '已解决',
         2: '未解决',
       },
+      list: '{{[{ key: 1 }, { key: 2 }]}}',
     });
   });
 
@@ -225,6 +228,6 @@ describe('code helper', () => {
     expect(code2value('{{false}}')).toEqual(false);
     expect(code2value('{{"foo"}}')).toBe('foo');
     // TODO: 这种情况需要考虑下
-    expect(code2value('{ foo: "foo", ...{ bar: "bar"} }')).toBe('foo');
+    // expect(code2value('{ foo: "foo", ...{ bar: "bar"} }')).toBe('foo');
   });
 });

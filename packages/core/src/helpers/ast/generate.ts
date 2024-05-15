@@ -154,12 +154,12 @@ export function node2code(node: t.Node) {
 }
 
 /**
- * 将 t.Node 生成为 js 值（不适用于jsx value node）
+ * 将 t.Node 生成为 js 值
  * @param node ast node
- * @param hasExpressionWrapper 是否包裹表达式
+ * @param isWrapCode 是否包裹代码，例如 code -> {{code}}
  * @returns a plain javascript value
  */
-export function node2value(node: t.Node, hasExpressionWrapper = true): any {
+export function node2value(node: t.Node, isWrapCode = true): any {
   let ret;
   switch (node.type) {
     case 'StringLiteral':
@@ -185,26 +185,36 @@ export function node2value(node: t.Node, hasExpressionWrapper = true): any {
     case 'JSXElement': // {{<Box>hello</Box>}}
     case 'JSXFragment': // {{<><Box /></>}}
       ret = expression2code(node);
-      if (hasExpressionWrapper) {
+      if (isWrapCode) {
         ret = wrapCode(ret);
       }
       break;
     case 'ObjectExpression': {
-      // FIXME: object, array 统一按照 code 进行处理，不解析为对象
-      ret = node.properties.reduce((prev, propertyNode) => {
-        if (propertyNode.type === 'ObjectProperty') {
-          const key = keyNode2value(propertyNode.key);
-          const value = node2value(propertyNode.value, hasExpressionWrapper);
-          // key 可能是字符串，也可能是数字
-          prev[key] = value;
+      const isSimpleObject = node.properties.every(
+        (propertyNode) => propertyNode.type === 'ObjectProperty',
+      );
+      if (isSimpleObject) {
+        // simple object: { key1, key2, key3 }
+        ret = node.properties.reduce((prev, propertyNode) => {
+          if (propertyNode.type === 'ObjectProperty') {
+            const key = keyNode2value(propertyNode.key);
+            const value = node2value(propertyNode.value, isWrapCode);
+            prev[key] = value; // key 可能是字符串，也可能是数字
+          }
+          return prev;
+        }, {});
+      } else {
+        // mixed object, object property maybe SpreadElement or ObjectMethod, e.g. { key1, fn() {}, ...obj1 }
+        ret = expression2code(node);
+        if (wrapCode) {
+          ret = wrapCode(ret);
         }
-        // FIXME: property is a SpreadElement
-        return prev;
-      }, {});
+      }
       break;
     }
     case 'ArrayExpression': {
-      ret = node.elements.map((elementNode) => node2value(elementNode, hasExpressionWrapper));
+      // FIXME: 有可能会解析失败
+      ret = node.elements.map((elementNode) => node2value(elementNode, isWrapCode));
       break;
     }
     default:
@@ -215,7 +225,6 @@ export function node2value(node: t.Node, hasExpressionWrapper = true): any {
 }
 
 /**
- * TODO: 是不是要和 node2value 的逻辑合并
  * jsx prop value 节点转为 js value
  */
 export function jsxAttributeValueNode2value(node: t.Node): any {
@@ -234,48 +243,14 @@ export function jsxAttributeValueNode2value(node: t.Node): any {
       // <Foo bar={[]}>
       ret = jsxAttributeValueNode2value(node.expression);
       break;
-    case 'StringLiteral':
-    case 'NumericLiteral':
-    case 'BooleanLiteral': {
-      ret = node.value;
-      break;
-    }
-    case 'NullLiteral':
-      ret = null;
-      break;
-    case 'ObjectExpression': {
-      const isSimpleObject = node.properties.every(
-        (propertyNode) => propertyNode.type === 'ObjectProperty',
-      );
-      if (isSimpleObject) {
-        // simple object: { key1, key2, key3 }
-        ret = node2value(node);
-      } else {
-        // mixed object: { key1, ...obj1 }
-        ret = expression2code(node);
-        ret = wrapCode(ret);
-      }
-      break;
-    }
-    case 'ArrayExpression': // [{ key }]
-    case 'Identifier': // tango
-    case 'MemberExpression': // this.props.data
-    case 'OptionalMemberExpression': // a?.b
-    case 'UnaryExpression': // !false
-    case 'ArrowFunctionExpression': // () => {}
-    case 'TemplateLiteral': // `hello ${text}`
-    case 'ConditionalExpression': // a ? 'foo' : 'bar'
-    case 'LogicalExpression': // a || b
-    case 'BinaryExpression': // a + b
-    case 'TaggedTemplateExpression': // css``
-    case 'CallExpression': // [1,2,3].map(fn)
-    case 'JSXElement': // <Box>hello</Box>
-    case 'JSXFragment': // <><Box /></>
+    case 'ArrayExpression': {
+      // 数组统一处理为 code
       ret = expression2code(node);
       ret = wrapCode(ret);
       break;
+    }
     default: {
-      logger.error('unknown ast node:', node);
+      ret = node2value(node);
       break;
     }
   }

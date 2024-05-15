@@ -86,12 +86,18 @@ export function registerComponentPrototype(proto) {
 
 const routesCode = `
 import Index from "./pages/list";
+import Detail from "./pages/detail";
 
 const routes = [
   {
     path: '/',
     exact: true,
     component: Index
+  },
+  {
+    path: '/detail',
+    exact: true,
+    component: Detail
   },
 ];
 
@@ -247,6 +253,23 @@ class App extends React.Component {
 export default definePage(App);
 `;
 
+export const emptyPageCode = `
+import React from "react";
+import { definePage } from "@music163/tango-boot";
+import {
+  Page,
+  Section,
+} from "@music163/antd";
+
+function App() {
+  return (<Page title="Detail Page">
+    <Section></Section>
+  </Page>)
+}
+
+export default definePage(App);
+`;
+
 const componentsButtonCode = `
 import React from 'react';
 import { registerComponentPrototype } from '../utils';
@@ -386,6 +409,7 @@ export const sampleFiles = [
   { filename: '/src/style.css', code: cssCode },
   { filename: '/src/index.js', code: entryCode },
   { filename: '/src/pages/list.js', code: viewHomeCode },
+  { filename: '/src/pages/detail.js', code: emptyPageCode },
   { filename: '/src/components/button.js', code: componentsButtonCode },
   { filename: '/src/components/input.js', code: componentsInputCode },
   { filename: '/src/components/index.js', code: componentsEntryCode },

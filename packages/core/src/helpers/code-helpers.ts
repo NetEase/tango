@@ -51,6 +51,7 @@ export const value2expressionCode = value2code;
 /**
  * 代码字符串转为 js value
  * TODO: 暂时还没有使用，需要测试充分
+ * FIXME: expect(code2value('{ foo: "foo", ...{ bar: "bar"} }')).toEqual({ foo: 'foo', bar: 'bar' });
  */
 export function code2value(code: string) {
   if (isWrappedCode(code)) {
