@@ -318,8 +318,8 @@ export function SettingFormItem(props: FormItemProps) {
       <Fallback
         {...props}
         footer={
-          <Text color="red" mt="m">
-            {props.setter} is invalid
+          <Text color="#faad14" mt="m">
+            invalid {props.setter}, fallback to codeSetter
           </Text>
         }
       />

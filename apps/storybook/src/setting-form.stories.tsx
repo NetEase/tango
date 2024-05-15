@@ -125,7 +125,7 @@ export function DeprecatedProp() {
   return (
     <SettingFormDemo
       prototype={{
-        name: 'Validator',
+        name: 'Deprecated',
         package: 'sample-pkg',
         type: 'element',
         props: [
@@ -152,7 +152,7 @@ export function Validate() {
   return (
     <SettingFormDemo
       prototype={{
-        name: 'Validator',
+        name: 'Validate',
         package: 'sample-pkg',
         type: 'element',
         props: [
@@ -182,7 +182,7 @@ export function ObjectSetter() {
   return (
     <SettingFormDemo
       prototype={{
-        name: 'Validator',
+        name: 'Object',
         package: 'sample-pkg',
         type: 'element',
         props: [
@@ -235,7 +235,7 @@ export function InitValues() {
         object2: '{{{ text: "text22", number: 22, ...{ extra: "some" } }}}',
       }}
       prototype={{
-        name: 'Sample',
+        name: 'InitValues',
         package: 'sample-pkg',
         type: 'element',
         props: [
@@ -334,14 +334,9 @@ export function HideToggleCode() {
 }
 
 const prototypeHasExtraProps: IComponentPrototype = {
-  name: 'Test',
-  exportType: 'namedExport',
-  title: '测试',
-  icon: 'icon-test',
+  name: 'ExtraProps',
   type: 'element',
-  category: 'basic',
   package: '@music163/antd',
-  hasChildren: false,
   props: [
     {
       name: 'choice',
