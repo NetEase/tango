@@ -234,6 +234,7 @@ function NewOptionForm({ fields = [], initialValues = {}, onSubmit }: NewOptionF
           label={item.label}
           name={item.name}
           required={item.required}
+          rules={[{ required: item.required }]}
           valuePropName={item.valuePropName}
           extra={item.extra}
           style={{
@@ -260,7 +261,7 @@ interface ListSetterProps extends FormItemComponentProps<any[]> {
   addBtnText?: string;
   getListItemKey?: (item: any) => React.Key;
   renderItem?: (item: any) => React.ReactNode;
-};
+}
 
 const defaultListItemFormFields: ListSetterItemProps['formFields'] = [
   { label: 'key', name: 'key', required: true },

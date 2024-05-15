@@ -129,9 +129,6 @@ export function value2node(
   | t.Expression {
   let ret;
   switch (typeof value) {
-    case 'number':
-      ret = t.numericLiteral(value);
-      break;
     case 'string':
       if (isWrappedCode(value)) {
         // 再检查是否是代码 {{code}}，例如 {{this.foo}}, {{1}}
@@ -141,6 +138,9 @@ export function value2node(
         // 否则当成字符串处理
         ret = t.stringLiteral(value);
       }
+      break;
+    case 'number':
+      ret = t.numericLiteral(value);
       break;
     case 'boolean':
       ret = t.booleanLiteral(value);

@@ -192,7 +192,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
       value: setterValue,
       defaultValue,
       onChange(value, detail) {
-        if (setterType === 'code' && isString(value) && value) {
+        if ((setterType === 'code' || isCodeSetter) && isString(value) && value) {
           value = wrapCode(value);
         }
         field.handleChange(value, detail);
