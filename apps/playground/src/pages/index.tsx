@@ -1,5 +1,5 @@
 import { Box } from 'coral-system';
-import { Button, Space } from 'antd';
+import { Button, Form, Input, Modal, Space } from 'antd';
 import {
   Designer,
   DesignerPanel,
@@ -15,15 +15,18 @@ import {
 } from '@music163/tango-designer';
 import { createEngine, Workspace } from '@music163/tango-core';
 import prototypes from '../helpers/prototypes';
-import { Logo, ProjectDetail, bootHelperVariables, sampleFiles } from '../helpers';
+import { Logo, ProjectDetail, bootHelperVariables, emptyPageCode, sampleFiles } from '../helpers';
 import {
   ApiOutlined,
   AppstoreAddOutlined,
   BuildOutlined,
   ClusterOutlined,
   FunctionOutlined,
+  PlusOutlined,
   createFromIconfontCN,
 } from '@ant-design/icons';
+import { Action } from '@music163/tango-ui';
+import { useState } from 'react';
 
 // 1. 实例化工作区
 const workspace = new Workspace({
@@ -80,6 +83,10 @@ const menuData = {
       title: 'Formily表单',
       items: ['FormilyForm', 'FormilyFormItem', 'FormilySubmit', 'FormilyReset'],
     },
+    {
+      title: '数据展示',
+      items: ['Comment'],
+    },
   ],
 };
 
@@ -87,6 +94,8 @@ const menuData = {
  * 5. 平台初始化，访问 https://local.netease.com:6006/
  */
 export default function App() {
+  const [showNewPageModal, setShowNewPageModal] = useState(false);
+  const [form] = Form.useForm();
   return (
     <Designer
       theme={themeLight}
@@ -104,6 +113,14 @@ export default function App() {
           <Box px="l">
             <Toolbar>
               <Toolbar.Item key="routeSwitch" placement="left" />
+              <Toolbar.Item key="addPage" placement="left">
+                <Action
+                  tooltip="添加页面"
+                  shape="outline"
+                  icon={<PlusOutlined />}
+                  onClick={() => setShowNewPageModal(true)}
+                />
+              </Toolbar.Item>
               <Toolbar.Item key="history" placement="left" />
               <Toolbar.Item key="preview" placement="left" />
               <Toolbar.Item key="modeSwitch" placement="right" />
@@ -115,6 +132,30 @@ export default function App() {
                 </Space>
               </Toolbar.Item>
             </Toolbar>
+            <Modal
+              title="添加新页面"
+              open={showNewPageModal}
+              onCancel={() => setShowNewPageModal(false)}
+              footer={null}
+            >
+              <Form
+                form={form}
+                onFinish={(values) => {
+                  workspace.addViewFile(values.name, emptyPageCode);
+                  setShowNewPageModal(false);
+                }}
+                layout="vertical"
+              >
+                <Form.Item label="文件名" name="name" required rules={[{ required: true }]}>
+                  <Input placeholder="请输入文件名" />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    提交
+                  </Button>
+                </Form.Item>
+              </Form>
+            </Modal>
           </Box>
         }
       >

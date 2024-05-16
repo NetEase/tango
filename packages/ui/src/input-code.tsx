@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Box, HTMLCoralProps } from 'coral-system';
+import { Box, HTMLCoralProps, css } from 'coral-system';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { javascript, javascriptLanguage, esLint } from '@codemirror/lang-javascript';
 import { CompletionContext } from '@codemirror/autocomplete';
@@ -200,6 +200,7 @@ function useInputCode({
       lineNumbers: showLineNumbers ?? lineNumbers,
       foldGutter: showFoldGutter ?? foldGutter,
       searchKeymap: false, // 默认关闭搜索快捷键，原因：https://github.com/uiwjs/react-codemirror/issues/280
+      scrollbarStyle: 'null',
     },
   };
 }

@@ -14,7 +14,7 @@ import { FormModelProvider, FormVariableProvider } from './context';
 import { FormModel, FormModelOptionsType } from './form-model';
 import { SettingFormObject } from './form-object';
 import { isValidNestProps } from './helpers';
-import { registerBuiltinSetters } from './setter';
+import { registerBuiltinSetters } from './setters/register';
 import { FormHeader } from './form-ui';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
@@ -76,7 +76,7 @@ interface IFormTabsGroupOption {
 
 const internalGroups: IFormTabsGroupOption[] = [
   { label: '基本', value: 'basic' },
-  // { label: '事件', value: 'event' },
+  { label: '事件', value: 'event' },
   { label: '样式', value: 'style' },
   { label: '高级', value: 'advanced' },
 ];
@@ -127,7 +127,7 @@ export interface SettingFormProps {
    */
   renderItemExtra?: (props: IComponentProp) => React.ReactNode;
   /**
-   * 是否允许表单项切换到表达式设置器
+   * 是否禁用 codeSetter 切换，默认所有的 setter 都支持切换到 codeSetter
    */
   disableSwitchExpressionSetter?: boolean;
 }
@@ -217,7 +217,7 @@ export function SettingForm({
             <Box px="l" py="m">
               {showIdentifier && (
                 <FormHeader
-                  title={prototype.title}
+                  title={prototype.title || prototype.name}
                   subTitle={
                     <SettingFormItem
                       noStyle

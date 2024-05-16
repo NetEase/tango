@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Input, InputProps } from 'antd';
-import { InputCode } from '@music163/tango-ui';
-import { FormItemComponentProps, register } from './form-item';
-import { Box, css } from 'coral-system';
-
-export function ExpressionSetter({ value, onChange, ...rest }: FormItemComponentProps<string>) {
-  return <InputCode onChange={(val) => onChange?.(val)} value={value || ''} {...rest} />;
-}
-
-export function TextSetter({ onChange, ...rest }: FormItemComponentProps<string>) {
-  return <Input onChange={(e) => onChange?.(e.target.value)} {...rest} />;
-}
+import { Input, InputProps, Tooltip } from 'antd';
+import { css, Box } from 'coral-system';
+import { FormItemComponentProps } from '../form-item';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const idInputStyle = css`
   > .ant-input-borderless {
@@ -53,7 +45,11 @@ export function IdSetter({
         onChange(e) {
           const newValue = e.target.value;
           setValue(e.target.value);
-          setError(newValue && !idPattern.test(newValue) ? 'error' : '');
+          setError(
+            newValue && !idPattern.test(newValue)
+              ? '非法的组件ID，必须使用字母开头的字母数字组合，例如 button1'
+              : '',
+          );
         },
       }
     : {
@@ -66,26 +62,19 @@ export function IdSetter({
 
   return (
     <Box css={idInputStyle}>
-      <Input placeholder={placeholder} value={value} {...__props} {...rest} />
+      <Input
+        placeholder={placeholder}
+        value={value}
+        {...__props}
+        {...rest}
+        suffix={
+          error ? (
+            <Tooltip title={error} color="#ff4d4f">
+              <ExclamationCircleOutlined style={{ color: 'red' }} />
+            </Tooltip>
+          ) : null
+        }
+      />
     </Box>
   );
-}
-
-export function registerBuiltinSetters() {
-  // 预注册基础 Setter
-  register({
-    name: 'expressionSetter',
-    component: ExpressionSetter,
-    disableVariableSetter: true,
-  });
-
-  register({
-    name: 'textSetter',
-    component: TextSetter,
-  });
-
-  register({
-    name: 'idSetter',
-    component: IdSetter,
-  });
 }

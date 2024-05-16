@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Box } from 'coral-system';
 // @ts-ignore
 import { toJSON } from 'cssjson';
-import { InputNumber, Space } from 'antd';
+import { InputNumber, Slider, Space } from 'antd';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
-import { SliderSetter } from './number-setter';
 import {
   BgSetter,
   BorderSetter,
@@ -16,10 +15,11 @@ import {
   FlexJustifyContentSetter,
   SpacingSetter,
 } from './style-setter';
+import { wrapCode } from '@music163/tango-helpers';
 
 const getRawCssValue = (value: string) => {
-  if (value && value.startsWith('{css`')) {
-    return value.split('').slice(5, -2).join('').trim();
+  if (value && value.startsWith('{{css`')) {
+    return value.split('').slice(6, -3).join('').trim();
   }
   return value;
 };
@@ -51,7 +51,8 @@ const cssPattern = (string: string, name: string): any => {
 };
 
 /**
- * 废弃
+ * coral-system css prop
+ * @example 提供 css-in-js 代码支持，例如 css`background: red;`
  * @deprecated 使用嵌套属性代替
  */
 export function CssSetter(props: FormItemComponentProps<string>) {
@@ -82,16 +83,14 @@ export function CssSetter(props: FormItemComponentProps<string>) {
 
   useEffect(() => {
     if (contentValue || contentValue === '') {
-      onChange(`{css\`${contentValue}\`}`, {
-        // relatedImports: ['']
-      });
+      onChange(wrapCode(`css\`${contentValue}\``));
     }
   }, [contentValue]);
 
   const isFlex = ['flex', 'inline-flex'].includes(display);
 
   return (
-    <Box>
+    <Box bg="fill1">
       <ItemGroup title="布局方式">
         <DisplaySetter
           value={toJSON(contentValue).attributes?.display}
@@ -204,12 +203,12 @@ export function CssSetter(props: FormItemComponentProps<string>) {
         />
       </ItemGroup>
       <ItemGroup title="透明度">
-        <SliderSetter
+        <Slider
           max={1}
           min={0}
           step={0.1}
           value={toJSON(contentValue).attributes?.opacity || 1}
-          onChange={(v) => {
+          onChange={(v: number) => {
             changeStyle(v, 'opacity');
           }}
         />

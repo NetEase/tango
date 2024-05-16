@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { clone, ComponentPropValidate, IComponentProp, useBoolean } from '@music163/tango-helpers';
-import { isWrappedByExpressionContainer } from '@music163/tango-core';
-import { ToggleButton, CodeOutlined } from '@music163/tango-ui';
+import {
+  clone,
+  ComponentPropValidate,
+  getCodeOfWrappedCode,
+  IComponentProp,
+  isNil,
+  isString,
+  isWrappedCode,
+  wrapCode,
+} from '@music163/tango-helpers';
+import { ErrorBoundary } from '@music163/tango-ui';
+import { code2value, value2code } from '@music163/tango-core';
 import { InputProps } from 'antd';
 import { useFormModel, useFormVariable } from './context';
-import { FormControl } from './form-ui';
+import { FormControl, ToggleCodeButton } from './form-ui';
 import { Box, Text } from 'coral-system';
 import { ISetterOnChangeCallbackDetail } from './types';
 
@@ -44,6 +53,10 @@ export interface IFormItemCreateOptions {
    */
   alias?: string[];
   /**
+   * 设置器类型，value类设置器支持切换到codeSetter，默认为 value setter
+   */
+  type?: 'code' | 'value';
+  /**
    * 渲染设置器使用的组件
    */
   component?: React.ComponentType<FormItemComponentProps>;
@@ -64,9 +77,98 @@ export interface IFormItemCreateOptions {
 const defaultGetSetterProps = () => ({});
 const defaultGetVisible = () => true;
 
+function parseFieldValue(fieldValue: any) {
+  let value: any;
+  let code: string;
+
+  if (!fieldValue) {
+    return [];
+  }
+
+  const isCodeString = isString(fieldValue) && isWrappedCode(fieldValue);
+  if (isCodeString) {
+    code = getCodeOfWrappedCode(fieldValue);
+    value = code2value(code);
+  } else {
+    code = value2code(fieldValue);
+    value = fieldValue;
+  }
+  return [value, code];
+}
+
+interface UseSetterValueProps {
+  fieldValue: any;
+  setter?: string;
+  setterType?: IFormItemCreateOptions['type'];
+  /**
+   * 强制初始化为 codeSetter，适用于外部需要特别干预的情况
+   */
+  forceCodeSetter?: boolean;
+}
+
+export function useSetterValue({
+  fieldValue,
+  setter,
+  setterType,
+  forceCodeSetter,
+}: UseSetterValueProps) {
+  const [value, code] = parseFieldValue(fieldValue);
+  const [isCodeSetter, setIsCodeSetter] = useState(() => {
+    if (forceCodeSetter) {
+      return true;
+    }
+
+    // 同时不存在，表示是空置，使用默认模式
+    if (!code && !value) {
+      return false;
+    }
+
+    // value 解析出错的情况，使用 codeSetter
+    if (isNil(value)) {
+      return true;
+    }
+
+    // 其他情况，均使用默认模式
+    return false;
+  });
+
+  const toggleSetter = () => {
+    setIsCodeSetter(!isCodeSetter);
+  };
+
+  let fixedSetter: string;
+  let setterValue: any;
+  if (setterType === 'code') {
+    fixedSetter = setter;
+    setterValue = code;
+  } else {
+    fixedSetter = isCodeSetter ? 'codeSetter' : setter;
+    setterValue = isCodeSetter ? code : value;
+  }
+
+  return {
+    value,
+    code,
+    setter: fixedSetter,
+    setterValue, // setter value
+    isCodeSetter, // 是否为 codeSetter
+    toggleSetter, // 切换 setter
+  };
+}
+
 export function createFormItem(options: IFormItemCreateOptions) {
   const renderSetter =
     options.render ?? ((props: any) => React.createElement(options.component, props));
+  const setterType = options.type ?? 'value'; // 设置器的模式
+
+  function getShowToggleCodeButton(disableVariableSetter = options.disableVariableSetter) {
+    if (setterType === 'code') {
+      // codeSetter 无需切换按钮
+      return false;
+    }
+    // 如果用户设置了 disableVariableSetter，则不显示切换按钮
+    return !disableVariableSetter;
+  }
 
   function FormItem({
     name,
@@ -75,11 +177,11 @@ export function createFormItem(options: IFormItemCreateOptions) {
     placeholder,
     docs,
     autoCompleteOptions,
-    setter,
+    setter: setterProp,
     setterProps,
     defaultValue,
     options: setterOptions,
-    disableVariableSetter: disableVariableSetterProp = options.disableVariableSetter,
+    disableVariableSetter,
     getVisible: getVisibleProp,
     getSetterProps: getSetterPropsProp,
     deprecated,
@@ -91,36 +193,40 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const { disableSwitchExpressionSetter, showItemSubtitle } = useFormVariable();
     const model = useFormModel();
     const field = model.getField(name);
-    const value = toJS(field.value ?? defaultValue);
-    const disableVariableSetter = disableSwitchExpressionSetter ?? disableVariableSetterProp; // Form 的设置优先
-    const [isVariable, { toggle: toggleIsVariable }] = useBoolean(
-      () => !disableVariableSetter && isWrappedByExpressionContainer(value),
-    );
 
-    const setterName = isVariable ? 'expressionSetter' : setter;
+    const fieldValue = toJS(field.value ?? defaultValue);
+    const { setterValue, setter, isCodeSetter, toggleSetter } = useSetterValue({
+      fieldValue,
+      setter: setterProp,
+      setterType,
+    });
 
     field.setConfig({
       validate: validate || options.validate,
     });
 
-    const baseComponentProps = clone(
-      {
-        value,
-        defaultValue,
-        onChange: field.handleChange,
-        status: field.error ? 'error' : undefined,
-        placeholder,
-        options: setterOptions,
+    let baseComponentProps: FormItemComponentProps = {
+      value: setterValue,
+      defaultValue,
+      onChange(value, detail) {
+        if ((setterType === 'code' || isCodeSetter) && isString(value) && value) {
+          value = wrapCode(value);
+        }
+        field.setValue(value, detail);
       },
-      false,
-    ) as FormItemComponentProps;
+      status: field.error ? 'error' : undefined,
+      placeholder,
+      options: setterOptions,
+    };
+    baseComponentProps = clone(baseComponentProps, false);
 
     let expProps = {};
 
     // FIXME: 重新考虑这段代码的位置，外置这个逻辑
     if (
-      ['expressionSetter', 'expSetter', 'actionSetter', 'eventSetter'].includes(setter) ||
-      isVariable
+      ['codeSetter', 'expressionSetter', 'expSetter', 'actionSetter', 'eventSetter'].includes(
+        setter,
+      )
     ) {
       expProps = {
         modalTitle: title,
@@ -131,10 +237,10 @@ export function createFormItem(options: IFormItemCreateOptions) {
 
     const getSetterProps = getSetterPropsProp || defaultGetSetterProps;
     // 从注册表中获取 expSetter
-    const ExpressionSetter = REGISTERED_FORM_ITEM_MAP['expressionSetter']?.config?.component;
+    const CodeSetter = REGISTERED_FORM_ITEM_MAP['codeSetter']?.config?.component;
 
-    const setterNode = isVariable ? (
-      <ExpressionSetter {...expProps} {...baseComponentProps} />
+    const setterNode = isCodeSetter ? (
+      <CodeSetter {...expProps} {...baseComponentProps} />
     ) : (
       renderSetter({
         ...expProps,
@@ -148,8 +254,12 @@ export function createFormItem(options: IFormItemCreateOptions) {
 
     if (noStyle) {
       // 无样式模式
-      return getVisible(model) ? setterNode : <div data-setter={setterName} data-field={name} />;
+      return getVisible(model) ? setterNode : <div data-setter={setter} data-field={name} />;
     }
+
+    const showToggleCodeButton = getShowToggleCodeButton(
+      disableSwitchExpressionSetter || disableVariableSetter,
+    );
 
     return (
       <FormControl
@@ -163,27 +273,16 @@ export function createFormItem(options: IFormItemCreateOptions) {
         extra={
           <Box>
             {extra}
-            {!disableVariableSetter ? (
-              <ToggleButton
-                borderRadius="s"
-                size="s"
-                shape="text"
-                type="primary"
-                tooltip={isVariable ? '关闭 JS 表达式' : '使用 JS 表达式'}
-                tooltipPlacement="left"
-                selected={isVariable}
-                onClick={() => toggleIsVariable()}
-              >
-                <CodeOutlined />
-              </ToggleButton>
+            {showToggleCodeButton ? (
+              <ToggleCodeButton selected={isCodeSetter} onToggle={toggleSetter} />
             ) : null}
           </Box>
         }
         footer={footer}
-        data-setter={setterName}
+        data-setter={setter}
         data-field={name}
       >
-        {setterNode}
+        <ErrorBoundary>{setterNode}</ErrorBoundary>
       </FormControl>
     );
   }
@@ -202,9 +301,9 @@ const REGISTERED_FORM_ITEM_MAP: Record<string, ReturnType<typeof createFormItem>
  * @param config 注册选项
  */
 export function register(config: IFormItemCreateOptions) {
-  const names = [config.name, ...(config.alias ?? [])];
-  names.forEach((name) => {
-    REGISTERED_FORM_ITEM_MAP[name] = createFormItem(config);
+  REGISTERED_FORM_ITEM_MAP[config.name] = createFormItem(config);
+  (Array.isArray(config.alias) ? config.alias : []).forEach((alias) => {
+    REGISTERED_FORM_ITEM_MAP[alias] = REGISTERED_FORM_ITEM_MAP[config.name];
   });
 }
 
@@ -212,13 +311,13 @@ export function SettingFormItem(props: FormItemProps) {
   const { setter } = props;
   const Comp = REGISTERED_FORM_ITEM_MAP[setter];
   if (Comp == null) {
-    const Fallback = REGISTERED_FORM_ITEM_MAP.expressionSetter;
+    const Fallback = REGISTERED_FORM_ITEM_MAP.codeSetter;
     return (
       <Fallback
         {...props}
         footer={
-          <Text color="red" mt="m">
-            {props.setter} is invalid
+          <Text color="#faad14" mt="m">
+            invalid {props.setter}, fallback to codeSetter
           </Text>
         }
       />

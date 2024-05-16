@@ -17,6 +17,7 @@ import {
   getJSXElementAttributes,
   inferFileType,
   deepCloneNode,
+  code2value,
 } from '../src/helpers';
 import { FileType } from '../src/types';
 
@@ -27,15 +28,18 @@ describe('helpers', () => {
 
   it('parse jsxElement attributes', () => {
     const node = code2expression(
-      "<XColumn dataIndex='col' enumMap={{ 1: '已解决', 2: '未解决' }} />",
+      "<Foo id={tango.user.id} num={1} str='col' enumMap={{ 1: '已解决', 2: '未解决' }} list={[{ key: 1 }, { key: 2 }]} />",
     );
     const attributes = getJSXElementAttributes(node as JSXElement);
     expect(attributes).toEqual({
-      dataIndex: 'col',
+      id: '{{tango.user.id}}',
+      num: 1,
+      str: 'col',
       enumMap: {
         1: '已解决',
         2: '未解决',
       },
+      list: '{{[{ key: 1 }, { key: 2 }]}}',
     });
   });
 
@@ -80,15 +84,22 @@ describe('helpers', () => {
 
   it('expressionCode2ast', () => {
     expect(expressionCode2ast('<Button>hello</Button>').type).toEqual('File');
-    expect(expressionCode2ast('{<Button>hello</Button>}').type).toEqual('File');
     expect(expressionCode2ast('() => <Button>hello</Button>').type).toEqual('File');
-    expect(expressionCode2ast('{() => <Button>hello</Button>}').type).toEqual('File');
   });
 });
 
 describe('string helpers', () => {
   it('value2code: empty array', () => {
     expect(value2code([])).toEqual('[]');
+    expect(value2code({})).toEqual('{}');
+    expect(value2code(() => {})).toEqual('() => {}');
+    expect(value2code(true)).toEqual('true');
+    expect(value2code(false)).toEqual('false');
+    expect(value2code(1)).toEqual('1');
+    expect(value2code('hello')).toEqual('"hello"');
+    expect(value2code('{{window.tango}}')).toEqual('window.tango');
+    expect(value2code('{{() => {}}}')).toEqual('() => {}');
+    expect(value2code('{{1111}}')).toEqual('1111');
   });
 
   it('value2code: array', () => {
@@ -201,10 +212,26 @@ describe('schema helpers', () => {
       },
     ],
   };
-  const cloned = deepCloneNode(schema);
-  expect(cloned.props.id).toBe(schema.props.id);
-  expect(cloned.children[0].props.id).toBe(schema.children[0].props.id);
+  it('deepCloneNode', () => {
+    const cloned = deepCloneNode(schema);
+    expect(cloned.props.id).toBe(schema.props.id);
+    expect(cloned.children[0].props.id).toBe(schema.children[0].props.id);
+    expect(cloned.id).not.toBe(schema.id);
+    expect(cloned.children[0].id).not.toBe(schema.children[0].id);
+  });
+});
 
-  expect(cloned.id).not.toBe(schema.id);
-  expect(cloned.children[0].id).not.toBe(schema.children[0].id);
+describe('code helper', () => {
+  it('code2value', () => {
+    expect(code2value(`1`)).toEqual(1);
+    expect(code2value(`false`)).toEqual(false);
+    expect(code2value(`"foo"`)).toEqual('foo');
+    expect(code2value(`{ foo: "foo" }`)).toEqual({ foo: 'foo' });
+    expect(code2value(`[{ foo: "foo" }]`)).toEqual([{ foo: 'foo' }]);
+    expect(code2value(`{ foo: "foo", ...{ bar: "bar"} }`)).toBe(undefined);
+    expect(code2value(`() => {}`)).toBe(undefined);
+    expect(code2value(`tango.stores.app.name`)).toBe(undefined);
+    expect(code2value(`window`)).toBe(undefined);
+    expect(code2value(`<div>hello</div>`)).toBe(undefined);
+  });
 });

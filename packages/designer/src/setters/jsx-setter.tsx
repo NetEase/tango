@@ -1,5 +1,4 @@
-import React from 'react';
-import { isPlainString } from '@music163/tango-helpers';
+import React, { useEffect, useState } from 'react';
 import { ActionSelect, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { Box } from 'coral-system';
@@ -54,24 +53,36 @@ const defaultGetTemplate = (key: string) => {
  */
 export function JsxSetter(props: JsxSetterProps) {
   const { showInput, getTemplate = defaultGetTemplate, value, onChange } = props;
+  const [inputValue, setInputValue] = useState(value);
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
   return (
     <Box>
       <ActionSelect
         showInput={showInput}
-        defaultInputValue={isPlainString(value) ? value : undefined}
+        defaultInputValue={value}
         options={options}
         text="设置此区域为"
         onInputChange={onChange}
         onSelect={(key) => {
           const [tpl, deps] = getTemplate(key);
           if (tpl) {
-            onChange(`{${tpl}}`, { relatedImports: deps });
+            onChange(tpl, { relatedImports: deps });
           } else {
             onChange(undefined);
           }
         }}
       />
-      {value && <InputCode value={value} readOnly editable={false} />}
+      {value && (
+        <InputCode
+          value={value}
+          onChange={(val) => setInputValue(val)}
+          onBlur={() => {
+            onChange(inputValue);
+          }}
+        />
+      )}
     </Box>
   );
 }

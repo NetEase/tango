@@ -195,7 +195,7 @@ export class Field {
       error: computed,
       validate: action,
       handleBlur: action,
-      handleChange: action,
+      setValue: action,
     });
   }
 
@@ -248,7 +248,7 @@ export class Field {
     return this.validate('blur');
   };
 
-  handleChange = (nextValue: any, valueDetail: any) => {
+  setValue = (nextValue: any, valueDetail: any) => {
     this.detail = valueDetail;
     this.value = nextValue;
     return this.validate('change');

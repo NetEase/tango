@@ -3,7 +3,8 @@ import { Box } from 'coral-system';
 import { Button, Empty } from 'antd';
 import { PlayCircleOutlined } from '@ant-design/icons';
 import { InputCode, Panel, JsonView } from '@music163/tango-ui';
-import { isNil, logger, code2object, getValue } from '@music163/tango-helpers';
+import { isNil, logger, getValue } from '@music163/tango-helpers';
+import { code2value } from '@music163/tango-core';
 
 export interface ServicePreviewProps {
   appContext?: any;
@@ -22,7 +23,7 @@ export function ServicePreview({ appContext, functionKey }: ServicePreviewProps)
           editable
           showLineNumbers
           onChange={(value: string) => {
-            const obj = code2object(value);
+            const obj = code2value(value); // 转为 object 对象
             setPayload(obj);
           }}
         />

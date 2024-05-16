@@ -1,12 +1,12 @@
 import React from 'react';
-import { InputNumber, InputNumberProps, Slider } from 'antd';
-import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { InputNumber, Slider } from 'antd';
+import { FormItemComponentProps } from '../form-item';
 
 const style = {
   width: '100%',
 };
 
-export function NumberSetter({ onChange, ...props }: InputNumberProps) {
+export function NumberSetter({ onChange, ...props }: FormItemComponentProps<number>) {
   return (
     <InputNumber
       placeholder="请输入数字"
