@@ -24,14 +24,14 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/generator": "^7.23.5",
-    "@babel/parser": "^7.23.5",
-    "@babel/traverse": "^7.23.5",
-    "@babel/types": "^7.23.5",
+    "@babel/generator": "^7.24.5",
+    "@babel/parser": "^7.24.5",
+    "@babel/traverse": "^7.24.5",
+    "@babel/types": "^7.24.5",
     "@music163/tango-helpers": "^1.0.0",
     "@types/babel__generator": "^7.6.7",
-    "@types/babel__traverse": "^7.20.4",
-    "mobx": "6.12.0",
+    "@types/babel__traverse": "^7.20.5",
+    "mobx": "6.12.3",
     "path-browserify": "^1.0.1"
   },
   "peerDependencies": {
