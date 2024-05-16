@@ -4,6 +4,7 @@ import { IComponentPrototype } from '@music163/tango-helpers';
 import { BorderSetter, DisplaySetter } from '@music163/tango-designer/src/setters/style-setter';
 import { JsxSetter } from '@music163/tango-designer/src/setters/jsx-setter';
 import { RenderSetter, TableCellSetter } from '@music163/tango-designer/src/setters/render-setter';
+import { NumberSetter } from '@music163/tango-designer/src/setters/number-setter';
 import { Box } from 'coral-system';
 import { JsonView } from '@music163/tango-ui';
 import { toJS } from 'mobx';
@@ -35,6 +36,11 @@ register({
 register({
   name: 'tableCellSetter',
   component: TableCellSetter,
+});
+
+register({
+  name: 'numberSetter',
+  component: NumberSetter,
 });
 
 createFromIconfontCN({
@@ -273,6 +279,22 @@ const prototype: IComponentPrototype = {
       name: 'invalid',
       title: 'invalidSetter',
       setter: 'invalidSetter',
+    },
+    {
+      name: 'validate',
+      title: 'validate',
+      setter: 'numberSetter',
+      validate: (value) => {
+        if (!value && value !== 0) {
+          return '必填';
+        }
+        if (value < 0) {
+          return '必须大于 0';
+        }
+        if (value > 10) {
+          return '必须小于等于 10';
+        }
+      },
     },
   ],
 };

@@ -234,11 +234,11 @@ export class Field {
         this.state.validating = false;
         this.state.error = error;
 
+        // 校验错误，不触发 onChange
         if (error) {
           return error;
         }
 
-        // 校验错误，不触发 onChange
         this.parent?.onChange?.(this.name, this.value, this);
       }),
     );

@@ -155,6 +155,13 @@ export class Workspace extends EventTarget implements IWorkspace {
   private copyTempNodes: TangoNode[];
 
   /**
+   * 是否是合法的项目
+   */
+  get isValid() {
+    return !!this.tangoConfigJson && !!this.activeViewModule;
+  }
+
+  /**
    * 项目配置，返回解析后的 tango.config.json 文件
    */
   get projectConfig() {
@@ -1244,8 +1251,17 @@ export class Workspace extends EventTarget implements IWorkspace {
     let filename: string;
     this.routeModule?.routes.forEach((route) => {
       if (isPathnameMatchRoute(routePath, route.path) && route.importPath) {
-        const absolutePath = route.importPath.replace('.', '/src');
-        filename = this.getRealViewFilePath(absolutePath);
+        if (route.importPath.startsWith('@/')) {
+          filename = route.importPath;
+          const alias = this.tangoConfigJson.getValue('sandbox.alias') || {};
+          if (alias['@']) {
+            filename = filename.replace('@', alias['@']);
+          }
+          filename = this.getRealViewFilePath(filename);
+        } else {
+          const absolutePath = route.importPath.replace('.', '/src');
+          filename = this.getRealViewFilePath(absolutePath);
+        }
       }
     });
     return filename;

@@ -4,7 +4,7 @@
   "private": true,
   "author": "Wells <ww.sun@outlook.com>",
   "scripts": {
-    "dev": "HOST=local.netease.com PORT=8001 umi dev",
+    "dev": "cross-env HOST=local.netease.com PORT=8001 umi dev",
     "build": "umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",

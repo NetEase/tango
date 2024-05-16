@@ -21,6 +21,15 @@ export type ComponentDndRulesType = IComponentDndRules;
 export type ComponentPrototypeType = IComponentPrototype;
 
 /**
+ * 组件校验规则
+ */
+export type ComponentPropValidate = (
+  value: any,
+  field: any,
+  trigger: string,
+) => string | Promise<string>;
+
+/**
  * 组件属性类型
  */
 export interface IComponentProp<T = any> {
@@ -108,6 +117,10 @@ export interface IComponentProp<T = any> {
    * 动态设置表单项是否展示
    */
   getVisible?: (form: any) => boolean;
+  /**
+   * 表单值校验逻辑
+   */
+  validate?: ComponentPropValidate;
   /**
    * 标记属性是否已废弃
    */
@@ -288,6 +301,19 @@ export interface ITangoConfigJson {
    * 外部资源，例如 js, css 文件等
    */
   externalResources?: Record<string, any>;
+  /**
+   * 沙箱配置
+   */
+  sandbox?: {
+    /**
+     * 在沙箱中执行的脚本
+     */
+    evaluateJavaScript?: string;
+    /**
+     * 模块的别名
+     */
+    alias?: Record<string, string>;
+  };
   /**
    * 设计器配置
    */
