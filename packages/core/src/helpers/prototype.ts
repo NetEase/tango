@@ -91,6 +91,7 @@ export function getImportDeclarationPayloadByPrototype(
  * @example { name: 'foo', initValue: 1 } >> name={1}
  * @example { name: 'foo', initValue: () => {} } >> name={()=>{}}
  * @example { name: 'foo', initValue: { foo: 'bar' } } >> name={{ foo: 'bar' }}
+ * @example { name: 'foo', initValue: [{ foo: 'bar' }] } >> name={[{ foo: 'bar' }]}
  * @example { name: 'foo', initValue: 'bar' } >> name="bar"
  * @example { name: 'foo', initValue: '{() => {}}' } >> name={()=>{}}
  * @example { name: 'foo', initValue: '{{() => {}}}' } >> name={() => {}}

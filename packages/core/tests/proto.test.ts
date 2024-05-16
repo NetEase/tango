@@ -15,6 +15,9 @@ describe('prototype helpers', () => {
     expect(propDataToKeyValueString({ name: 'foo', initValue: { foo: 'bar' } })).toEqual(
       'foo={{ foo: "bar" }}',
     );
+    expect(propDataToKeyValueString({ name: 'foo', initValue: [{ foo: 'bar' }] })).toEqual(
+      'foo={[{ foo: "bar" }]}',
+    );
 
     // wrapped code
     expect(

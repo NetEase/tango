@@ -83,6 +83,10 @@ const menuData = {
       title: 'Formily表单',
       items: ['FormilyForm', 'FormilyFormItem', 'FormilySubmit', 'FormilyReset'],
     },
+    {
+      title: '数据展示',
+      items: ['Comment'],
+    },
   ],
 };
 

@@ -233,6 +233,8 @@ export function InitValues() {
         },
         // 只会有一种情况传下来的是字符串，就是用户代码里存在 rest operator，这时候不需要额外处理，提示用户就使用代码模式
         object2: '{{{ text: "text22", number: 22, ...{ extra: "some" } }}}',
+        list: [{ key: 'aaa' }, { key: 'bbb' }], // list object
+        list1: "{{[{ key: 'aaa' }, { key: 'bbb' }]}}", // raw code
       }}
       prototype={{
         name: 'InitValues',
@@ -303,6 +305,16 @@ export function InitValues() {
                 setter: 'numberSetter',
               },
             ],
+          },
+          {
+            name: 'list',
+            title: 'listSetter',
+            setter: 'listSetter',
+          },
+          {
+            name: 'list1',
+            title: 'listSetter',
+            setter: 'listSetter',
           },
         ],
       }}

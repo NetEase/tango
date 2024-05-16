@@ -2,7 +2,7 @@ const packageJson = {
   name: 'demo',
   private: true,
   dependencies: {
-    '@music163/antd': '0.2.2',
+    '@music163/antd': '0.2.5',
     '@music163/tango-boot': '0.2.5',
     react: '17.0.2',
     'react-dom': '17.0.2',
@@ -56,7 +56,7 @@ const tangoConfigJson = {
     },
     '@music163/antd': {
       description: '云音乐低代码中后台应用基础物料',
-      version: '0.2.2',
+      version: '0.2.5',
       library: 'TangoAntd',
       type: 'baseDependency',
       resources: [
