@@ -32,24 +32,6 @@ export function isValidFunctionCode(str: string) {
   }
 }
 
-/**
- * 是否是有效的对象字符串
- *
- * @example { foo: 'foo' }
- * @example [{ foo: 'foo' }]
- * TODO: 考虑箭头函数的情况 () => {}
- *
- * @param str
- * @returns
- */
-export function isValidObjectString(str: string) {
-  const obj = code2object(str);
-  if (obj && typeof obj === 'object') {
-    return true;
-  }
-  return false;
-}
-
 const templatePattern = /^{{(.+)}}$/s;
 
 /**
@@ -117,53 +99,6 @@ export function wrapCodeWithJSXExpressionContainer(code: string) {
 export function isPlainString(str: string) {
   const isWrapped = isString(str) && isWrappedCode(str);
   return isString && !isWrapped;
-}
-
-// 提供给代码执行环境的全局变量
-const patchCode = `
-var tango = {
-  stores: {},
-  services: {},
-  config: {},
-  refs: {},
-};
-`;
-
-/**
- * 将代码放到函数体中进行执行
- * @param code
- * @returns 函数执行的结果
- */
-export function runCode(code: string) {
-  let ret;
-  try {
-    // eslint-disable-next-line no-new-func
-    ret = new Function(`${patchCode}\n return ${code}`)();
-  } catch (err) {
-    // ignore error
-  }
-  return ret;
-}
-
-// eslint-disable-next-line no-useless-escape
-const objectWrapperPattern = /^[{\[].*[}\]]$/s;
-
-/**
- * 将代码片段转成 js 对象
- * FIXME: 这个逻辑有问题，不严谨
- * @warning 不严谨，待优化
- * @param code 代码文本
- * @param isStrict 是否为严格模式（是否废弃）
- * @returns
- */
-export function code2object(code: string, isStrict = true) {
-  // 非严格模式直接执行
-  // 严格模式下需检测 code 是一个对象
-  if (!isStrict || (isStrict && objectWrapperPattern.test(code))) {
-    const ret = runCode(code);
-    return typeof ret === 'object' ? ret : undefined;
-  }
-  return code;
 }
 
 const codeBlockPattern = /```(\w*)([\s\S]*?)```/g;

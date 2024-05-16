@@ -49,15 +49,18 @@ export function value2code(val: any) {
 export const value2expressionCode = value2code;
 
 /**
- * 代码字符串转为 js value
- * TODO: 暂时还没有使用，需要测试充分
- * FIXME: expect(code2value('{ foo: "foo", ...{ bar: "bar"} }')).toEqual({ foo: 'foo', bar: 'bar' });
+ * 代码字符串转为具体的 js value
+ * @example `() => {}` 返回 undefined
+ *
+ * @param rawCode 代码字符串
+ * @returns 返回解析后的 js value，包括：string, number, boolean, simpleObject, simpleArray
  */
-export function code2value(code: string) {
-  if (isWrappedCode(code)) {
-    code = getCodeOfWrappedCode(code);
-  }
-  const node = code2expression(code);
+export function code2value(rawCode: string) {
+  const node = code2expression(rawCode);
   const value = node2value(node);
+  if (isWrappedCode(value)) {
+    // 能转的就转，转不能的就返回空
+    return;
+  }
   return value;
 }

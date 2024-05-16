@@ -9,11 +9,10 @@ import {
   isNil,
   isString,
   isWrappedCode,
-  runCode,
   wrapCode,
 } from '@music163/tango-helpers';
 import { ErrorBoundary } from '@music163/tango-ui';
-import { value2code } from '@music163/tango-core';
+import { code2value, value2code } from '@music163/tango-core';
 import { InputProps } from 'antd';
 import { useFormModel, useFormVariable } from './context';
 import { FormControl, ToggleCodeButton } from './form-ui';
@@ -89,8 +88,7 @@ function parseFieldValue(fieldValue: any) {
   const isCodeString = isString(fieldValue) && isWrappedCode(fieldValue);
   if (isCodeString) {
     code = getCodeOfWrappedCode(fieldValue);
-    // FIXME: runCode 的逻辑有问题，拿到的是解析的后的结果，不是真正的代码，这里应该是 code2value
-    value = runCode(code);
+    value = code2value(code);
   } else {
     code = value2code(fieldValue);
     value = fieldValue;

@@ -1,7 +1,5 @@
 import {
   isVariableString,
-  isValidObjectString,
-  code2object,
   parseDndTrackId,
   getVariableContent,
   camelCase,
@@ -9,7 +7,6 @@ import {
   isValidUrl,
   getCodeBlockFormMarkdown,
   upperCamelCase,
-  runCode,
 } from '../src/helpers';
 
 describe('string', () => {
@@ -54,24 +51,6 @@ describe('string', () => {
     expect(getVariableContent('{{!false}}')).toBe('!false');
   });
 
-  it('isValidObjectString', () => {
-    expect(isValidObjectString('{ foo: "bar" }')).toBeTruthy();
-    expect(isValidObjectString('[{ foo: "bar" }]')).toBeTruthy();
-    expect(isValidObjectString('[1,2,3]')).toBeTruthy();
-    expect(isValidObjectString('["hello", "world"]')).toBeTruthy();
-    // expect(isValidObjectString('() => {}')).toBeTruthy();
-    expect(isValidObjectString('hello')).toBeFalsy();
-  });
-
-  it('code2object', () => {
-    expect(code2object(`{ foo: 12 }`)).toEqual({ foo: 12 });
-    expect(code2object(`[]`)).toEqual([]);
-    expect(code2object(`{this.foo}`)).toBeUndefined();
-    expect(code2object(`{foo}`)).toBeUndefined();
-    expect(code2object('() => {}')).toEqual('() => {}');
-    expect(code2object('hello')).toEqual('hello');
-  });
-
   it('parseDndTrackId', () => {
     expect(parseDndTrackId('Button:123')).toEqual(['Button', 'Button:123']);
     expect(parseDndTrackId('Button.Group:123')).toEqual(['Button.Group', 'Button.Group:123']);
@@ -102,12 +81,5 @@ describe('string', () => {
     expect(getCodeBlockFormMarkdown('```json\n{\n  "disabled": true\n}\n```')).toBe(
       '\n{\n  "disabled": true\n}\n',
     );
-  });
-});
-
-describe('code helper', () => {
-  it('runCode', () => {
-    expect(runCode('{}')).toEqual({});
-    expect(runCode('{ foo: "foo" }')).toEqual({ foo: 'foo' });
   });
 });

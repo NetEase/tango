@@ -223,11 +223,15 @@ describe('schema helpers', () => {
 
 describe('code helper', () => {
   it('code2value', () => {
-    expect(code2value('1')).toBe(1);
-    expect(code2value('{{1}}')).toBe(1);
-    expect(code2value('{{false}}')).toEqual(false);
-    expect(code2value('{{"foo"}}')).toBe('foo');
-    // TODO: 这种情况需要考虑下
-    // expect(code2value('{ foo: "foo", ...{ bar: "bar"} }')).toBe('foo');
+    expect(code2value(`1`)).toEqual(1);
+    expect(code2value(`false`)).toEqual(false);
+    expect(code2value(`"foo"`)).toEqual('foo');
+    expect(code2value(`{ foo: "foo" }`)).toEqual({ foo: 'foo' });
+    expect(code2value(`[{ foo: "foo" }]`)).toEqual([{ foo: 'foo' }]);
+    expect(code2value(`{ foo: "foo", ...{ bar: "bar"} }`)).toBe(undefined);
+    expect(code2value(`() => {}`)).toBe(undefined);
+    expect(code2value(`tango.stores.app.name`)).toBe(undefined);
+    expect(code2value(`window`)).toBe(undefined);
+    expect(code2value(`<div>hello</div>`)).toBe(undefined);
   });
 });
