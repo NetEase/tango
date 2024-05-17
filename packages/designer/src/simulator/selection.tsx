@@ -1,14 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
-import { DropdownProps, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import { HolderOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { DragPanel, IconFont } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
-import { ComponentsPanel, ComponentsPanelProps } from '../sidebar';
+import { ComponentsPopover } from '../components';
 
 /**
  * 选择辅助工具的对齐方式
@@ -111,14 +110,6 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   const prototype = workspace.componentPrototypes.get(data.name);
   const isPage = prototype?.type === 'page';
 
-  // 推荐使用的子组件
-  const insertedList = Array.isArray(prototype?.childrenName)
-    ? prototype.childrenName
-    : [prototype.childrenName].filter(Boolean);
-
-  // 推荐使用的代码片段
-  const siblingList = prototype.siblingNames ?? [];
-
   let selectionHelpersAlign: SelectionHelperAlignType = 'top-right';
   if (data.bounding) {
     if (data.bounding.left + data.bounding.width + boundingOffset < designer.viewport.width) {
@@ -157,30 +148,16 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
       style={style}
     >
       <>
-        <InsertedDropdown
-          title="添加兄弟组件"
-          footer={`点击，在 ${selectedNodeName} 的前方添加兄弟节点`}
-          siblingList={siblingList}
-          onSelect={(name) => {
-            workspace.insertBeforeSelectedNode(name);
-          }}
-        >
+        <ComponentsPopover type="before" prototype={prototype}>
           <Tooltip title={`在 ${selectedNodeName} 的前方添加兄弟节点`}>
             <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
           </Tooltip>
-        </InsertedDropdown>
-        <InsertedDropdown
-          title="添加兄弟组件"
-          footer={`点击，在 ${selectedNodeName} 的后方添加兄弟节点`}
-          siblingList={siblingList}
-          onSelect={(name) => {
-            workspace.insertAfterSelectedNode(name);
-          }}
-        >
+        </ComponentsPopover>
+        <ComponentsPopover type="after" prototype={prototype}>
           <Tooltip title={`在 ${selectedNodeName} 的后方添加兄弟节点`}>
             <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
           </Tooltip>
-        </InsertedDropdown>
+        </ComponentsPopover>
       </>
       {showActions && (
         <SelectionHelpers align={selectionHelpersAlign}>
@@ -220,19 +197,11 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
           />
           <SelectionToolSet>{!isPage && actions}</SelectionToolSet>
           {prototype.hasChildren !== false && (
-            <InsertedDropdown
-              title="添加子元素"
-              footer={`点击，在 ${selectedNodeName} 中添加子元素`}
-              insertedList={insertedList}
-              siblingList={siblingList}
-              onSelect={(name) => {
-                workspace.insertToSelectedNode(name);
-              }}
-            >
+            <ComponentsPopover title="添加子元素" prototype={prototype}>
               <Tooltip title="快捷添加子元素">
                 <SelectionHelper icon={<PlusOutlined />} />
               </Tooltip>
-            </InsertedDropdown>
+            </ComponentsPopover>
           )}
         </SelectionHelpers>
       )}
@@ -405,83 +374,3 @@ const NameSelector = ({ label, parents = [], onSelect = noop }: NameSelectorProp
     </NameSelectorWrapper>
   );
 };
-
-interface InsertedDropdownProps extends DropdownProps {
-  title?: string;
-  footer?: string;
-  insertedList?: string[];
-  siblingList?: string[];
-  onSelect?: (name: string) => void;
-}
-
-function InsertedDropdown({
-  title = '添加组件',
-  insertedList = [],
-  siblingList = [],
-  onSelect,
-  footer,
-  children,
-  ...props
-}: InsertedDropdownProps) {
-  const workspace = useWorkspace();
-
-  const [layout, setLayout] = useState<ComponentsPanelProps['layout']>('grid');
-
-  const changeLayout = () => {
-    setLayout(layout === 'grid' ? 'line' : 'grid');
-  };
-
-  const menuData = useMemo(() => {
-    const menuList = JSON.parse(JSON.stringify(workspace.menuData));
-    const commonList = menuList['common'];
-    if (siblingList?.length) {
-      commonList.unshift({
-        title: '代码片段',
-        items: siblingList,
-      });
-    }
-
-    if (insertedList?.length) {
-      commonList.unshift({
-        title: '推荐使用',
-        items: insertedList,
-      });
-    }
-
-    return menuList;
-  }, [insertedList, siblingList, workspace.menuData]);
-
-  return (
-    <DragPanel
-      title={title}
-      extra={
-        <Box fontSize="12px">
-          {layout === 'grid' ? (
-            <IconFont type="icon-liebiaoitem" onClick={changeLayout} />
-          ) : (
-            <IconFont type="icon-grid1" onClick={changeLayout} />
-          )}
-        </Box>
-      }
-      footer={footer}
-      width="330px"
-      placement="bottomCenter"
-      body={
-        <ComponentsPanel
-          isScope
-          showBizComps={false}
-          menuData={menuData}
-          layout={layout}
-          onItemSelect={onSelect}
-          style={{
-            maxHeight: '400px',
-            overflow: 'auto',
-          }}
-        />
-      }
-      {...props}
-    >
-      {children}
-    </DragPanel>
-  );
-}

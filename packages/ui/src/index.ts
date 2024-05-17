@@ -22,4 +22,5 @@ export * from './tabs';
 export * from './select-action';
 export * from './copy-clipboard';
 export * from './tag-select';
+export * from './popover';
 export * from './drag-panel';

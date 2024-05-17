@@ -35,15 +35,11 @@ const Snippet2ColumnLayout: IComponentPrototype = {
   package: '@music163/antd',
   initChildren: `
   <Columns columns={12}>
-    <Column colSpan={6}>
-      <Box />
-    </Column>
-    <Column colSpan={6}>
-      <Box />
-    </Column>
+    <Column colSpan={6}></Column>
+    <Column colSpan={6}></Column>
   </Columns>
   `,
-  relatedImports: ['Columns', 'Column', 'Box'],
+  relatedImports: ['Columns', 'Column'],
 };
 
 const Snippet3ColumnLayout: IComponentPrototype = {
@@ -56,17 +52,14 @@ const Snippet3ColumnLayout: IComponentPrototype = {
   initChildren: `
   <Columns columns={12}>
     <Column colSpan={4}>
-      <Box />
     </Column>
     <Column colSpan={4}>
-      <Box />
     </Column>
     <Column colSpan={4}>
-    <Box />
   </Column>
   </Columns>
   `,
-  relatedImports: ['Columns', 'Column', 'Box'],
+  relatedImports: ['Columns', 'Column'],
 };
 
 const SnippetButtonGroup: IComponentPrototype = {

@@ -15878,10 +15878,10 @@ react-merge-refs@^1.1.0:
   resolved "https://registry.npmmirror.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
 
-react-monaco-editor-lite@^1.3.9:
-  version "1.3.9"
-  resolved "https://registry.npmmirror.com/react-monaco-editor-lite/-/react-monaco-editor-lite-1.3.9.tgz#377a2126f2a26de7e478323c70b13a50f0c5c760"
-  integrity sha512-pE6CydX/kkisHArbV8GE+TvhukIiT9YYUYBq/cnDL7tfwhX/h1tKQKMJwItnkJvjozaB5uS+oK77GWV874figQ==
+react-monaco-editor-lite@^1.3.11:
+  version "1.3.11"
+  resolved "https://registry.npmmirror.com/react-monaco-editor-lite/-/react-monaco-editor-lite-1.3.11.tgz#b81b681d23f3ca46f54d4e01f13781bcff6a4a03"
+  integrity sha512-+9xlIn98Yp2hD8OFjRNpQiBx+wLFzsvvT5EgNTxReFrDhFAPPjivdLUCiex1ktzpkGTdo3fxDFUokckvO7hVvQ==
   dependencies:
     monaco-editor "^0.38.0"
     monaco-editor-textmate "^4.0.0"

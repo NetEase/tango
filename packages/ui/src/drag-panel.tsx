@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Text, styled } from 'coral-system';
-import { Dropdown, DropdownProps } from 'antd';
+import { Popover, PopoverProps, IconFont } from '@music163/tango-ui';
 import Draggable from 'react-draggable';
-import { IconFont } from '@music163/tango-ui';
 import { CloseOutlined } from '@ant-design/icons';
 
 const CloseIcon = styled(CloseOutlined)`
@@ -17,7 +16,7 @@ const CloseIcon = styled(CloseOutlined)`
   }
 `;
 
-interface DragPanelProps extends DropdownProps {
+interface DragPanelProps extends Omit<PopoverProps, 'overlay'> {
   // 标题
   title?: React.ReactNode | string;
   // 内容
@@ -28,6 +27,7 @@ interface DragPanelProps extends DropdownProps {
   width?: number | string;
   // 右上角区域
   extra?: React.ReactNode | string;
+  children?: React.ReactNode;
 }
 
 export function DragPanel({
@@ -44,71 +44,68 @@ export function DragPanel({
   const footerNode = typeof footer === 'function' ? footer(() => setOpen(false)) : footer;
 
   return (
-    <Dropdown
+    <Popover
       open={open}
-      placement="bottomCenter"
-      dropdownRender={() => {
-        return (
-          <Draggable handle=".selection-drag-bar">
+      onOpenChange={setOpen}
+      overlay={
+        <Draggable handle=".selection-drag-bar">
+          <Box
+            bg="#FFF"
+            borderRadius="m"
+            boxShadow="lowDown"
+            border="solid"
+            borderColor="line2"
+            overflow="hidden"
+            width={width}
+          >
+            {/* 头部区域 */}
             <Box
-              bg="#FFF"
-              borderRadius="m"
-              boxShadow="lowDown"
-              border="solid"
-              borderColor="line2"
-              overflow="hidden"
-              width={width}
+              px="l"
+              py="m"
+              className="selection-drag-bar"
+              borderBottom="1px solid var(--tango-colors-line2)"
+              cursor="move"
+              display="flex"
+              justifyContent="space-between"
             >
-              {/* 头部区域 */}
+              <Box fontSize="12px" color="text2">
+                <IconFont type="icon-applications" />
+                <Text marginLeft={'5px'}>{title}</Text>
+              </Box>
+              <Box color="text2" fontSize="12px" display="flex" alignItems="center">
+                {extra}
+                <CloseIcon
+                  onClick={() => {
+                    setOpen(false);
+                    props?.onOpenChange?.(false);
+                  }}
+                />
+              </Box>
+            </Box>
+            {/* 主体区域 */}
+            {body}
+            {/* 底部 */}
+            {footer && (
               <Box
                 px="l"
                 py="m"
-                className="selection-drag-bar"
-                borderBottom="1px solid var(--tango-colors-line2)"
-                cursor="move"
-                display="flex"
-                justifyContent="space-between"
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                background="var(--tango-colors-line1)"
+                fontSize="12px"
+                fontWeight={400}
+                borderTop="1px solid var(--tango-colors-line2)"
               >
-                <Box fontSize="12px" color="text2">
-                  <IconFont type="icon-applications" />
-                  <Text marginLeft={'5px'}>{title}</Text>
-                </Box>
-                <Box color="text2" fontSize="12px" display="flex" alignItems="center">
-                  {extra}
-                  <CloseIcon onClick={() => setOpen(false)} />
-                </Box>
+                {footerNode}
               </Box>
-              {/* 主体区域 */}
-              {body}
-              {/* 底部 */}
-              {footer && (
-                <Box
-                  px="l"
-                  py="m"
-                  whiteSpace="nowrap"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  background="var(--tango-colors-line1)"
-                  fontSize="12px"
-                  fontWeight={400}
-                  borderTop="1px solid var(--tango-colors-line2)"
-                >
-                  {footerNode}
-                </Box>
-              )}
-            </Box>
-          </Draggable>
-        );
-      }}
+            )}
+          </Box>
+        </Draggable>
+      }
       {...props}
     >
-      {React.cloneElement(children as any, {
-        onClick: (e: Event) => {
-          e.stopPropagation();
-          setOpen(!open);
-          (children as any).props?.onClick?.(e);
-        },
-      })}
-    </Dropdown>
+      {children}
+    </Popover>
   );
 }

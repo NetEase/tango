@@ -20,6 +20,10 @@ interface IDesignerOptions {
   workspace: IWorkspace;
   simulator?: SimulatorNameType | ISimulatorType;
   activeSidebarPanel?: string;
+  /**
+   * 默认激活的视图模式
+   */
+  activeView?: DesignerViewType;
 }
 
 const ISimulatorTypes: Record<string, ISimulatorType> = {
@@ -65,6 +69,16 @@ export class Designer {
   _showSmartWizard = false;
 
   /**
+   * 是否显示添加组件面板
+   */
+  _showAddComponentPopover = false;
+
+  /**
+   * 添加组件面板的位置
+   */
+  _addComponentPopoverPosition = { clientX: 0, clientY: 0 };
+
+  /**
    * 是否显示右侧面板
    */
   _showRightPanel = true;
@@ -73,11 +87,6 @@ export class Designer {
    * 是否预览模式
    */
   _isPreview = false;
-
-  /**
-   * 默认展开的侧边栏
-   */
-  defaultActiveSidebarPanel?: string;
 
   private readonly workspace: IWorkspace;
 
@@ -109,10 +118,22 @@ export class Designer {
     return this._showRightPanel;
   }
 
+  get showAddComponentPopover() {
+    return this._showAddComponentPopover;
+  }
+
+  get addComponentPopoverPosition() {
+    return this._addComponentPopoverPosition;
+  }
+
   constructor(options: IDesignerOptions) {
     this.workspace = options.workspace;
 
-    const { simulator, activeSidebarPanel: defaultActiveSidebarPanel } = options;
+    const {
+      simulator,
+      activeSidebarPanel: defaultActiveSidebarPanel,
+      activeView: defaultActiveView,
+    } = options;
 
     // 默认设计器模式
     if (simulator) {
@@ -124,6 +145,11 @@ export class Designer {
       this.setActiveSidebarPanel(defaultActiveSidebarPanel);
     }
 
+    // 默认激活的视图
+    if (defaultActiveView) {
+      this.setActiveView(defaultActiveView);
+    }
+
     makeObservable(this, {
       _simulator: observable,
       _viewport: observable,
@@ -131,6 +157,8 @@ export class Designer {
       _activeSidebarPanel: observable,
       _showSmartWizard: observable,
       _showRightPanel: observable,
+      _showAddComponentPopover: observable,
+      _addComponentPopoverPosition: observable,
       _isPreview: observable,
       simulator: computed,
       viewport: computed,
@@ -139,6 +167,8 @@ export class Designer {
       isPreview: computed,
       showRightPanel: computed,
       showSmartWizard: computed,
+      showAddComponentPopover: computed,
+      addComponentPopoverPosition: computed,
       setSimulator: action,
       setViewport: action,
       setActiveView: action,
@@ -147,6 +177,7 @@ export class Designer {
       toggleRightPanel: action,
       toggleSmartWizard: action,
       toggleIsPreview: action,
+      toggleAddComponentPopover: action,
     });
   }
 
@@ -183,6 +214,22 @@ export class Designer {
 
   toggleRightPanel(value?: boolean) {
     this._showRightPanel = value ?? !this._showRightPanel;
+  }
+
+  /**
+   * 显示添加组件面板
+   * @param value 是否显示
+   * @param position 坐标
+   */
+  toggleAddComponentPopover(
+    value: boolean,
+    position: {
+      clientX: number;
+      clientY: number;
+    } = this.addComponentPopoverPosition,
+  ) {
+    this._showAddComponentPopover = value;
+    this._addComponentPopoverPosition = position;
   }
 
   toggleIsPreview(value: boolean) {
