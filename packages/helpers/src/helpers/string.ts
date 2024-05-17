@@ -75,9 +75,13 @@ export function parseDndTrackId(str: string) {
 
 interface DndIdParsedType {
   /**
-   * 完整的 ID
+   * full id
    */
   id?: string;
+  /**
+   * 组件代码中的 id，一般对应组件的 tid 属性
+   */
+  codeId?: string;
   /**
    * 组件名
    */
@@ -86,19 +90,11 @@ interface DndIdParsedType {
    * 文件名
    */
   filename?: string;
-  /**
-   * @deprecated 使用 filename 代替
-   */
-  module?: string;
-  /**
-   * 序号
-   */
-  index?: string;
 }
 
 /**
  * 解析 dnd id
- * @example Button:123 -> { component: "Button", id: "Button:123" }
+ * @example Button:button123 -> { component: "Button", id: "Button:123" }
  * @example LocalBlock:Button:123 -> { filename: LocalBlock, component: "Button", id: "Button:123" }
  * @param str
  */
@@ -109,19 +105,20 @@ export function parseDndId(str: string): DndIdParsedType {
 
   const parts = str.split(':');
   if (parts.length === 2) {
+    // e.g. Button:button123
     return {
-      component: parts[0],
-      index: parts[1],
       id: str,
+      component: parts[0],
+      codeId: parts[1],
     };
   } else if (parts.length >= 3) {
+    // e.g. LocalBlock:Button:button123
     const filename = decodeURIComponent(parts[0]);
     return {
-      module: filename,
+      id: str,
       filename,
       component: parts[1],
-      index: parts[2],
-      id: str,
+      codeId: parts[2],
     };
   }
   return {

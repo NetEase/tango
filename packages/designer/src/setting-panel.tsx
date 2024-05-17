@@ -105,8 +105,8 @@ export const SettingPanel = observer((props: SettingPanelProps) => {
             identifierKey: 'tid',
             getIdentifier: () => {
               // 直接拿当前的虚拟 id 作为 tid
-              const { index } = parseDndId(workspace.selectSource.first.id);
-              return index;
+              const { codeId } = parseDndId(workspace.selectSource.first.id);
+              return codeId;
             },
           }}
           {...props}
