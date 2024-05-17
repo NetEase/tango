@@ -125,6 +125,7 @@ export const ComponentsPopover = observer(
         }
         footer={tipsTextMap[type]}
         width="330px"
+        maskClosable
         body={
           <ComponentsPanel
             isScope

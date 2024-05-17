@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback, useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { noop } from '@music163/tango-helpers';
 import { Box } from 'coral-system';
@@ -17,6 +17,10 @@ export interface PopoverProps {
    * 浮层被遮挡时自动调整位置
    */
   autoAdjustOverflow?: boolean;
+  /**
+   * 点击蒙层是否允许关闭
+   */
+  maskClosable?: boolean;
   /**
    * 手动唤起时的位置
    */
@@ -39,6 +43,7 @@ export interface PopoverProps {
 export const Popover: React.FC<PopoverProps> = ({
   open,
   overlay,
+  maskClosable = false,
   autoAdjustOverflow = true,
   left: controlledLeft,
   top: controlledTop,
@@ -59,16 +64,35 @@ export const Popover: React.FC<PopoverProps> = ({
   );
 
   useEffect(() => {
-    if (typeof controlledLeft === 'number') {
-      setLeft(controlledLeft);
-    }
-  }, [controlledLeft]);
-
-  useEffect(() => {
     if (typeof controlledTop === 'number') {
       setTop(controlledTop);
     }
-  }, [controlledTop]);
+    if (typeof controlledLeft === 'number') {
+      setLeft(controlledLeft);
+    }
+  }, [controlledTop, controlledLeft]);
+
+  useLayoutEffect(() => {
+    const handleDocumentClick = (e: MouseEvent) => {
+      if (
+        maskClosable &&
+        visible &&
+        popoverRef.current &&
+        !popoverRef.current.contains(e.target as Node)
+      ) {
+        setVisible(false);
+        onOpenChange(false);
+      }
+    };
+
+    if (maskClosable && visible) {
+      document.addEventListener('click', handleDocumentClick, true);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, [maskClosable, onOpenChange, visible]);
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
