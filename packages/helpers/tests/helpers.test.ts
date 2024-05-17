@@ -58,22 +58,21 @@ describe('string', () => {
 
   it('parseDndId', () => {
     expect(parseDndId('123')).toEqual({ id: '123' });
-    expect(parseDndId('Button:123')).toEqual({
+    expect(parseDndId('Button:button123')).toEqual({
       component: 'Button',
-      id: 'Button:123',
-      index: '123',
+      id: 'Button:button123',
+      codeId: 'button123',
     });
-    expect(parseDndId('Button.Group:123')).toEqual({
+    expect(parseDndId('Button.Group:buttonGroup123')).toEqual({
       component: 'Button.Group',
-      id: 'Button.Group:123',
-      index: '123',
+      id: 'Button.Group:buttonGroup123',
+      codeId: 'buttonGroup123',
     });
-    expect(parseDndId('LocalBlock:Button.Group:123')).toEqual({
+    expect(parseDndId('LocalBlock:Button.Group:buttonGroup123')).toEqual({
+      id: 'LocalBlock:Button.Group:buttonGroup123',
       filename: 'LocalBlock',
-      module: 'LocalBlock',
       component: 'Button.Group',
-      id: 'LocalBlock:Button.Group:123',
-      index: '123',
+      codeId: 'buttonGroup123',
     });
   });
 

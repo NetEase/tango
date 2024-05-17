@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from 'coral-system';
 import { SettingForm, FormModel, SettingFormProps } from '@music163/tango-setting-form';
 import { Panel } from '@music163/tango-ui';
-import { clone } from '@music163/tango-helpers';
+import { clone, parseDndId } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { registerBuiltinSetters } from './setters';
 
@@ -103,6 +103,11 @@ export const SettingPanel = observer((props: SettingPanelProps) => {
           prototype={prototype}
           showIdentifier={{
             identifierKey: 'tid',
+            getIdentifier: () => {
+              // 直接拿当前的虚拟 id 作为 tid
+              const { codeId } = parseDndId(workspace.selectSource.first.id);
+              return codeId;
+            },
           }}
           {...props}
         />

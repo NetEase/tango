@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Input, InputProps, Tooltip } from 'antd';
 import { css, Box } from 'coral-system';
 import { FormItemComponentProps } from '../form-item';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { Action } from '@music163/tango-ui';
 
 const idInputStyle = css`
   > .ant-input-borderless {
@@ -22,6 +23,7 @@ export function IdSetter({
   defaultValue,
   onChange,
   placeholder = '输入唯一组件ID',
+  getId,
   ...rest
 }: FormItemComponentProps<string>) {
   const [value, setValue] = useState(valueProp || defaultValue);
@@ -60,6 +62,8 @@ export function IdSetter({
         },
       };
 
+  const showQuickIdButton = !value || error; // 没有设置 id 或 id 不合法的时候显示快捷生成按钮
+
   return (
     <Box css={idInputStyle}>
       <Input
@@ -67,11 +71,27 @@ export function IdSetter({
         value={value}
         {...__props}
         {...rest}
-        suffix={
+        prefix={
           error ? (
             <Tooltip title={error} color="#ff4d4f">
               <ExclamationCircleOutlined style={{ color: 'red' }} />
             </Tooltip>
+          ) : null
+        }
+        suffix={
+          showQuickIdButton ? (
+            <Action
+              size="small"
+              icon={<ThunderboltOutlined />}
+              tooltip="快捷设置组件ID"
+              onClick={() => {
+                const id = getId?.();
+                if (id) {
+                  setValue(id);
+                  onChange?.(id);
+                }
+              }}
+            />
           ) : null
         }
       />
