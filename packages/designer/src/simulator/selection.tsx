@@ -148,12 +148,12 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
       style={style}
     >
       <>
-        <ComponentsPopover type="before" prototype={prototype}>
+        <ComponentsPopover type="before">
           <Tooltip title={`在 ${selectedNodeName} 的前方添加兄弟节点`}>
             <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
           </Tooltip>
         </ComponentsPopover>
-        <ComponentsPopover type="after" prototype={prototype}>
+        <ComponentsPopover type="after">
           <Tooltip title={`在 ${selectedNodeName} 的后方添加兄弟节点`}>
             <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
           </Tooltip>
@@ -197,7 +197,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
           />
           <SelectionToolSet>{!isPage && actions}</SelectionToolSet>
           {prototype.hasChildren !== false && (
-            <ComponentsPopover prototype={prototype}>
+            <ComponentsPopover>
               <Tooltip title="快捷添加子元素">
                 <SelectionHelper icon={<PlusOutlined />} />
               </Tooltip>

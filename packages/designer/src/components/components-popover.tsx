@@ -20,7 +20,6 @@ export const ComponentsPopover = observer(
     type = 'inner',
     title = '添加组件',
     isControlled = false,
-    prototype: outPrototype,
     children,
     ...popoverProps
   }: ComponentsPopoverProps) => {
