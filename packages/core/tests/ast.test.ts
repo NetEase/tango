@@ -1,9 +1,11 @@
+import { Identifier } from '@babel/types';
 import {
   object2node,
   serviceConfig2Node,
   isValidCode,
   isValidExpressionCode,
   code2expression,
+  value2jsxAttributeValueNode,
 } from '../src/helpers';
 
 describe('ast helpers', () => {
@@ -67,5 +69,17 @@ describe('ast helpers', () => {
     ]
     `;
     expect(code2expression(arrayCode).type).toEqual('ArrayExpression');
+  });
+
+  it('value2jsxAttributeValueNode', () => {
+    expect(value2jsxAttributeValueNode('hello').type).toBe('StringLiteral');
+    expect(value2jsxAttributeValueNode(true).type).toBe('JSXExpressionContainer');
+    expect(value2jsxAttributeValueNode(1).type).toBe('JSXExpressionContainer');
+    expect(value2jsxAttributeValueNode('{{{ foo: "foo"}}}').type).toBe('JSXExpressionContainer');
+
+    // invalid code will return undefined
+    const node: any = value2jsxAttributeValueNode('{{tango.xx+}}');
+    expect(node.type).toBe('JSXExpressionContainer');
+    expect((node.expression as Identifier).name).toBe('undefined');
   });
 });
