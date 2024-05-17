@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/netease/tango/compare/@music163/tango-core@1.0.2...@music163/tango-core@1.1.0) (2024-05-17)
+
+### Bug Fixes
+
+- parse module with module alias ([#147](https://github.com/netease/tango/issues/147)) ([56d0877](https://github.com/netease/tango/commit/56d0877507b0138877eac6f36db288147b43c7d9))
+
+### Features
+
+- refactor parse attribute value ([#149](https://github.com/netease/tango/issues/149)) ([ffaa276](https://github.com/netease/tango/commit/ffaa276b5c205ed962d37e2fdb358a703f8fad01))
+
 ## [1.0.1](https://github.com/netease/tango/compare/@music163/tango-core@1.0.0...@music163/tango-core@1.0.1) (2024-04-22)
 
 **Note:** Version bump only for package @music163/tango-core

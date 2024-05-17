@@ -54,8 +54,7 @@ describe('ast helpers', () => {
 
   it('code2expression', () => {
     expect(code2expression('')).toBeUndefined();
-    expect(code2expression('{tango.stores.app}')).toBeUndefined();
-
+    expect(code2expression('tango.stores.app').type).toBe('MemberExpression');
     expect(code2expression('{ type: window.bar }').type).toEqual('ObjectExpression');
     expect(code2expression('() => {};').type).toEqual('ArrowFunctionExpression');
     expect(code2expression('<Button>hello</Button>').type).toBe('JSXElement');

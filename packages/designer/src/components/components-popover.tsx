@@ -20,7 +20,7 @@ export const ComponentsPopover = observer(
     type = 'inner',
     title = '添加组件',
     isControlled = false,
-    prototype,
+    prototype: outPrototype,
     children,
     ...popoverProps
   }: ComponentsPopoverProps) => {
@@ -29,27 +29,31 @@ export const ComponentsPopover = observer(
     const designer = useDesigner();
 
     const { addComponentPopoverPosition, showAddComponentPopover } = designer;
-    const selectedNodeName = workspace.selectSource.selected?.[0]?.codeId ?? '未选中';
+    const selectedNode = workspace.selectSource.selected?.[0];
+    const selectedNodeId = selectedNode?.codeId ?? '未选中';
+    const prototype =
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      workspace.componentPrototypes.get(selectedNode?.name) ?? ({} as IComponentPrototype);
 
     // 推荐使用的子组件
     const insertedList = useMemo(
       () =>
         Array.isArray(prototype?.childrenName)
-          ? prototype.childrenName
-          : [prototype.childrenName].filter(Boolean),
-      [prototype.childrenName],
+          ? prototype?.childrenName
+          : [prototype?.childrenName].filter(Boolean),
+      [prototype?.childrenName],
     );
 
     // 推荐使用的代码片段
-    const siblingList = useMemo(() => prototype.siblingNames ?? [], [prototype.siblingNames]);
+    const siblingList = useMemo(() => prototype?.siblingNames ?? [], [prototype.siblingNames]);
 
     const tipsTextMap = useMemo(
       () => ({
-        before: `点击，在 ${selectedNodeName} 的前方添加节点`,
-        after: `点击，在 ${selectedNodeName} 的后方添加节点`,
-        inner: `点击，在 ${selectedNodeName} 内部添加节点`,
+        before: `点击，在 ${selectedNodeId} 的前方添加节点`,
+        after: `点击，在 ${selectedNodeId} 的后方添加节点`,
+        inner: `点击，在 ${selectedNodeId} 内部添加节点`,
       }),
-      [selectedNodeName],
+      [selectedNodeId],
     );
 
     const handleSelect = useCallback(

@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Input, InputProps } from 'antd';
-import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { Input } from 'antd';
+import { FormItemComponentProps } from '../form-item';
 
 const noop = () => {};
-
-interface TextSetterProps extends Omit<InputProps, 'onChange' | 'value'> {
-  value?: string;
-  onChange?: (value: string) => void;
-}
 
 export function TextSetter({
   value: valueProp,
   onChange = noop,
-  placeholder = '请输入',
+  placeholder = '请输入文本',
   ...props
-}: TextSetterProps) {
+}: FormItemComponentProps<string>) {
   const [valueState, setValue] = useState(valueProp);
 
   useEffect(() => {
@@ -28,7 +23,9 @@ export function TextSetter({
       value={valueState}
       onChange={(e) => setValue(e.target.value)}
       onBlur={() => {
-        onChange(valueState);
+        if (valueState !== valueProp) {
+          onChange(valueState);
+        }
       }}
       {...props}
     />
@@ -43,7 +40,7 @@ const autoSize = {
 export function TextAreaSetter({
   value: valueProp,
   onChange = noop,
-  placeholder = '请输入',
+  placeholder = '请输入文本',
   ...props
 }: FormItemComponentProps<string>) {
   const [valueState, setValue] = useState(valueProp);
@@ -59,7 +56,9 @@ export function TextAreaSetter({
       value={valueState}
       onChange={(e) => setValue(e.target.value)}
       onBlur={() => {
-        onChange(valueState);
+        if (valueState !== valueProp) {
+          onChange(valueState);
+        }
       }}
       autoSize={autoSize}
       {...props}

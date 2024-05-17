@@ -3,6 +3,7 @@ import { Box, Text, styled } from 'coral-system';
 import { Popover, PopoverProps, IconFont } from '@music163/tango-ui';
 import Draggable from 'react-draggable';
 import { CloseOutlined } from '@ant-design/icons';
+import { noop } from '@music163/tango-helpers';
 
 const CloseIcon = styled(CloseOutlined)`
   cursor: pointer;
@@ -37,16 +38,26 @@ export function DragPanel({
   children,
   width = 330,
   extra,
+  onOpenChange = noop,
   ...props
 }: DragPanelProps) {
   const [open, setOpen] = useState(false);
 
-  const footerNode = typeof footer === 'function' ? footer(() => setOpen(false)) : footer;
+  const footerNode =
+    typeof footer === 'function'
+      ? footer(() => {
+          setOpen(false);
+          onOpenChange(false);
+        })
+      : footer;
 
   return (
     <Popover
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={(innerOpen) => {
+        setOpen(innerOpen);
+        onOpenChange(innerOpen);
+      }}
       overlay={
         <Draggable handle=".selection-drag-bar">
           <Box
@@ -77,7 +88,7 @@ export function DragPanel({
                 <CloseIcon
                   onClick={() => {
                     setOpen(false);
-                    props?.onOpenChange?.(false);
+                    onOpenChange(false);
                   }}
                 />
               </Box>

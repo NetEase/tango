@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { css, Box, HTMLCoralProps, Link } from 'coral-system';
-import { Checkbox, Tooltip } from 'antd';
-import { CollapsePanel } from '@music163/tango-ui';
+import { Checkbox, Popconfirm, Tooltip } from 'antd';
+import { CodeOutlined, CollapsePanel, ToggleButton } from '@music163/tango-ui';
 import { isString } from '@music163/tango-helpers';
 import { WarningOutlined } from '@ant-design/icons';
 
@@ -35,7 +35,7 @@ export function FormControl({
       <Box>{children}</Box>
       {footer}
       {!!error && (
-        <Box mt="m" color="red">
+        <Box mt="m" color="red" fontSize="12px">
           {error}
         </Box>
       )}
@@ -266,5 +266,68 @@ export function FormHeader({ title, extra, subTitle }: FormHeaderProps) {
         {extra && <Box>{extra}</Box>}
       </Box>
     </Box>
+  );
+}
+
+export interface ToggleCodeButtonProps {
+  /**
+   * 在反选时是否需要用户确认操作
+   */
+  confirm?: boolean;
+  selected: boolean;
+  onToggle: () => void;
+}
+
+export function ToggleCodeButton({ confirm, selected, onToggle }: ToggleCodeButtonProps) {
+  if (confirm && selected) {
+    return (
+      <Popconfirm
+        title="当前代码在切换模式后可能会解析失败，是否确认切换？"
+        color="#fff2f0"
+        onConfirm={(e) => {
+          e.stopPropagation();
+          onToggle?.();
+        }}
+        onCancel={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <ToggleButton
+            borderRadius="s"
+            size="s"
+            shape="text"
+            type="primary"
+            tooltip={selected ? undefined : '使用 JS 表达式'}
+            tooltipPlacement="left"
+            selected={selected}
+          >
+            <CodeOutlined />
+          </ToggleButton>
+        </div>
+      </Popconfirm>
+    );
+  }
+
+  return (
+    <ToggleButton
+      borderRadius="s"
+      size="s"
+      shape="text"
+      type="primary"
+      tooltip={selected ? '关闭 JS 表达式' : '使用 JS 表达式'}
+      tooltipPlacement="left"
+      selected={selected}
+      onClick={(e) => {
+        e.stopPropagation();
+        onToggle?.();
+      }}
+    >
+      <CodeOutlined />
+    </ToggleButton>
   );
 }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/netease/tango/compare/@music163/tango-context@1.0.2...@music163/tango-context@1.1.0) (2024-05-17)
+
+### Features
+
+- refactor parse attribute value ([#149](https://github.com/netease/tango/issues/149)) ([ffaa276](https://github.com/netease/tango/commit/ffaa276b5c205ed962d37e2fdb358a703f8fad01))
+
 ## [1.0.1](https://github.com/netease/tango/compare/@music163/tango-context@1.0.0...@music163/tango-context@1.0.1) (2024-04-22)
 
 ### Bug Fixes

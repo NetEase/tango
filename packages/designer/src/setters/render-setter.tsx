@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActionSelect, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { Box } from 'coral-system';
-import { value2expressionCode } from '@music163/tango-core';
 
 interface IRenderOption {
   label: string;
@@ -17,6 +16,11 @@ export interface RenderSetterProps {
   fallbackOption?: IRenderOption;
 }
 
+const defaultOptions: IRenderOption[] = [
+  { label: '取消自定义', value: '' },
+  { label: '自定义渲染', value: 'Box', render: '() => <Box></Box>' },
+];
+
 /**
  * Render Props Setters
  */
@@ -24,14 +28,12 @@ export function RenderSetter({
   value,
   onChange,
   text = '自定义渲染为',
-  options = [],
+  options = defaultOptions,
   fallbackOption,
 }: FormItemComponentProps & RenderSetterProps) {
-  const [inputValue, setInputValue] = useState(() => {
-    return value2expressionCode(value);
-  });
+  const [inputValue, setInputValue] = useState(value || '');
   useEffect(() => {
-    setInputValue(value2expressionCode(value));
+    setInputValue(value);
   }, [value]);
 
   const optionsMap = useMemo(() => {
@@ -67,17 +69,22 @@ export function RenderSetter({
 }
 
 const getRender = (content: string, type?: 'tableCell' | 'tableExpandable') => {
+  let code;
   switch (type) {
     case 'tableCell':
-      return `{(value, record, index) => ${content}}`;
+      code = `(value, record, index) => ${content}`;
+      break;
     case 'tableExpandable':
-      return `{{
-      expandedRowRender: (record) =>  ${content},
-      rowExpandable: (record) => true
-    }}`;
+      code = `{
+        expandedRowRender: (record) =>  ${content},
+        rowExpandable: (record) => true
+      }`;
+      break;
     default:
-      return `{() => ${content}}`;
+      code = `() => ${content}`;
+      break;
   }
+  return code;
 };
 
 const tableCellOptions: RenderSetterProps['options'] = [
@@ -122,6 +129,7 @@ export function TableCellSetter(props: FormItemComponentProps) {
   return <RenderSetter options={tableCellOptions} {...props} />;
 }
 
+// FIXME: 应该直接用 props 嵌套的模式
 export function TableExpandableSetter(props: FormItemComponentProps) {
   return <RenderSetter options={tableExpandableOptions} text="配置表格可展开行" {...props} />;
 }

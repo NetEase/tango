@@ -7,8 +7,6 @@ import { BgColorsOutlined, EyeInvisibleOutlined, FileImageOutlined } from '@ant-
 import { SingleMonacoEditor, LineSolidOutlined, LineDashedOutlined } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { ChoiceSetter } from './choice-setter';
-import { TextSetter } from './text-setter';
-// import { ImageSetter } from './image-setter';
 
 function getRawCssValue(value: string) {
   if (value && value.startsWith('{css`')) {
@@ -17,12 +15,13 @@ function getRawCssValue(value: string) {
   return value;
 }
 
+// TODO: style object setter
+
 /**
  * 不稳定，暂不推荐使用
  */
 export function CssCodeSetter({ value, onChange }: FormItemComponentProps<string>) {
   const contentValue = getRawCssValue(value);
-  // TODO: relatedImports
   return (
     <Popover
       placement="leftBottom"
@@ -34,9 +33,7 @@ export function CssCodeSetter({ value, onChange }: FormItemComponentProps<string
             value={contentValue}
             onBlur={(newCode) => {
               if (newCode != contentValue) {
-                onChange(`{css\`${newCode}\`}`, {
-                  // relatedImports: ['']
-                });
+                onChange(`{css\`${newCode}\`}`, {});
               }
             }}
           />
@@ -239,9 +236,10 @@ export function BgSetter({ value, onChange }: FormItemComponentProps<string>) {
       <Box mt="m">
         {mode === 'color' && <ColorSetter value={value} onChange={onChange} />}
         {mode === 'image' && (
-          <TextSetter
+          <Input
             value={getImageUrl(value)}
-            onChange={(imgUrl) => {
+            onChange={(e) => {
+              const imgUrl = e.target.value;
               onChange(imgUrl ? `url(${imgUrl})` : undefined);
             }}
           />

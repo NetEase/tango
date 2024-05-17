@@ -3,14 +3,17 @@ import {
   IComponentProp,
   IComponentPrototype,
   Dict,
-  isNil,
   logger,
   uuid,
+  isWrappedCode,
+  getCodeOfWrappedCode,
+  wrapCodeWithJSXExpressionContainer,
 } from '@music163/tango-helpers';
 import { getRelativePath, isFilepath } from './string';
 import type { IImportDeclarationPayload, IImportSpecifierData } from '../types';
 import { code2expression } from './ast';
 import { isWrappedByExpressionContainer } from './assert';
+import { value2code } from './code-helpers';
 
 export function prototype2importDeclarationData(
   prototype: IComponentPrototype,
@@ -88,48 +91,56 @@ export function getImportDeclarationPayloadByPrototype(
 
 /**
  * 基于 key-value 生成 prop={value} 字符串
- * @param key
- * @param value
+ * @example { name: 'foo', initValue: false } >> name={false}
+ * @example { name: 'foo', initValue: 1 } >> name={1}
+ * @example { name: 'foo', initValue: () => {} } >> name={()=>{}}
+ * @example { name: 'foo', initValue: { foo: 'bar' } } >> name={{ foo: 'bar' }}
+ * @example { name: 'foo', initValue: [{ foo: 'bar' }] } >> name={[{ foo: 'bar' }]}
+ * @example { name: 'foo', initValue: 'bar' } >> name="bar"
+ * @example { name: 'foo', initValue: '{() => {}}' } >> name={()=>{}}
+ * @example { name: 'foo', initValue: '{{() => {}}}' } >> name={() => {}}
+ * @example { name: 'foo', initValue: '{bar}' } >> name={bar}
  * @returns
  */
-function getPropKeyValuePair(item: IComponentProp, generateValue: (...args: any[]) => string) {
+export function propDataToKeyValueString(
+  item: IComponentProp,
+  generateValue?: (...args: any[]) => string,
+) {
   const key = item.name;
 
   let value = item.initValue;
 
   if (!value && item.autoInitValue) {
-    value = generateValue(3);
+    value = generateValue?.(3) || uuid(key, 3);
   }
 
-  if (isNil(value)) {
+  if (value === undefined) {
     return;
   }
 
   switch (typeof value) {
     case 'number':
-    case 'boolean': {
-      value = `{${value}}`;
+    case 'boolean':
+    case 'function': {
+      value = wrapCodeWithJSXExpressionContainer(String(value));
       break;
     }
     case 'object': {
-      // TIP: bugfix 如果 object 里有 jsx 或者 function 会失败
       try {
-        value = `{${JSON.stringify(value)}}`;
+        value = wrapCodeWithJSXExpressionContainer(value2code(value));
       } catch (err) {
         logger.error(err);
       }
       break;
     }
-    case 'function': {
-      value = `{${(value as object).toString()}}`;
-      break;
-    }
     case 'string': {
-      if (!isWrappedByExpressionContainer(value)) {
-        // 不是变量字符串
-        value = `"${value}"`;
+      if (isWrappedCode(value)) {
+        const innerCode = getCodeOfWrappedCode(value);
+        value = wrapCodeWithJSXExpressionContainer(innerCode);
+      } else if (isWrappedByExpressionContainer(value)) {
+        // TIP: 兼容旧版逻辑，如果是变量字符串，无需处理
       } else {
-        // 如果是变量字符串，无需处理
+        value = `"${value}"`;
       }
       break;
     }
@@ -163,7 +174,7 @@ export function prototype2code(prototype: IComponentPrototype, extraProps?: Dict
 
       const keys =
         props.reduce((acc, item) => {
-          const pair = getPropKeyValuePair(item, (fractionDigits: number) =>
+          const pair = propDataToKeyValueString(item, (fractionDigits: number) =>
             uuid(prototype.name, fractionDigits),
           );
           return pair ? ` ${acc} ${pair}` : acc;

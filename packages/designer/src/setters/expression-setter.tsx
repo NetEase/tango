@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text, css } from 'coral-system';
 import { Dropdown, Button } from 'antd';
-import {
-  isValidExpressionCode,
-  isWrappedByExpressionContainer,
-  value2expressionCode,
-} from '@music163/tango-core';
-import { getVariableContent, noop, getValue, IVariableTreeNode } from '@music163/tango-helpers';
+import { isValidExpressionCode } from '@music163/tango-core';
+import { getValue, IVariableTreeNode, noop } from '@music163/tango-helpers';
 import { CloseCircleFilled, ExpandAltOutlined, MenuOutlined } from '@ant-design/icons';
 import { Panel, InputCode, Action, DragPanel } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
@@ -17,41 +13,18 @@ import { CODE_TEMPLATES } from '../helpers';
 import { shapeServiceValues } from '../sidebar/datasource-panel/interface-config';
 
 export const expressionValueValidate = (value: string) => {
-  if (isWrappedByExpressionContainer(value)) {
-    const exp = getVariableContent(value);
-    if (!isValidExpressionCode(exp)) {
-      return '表达式存在语法错误！';
-    }
+  if (!isValidExpressionCode(value)) {
+    return '表达式存在语法错误！';
   }
 };
 
 export const jsonValueValidate = (value: string) => {
-  if (isWrappedByExpressionContainer(value)) {
-    const jsonStr = getVariableContent(value);
-    try {
-      JSON.parse(jsonStr);
-    } catch (e) {
-      return '不是合法的 JSON 语法！';
-    }
+  try {
+    JSON.parse(value);
+  } catch (e) {
+    return '不是合法的 JSON 语法！';
   }
 };
-
-/**
- * 返回 `{}` 包裹后的表达式代码
- * @param code 原始代码
- * @returns
- */
-export function getWrappedExpressionCode(code: string) {
-  let ret;
-  if (!code) {
-    // do nothing
-  } else if (isWrappedByExpressionContainer(code)) {
-    ret = code;
-  } else {
-    ret = `{${code}}`;
-  }
-  return ret;
-}
 
 const suffixStyle = css`
   display: flex;
@@ -78,22 +51,19 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     modalTitle,
     modalTip,
     autoCompleteOptions,
-    placeholder = '输入JS代码',
+    placeholder = '在这里输入JS代码',
     value: valueProp,
     status,
     allowClear = true,
     newStoreTemplate,
     showOptionsDropDown = true,
   } = props;
-  const [inputValue, setInputValue] = useState(() => {
-    return value2expressionCode(valueProp);
-  });
-  const sandbox = useSandboxQuery();
-  const evaluateContext = sandbox.window;
+  // const codeValue = getCodeOfWrappedCode(valueProp);
+  const [inputValue, setInputValue] = useState(valueProp);
 
   // when receive new value, sync state
   useEffect(() => {
-    setInputValue(value2expressionCode(valueProp));
+    setInputValue(valueProp);
   }, [valueProp]);
 
   const change = useCallback(
@@ -101,17 +71,13 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
       if (code === valueProp) {
         return;
       }
-
-      const ret = getWrappedExpressionCode(code);
-
-      if (ret === valueProp) {
-        return;
-      }
-
-      onChange(ret);
+      onChange(code);
     },
     [valueProp, onChange],
   );
+
+  const sandbox = useSandboxQuery();
+  const evaluateContext = sandbox.window;
 
   return (
     <Box className="ExpressionSetter">
@@ -148,7 +114,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
                 <Action tooltip="使用预设代码片段" icon={<MenuOutlined />} size="small" />
               </Dropdown>
             )}
-            <ExpressionPanel
+            <ExpressionPopover
               title={modalTitle}
               subTitle={modalTip}
               placeholder={placeholder}
@@ -175,7 +141,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
   );
 }
 
-export interface ExpressionConfigPanelProps {
+export interface ExpressionPopoverProps {
   title?: string;
   subTitle?: string;
   placeholder?: string;
@@ -191,7 +157,7 @@ export interface ExpressionConfigPanelProps {
   children?: React.ReactNode;
 }
 
-export function ExpressionPanel({
+export function ExpressionPopover({
   title,
   subTitle,
   placeholder,
@@ -202,7 +168,7 @@ export function ExpressionPanel({
   autoCompleteOptions,
   newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
   children,
-}: ExpressionConfigPanelProps) {
+}: ExpressionPopoverProps) {
   const [exp, setExp] = useState(value ?? defaultValue);
   const [error, setError] = useState('');
   const workspace = useWorkspace();
@@ -228,17 +194,22 @@ export function ExpressionPanel({
 
   return (
     <DragPanel
+      width={700}
       title={`将 ${selectNodePath}/${title} 设置为引用变量或自定义表达式`}
       extra={subTitle}
-      width={700}
-      placement="bottomLeft"
+      onOpenChange={(open) => {
+        if (!open) {
+          setExp(undefined);
+          setError('');
+        }
+      }}
       body={
         <>
           <Panel shape="solid">
             <InputCode
               shape="inset"
-              minHeight="80px"
-              maxHeight="220px"
+              minHeight="56px"
+              maxHeight="200px"
               value={exp}
               placeholder={placeholder}
               onChange={handleExpInputChange}
@@ -248,16 +219,22 @@ export function ExpressionPanel({
               autoCompleteContext={evaluateContext}
               autoCompleteOptions={autoCompleteOptions}
             />
-            {error ? <Text color="red">输入的表达式存在语法错误，请修改后再提交！</Text> : null}
+            {error ? (
+              <Text color="red" fontSize="12px">
+                出错了！输入的表达式存在语法错误，请修改后再提交！
+              </Text>
+            ) : (
+              <Text fontSize="12px" color="text3">
+                说明：你可以在上面的代码输入框里输入常规的 javascript 代码，还可以直接使用 jsx
+                代码，但需要符合该属性的接受值定义。
+              </Text>
+            )}
           </Panel>
           <Panel
             title="从变量列表中选中"
             shape="solid"
             borderTop="0"
             overflow="hidden"
-            headerProps={{
-              fontSize: '14px',
-            }}
             bodyProps={{ overflow: 'hidden' }}
           >
             <VariableTree
@@ -285,9 +262,9 @@ export function ExpressionPanel({
                 }
                 let str;
                 if (/^(stores|services)\./.test(node.key)) {
-                  str = `{tango.${node.key.replaceAll('.', '?.')}}`;
+                  str = `tango.${node.key.replaceAll('.', '?.')}`;
                 } else {
-                  str = `{${node.key}}`;
+                  str = `${node.key}`;
                 }
                 setExp(str);
               }}

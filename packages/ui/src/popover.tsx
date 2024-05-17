@@ -1,29 +1,50 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import ReactDOM from 'react-dom';
+import { noop } from '@music163/tango-helpers';
+import { Box } from 'coral-system';
 
 export interface PopoverProps {
   open?: boolean;
-  //   浮层内容
+  /**
+   * 浮层内容
+   */
   overlay: React.ReactNode;
+  /**
+   * 浮层打开或关闭时的回调
+   */
   onOpenChange?: (open: boolean) => void;
-  children?: React.ReactNode;
   /**
    * 浮层被遮挡时自动调整位置
    */
   autoAdjustOverflow?: boolean;
+  /**
+   * 手动唤起时的位置
+   */
   left?: number;
+  /**
+   * 手动唤起时的位置
+   */
   top?: number;
+  /**
+   * z-index
+   */
   zIndex?: number;
+  /**
+   * popoverStyle
+   */
+  popoverStyle?: React.CSSProperties;
+  children?: React.ReactNode;
 }
 
 export const Popover: React.FC<PopoverProps> = ({
   open,
   overlay,
-  onOpenChange,
   autoAdjustOverflow = true,
   left: controlledLeft,
   top: controlledTop,
   children,
+  popoverStyle,
+  onOpenChange = noop,
   zIndex = 9999,
 }) => {
   const [visible, setVisible] = useState(false);
@@ -49,15 +70,18 @@ export const Popover: React.FC<PopoverProps> = ({
     }
   }, [controlledTop]);
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const x = e.clientX;
-    const y = e.clientY;
-    setLeft(x);
-    setTop(y + 10);
-    setVisible(true);
-    onOpenChange(true);
-  };
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      const x = e.clientX;
+      const y = e.clientY;
+      setLeft(x);
+      setTop(y + 10);
+      setVisible(true);
+      onOpenChange(true);
+    },
+    [onOpenChange],
+  );
 
   useEffect(() => {
     setVisible(open);
@@ -82,20 +106,24 @@ export const Popover: React.FC<PopoverProps> = ({
     }
   }, [visible, autoAdjustOverflow]);
 
-  const popoverStyle: React.CSSProperties = {
-    display: visible ? 'block' : 'none',
-    position: 'fixed',
-    left,
-    top,
-    zIndex,
-  };
+  const overlayStyle: React.CSSProperties = useMemo(
+    () => ({
+      display: visible ? 'block' : 'none',
+      position: 'fixed',
+      left,
+      top,
+      zIndex,
+      ...popoverStyle,
+    }),
+    [left, popoverStyle, top, visible, zIndex],
+  );
 
   const overlayDom = (
-    <div className="popover">
-      <div ref={popoverRef} className="overlay" style={popoverStyle}>
+    <Box className="popover">
+      <Box ref={popoverRef} className="overlay" style={overlayStyle}>
         {overlay}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 
   return (

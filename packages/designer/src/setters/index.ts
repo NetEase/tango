@@ -25,45 +25,27 @@ import {
   FlexAlignItemsSetter,
   FlexDirectionSetter,
 } from './style-setter';
-import { BoolSetter } from './bool-setter';
 import { ChoiceSetter } from './choice-setter';
-import { NumberSetter, SliderSetter } from './number-setter';
-import { TextAreaSetter, TextSetter } from './text-setter';
 
-const setters: IFormItemCreateOptions[] = [
+export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
   {
-    name: 'boolSetter',
-    component: BoolSetter,
-  },
-  {
-    name: 'choiceSetter',
-    component: ChoiceSetter,
-  },
-  {
-    name: 'expSetter',
-    alias: ['expressionSetter'],
+    name: 'codeSetter',
+    alias: ['expSetter', 'expressionSetter'],
     component: ExpressionSetter,
-    disableVariableSetter: true,
+    type: 'code',
   },
   {
-    name: 'numberSetter',
-    component: NumberSetter,
-  },
-  {
-    name: 'textSetter',
-    component: TextSetter,
-  },
-  { name: 'textAreaSetter', component: TextAreaSetter },
-  {
-    name: 'sliderSetter',
-    component: SliderSetter,
+    name: 'radioGroupSetter',
+    alias: ['choiceSetter'],
+    component: ChoiceSetter,
   },
   {
     name: 'actionListSetter',
     component: ActionListSetter,
   },
   {
-    name: 'columnSetter',
+    name: 'tableColumnsSetter',
+    alias: ['columnSetter'], // 兼容
     component: ColumnSetter,
   },
   {
@@ -96,17 +78,14 @@ const setters: IFormItemCreateOptions[] = [
     component: EventSetter,
   },
   {
-    name: 'expressionSetter',
-    alias: ['expSetter'],
-    component: ExpressionSetter,
-  },
-  {
     name: 'jsonSetter',
     component: JSONSetter,
+    type: 'code',
   },
   {
     name: 'jsxSetter',
     component: JsxSetter,
+    type: 'code',
   },
   {
     name: 'listSetter',
@@ -121,20 +100,24 @@ const setters: IFormItemCreateOptions[] = [
     component: OptionSetter,
   },
   {
-    name: 'pickerSetter',
+    name: 'selectSetter',
+    alias: ['pickerSetter'],
     component: PickerSetter,
   },
   {
     name: 'renderPropsSetter',
     component: RenderSetter,
+    type: 'code',
   },
   {
     name: 'tableCellSetter',
     component: TableCellSetter,
+    type: 'code',
   },
   {
     name: 'tableExpandableSetter',
     component: TableExpandableSetter,
+    type: 'code',
   },
   {
     name: 'routerSetter',
@@ -170,5 +153,5 @@ const setters: IFormItemCreateOptions[] = [
 ];
 
 export function registerBuiltinSetters() {
-  setters.forEach(register);
+  BUILT_IN_SETTERS.forEach(register);
 }

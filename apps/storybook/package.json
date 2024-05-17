@@ -16,8 +16,8 @@
   "dependencies": {
     "@music163/tango-setting-form": "*",
     "@music163/tango-ui": "*",
-    "mobx": "6.12.0",
-    "mobx-react-lite": "4.0.5"
+    "mobx": "6.12.3",
+    "mobx-react-lite": "4.0.7"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.8.0",

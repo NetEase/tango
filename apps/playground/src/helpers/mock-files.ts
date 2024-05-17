@@ -2,7 +2,7 @@ const packageJson = {
   name: 'demo',
   private: true,
   dependencies: {
-    '@music163/antd': '0.2.4',
+    '@music163/antd': '0.2.5',
     '@music163/tango-boot': '0.2.5',
     react: '17.0.2',
     'react-dom': '17.0.2',
@@ -56,15 +56,16 @@ const tangoConfigJson = {
     },
     '@music163/antd': {
       description: '云音乐低代码中后台应用基础物料',
-      version: '0.2.4',
+      version: '0.2.5',
       library: 'TangoAntd',
       type: 'baseDependency',
       resources: [
-        'https://unpkg.com/@music163/antd@{{version}}/dist/index.js',
+        // 'https://unpkg.com/@music163/antd@{{version}}/dist/index.js',
+        'http://localhost:8081/dist/index.js',
         'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
       designerResources: [
-        'https://unpkg.com/@music163/antd@{{version}}/dist/designer.js',
+        'http://localhost:8081/dist/designer.js',
         'https://unpkg.com/antd@4.24.13/dist/antd.css',
       ],
     },
@@ -85,12 +86,18 @@ export function registerComponentPrototype(proto) {
 
 const routesCode = `
 import Index from "./pages/list";
+import Detail from "./pages/detail";
 
 const routes = [
   {
     path: '/',
     exact: true,
     component: Index
+  },
+  {
+    path: '/detail',
+    exact: true,
+    component: Detail
   },
 ];
 
@@ -150,16 +157,26 @@ import {
   Input,
   FormilyForm,
   FormilyFormItem,
+  Table,
 } from "@music163/antd";
 import { Space } from "@music163/antd";
 import { LocalButton } from "../components";
 class App extends React.Component {
   render() {
     return (
-      <Page title={tango.stores.app.title}>
+      <Page title={tango.stores.app.title} subTitle={111}>
+        <Section tid="section0" />
         <Section tid="section1" title="Section Title">
           your input: <Input tid="input1" defaultValue="hello" />
           copy input: <Input value={tango.page.input1?.value} />
+          <Table
+          columns={[
+            { title: "姓名", dataIndex: "name", key: "name" },
+            { title: "年龄", dataIndex: "age", key: "age" },
+            { title: "住址", dataIndex: "address", key: "address" },
+          ]}
+          tid="table1"
+        />
         </Section>
         <Section tid="section2">
           <Space tid="space1">
@@ -174,6 +191,9 @@ class App extends React.Component {
           </FormilyForm>
         </Section>
         <Section title="原生 DOM" tid="section4">
+          <h1 style={{ ...{ color: "red" }, fontSize: 64 }}>
+            hello world
+          </h1>
           <div
             style={{
               border: "1px solid #ccc",
@@ -231,6 +251,23 @@ class App extends React.Component {
     );
   }
 }
+export default definePage(App);
+`;
+
+export const emptyPageCode = `
+import React from "react";
+import { definePage } from "@music163/tango-boot";
+import {
+  Page,
+  Section,
+} from "@music163/antd";
+
+function App() {
+  return (<Page title="Detail Page">
+    <Section></Section>
+  </Page>)
+}
+
 export default definePage(App);
 `;
 
@@ -373,6 +410,7 @@ export const sampleFiles = [
   { filename: '/src/style.css', code: cssCode },
   { filename: '/src/index.js', code: entryCode },
   { filename: '/src/pages/list.js', code: viewHomeCode },
+  { filename: '/src/pages/detail.js', code: emptyPageCode },
   { filename: '/src/components/button.js', code: componentsButtonCode },
   { filename: '/src/components/input.js', code: componentsInputCode },
   { filename: '/src/components/index.js', code: componentsEntryCode },

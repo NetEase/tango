@@ -197,7 +197,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
           />
           <SelectionToolSet>{!isPage && actions}</SelectionToolSet>
           {prototype.hasChildren !== false && (
-            <ComponentsPopover title="添加子元素" prototype={prototype}>
+            <ComponentsPopover prototype={prototype}>
               <Tooltip title="快捷添加子元素">
                 <SelectionHelper icon={<PlusOutlined />} />
               </Tooltip>
