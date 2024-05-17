@@ -44,6 +44,7 @@ function SettingFormDemo({ initValues, prototype }: SettingFormDemoProps) {
           prototype={prototype}
           showIdentifier={{
             identifierKey: 'tid',
+            getIdentifier: () => `time${Date.now()}`,
           }}
         />
       </Box>

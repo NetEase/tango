@@ -104,7 +104,8 @@ export interface SettingFormProps {
   showIdentifier?:
     | false
     | {
-        identifierKey: string;
+        identifierKey: string; // 唯一标识符属性key
+        getIdentifier?: () => string; // 获取唯一标识符的方法
       };
   /**
    * 是否显示搜索框
@@ -222,6 +223,9 @@ export function SettingForm({
                     <SettingFormItem
                       noStyle
                       setter="idSetter"
+                      setterProps={{
+                        getId: showIdentifier.getIdentifier,
+                      }}
                       name={showIdentifier.identifierKey}
                     />
                   }
