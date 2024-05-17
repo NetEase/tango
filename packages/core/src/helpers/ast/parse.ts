@@ -97,8 +97,7 @@ export function code2expression(code: string) {
   try {
     expNode = t.cloneNode(parseExpression(code, babelParserConfig), false, true);
   } catch (err) {
-    logger.error('invalid code', err);
-    // expNode = t.identifier('undefined');
+    logger.error('code2expression failed, invalid code:', code);
   }
   return expNode;
 }
@@ -194,7 +193,12 @@ export function code2jsxAttributeValueNode(code: string) {
   return t.jsxExpressionContainer(code2expression(code));
 }
 
-// FIXME: 统一处理为 code2jsxAttributeValueNode
+/**
+ * FIXME: 统一处理为 code2jsxAttributeValueNode
+ * 将 js value 转为 JSXAttributeValueNode
+ * @param value js value, or wrapped code
+ * @returns 返回 JSXAttributeValueNode，转换失败返回Node为 {undefined}
+ */
 export function value2jsxAttributeValueNode(value: any) {
   let ret;
   switch (typeof value) {
@@ -204,7 +208,8 @@ export function value2jsxAttributeValueNode(value: any) {
       }
       if (isWrappedCode(value)) {
         const innerCode = getCodeOfWrappedCode(value);
-        ret = t.jsxExpressionContainer(code2expression(innerCode));
+        const node = code2expression(innerCode);
+        ret = t.jsxExpressionContainer(node || t.identifier('undefined'));
       } else {
         ret = t.stringLiteral(value);
       }
@@ -217,6 +222,7 @@ export function value2jsxAttributeValueNode(value: any) {
   return ret;
 }
 
+// TODO: 待校验
 export function value2jsxChildrenValueNode(value: any) {
   let ret: t.JSXElement | t.JSXFragment | t.JSXExpressionContainer | t.JSXSpreadChild | t.JSXText;
   switch (typeof value) {
