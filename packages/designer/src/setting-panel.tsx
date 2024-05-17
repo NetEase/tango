@@ -6,7 +6,11 @@ import { clone, parseDndId } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { registerBuiltinSetters } from './setters';
 
-registerBuiltinSetters();
+let registered = false;
+if (!registered) {
+  registerBuiltinSetters();
+  registered = true;
+}
 
 export interface SettingPanelProps extends SettingFormProps {
   title?: React.ReactNode;

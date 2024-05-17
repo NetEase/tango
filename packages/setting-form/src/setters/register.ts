@@ -38,7 +38,18 @@ const BASIC_SETTERS: IFormItemCreateOptions[] = [
   },
 ];
 
+let registered = false;
+
+/**
+ * 注册内置的基础类型 Setter
+ */
 export function registerBuiltinSetters() {
+  if (registered) {
+    // 防止重复注册
+    return;
+  }
+
   // 预注册基础 Setter
   BASIC_SETTERS.forEach(register);
+  registered = true;
 }
