@@ -29,11 +29,14 @@ import { ChoiceSetter } from './choice-setter';
 import { isValidExpressionCode } from '@music163/tango-core';
 
 const codeValidate: IFormItemCreateOptions['validate'] = (value, field) => {
+  if (!value) return;
   const rawCode = field.detail.rawCode;
+  if (!rawCode) return;
   return isValidExpressionCode(rawCode) ? '' : '请输入合法的 Javascript 代码片段';
 };
 
 const jsonValidate: IFormItemCreateOptions['validate'] = (value, field) => {
+  if (!value) return;
   try {
     JSON.parse(field.detail.rawCode);
     return;

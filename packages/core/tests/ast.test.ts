@@ -10,6 +10,7 @@ import {
 
 describe('ast helpers', () => {
   it('isValidCode', () => {
+    expect(isValidCode('')).toBeTruthy();
     expect(isValidCode('1')).toBeTruthy();
     expect(isValidCode('"hello"')).toBeTruthy();
     expect(isValidCode('<div>hello</div>')).toBeTruthy();
@@ -22,7 +23,6 @@ describe('ast helpers', () => {
   });
 
   it('isValidExpressionCode', () => {
-    expect(isValidExpressionCode('() => { }')).toBeTruthy();
     expect(isValidExpressionCode('1')).toBeTruthy();
     expect(isValidExpressionCode('a = 1')).toBeTruthy();
     expect(isValidExpressionCode('1 + 1')).toBeTruthy();
@@ -33,7 +33,9 @@ describe('ast helpers', () => {
     expect(isValidExpressionCode('<div>hello</div>')).toBeTruthy();
     expect(isValidExpressionCode('tango.stores.app.title')).toBeTruthy();
     expect(isValidExpressionCode('"hello" + window.location.path')).toBeTruthy();
+    expect(isValidExpressionCode('() => { }')).toBeTruthy();
 
+    expect(isValidExpressionCode('')).toBeFalsy();
     expect(isValidExpressionCode('{1}')).toBeFalsy();
     expect(isValidExpressionCode('{"1"}')).toBeFalsy();
     expect(isValidExpressionCode('{ 1+1 }')).toBeFalsy();
