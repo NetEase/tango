@@ -10,11 +10,18 @@ import {
 
 describe('ast helpers', () => {
   it('isValidCode', () => {
+    expect(isValidCode('1')).toBeTruthy();
+    expect(isValidCode('"hello"')).toBeTruthy();
+    expect(isValidCode('<div>hello</div>')).toBeTruthy();
+    expect(isValidCode('function fn() {}')).toBeTruthy();
+
+    // invalid function body
     expect(isValidCode('() => { hello world }')).toBeFalsy();
+    // invalid function
     expect(isValidCode('function() {}')).toBeFalsy();
   });
 
-  it('isValidExpression', () => {
+  it('isValidExpressionCode', () => {
     expect(isValidExpressionCode('() => { }')).toBeTruthy();
     expect(isValidExpressionCode('1')).toBeTruthy();
     expect(isValidExpressionCode('a = 1')).toBeTruthy();
@@ -24,7 +31,8 @@ describe('ast helpers', () => {
     expect(isValidExpressionCode('{ bizId: "vip", type: "category" }')).toBeTruthy();
     expect(isValidExpressionCode('[1,2,3]')).toBeTruthy();
     expect(isValidExpressionCode('<div>hello</div>')).toBeTruthy();
-    expect(isValidExpressionCode('<div>hello</div>')).toBeTruthy();
+    expect(isValidExpressionCode('tango.stores.app.title')).toBeTruthy();
+    expect(isValidExpressionCode('"hello" + window.location.path')).toBeTruthy();
 
     expect(isValidExpressionCode('{1}')).toBeFalsy();
     expect(isValidExpressionCode('{"1"}')).toBeFalsy();

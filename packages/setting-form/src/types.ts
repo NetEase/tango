@@ -1,4 +1,4 @@
 export interface ISetterOnChangeCallbackDetail {
   relatedImports?: string[];
-  isRawCode?: boolean;
+  rawCode?: string;
 }

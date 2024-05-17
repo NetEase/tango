@@ -26,6 +26,21 @@ import {
   FlexDirectionSetter,
 } from './style-setter';
 import { ChoiceSetter } from './choice-setter';
+import { isValidExpressionCode } from '@music163/tango-core';
+
+const codeValidate: IFormItemCreateOptions['validate'] = (value, field) => {
+  const rawCode = field.detail.rawCode;
+  return isValidExpressionCode(rawCode) ? '' : '请输入合法的 Javascript 代码片段';
+};
+
+const jsonValidate: IFormItemCreateOptions['validate'] = (value, field) => {
+  try {
+    JSON.parse(field.detail.rawCode);
+    return;
+  } catch (e) {
+    return '请输入合法的 JSON 字符串';
+  }
+};
 
 export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
   {
@@ -33,6 +48,7 @@ export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
     alias: ['expSetter', 'expressionSetter'],
     component: ExpressionSetter,
     type: 'code',
+    validate: codeValidate,
   },
   {
     name: 'radioGroupSetter',
@@ -81,11 +97,13 @@ export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
     name: 'jsonSetter',
     component: JSONSetter,
     type: 'code',
+    validate: jsonValidate,
   },
   {
     name: 'jsxSetter',
     component: JsxSetter,
     type: 'code',
+    validate: codeValidate,
   },
   {
     name: 'listSetter',
@@ -108,6 +126,7 @@ export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
     name: 'renderPropsSetter',
     component: RenderSetter,
     type: 'code',
+    validate: codeValidate,
   },
   {
     name: 'tableCellSetter',
@@ -118,6 +137,7 @@ export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
     name: 'tableExpandableSetter',
     component: TableExpandableSetter,
     type: 'code',
+    validate: codeValidate,
   },
   {
     name: 'routerSetter',

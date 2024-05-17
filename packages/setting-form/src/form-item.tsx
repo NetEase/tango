@@ -88,7 +88,12 @@ function parseFieldValue(fieldValue: any) {
   const isCodeString = isString(fieldValue) && isWrappedCode(fieldValue);
   if (isCodeString) {
     code = getCodeOfWrappedCode(fieldValue);
-    value = code2value(code);
+    try {
+      // 避免 code 报错的情况
+      value = code2value(code);
+    } catch (err) {
+      // do nothing
+    }
   } else {
     code = value2code(fieldValue);
     value = fieldValue;
@@ -188,7 +193,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     extra,
     footer,
     noStyle,
-    validate,
+    validate = options.validate,
   }: FormItemProps) {
     const { disableSwitchExpressionSetter, showItemSubtitle } = useFormVariable();
     const model = useFormModel();
@@ -202,14 +207,15 @@ export function createFormItem(options: IFormItemCreateOptions) {
     });
 
     field.setConfig({
-      validate: validate || options.validate,
+      validate: setter === 'codeSetter' ? getSetter('codeSetter').config.validate : validate,
     });
 
     let baseComponentProps: FormItemComponentProps = {
       value: setterValue,
       defaultValue,
-      onChange(value, detail) {
+      onChange(value, detail = {}) {
         if ((setterType === 'code' || isCodeSetter) && isString(value) && value) {
+          detail.rawCode = value; // 在 detail 中记录原始的 code
           value = wrapCode(value);
         }
         field.setValue(value, detail);
