@@ -1,4 +1,4 @@
-import { Designer, Engine, SimulatorNameType } from './models';
+import { Designer, DesignerViewType, Engine, SimulatorNameType } from './models';
 import { IWorkspace } from './models/interfaces';
 
 interface ICreateEngineOptions {
@@ -14,6 +14,11 @@ interface ICreateEngineOptions {
    * 默认激活的侧边栏
    */
   defaultActiveSidebarPanel?: string;
+
+  /**
+   * 默认激活的视图
+   */
+  defaultActiveView?: DesignerViewType;
 }
 
 /**
@@ -25,6 +30,7 @@ export function createEngine({
   workspace,
   defaultSimulatorMode = 'desktop',
   defaultActiveSidebarPanel = '',
+  defaultActiveView = 'design',
 }: ICreateEngineOptions) {
   const engine = new Engine({
     workspace,
@@ -32,6 +38,7 @@ export function createEngine({
       workspace,
       simulator: defaultSimulatorMode,
       activeSidebarPanel: defaultActiveSidebarPanel,
+      activeView: defaultActiveView,
     }),
   });
 
