@@ -38,7 +38,7 @@ function SettingFormDemo({ initValues, prototype }: SettingFormDemoProps) {
   const model = new FormModel(initValues, { onChange: console.log });
   return (
     <Box display="flex">
-      <Box flex="0 0 400px" overflow="hidden">
+      <Box flex="0 0 320px" overflow="hidden">
         <SettingForm
           model={model}
           prototype={prototype}
@@ -59,8 +59,10 @@ function SettingFormDemo({ initValues, prototype }: SettingFormDemoProps) {
 
 const prototypeHasBasicProps: IComponentPrototype = {
   name: 'Sample',
+  title: '演示组件',
   package: 'sample-pkg',
   type: 'element',
+  docs: 'https://4x-ant-design.antgroup.com/components/slider-cn',
   props: [
     {
       name: 'code',

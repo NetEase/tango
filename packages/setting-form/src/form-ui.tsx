@@ -249,21 +249,22 @@ interface FormHeaderProps {
 export function FormHeader({ title, extra, subTitle }: FormHeaderProps) {
   return (
     <Box className="FormHeader">
-      <Box display="flex" alignItems="center">
-        <Box flex="1" display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" className="FormHeaderMain">
+        <Box flex="1" display="flex" alignItems="center" className="FormHeaderMainBody">
           <Box
             fontSize="16px"
             fontWeight="500"
             mr="s"
+            whiteSpace="nowrap"
             textOverflow="ellipsis"
             overflow="hidden"
-            whiteSpace="nowrap"
+            className="FormHeaderTitle"
           >
             {title}
           </Box>
-          {subTitle && <Box>{subTitle}</Box>}
+          {subTitle && <Box className="FormHeaderSubTitle">{subTitle}</Box>}
         </Box>
-        {extra && <Box>{extra}</Box>}
+        {extra && <Box className="FormHeaderExtra">{extra}</Box>}
       </Box>
     </Box>
   );

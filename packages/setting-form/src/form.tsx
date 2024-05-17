@@ -235,6 +235,7 @@ export function SettingForm({
                         icon={<QuestionCircleOutlined />}
                         tooltip="查看组件文档"
                         href={prototype.docs}
+                        size="small"
                       />
                     ) : null
                   }
