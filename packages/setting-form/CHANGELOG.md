@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.1.0...@music163/tango-setting-form@1.2.0) (2024-05-17)
+
+### Bug Fixes
+
+- support quick set tid in SettingForm ([#151](https://github.com/netease/tango/issues/151)) ([1fc22a4](https://github.com/netease/tango/commit/1fc22a4535a8bdc12a018a41ebd5ab908fc46817))
+
+### Features
+
+- refactor parse attribute value ([#149](https://github.com/netease/tango/issues/149)) ([ffaa276](https://github.com/netease/tango/commit/ffaa276b5c205ed962d37e2fdb358a703f8fad01))
+
 ## [1.0.2](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.0.1...@music163/tango-setting-form@1.0.2) (2024-04-22)
 
 **Note:** Version bump only for package @music163/tango-setting-form

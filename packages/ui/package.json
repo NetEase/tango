@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-ui",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "ui widgets of tango",
   "keywords": [
     "react",
@@ -38,7 +38,7 @@
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/lint": "^6.7.1",
     "@codemirror/search": "^6.5.6",
-    "@music163/tango-helpers": "^1.0.0",
+    "@music163/tango-helpers": "^1.1.0",
     "@uiw/react-codemirror": "^4.22.0",
     "antd": "^4.24.2",
     "classnames": "^2.5.1",
