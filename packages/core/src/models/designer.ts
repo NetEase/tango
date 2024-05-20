@@ -20,6 +20,10 @@ interface IDesignerOptions {
   workspace: IWorkspace;
   simulator?: SimulatorNameType | ISimulatorType;
   activeSidebarPanel?: string;
+  /**
+   * 默认激活的视图模式
+   */
+  activeView?: DesignerViewType;
 }
 
 const ISimulatorTypes: Record<string, ISimulatorType> = {
@@ -112,7 +116,11 @@ export class Designer {
   constructor(options: IDesignerOptions) {
     this.workspace = options.workspace;
 
-    const { simulator, activeSidebarPanel: defaultActiveSidebarPanel } = options;
+    const {
+      simulator,
+      activeSidebarPanel: defaultActiveSidebarPanel,
+      activeView: defaultActiveView,
+    } = options;
 
     // 默认设计器模式
     if (simulator) {
@@ -122,6 +130,11 @@ export class Designer {
     // 默认展开的侧边栏
     if (defaultActiveSidebarPanel) {
       this.setActiveSidebarPanel(defaultActiveSidebarPanel);
+    }
+
+    // 默认激活的视图
+    if (defaultActiveView) {
+      this.setActiveView(defaultActiveView);
     }
 
     makeObservable(this, {
