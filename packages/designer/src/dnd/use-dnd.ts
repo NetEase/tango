@@ -84,10 +84,10 @@ export function useDnd({
   const onMouseMove = (e: React.MouseEvent) => {
     const point = sandboxQuery.getRelativePoint({ x: e.clientX, y: e.clientY });
     setElementStyle('.SelectionMask', {
-      width: Math.abs(selectSource.start?.point.x - point.x) + 'px',
-      height: Math.abs(selectSource.start?.point.y - point.y) + 'px',
-      left: Math.min(selectSource.start?.point.x, point.x) + 'px',
-      top: Math.min(selectSource.start?.point.y, point.y) + 'px',
+      width: `${Math.abs(selectSource.start?.point.x - point.x)}px`,
+      height: `${Math.abs(selectSource.start?.point.y - point.y)}px`,
+      left: `${Math.min(selectSource.start?.point.x, point.x)}px`,
+      top: `${Math.min(selectSource.start?.point.y, point.y)}px`,
     });
   };
 
@@ -405,6 +405,13 @@ export function useDnd({
 
         // 打开智能向导弹窗
         designer.toggleSmartWizard(true);
+        break;
+      case 'addComponent':
+        // 打开添加组件面板
+        designer.toggleAddComponentPopover(true, {
+          clientX: (e.detail.meta as any).clientX + 40,
+          clientY: (e.detail.meta as any).clientY + 110,
+        });
         break;
       default:
         break;
