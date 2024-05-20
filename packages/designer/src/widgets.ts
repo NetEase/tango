@@ -13,7 +13,12 @@ import {
   OutlinePanel,
   VariablePanel,
 } from './sidebar';
-import { CopyNodeAction, DeleteNodeAction, ViewSourceAction } from './selection-menu';
+import {
+  CopyNodeAction,
+  DeleteNodeAction,
+  ViewSourceAction,
+  SelectParentNodeAction,
+} from './selection-menu';
 
 const widgets = {};
 
@@ -48,4 +53,5 @@ registerWidget('sidebar.dataSource', DataSourcePanel);
 
 registerWidget('selectionMenu.copyNode', CopyNodeAction);
 registerWidget('selectionMenu.deleteNode', DeleteNodeAction);
+registerWidget('selectionMenu.selectParentNode', SelectParentNodeAction);
 registerWidget('selectionMenu.viewSource', ViewSourceAction);

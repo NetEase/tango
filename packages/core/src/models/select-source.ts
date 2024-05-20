@@ -109,6 +109,20 @@ export class SelectSource {
     this._start = null;
   }
 
+  /**
+   * 选中当前选中节点的父节点
+   */
+  selectParent() {
+    const parents = this.first?.parents || [];
+    if (parents.length) {
+      const [parent, ...rest] = parents;
+      this.select({
+        ...parent,
+        parents: rest,
+      });
+    }
+  }
+
   setStart(data: StartDataType) {
     this._start = data;
   }
