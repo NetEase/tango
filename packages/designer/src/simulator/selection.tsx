@@ -25,7 +25,7 @@ export interface SelectionToolsProps {
 
 export const SelectionTools = observer(
   ({
-    actions: actionsProp = ['viewSource', 'copyNode', 'deleteNode', 'parentNode'],
+    actions: actionsProp = ['viewSource', 'copyNode', 'deleteNode', 'selectParentNode'],
   }: SelectionToolsProps) => {
     const workspace = useWorkspace();
     const selectSource = workspace.selectSource;

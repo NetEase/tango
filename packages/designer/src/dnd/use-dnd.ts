@@ -59,7 +59,7 @@ export function useDnd({
         workspace.pasteSelectedNode();
       },
       'command+arrowup,ctrl+arrowup': () => {
-        workspace.selectParentNode();
+        workspace.selectSource.selectParent();
       },
       'command+z,ctrl+z': () => {
         workspace.history.back();

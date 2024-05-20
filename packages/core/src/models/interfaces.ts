@@ -200,7 +200,6 @@ export interface IWorkspace {
 
   // ----------------- 节点操作 -----------------
 
-  selectParentNode: () => void;
   removeSelectedNode: () => void;
   cloneSelectedNode: () => void;
   copySelectedNode: () => void;

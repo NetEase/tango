@@ -17,7 +17,7 @@ import {
   CopyNodeAction,
   DeleteNodeAction,
   ViewSourceAction,
-  ParentNodeAction,
+  SelectParentNodeAction,
 } from './selection-menu';
 
 const widgets = {};
@@ -53,5 +53,5 @@ registerWidget('sidebar.dataSource', DataSourcePanel);
 
 registerWidget('selectionMenu.copyNode', CopyNodeAction);
 registerWidget('selectionMenu.deleteNode', DeleteNodeAction);
-registerWidget('selectionMenu.parentNode', ParentNodeAction);
+registerWidget('selectionMenu.selectParentNode', SelectParentNodeAction);
 registerWidget('selectionMenu.viewSource', ViewSourceAction);
