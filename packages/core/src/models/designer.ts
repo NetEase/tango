@@ -92,7 +92,7 @@ export class Designer {
   /**
    * 菜单列表
    */
-  _menuData?: MenuDataType;
+  _menuData?: MenuDataType = null;
 
   private readonly workspace: IWorkspace;
 
