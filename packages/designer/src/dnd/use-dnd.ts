@@ -412,6 +412,13 @@ export function useDnd({
         // 打开智能向导弹窗
         designer.toggleSmartWizard(true);
         break;
+      case 'addComponent':
+        // 打开添加组件面板
+        designer.toggleAddComponentPopover(true, {
+          clientX: (e.detail.meta as any).clientX + 40,
+          clientY: (e.detail.meta as any).clientY + 110,
+        });
+        break;
       default:
         break;
     }

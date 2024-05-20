@@ -45,7 +45,7 @@ const sandboxQuery = new DndQuery({
 
 // 4. 图标库初始化（物料面板和组件树使用了 iconfont 里的图标）
 createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/c/font_2891794_cou9i7556tl.js',
+  scriptUrl: '//at.alicdn.com/t/c/font_2891794_cxbtmzehxyi.js',
 });
 
 /**
@@ -112,6 +112,7 @@ export default function App() {
                   if (sandboxWindow.TangoMail) {
                     if (sandboxWindow.TangoMail.menuData) {
                       setMenuData(sandboxWindow.TangoMail.menuData);
+                      engine.designer.setMenuData(sandboxWindow.TangoMail.menuData);
                     }
                     if (sandboxWindow.TangoMail.prototypes) {
                       workspace.setComponentPrototypes(sandboxWindow.TangoMail.prototypes);

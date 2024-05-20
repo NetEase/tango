@@ -28,35 +28,6 @@ import {
 import { Action } from '@music163/tango-ui';
 import { useState } from 'react';
 
-// 1. 实例化工作区
-const workspace = new Workspace({
-  entry: '/src/index.js',
-  files: sampleFiles,
-  prototypes,
-});
-
-// inject workspace to window for debug
-(window as any).__workspace__ = workspace;
-
-// 2. 引擎初始化
-const engine = createEngine({
-  workspace,
-  defaultActiveView: 'design', // dual code design
-});
-
-// @ts-ignore
-window.__workspace__ = workspace;
-
-// 3. 沙箱初始化
-const sandboxQuery = new DndQuery({
-  context: 'iframe',
-});
-
-// 4. 图标库初始化（物料面板和组件树使用了 iconfont 里的图标）
-createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/c/font_2891794_6d4hj5u0bjx.js',
-});
-
 const menuData = {
   common: [
     {
@@ -90,6 +61,36 @@ const menuData = {
     },
   ],
 };
+
+// 1. 实例化工作区
+const workspace = new Workspace({
+  entry: '/src/index.js',
+  files: sampleFiles,
+  prototypes,
+});
+
+// inject workspace to window for debug
+(window as any).__workspace__ = workspace;
+
+// 2. 引擎初始化
+const engine = createEngine({
+  workspace,
+  menuData,
+  defaultActiveView: 'design', // dual code design
+});
+
+// @ts-ignore
+window.__workspace__ = workspace;
+
+// 3. 沙箱初始化
+const sandboxQuery = new DndQuery({
+  context: 'iframe',
+});
+
+// 4. 图标库初始化（物料面板和组件树使用了 iconfont 里的图标）
+createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/c/font_2891794_cxbtmzehxyi.js',
+});
 
 /**
  * 5. 平台初始化，访问 https://local.netease.com:6006/

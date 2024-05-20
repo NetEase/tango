@@ -84,7 +84,9 @@ export function CollapsePanel(props: CollapsePanelProps) {
         borderBottom: 'solid',
         borderBottomColor: 'line2',
       }
-    : {};
+    : {
+        border: 'none!important',
+      };
 
   return (
     <Box className="CollapsePanel" {...CollapsePanelBorderStyle} {...rest}>
@@ -94,7 +96,9 @@ export function CollapsePanel(props: CollapsePanelProps) {
         justifyContent="space-between"
         className="CollapsePanelHeader"
         onClick={() => setCollapsed(!collapsed)}
-        p="m"
+        p="l"
+        paddingTop={'m'}
+        paddingBottom={'m'}
         {...stickHeaderProps}
         {...headerProps}
         css={headerStyle}

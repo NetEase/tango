@@ -165,6 +165,7 @@ class App extends React.Component {
   render() {
     return (
       <Page title={tango.stores.app.title} subTitle={111}>
+        <Section tid="section0" />
         <Section tid="section1" title="Section Title">
           your input: <Input tid="input1" defaultValue="hello" />
           copy input: <Input value={tango.page.input1?.value} />
@@ -191,7 +192,7 @@ class App extends React.Component {
         </Section>
         <Section title="原生 DOM" tid="section4">
           <h1 style={{ ...{ color: "red" }, fontSize: 64 }}>
-          hello world
+            hello world
           </h1>
           <div
             style={{
