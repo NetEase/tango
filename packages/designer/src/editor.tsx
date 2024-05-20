@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { Box } from 'coral-system';
 import { MultiEditor, MultiEditorProps } from '@music163/tango-ui';
-import { observer, useWorkspace } from '@music163/tango-context';
+import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { isValidCode } from '@music163/tango-core';
 import { Modal } from 'antd';
 
@@ -32,6 +32,7 @@ export const CodeEditor = observer(
   ({ autoRemoveUnusedImports = true, ...rest }: CodeEditorProps) => {
     const editorRef = useRef(null);
     const workspace = useWorkspace();
+    const designer = useDesigner();
     const files = workspace.listFiles();
     const activeFile = workspace.activeFile;
 
@@ -101,8 +102,15 @@ export const CodeEditor = observer(
       [workspace],
     );
 
+    const borderStyle =
+      designer.activeView === 'dual'
+        ? {
+            borderLeft: 'solid 1px var(--tango-colors-line2)',
+          }
+        : {};
+
     return (
-      <Box display="flex" flexDirection="row" height="100%" bg="white">
+      <Box display="flex" flexDirection="row" height="100%" bg="white" {...borderStyle}>
         <MultiEditor
           ref={editorRef}
           options={{

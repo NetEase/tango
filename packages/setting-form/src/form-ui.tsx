@@ -257,6 +257,8 @@ export function FormHeader({ title, extra, subTitle }: FormHeaderProps) {
             mr="s"
             whiteSpace="nowrap"
             className="FormHeaderTitle"
+            textOverflow="ellipsis"
+            overflow="hidden"
           >
             {title}
           </Box>

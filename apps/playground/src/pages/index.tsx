@@ -76,6 +76,7 @@ const workspace = new Workspace({
 const engine = createEngine({
   workspace,
   menuData,
+  defaultActiveView: 'design', // dual code design
 });
 
 // @ts-ignore

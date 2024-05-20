@@ -58,6 +58,12 @@ export function useDnd({
       'command+v,ctrl+v': () => {
         workspace.pasteSelectedNode();
       },
+      'command+z,ctrl+z': () => {
+        workspace.history.back();
+      },
+      'command+shift+z,ctrl+shift+z': () => {
+        workspace.history.forward();
+      },
     });
   }, [workspace]);
 
