@@ -3,6 +3,7 @@
  */
 
 import { OptionType } from './advanced';
+import { PartialRecord } from './base';
 
 /**
  * @deprecated 请使用 IComponentProp 代替
@@ -327,3 +328,19 @@ export interface ITangoConfigJson {
     autoGenerateComponentId: boolean;
   };
 }
+
+/**
+ * 物料类型
+  common: '基础组件',
+  atom: '原子组件',
+  snippet: '组合',
+  bizComp: '业务组件',
+  localComp: '本地组件',
+ */
+export type MenuKeyType = 'common' | 'atom' | 'snippet' | 'bizComp' | 'localComp';
+export type MenuValueType = Array<{ title: string; items: string[] }>;
+
+/**
+ * 菜单项类型
+ */
+export type MenuDataType = PartialRecord<MenuKeyType, MenuValueType>;

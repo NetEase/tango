@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Text, styled } from 'coral-system';
-import { Popover, PopoverProps, IconFont } from '../lib/esm';
+import { Popover, PopoverProps, IconFont } from './';
 import Draggable from 'react-draggable';
 import { CloseOutlined } from '@ant-design/icons';
 import { noop } from '@music163/tango-helpers';

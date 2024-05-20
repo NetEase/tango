@@ -1,3 +1,4 @@
+import { MenuDataType } from '@music163/tango-helpers';
 import { Designer, Engine, SimulatorNameType } from './models';
 import { IWorkspace } from './models/interfaces';
 
@@ -6,6 +7,10 @@ interface ICreateEngineOptions {
    * 自定义工作区
    */
   workspace?: IWorkspace;
+  /**
+   * 菜单信息
+   */
+  menuData?: MenuDataType;
   /**
    * 默认的模拟器模式
    */
@@ -25,6 +30,7 @@ export function createEngine({
   workspace,
   defaultSimulatorMode = 'desktop',
   defaultActiveSidebarPanel = '',
+  menuData,
 }: ICreateEngineOptions) {
   const engine = new Engine({
     workspace,
@@ -32,6 +38,7 @@ export function createEngine({
       workspace,
       simulator: defaultSimulatorMode,
       activeSidebarPanel: defaultActiveSidebarPanel,
+      menuData,
     }),
   });
 

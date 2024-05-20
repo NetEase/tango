@@ -14,7 +14,7 @@ const BLACK_LIST = ['codeSetter', 'eventSetter', 'modelSetter', 'routerSetter'];
 BUILT_IN_SETTERS.filter((setter) => !BLACK_LIST.includes(setter.name)).forEach(register);
 
 createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/c/font_2891794_cou9i7556tl.js',
+  scriptUrl: '//at.alicdn.com/t/c/font_2891794_cxbtmzehxyi.js',
 });
 
 export default {

@@ -1,13 +1,13 @@
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Box, Button, Group, HTMLCoralProps } from 'coral-system';
-import { Dropdown, DropdownProps, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import { HolderOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ISelectedItemData, isString, noop } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { IconFont } from '@music163/tango-ui';
 import { getDragGhostElement } from '../helpers';
 import { getWidget } from '../widgets';
+import { ComponentsPopover } from '../components';
 
 /**
  * 选择辅助工具的对齐方式
@@ -79,13 +79,6 @@ const bottomAddSiblingBtnStyle = css`
   pointer-events: auto;
 `;
 
-interface IInsertedData {
-  name: string;
-  label: string;
-  icon: string;
-  description: string;
-}
-
 export interface SelectionBoxProps {
   /**
    * 是否显示操作按钮
@@ -117,36 +110,6 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   const prototype = workspace.componentPrototypes.get(data.name);
   const isPage = prototype?.type === 'page';
 
-  // 如果声明了 childrenName，提供快捷子元素创建入口
-  let insertedList: IInsertedData[] = [];
-  if (prototype?.childrenName) {
-    const names = Array.isArray(prototype?.childrenName)
-      ? prototype.childrenName
-      : [prototype.childrenName];
-    insertedList = names.map((child) => {
-      const proto = workspace.componentPrototypes.get(child);
-      return {
-        name: child,
-        label: proto?.title || child,
-        icon: proto?.icon,
-        description: proto?.help,
-      };
-    });
-  }
-
-  let siblingList: IInsertedData[] = [];
-  if (prototype?.siblingNames) {
-    siblingList = prototype.siblingNames?.map((item) => {
-      const proto = workspace.componentPrototypes.get(item);
-      return {
-        name: item,
-        label: proto?.title || item,
-        icon: proto?.icon,
-        description: proto?.help,
-      };
-    });
-  }
-
   let selectionHelpersAlign: SelectionHelperAlignType = 'top-right';
   if (data.bounding) {
     if (data.bounding.left + data.bounding.width + boundingOffset < designer.viewport.width) {
@@ -159,6 +122,7 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
   }
 
   const isFromCurrentFile = data.filename === workspace.activeViewFile;
+  const selectedNodeName = workspace.selectSource?.selected?.[0]?.codeId ?? '未选中';
 
   let style: React.CSSProperties;
   if (data.bounding) {
@@ -183,32 +147,18 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
       css={selectionBoxStyle}
       style={style}
     >
-      {siblingList.length > 0 ? (
-        <>
-          <InsertedDropdown
-            title="在当前节点的前方添加兄弟节点"
-            options={siblingList}
-            onSelect={(name) => {
-              workspace.insertBeforeSelectedNode(name);
-            }}
-          >
-            <Tooltip title="在当前节点的前方添加兄弟节点">
-              <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
-            </Tooltip>
-          </InsertedDropdown>
-          <InsertedDropdown
-            title="在当前节点的后方添加兄弟节点"
-            options={siblingList}
-            onSelect={(name) => {
-              workspace.insertAfterSelectedNode(name);
-            }}
-          >
-            <Tooltip title="在当前节点的后方添加兄弟节点">
-              <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
-            </Tooltip>
-          </InsertedDropdown>
-        </>
-      ) : null}
+      <>
+        <ComponentsPopover type="before">
+          <Tooltip title={`在 ${selectedNodeName} 的前方添加兄弟节点`}>
+            <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
+          </Tooltip>
+        </ComponentsPopover>
+        <ComponentsPopover type="after">
+          <Tooltip title={`在 ${selectedNodeName} 的后方添加兄弟节点`}>
+            <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
+          </Tooltip>
+        </ComponentsPopover>
+      </>
       {showActions && (
         <SelectionHelpers align={selectionHelpersAlign}>
           <SelectionHelper
@@ -246,17 +196,12 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
             }
           />
           <SelectionToolSet>{!isPage && actions}</SelectionToolSet>
-          {insertedList.length > 0 && (
-            <InsertedDropdown
-              options={insertedList}
-              onSelect={(name) => {
-                workspace.insertToSelectedNode(name);
-              }}
-            >
+          {prototype.hasChildren !== false && (
+            <ComponentsPopover>
               <Tooltip title="快捷添加子元素">
                 <SelectionHelper icon={<PlusOutlined />} />
               </Tooltip>
-            </InsertedDropdown>
+            </ComponentsPopover>
           )}
         </SelectionHelpers>
       )}
@@ -429,105 +374,3 @@ const NameSelector = ({ label, parents = [], onSelect = noop }: NameSelectorProp
     </NameSelectorWrapper>
   );
 };
-
-interface InsertedDropdownProps extends DropdownProps {
-  title?: string;
-  options?: IInsertedData[];
-  onSelect?: (name: string) => void;
-}
-
-function InsertedDropdown({
-  title = '为当前节点添加子元素',
-  options = [],
-  onSelect,
-  ...props
-}: InsertedDropdownProps) {
-  return (
-    <Dropdown
-      trigger={['click']}
-      dropdownRender={() => {
-        return (
-          <Box
-            bg="#FFF"
-            borderRadius="m"
-            boxShadow="lowDown"
-            border="solid"
-            borderColor="line2"
-            overflow="hidden"
-            width="320px"
-          >
-            <Box px="l" py="m" color="text2">
-              {title}
-            </Box>
-            <Box maxHeight={360} overflowY="auto">
-              {options.map((item) => (
-                <InsertedItem
-                  key={item.name}
-                  label={item.label}
-                  icon={item.icon}
-                  description={item.description || '暂无组件描述'}
-                  onClick={() => onSelect?.(item.name)}
-                />
-              ))}
-            </Box>
-          </Box>
-        );
-      }}
-      {...props}
-    />
-  );
-}
-
-const insertedItemStyle = css`
-  cursor: pointer;
-  user-select: none;
-
-  &:hover {
-    background-color: var(--tango-colors-fill2);
-  }
-`;
-
-function InsertedItem({
-  label,
-  icon,
-  description,
-  ...rest
-}: HTMLCoralProps<'div'> & Omit<IInsertedData, 'name'>) {
-  let iconNode;
-  if (!icon) {
-    iconNode = <IconFont className="material-icon" type="icon-placeholder" />;
-  } else if (icon.startsWith('icon-')) {
-    iconNode = <IconFont className="material-icon" type={icon} />;
-  } else {
-    iconNode = <img src={icon} alt={label} />;
-  }
-
-  return (
-    <Box
-      display="flex"
-      columnGap="m"
-      px="l"
-      py="m"
-      fontSize="12px"
-      css={insertedItemStyle}
-      {...rest}
-    >
-      <Box
-        size="35px"
-        fontSize="32px"
-        background="fill1"
-        border="1px solid"
-        borderColor="line2"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {iconNode}
-      </Box>
-      <Box>
-        <Box fontWeight="500">{label}</Box>
-        <Box color="text2">{description}</Box>
-      </Box>
-    </Box>
-  );
-}
