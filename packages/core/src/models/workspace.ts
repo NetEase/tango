@@ -866,6 +866,20 @@ export class Workspace extends EventTarget implements IWorkspace {
   }
 
   /**
+   * 选中当前选中节点的父节点
+   */
+  selectParentNode() {
+    const parents = this.selectSource?.first?.parents || [];
+    if (parents.length) {
+      const [parent, ...rest] = parents;
+      this.selectSource.select({
+        ...parent,
+        parents: rest,
+      });
+    }
+  }
+
+  /**
    * 删除选中节点
    */
   removeSelectedNode() {
