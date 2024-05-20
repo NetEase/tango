@@ -17,7 +17,6 @@ import { getDragGhostElement } from '../helpers';
 
 type IComponentsPanelContext = {
   isScope: boolean;
-  isCollapsed: boolean;
   onItemSelect: (name: string) => void;
   layout: 'grid' | 'line';
 };
@@ -49,10 +48,6 @@ export interface ComponentsPanelProps {
    * 是否局部模式 (快捷添加组件面板中使用)
    */
   isScope?: boolean;
-  /**
-   * 是否折叠
-   */
-  isCollapsed?: boolean;
   /**
    * 组件选中回调
    */
@@ -106,7 +101,6 @@ export function useFlatMenuData<T>(menuData: T) {
 export const ComponentsPanel = observer(
   ({
     isScope = false,
-    isCollapsed = true,
     menuData = emptyMenuData,
     showBizComps = true,
     getBizCompName = upperCamelCase,
@@ -166,7 +160,6 @@ export const ComponentsPanel = observer(
     return (
       <ComponentsPanelProvider
         value={{
-          isCollapsed,
           isScope,
           onItemSelect,
           layout,
@@ -208,7 +201,7 @@ interface MaterialListProps {
 
 function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProps) {
   const workspace = useWorkspace();
-  const { isCollapsed, layout } = usePanelContext();
+  const { layout } = usePanelContext();
   const isGrid = layout === 'grid';
 
   return (
@@ -231,7 +224,6 @@ function MaterialList({ data, filterKeyword, type = 'common' }: MaterialListProp
               title={cate.title}
               borderBottom="solid"
               borderColor="line.normal"
-              isCollapsed={isCollapsed}
               showBottomBorder={false}
               bodyProps={{
                 padding: isGrid ? '4px 12px 12px' : '0',

@@ -5,10 +5,6 @@ import { useControllableState } from '@music163/tango-helpers';
 
 export interface CollapsePanelProps extends Omit<HTMLCoralProps<'div'>, 'title'> {
   /**
-   * 是否折叠
-   */
-  isCollapsed?: boolean;
-  /**
    * 标题
    */
   title?: React.ReactNode;
@@ -52,7 +48,6 @@ const headerStyle = css`
 
 export function CollapsePanel(props: CollapsePanelProps) {
   const {
-    isCollapsed = true,
     title,
     extra,
     children,
@@ -100,7 +95,7 @@ export function CollapsePanel(props: CollapsePanelProps) {
         alignItems="center"
         justifyContent="space-between"
         className="CollapsePanelHeader"
-        onClick={() => isCollapsed && setCollapsed(!collapsed)}
+        onClick={() => setCollapsed(!collapsed)}
         p="l"
         paddingTop={'m'}
         paddingBottom={'m'}
@@ -109,7 +104,7 @@ export function CollapsePanel(props: CollapsePanelProps) {
         css={headerStyle}
       >
         <Box display="flex" alignItems="center" fontSize="14px" fontWeight="500">
-          {isCollapsed && <UpOutlined style={iconStyle} />}
+          <UpOutlined style={iconStyle} />
           {title}
         </Box>
         <Box>{extra}</Box>
