@@ -1,7 +1,6 @@
 import React from 'react';
 import { useWorkspace, observer } from '@music163/tango-context';
-import { SelectAction } from '@music163/tango-ui';
-import { EnterOutlined } from '@ant-design/icons';
+import { IconFont, SelectAction } from '@music163/tango-ui';
 
 export const SelectParentNodeAction = observer(() => {
   const workspace = useWorkspace();
@@ -13,7 +12,7 @@ export const SelectParentNodeAction = observer(() => {
         workspace.selectSource.selectParent();
       }}
     >
-      <EnterOutlined rotate={90} />
+      <IconFont type="icon-huiche1" rotate={90} />
     </SelectAction>
   );
 });
