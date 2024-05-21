@@ -24,6 +24,7 @@ import {
   CopyNodeContextAction,
   DeleteNodeContextAction,
   PasteNodeContextAction,
+  ViewSourceContextAction,
 } from './context-menu';
 
 const widgets = {};
@@ -63,6 +64,7 @@ registerWidget('selectionMenu.selectParentNode', SelectParentNodeAction);
 registerWidget('selectionMenu.viewSource', ViewSourceAction);
 registerWidget('selectionMenu.moreActions', MoreActionsAction);
 
+registerWidget('contextMenu.viewSource', ViewSourceContextAction);
 registerWidget('contextMenu.copyNode', CopyNodeContextAction);
 registerWidget('contextMenu.pasteNode', PasteNodeContextAction);
 registerWidget('contextMenu.deleteNode', DeleteNodeContextAction);
