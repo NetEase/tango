@@ -18,14 +18,20 @@ import {
   DeleteNodeAction,
   ViewSourceAction,
   SelectParentNodeAction,
+  MoreActionsAction,
 } from './selection-menu';
+import {
+  CopyNodeContextAction,
+  DeleteNodeContextAction,
+  PasteNodeContextAction,
+} from './context-menu';
 
 const widgets = {};
 
 export function registerWidget(key: string, component: React.ComponentType<any>) {
-  if (!/^(toolbar|sidebar|selectionMenu)\.[a-zA-z]+$/.test(key)) {
+  if (!/^(toolbar|sidebar|selectionMenu|contextMenu)\.[a-zA-z]+$/.test(key)) {
     throw new Error(
-      `Invalid widget key(${key}), should start with toolbar, sidebar, or selection-menu`,
+      `Invalid widget key(${key}), should start with toolbar, sidebar, contextMenu or selectionMenu`,
     );
   }
   setValue(widgets, key, component);
@@ -55,3 +61,8 @@ registerWidget('selectionMenu.copyNode', CopyNodeAction);
 registerWidget('selectionMenu.deleteNode', DeleteNodeAction);
 registerWidget('selectionMenu.selectParentNode', SelectParentNodeAction);
 registerWidget('selectionMenu.viewSource', ViewSourceAction);
+registerWidget('selectionMenu.moreActions', MoreActionsAction);
+
+registerWidget('contextMenu.copyNode', CopyNodeContextAction);
+registerWidget('contextMenu.pasteNode', PasteNodeContextAction);
+registerWidget('contextMenu.deleteNode', DeleteNodeContextAction);
