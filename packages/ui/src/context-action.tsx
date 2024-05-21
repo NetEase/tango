@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Menu, Space } from 'antd';
 import { Box, css } from 'coral-system';
+import { isApplePlatform } from '@music163/tango-helpers';
 
 const contextActionStyle = css`
   display: flex;
@@ -23,7 +24,7 @@ const contextActionStyle = css`
 interface ContextActionProps {
   icon?: React.ReactNode;
   children?: React.ReactNode;
-  hotkey?: React.ReactNode;
+  hotkey?: string;
   extra?: React.ReactNode;
   onClick?: () => void;
   className?: string;
@@ -41,13 +42,41 @@ export function ContextAction({
   className,
   key,
 }: ContextActionProps) {
+  const normalizedHotKey = useMemo(() => {
+    if (!hotkey) {
+      return null;
+    }
+    const keyMap = isApplePlatform()
+      ? {
+          command: '⌘',
+          meta: '⌘',
+          ctrl: '^',
+          control: '^',
+          alt: '⌥',
+          option: '⌥',
+          shift: '⇧',
+          '+': '',
+        }
+      : {
+          command: 'Ctrl',
+          meta: 'Win',
+          ctrl: 'Ctrl',
+          control: 'Ctrl',
+          alt: 'Alt',
+          option: 'Alt',
+          shift: 'Shift',
+        };
+    const regexp = new RegExp(Object.keys(keyMap).join('|').replace(/\\+/, '\\+'), 'ig');
+    return hotkey.replace(regexp, (match) => keyMap[match.toLowerCase()]);
+  }, [hotkey]);
+
   return (
     <Menu.Item key={key} onClick={onClick} icon={icon} className={className} disabled={disabled}>
       <Box className="ContextAction" css={contextActionStyle}>
         <Box className="ContextActionContent">{children}</Box>
         <Box className="ContextActionExtra">
           <Space>
-            {hotkey}
+            {normalizedHotKey}
             {extra}
           </Space>
         </Box>

@@ -8,7 +8,7 @@ export const CopyNodeContextAction = observer(() => {
   return (
     <ContextAction
       icon={<CopyOutlined />}
-      hotkey="Ctrl+C"
+      hotkey="Command+C"
       onClick={() => {
         workspace.copySelectedNode();
       }}

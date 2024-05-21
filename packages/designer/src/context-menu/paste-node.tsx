@@ -8,7 +8,7 @@ export const PasteNodeContextAction = observer(() => {
   return (
     <ContextAction
       icon={<SnippetsOutlined />}
-      hotkey="Ctrl+V"
+      hotkey="Command+V"
       onClick={() => {
         workspace.pasteSelectedNode();
       }}
