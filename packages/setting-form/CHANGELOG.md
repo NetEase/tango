@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.2.0...@music163/tango-setting-form@1.2.1) (2024-05-21)
+
+### Bug Fixes
+
+- enhance code value validate in SettingForm ([#152](https://github.com/netease/tango/issues/152)) ([791fbb1](https://github.com/netease/tango/commit/791fbb162a7147243924e01f54e9c0b586f14438))
+- prototype2code & go back history error ([#156](https://github.com/netease/tango/issues/156)) ([8bf53a7](https://github.com/netease/tango/commit/8bf53a76f8a71eaf261ea68b9ee44e5bf19893aa))
+
 # [1.2.0](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.1.0...@music163/tango-setting-form@1.2.0) (2024-05-17)
 
 ### Bug Fixes

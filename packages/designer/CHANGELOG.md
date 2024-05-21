@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/netease/tango/compare/@music163/tango-designer@1.1.0...@music163/tango-designer@1.2.0) (2024-05-21)
+
+### Bug Fixes
+
+- enhance code value validate in SettingForm ([#152](https://github.com/netease/tango/issues/152)) ([791fbb1](https://github.com/netease/tango/commit/791fbb162a7147243924e01f54e9c0b586f14438))
+- prototype2code & go back history error ([#156](https://github.com/netease/tango/issues/156)) ([8bf53a7](https://github.com/netease/tango/commit/8bf53a76f8a71eaf261ea68b9ee44e5bf19893aa))
+- support add components with popover ([#155](https://github.com/netease/tango/issues/155)) ([f17ccbb](https://github.com/netease/tango/commit/f17ccbb7f645f8047ecd96d9f3f2185048a3b726))
+
+### Features
+
+- add history forward & back shortcut key ([#154](https://github.com/netease/tango/issues/154)) ([df3021f](https://github.com/netease/tango/commit/df3021f75e057e229756b429321c14d181223698))
+- add select parent node of selected node ([#158](https://github.com/netease/tango/issues/158)) ([fe31246](https://github.com/netease/tango/commit/fe3124648325e72abfc58da8b2f8ff83301d40b8))
+- event-setter & expression-setter use popover ([#159](https://github.com/netease/tango/issues/159)) ([9daf387](https://github.com/netease/tango/commit/9daf3872e743fcf706184877020bcbf1f75ffd25))
+
 # [1.1.0](https://github.com/netease/tango/compare/@music163/tango-designer@1.0.3...@music163/tango-designer@1.1.0) (2024-05-17)
 
 ### Bug Fixes

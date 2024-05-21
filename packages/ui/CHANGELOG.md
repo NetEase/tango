@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/netease/tango/compare/@music163/tango-ui@1.1.0...@music163/tango-ui@1.2.0) (2024-05-21)
+
+### Bug Fixes
+
+- support add components with popover ([#155](https://github.com/netease/tango/issues/155)) ([f17ccbb](https://github.com/netease/tango/commit/f17ccbb7f645f8047ecd96d9f3f2185048a3b726))
+
+### Features
+
+- event-setter & expression-setter use popover ([#159](https://github.com/netease/tango/issues/159)) ([9daf387](https://github.com/netease/tango/commit/9daf3872e743fcf706184877020bcbf1f75ffd25))
+
 # [1.1.0](https://github.com/netease/tango/compare/@music163/tango-ui@1.0.3...@music163/tango-ui@1.1.0) (2024-05-17)
 
 ### Features

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/netease/tango/compare/@music163/tango-core@1.1.0...@music163/tango-core@1.2.0) (2024-05-21)
+
+### Bug Fixes
+
+- enhance code value validate in SettingForm ([#152](https://github.com/netease/tango/issues/152)) ([791fbb1](https://github.com/netease/tango/commit/791fbb162a7147243924e01f54e9c0b586f14438))
+- prototype2code & go back history error ([#156](https://github.com/netease/tango/issues/156)) ([8bf53a7](https://github.com/netease/tango/commit/8bf53a76f8a71eaf261ea68b9ee44e5bf19893aa))
+- support add components with popover ([#155](https://github.com/netease/tango/issues/155)) ([f17ccbb](https://github.com/netease/tango/commit/f17ccbb7f645f8047ecd96d9f3f2185048a3b726))
+
+### Features
+
+- add select parent node of selected node ([#158](https://github.com/netease/tango/issues/158)) ([fe31246](https://github.com/netease/tango/commit/fe3124648325e72abfc58da8b2f8ff83301d40b8))
+- supoort set default active view ([#157](https://github.com/netease/tango/issues/157)) ([f854f75](https://github.com/netease/tango/commit/f854f75b8a8c25384d290bd76d6b8bb6fb69f22d))
+
 # [1.1.0](https://github.com/netease/tango/compare/@music163/tango-core@1.0.2...@music163/tango-core@1.1.0) (2024-05-17)
 
 ### Bug Fixes

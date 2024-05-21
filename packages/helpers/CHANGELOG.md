@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/netease/tango/compare/@music163/tango-helpers@1.1.0...@music163/tango-helpers@1.1.1) (2024-05-21)
+
+### Bug Fixes
+
+- support add components with popover ([#155](https://github.com/netease/tango/issues/155)) ([f17ccbb](https://github.com/netease/tango/commit/f17ccbb7f645f8047ecd96d9f3f2185048a3b726))
+
 # [1.1.0](https://github.com/netease/tango/compare/@music163/tango-helpers@1.0.0...@music163/tango-helpers@1.1.0) (2024-05-17)
 
 ### Bug Fixes
