@@ -1,6 +1,6 @@
 import React from 'react';
 import { getWidget } from '../widgets';
-import { Menu } from 'antd';
+import { Menu, MenuProps } from 'antd';
 import { observer, useWorkspace } from '@music163/tango-context';
 import { ISelectedItemData, isString } from '@music163/tango-helpers';
 import { Box, css } from 'coral-system';
@@ -79,30 +79,47 @@ const ParentNodesMenu = observer(() => {
   );
 });
 
-export interface ContextMenuProps {
+export interface ContextMenuProps extends MenuProps {
   /**
    * 动作列表，默认列出全部
    */
   actions?: Array<string | React.ReactElement>;
+  /**
+   * 是否显示父节点选项
+   */
   showParents?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+  menuStyle?: React.CSSProperties;
 }
 
-export const ContextMenu = observer(({ showParents, actions: actionsProps }: ContextMenuProps) => {
-  const actions = actionsProps || Object.keys(getWidget('contextMenu'));
-  const menus = actions.map((item) => {
-    if (isString(item)) {
-      const widget = getWidget(['contextMenu', item].join('.'));
-      return widget ? React.createElement(widget) : null;
+export const ContextMenu = observer(
+  ({
+    showParents,
+    actions: actionsProp,
+    className,
+    style,
+    menuStyle,
+    ...rest
+  }: ContextMenuProps) => {
+    const actions = actionsProp || Object.keys(getWidget('contextMenu'));
+    const menus = actions.map((item) => {
+      if (isString(item)) {
+        const widget = getWidget(['contextMenu', item].join('.'));
+        return widget ? React.createElement(widget) : null;
+      }
+      return item;
+    });
+    if (showParents) {
+      menus.unshift(<ParentNodesMenu />);
     }
-    return item;
-  });
-  if (showParents) {
-    menus.unshift(<ParentNodesMenu />);
-  }
 
-  return (
-    <Box display="flex" gap="16px" css={contextMenuStyle}>
-      <Menu activeKey={null}>{menus}</Menu>
-    </Box>
-  );
-});
+    return (
+      <Box display="flex" gap="16px" css={contextMenuStyle} className={className} style={style}>
+        <Menu activeKey={null} {...rest} style={menuStyle}>
+          {menus}
+        </Menu>
+      </Box>
+    );
+  },
+);
