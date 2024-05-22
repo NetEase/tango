@@ -360,7 +360,7 @@ function MaterialGrid({ data }: MaterialProps) {
 
   const icon = data.icon || 'icon-placeholder';
 
-  const iconNode = !icon.startsWith('icon-') ? (
+  const iconNode = icon.startsWith('icon-') ? (
     <IconFont className="material-icon" type={data.icon || 'icon-placeholder'} />
   ) : (
     <Box className="material-icon">
