@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Box, HTMLCoralProps, css } from 'coral-system';
+import { Box, HTMLCoralProps } from 'coral-system';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { javascript, javascriptLanguage, esLint } from '@codemirror/lang-javascript';
 import { CompletionContext } from '@codemirror/autocomplete';
