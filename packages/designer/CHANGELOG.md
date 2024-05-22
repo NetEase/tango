@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/netease/tango/compare/@music163/tango-designer@1.2.0...@music163/tango-designer@1.2.1) (2024-05-22)
+
+### Bug Fixes
+
+- check local component prototypes ([#160](https://github.com/netease/tango/issues/160)) ([a0484e8](https://github.com/netease/tango/commit/a0484e8f64f20f67c30c25c3d5ce65de549b3e04))
+
 # [1.2.0](https://github.com/netease/tango/compare/@music163/tango-designer@1.1.0...@music163/tango-designer@1.2.0) (2024-05-21)
 
 ### Bug Fixes
