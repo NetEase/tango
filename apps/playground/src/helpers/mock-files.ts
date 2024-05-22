@@ -161,6 +161,8 @@ import {
 } from "@music163/antd";
 import { Space } from "@music163/antd";
 import { LocalButton } from "../components";
+import { OutButton } from "../components";
+
 class App extends React.Component {
   render() {
     return (
@@ -181,6 +183,7 @@ class App extends React.Component {
         <Section tid="section2">
           <Space tid="space1">
             <LocalButton />
+            <OutButton />
             <Button tid="button1">button</Button>
           </Space>
         </Section>
@@ -290,6 +293,14 @@ registerComponentPrototype({
 });
 `;
 
+const outButtonCode = `
+import React from 'react';
+
+export default function OutButton(props) {
+  return <button {...props}>Out button (from other file)</button>
+}
+`;
+
 const componentsInputCode = `
 import React from 'react';
 import { registerComponentPrototype } from '../utils';
@@ -312,6 +323,7 @@ registerComponentPrototype({
 const componentsEntryCode = `
 export { default as LocalButton } from './button';
 export { default as LocalInput } from './input';
+export { default as OutButton } from './out-button';
 `;
 
 const storeApp = `
@@ -412,6 +424,7 @@ export const sampleFiles = [
   { filename: '/src/pages/list.js', code: viewHomeCode },
   { filename: '/src/pages/detail.js', code: emptyPageCode },
   { filename: '/src/components/button.js', code: componentsButtonCode },
+  { filename: '/src/components/out-button.js', code: outButtonCode },
   { filename: '/src/components/input.js', code: componentsInputCode },
   { filename: '/src/components/index.js', code: componentsEntryCode },
   { filename: '/src/routes.js', code: routesCode },

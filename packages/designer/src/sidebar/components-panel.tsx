@@ -289,6 +289,10 @@ const StyledCommonGridItem = styled.div`
     transition: 0.15s ease-in-out;
     transition-property: transform;
     will-change: transform;
+    img {
+      width: unset;
+      height: 85%;
+    }
   }
 
   .info {
@@ -355,6 +359,15 @@ function MaterialGrid({ data }: MaterialProps) {
   };
 
   const icon = data.icon || 'icon-placeholder';
+
+  const iconNode = icon.startsWith('icon-') ? (
+    <IconFont className="material-icon" type={data.icon || 'icon-placeholder'} />
+  ) : (
+    <Box className="material-icon">
+      <img src={icon} alt={data.name} />
+    </Box>
+  );
+
   if (isLine) {
     return (
       <Box
@@ -380,11 +393,7 @@ function MaterialGrid({ data }: MaterialProps) {
           alignItems="center"
           justifyContent="center"
         >
-          {icon.startsWith('icon-') ? (
-            <IconFont className="material-icon" type={data.icon || 'icon-placeholder'} />
-          ) : (
-            <img className="material-icon" src={icon} alt={data.name} />
-          )}
+          {iconNode}
         </Box>
         <Box flex={1}>
           <Box fontWeight="500" display="flex" justifyContent="space-between">
@@ -417,11 +426,7 @@ function MaterialGrid({ data }: MaterialProps) {
       onDragEnd={handleDragEnd}
       onClick={handleSelect}
     >
-      {icon.startsWith('icon-') ? (
-        <IconFont className="material-icon" type={data.icon || 'icon-placeholder'} />
-      ) : (
-        <img className="material-icon" src={icon} alt={data.name} />
-      )}
+      {iconNode}
       <Text fontSize="12px" marginTop="4px">
         {data.title ?? data.name}
       </Text>
