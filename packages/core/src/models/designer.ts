@@ -84,6 +84,16 @@ export class Designer {
   _addComponentPopoverPosition = { clientX: 0, clientY: 0 };
 
   /**
+   * 是否显示右键菜单
+   */
+  _showContextMenu = false;
+
+  /**
+   * 右键菜单在 iframe 上的位置
+   */
+  _contextMenuPosition = { clientX: 0, clientY: 0 };
+
+  /**
    * 是否显示右侧面板
    */
   _showRightPanel = true;
@@ -136,6 +146,14 @@ export class Designer {
     return this._addComponentPopoverPosition;
   }
 
+  get showContextMenu() {
+    return this._showContextMenu;
+  }
+
+  get contextMenuPosition() {
+    return this._contextMenuPosition;
+  }
+
   get menuData() {
     return this._menuData ?? ([] as MenuDataType);
   }
@@ -178,6 +196,8 @@ export class Designer {
       _showRightPanel: observable,
       _showAddComponentPopover: observable,
       _addComponentPopoverPosition: observable,
+      _showContextMenu: observable,
+      _contextMenuPosition: observable,
       _menuData: observable,
       _isPreview: observable,
       simulator: computed,
@@ -189,6 +209,8 @@ export class Designer {
       showSmartWizard: computed,
       showAddComponentPopover: computed,
       addComponentPopoverPosition: computed,
+      showContextMenu: computed,
+      contextMenuPosition: computed,
       menuData: computed,
       setSimulator: action,
       setViewport: action,
@@ -199,6 +221,7 @@ export class Designer {
       toggleSmartWizard: action,
       toggleIsPreview: action,
       toggleAddComponentPopover: action,
+      toggleContextMenu: action,
     });
   }
 
@@ -263,5 +286,16 @@ export class Designer {
     if (value) {
       this.workspace.selectSource.clear();
     }
+  }
+
+  toggleContextMenu(
+    value: boolean,
+    position: {
+      clientX: number;
+      clientY: number;
+    } = this.contextMenuPosition,
+  ) {
+    this._showContextMenu = value;
+    this._contextMenuPosition = position;
   }
 }

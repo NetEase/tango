@@ -115,7 +115,7 @@ export const ContextMenu = observer(
     }
 
     return (
-      <Box display="flex" gap="16px" css={contextMenuStyle} className={className} style={style}>
+      <Box display="inline-block" css={contextMenuStyle} className={className} style={style}>
         <Menu activeKey={null} {...rest} style={menuStyle}>
           {menus}
         </Menu>

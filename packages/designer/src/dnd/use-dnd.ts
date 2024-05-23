@@ -77,6 +77,9 @@ export function useDnd({
     if (designer.isPreview) {
       return;
     }
+    if (designer.showContextMenu) {
+      designer.toggleContextMenu(false);
+    }
 
     const point = sandboxQuery.getRelativePoint({ x: e.clientX, y: e.clientY });
     selectSource.setStart({
@@ -128,6 +131,9 @@ export function useDnd({
   };
 
   const onClick = (e: React.MouseEvent) => {
+    if (designer.showContextMenu) {
+      designer.toggleContextMenu(false);
+    }
     const data = sandboxQuery.getDraggableParentsData(e.target as HTMLElement, true);
     if (data && data.id) {
       selectSource.select(data);
@@ -388,6 +394,56 @@ export function useDnd({
     }
   };
 
+  const onContextMenu = (event: React.MouseEvent) => {
+    if (designer.showContextMenu) {
+      designer.toggleContextMenu(false);
+    }
+    // 按下其他按键时，视为用户有特殊操作，此时不展示右键菜单
+    if (event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    const { clientX, clientY } = event;
+    let target;
+    if (workspace.selectSource.isSelected) {
+      for (const item of workspace.selectSource.selected) {
+        if (
+          // 如果选中的节点是页面根节点（无 parents），则忽略
+          item.parents?.length &&
+          item.bounding &&
+          clientX >= item.bounding.left &&
+          clientX <= item.bounding.left + item.bounding.width &&
+          clientY >= item.bounding.top &&
+          clientY <= item.bounding.top + item.bounding.height
+        ) {
+          // 右键坐标已经在当前选中组件的选区内，直接展示右键菜单
+          target = item;
+          break;
+        }
+      }
+    }
+    // 否则，根据右键的元素选中最接近的组件
+    if (!target) {
+      target = sandboxQuery.getDraggableParentsData(event.target as HTMLElement, true);
+    }
+    if (target && target.id) {
+      if (!target.parents?.length) {
+        // 页面根节点不展示右键菜单操作
+        return;
+      }
+      // 右键时高亮选中当前元素
+      // 以防之前选区有多个元素，即便已经是选中的元素也再选中一遍
+      event.preventDefault();
+      selectSource.select(target);
+      // 在下一周期再展示右键菜单，以让先前的菜单先被销毁
+      requestAnimationFrame(() => {
+        designer.toggleContextMenu(true, {
+          clientX,
+          clientY,
+        });
+      });
+    }
+  };
+
   const onTango = (e: CustomEvent) => {
     const detail = e.detail || {};
 
@@ -437,6 +493,7 @@ export function useDnd({
     onDragEnd,
     onScroll,
     onKeyDown,
+    onContextMenu,
     onTango,
     ...selectHandler,
   };
