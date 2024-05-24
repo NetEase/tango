@@ -7,9 +7,13 @@ export interface IDesignerContext<S = any> {
    */
   sandboxQuery: DndQuery;
   /**
+   * 预览沙箱查询实例
+   */
+  previewSandboxQuery: DndQuery;
+  /**
    * 远程服务
    */
-  remoteServices?: Record<string, S>;
+  remoteServices: Record<string, S>;
 }
 
 const [DesignerProvider, useDesigner] = createContext<IDesignerContext>({
@@ -19,9 +23,13 @@ const [DesignerProvider, useDesigner] = createContext<IDesignerContext>({
 export { DesignerProvider };
 
 export const useSandboxQuery = () => {
-  return useDesigner()?.sandboxQuery;
+  return useDesigner().sandboxQuery;
+};
+
+export const usePreviewSandboxQuery = () => {
+  return useDesigner().previewSandboxQuery;
 };
 
 export const useRemoteServices = () => {
-  return useDesigner()?.remoteServices;
+  return useDesigner().remoteServices;
 };

@@ -7,6 +7,20 @@ import {
   parseDndId,
 } from '@music163/tango-helpers';
 
+// -----------
+// CONSTANTS
+// -----------
+
+export const DRAG_GHOST_ID = 'dragGhost';
+
+export const DESIGN_SANDBOX_ID = 'sandbox-container';
+
+export const PREVIEW_SANDBOX_ID = 'preview-sandbox-container';
+
+// -----------
+// DOM Helpers
+// -----------
+
 export function buildQueryBySlotId(id: string) {
   return `[${SLOT.dnd}="${id}"]`;
 }
@@ -14,8 +28,6 @@ export function buildQueryBySlotId(id: string) {
 export function getElement(selector: Selector) {
   return $(selector).get(0);
 }
-
-export const DRAG_GHOST_ID = 'dragGhost';
 
 export const getDragGhostElement = () => getElement(`#${DRAG_GHOST_ID}`);
 

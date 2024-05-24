@@ -12,7 +12,6 @@ export const DRAGGABLE_SELECTOR = `[${SLOT.dnd}]`;
 interface DndQueryOptions {
   /**
    * DOM 查询上下文选择器
-   * TODO: 是不是可以合并成一个 API
    */
   context?: string;
   /**
@@ -63,6 +62,9 @@ export class DndQuery {
     return false;
   }
 
+  /**
+   * 沙箱内的 window 对象
+   */
   get window() {
     if (this.context && 'defaultView' in this.context) {
       return (this.context as unknown as Document).defaultView;
@@ -71,6 +73,9 @@ export class DndQuery {
     return window;
   }
 
+  /**
+   * 沙箱内的全局滚动偏移
+   */
   get scrollTop() {
     if (this.context && 'documentElement' in this.context) {
       return (this.context as unknown as Document).documentElement.scrollTop;
