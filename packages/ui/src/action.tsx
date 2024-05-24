@@ -14,6 +14,7 @@ const actionStyle = css`
   border-radius: var(--tango-radii-s);
   color: var(--tango-colors-text2);
   background-color: transparent;
+  white-space: nowrap;
 
   &:hover {
     background-color: var(--tango-colors-fill2);

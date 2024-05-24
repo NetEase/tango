@@ -60,7 +60,7 @@ export function Toolbar({ children }: ToolbarProps) {
       <Group display="flex" alignItems="center" gap="m">
         {centerTools}
       </Group>
-      <Group display="flex" alignItems="center" gap="m">
+      <Group display="flex" alignItems="center" justifyContent="flex-end" gap="m">
         {rightTools}
       </Group>
     </Box>

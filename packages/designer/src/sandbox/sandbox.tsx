@@ -8,6 +8,7 @@ import { useSandboxQuery } from '../context';
 import { DndQuery, useDnd } from '../dnd';
 import { Navigator } from './navigator';
 import { SelectionToolsProps } from '../simulator/selection';
+import { DESIGN_SANDBOX_ID, PREVIEW_SANDBOX_ID } from '../helpers';
 
 interface ISandboxEventHandlerConfig {
   sandboxQuery?: DndQuery;
@@ -62,6 +63,7 @@ function useSandbox({
   const workspace = useWorkspace();
   const designer = useDesigner();
   const sandboxQuery = useSandboxQuery();
+
   const isPreview = isPreviewProp ?? designer.isPreview;
 
   // 组件不一定会立即刷新，因此 isActive 需要实时获取
@@ -140,7 +142,7 @@ const PreviewSandbox = observer(
 
     return (
       <Box display={display} width="100%" height="100%">
-        <CodeSandbox ref={ref} iframeId="preview-sandbox-container" {...sandboxProps} {...rest} />
+        <CodeSandbox ref={ref} iframeId={PREVIEW_SANDBOX_ID} {...sandboxProps} {...rest} />
       </Box>
     );
   },
@@ -188,7 +190,7 @@ const DesignSandbox = observer(
 
     return (
       <Box display={display} width="100%" height="100%">
-        <CodeSandbox ref={ref} {...sandboxProps} {...rest} />
+        <CodeSandbox ref={ref} iframeId={DESIGN_SANDBOX_ID} {...sandboxProps} {...rest} />
       </Box>
     );
   },

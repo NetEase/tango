@@ -91,7 +91,7 @@ const buttonStyle = css`
     background-color: var(--tango-colors-custom-toolbarButtonBg, rgba(223, 223, 223, 0.08));
     color: var(--tango-colors-custom-toolbarButtonTextColor, #999);
     border: 0;
-    border-radius: var(--tango-radii-m);
+    border-radius: var(--tango-radii-s);
 
     &:hover {
       color: var(--tango-colors-custom-toolbarButtonTextColorHover, #fff);
