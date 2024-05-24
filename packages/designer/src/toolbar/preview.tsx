@@ -17,7 +17,7 @@ export const PreviewTool = observer(() => {
           designer.setActiveView('design');
         }
       }}
-      tooltip="预览"
+      tooltip={designer.isPreview ? '切换到设计模式' : '切换到预览模式'}
     >
       <EyeOutlined />
     </ToggleButton>
