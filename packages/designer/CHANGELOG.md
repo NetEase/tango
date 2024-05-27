@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/netease/tango/compare/@music163/tango-designer@1.2.1...@music163/tango-designer@1.2.2) (2024-05-27)
+
+### Bug Fixes
+
+- export usePreviewSandboxQuery & add builtin sandboxQuery ([#163](https://github.com/netease/tango/issues/163)) ([163eced](https://github.com/netease/tango/commit/163ecedff3ed7baee59e200a8cc60dcc63a24e48))
+
 ## [1.2.1](https://github.com/netease/tango/compare/@music163/tango-designer@1.2.0...@music163/tango-designer@1.2.1) (2024-05-22)
 
 ### Bug Fixes
