@@ -97,6 +97,11 @@ export const Popover: React.FC<PopoverProps> = ({
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
+      if (visible) {
+        setVisible(false);
+        onOpenChange(false);
+        return;
+      }
       const x = e.clientX;
       const y = e.clientY;
       setLeft(x);
@@ -104,7 +109,7 @@ export const Popover: React.FC<PopoverProps> = ({
       setVisible(true);
       onOpenChange(true);
     },
-    [onOpenChange],
+    [visible, onOpenChange],
   );
 
   useEffect(() => {

@@ -56,7 +56,7 @@ const tangoConfigJson = {
     },
     '@music163/antd': {
       description: '云音乐低代码中后台应用基础物料',
-      version: '0.2.5',
+      version: '0.2.6',
       library: 'TangoAntd',
       type: 'baseDependency',
       resources: [
