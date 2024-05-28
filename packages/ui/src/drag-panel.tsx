@@ -5,6 +5,24 @@ import Draggable from 'react-draggable';
 import { CloseOutlined } from '@ant-design/icons';
 import { noop } from '@music163/tango-helpers';
 
+// Dragging over an iframe stops dragging when moving the mouse too fast #613
+// https://github.com/react-grid-layout/react-draggable/issues/613
+const injectStyleToBody = () => {
+  const id = 'react-draggable-transparent-selection';
+  if (document.getElementById(id)) {
+    return;
+  }
+  const style = document.createElement('style');
+  style.id = id;
+  style.innerHTML = `
+  /* Prevent iframes from stealing drag events */
+  .react-draggable-transparent-selection iframe {
+    pointer-events: none;
+  }
+  `;
+  document.head.appendChild(style);
+};
+
 const CloseIcon = styled(CloseOutlined)`
   cursor: pointer;
   margin-left: 10px;
@@ -17,7 +35,7 @@ const CloseIcon = styled(CloseOutlined)`
   }
 `;
 
-interface DragPanelProps extends Omit<PopoverProps, 'overlay'> {
+interface DragPanelProps extends Omit<PopoverProps, 'overlay' | 'open'> {
   // 标题
   title?: React.ReactNode | string;
   // 内容
@@ -59,7 +77,12 @@ export function DragPanel({
         onOpenChange(innerOpen);
       }}
       overlay={
-        <Draggable handle=".selection-drag-bar">
+        <Draggable
+          handle=".selection-drag-bar"
+          onStart={() => {
+            injectStyleToBody();
+          }}
+        >
           <Box
             bg="#FFF"
             borderRadius="m"
