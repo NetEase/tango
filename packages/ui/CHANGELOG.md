@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/netease/tango/compare/@music163/tango-ui@1.2.2...@music163/tango-ui@1.2.3) (2024-05-30)
+
+### Bug Fixes
+
+- popover re-click position bug & drag panel drag bug ([#165](https://github.com/netease/tango/issues/165)) ([f83c6bc](https://github.com/netease/tango/commit/f83c6bc0f69820582720512eefedc9ddf5db2975))
+
 ## [1.2.2](https://github.com/netease/tango/compare/@music163/tango-ui@1.2.1...@music163/tango-ui@1.2.2) (2024-05-27)
 
 ### Bug Fixes

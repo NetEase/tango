@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/netease/tango/compare/@music163/tango-designer@1.2.2...@music163/tango-designer@1.2.3) (2024-05-30)
+
+### Bug Fixes
+
+- optimize variable panel scroll ui & onCancel bug ([#166](https://github.com/netease/tango/issues/166)) ([a0ed57f](https://github.com/netease/tango/commit/a0ed57ff4f332bd88749b8b1925bdb29319e4d13))
+
 ## [1.2.2](https://github.com/netease/tango/compare/@music163/tango-designer@1.2.1...@music163/tango-designer@1.2.2) (2024-05-27)
 
 ### Bug Fixes
