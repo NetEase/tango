@@ -84,6 +84,8 @@ export function ValueDefine({ data, onSave = noop }: ValueDefineProps) {
               onClick={() => {
                 off();
                 setError('');
+                // 重置到原始值
+                setValue(data.raw);
               }}
             >
               取消

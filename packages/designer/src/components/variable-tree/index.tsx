@@ -166,7 +166,7 @@ export function VariableTree(props: VariableTreeProps) {
 
   return (
     <Box display="flex" columnGap="l" className="VariableTree" css={varTreeStyle} {...rest}>
-      <Box className="VariableList" width="40%">
+      <Box className="VariableList" width="40%" overflow="auto">
         {renderHeaderExtra?.(props, state)}
         <Box mb="m" position="sticky" top="0" bg="white" zIndex={2}>
           <Search placeholder="请输入变量名" onChange={(val) => setKeyword(val?.trim())} />
@@ -203,7 +203,11 @@ export function VariableTree(props: VariableTreeProps) {
                   <Box flex="0 0 72px" textAlign="right">
                     {node.showRemoveButton && (
                       <Popconfirm
+                        zIndex={99999}
                         title={`确认删除吗 ${node.title}？该操作会导致引用此模型的代码报错，请谨慎操作！`}
+                        onCancel={(e) => {
+                          e.stopPropagation();
+                        }}
                         onConfirm={(e) => {
                           e.stopPropagation();
                           if (isStoreVariablePath(node.key)) {
@@ -333,7 +337,14 @@ export function VariableTree(props: VariableTreeProps) {
                       }}
                     />
                   ) : (
-                    <ValueDefine data={activeNode} onSave={onUpdateStoreVariable} />
+                    <ValueDefine
+                      data={activeNode}
+                      onSave={(variableKey, code) => {
+                        onUpdateStoreVariable(variableKey, code);
+                        // 更新当前节点 code
+                        setActiveNode((pre) => ({ ...pre, raw: code }));
+                      }}
+                    />
                   )
                 }
               </ValueDetail>
