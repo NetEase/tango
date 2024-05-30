@@ -29,7 +29,7 @@ export const VariablePanel = observer(
             新建模型
           </Button>
         }
-        bodyProps={{ p: 'm' }}
+        bodyProps={{ p: 'm', height: '100%' }}
       >
         {isAdd ? (
           <AddStoreForm
@@ -42,6 +42,7 @@ export const VariablePanel = observer(
           />
         ) : (
           <VariableTree
+            height="100%"
             defaultValueDetailMode="define"
             dataSource={storeVariables}
             onAddStoreVariable={(storeName, data) => {
