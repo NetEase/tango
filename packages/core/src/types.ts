@@ -8,6 +8,7 @@ export type SimulatorMode = 'desktop' | 'tablet' | 'phone';
 export enum FileType {
   // js 文件
   Module = 'module',
+  AppEntryModule = 'appEntryModule',
   StoreEntryModule = 'storeEntryModule',
   RouteModule = 'routeModule',
   ServiceModule = 'serviceModule',

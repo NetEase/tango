@@ -16,6 +16,7 @@ import { TangoRouteModule } from './route-module';
 import { TangoStoreModule } from './store-module';
 import { TangoServiceModule } from './service-module';
 import { IdGenerator } from '../helpers';
+import { AppEntryModule } from './entry-module';
 
 export interface IViewFile {
   readonly workspace: IWorkspace;
@@ -152,6 +153,10 @@ export interface IWorkspace {
    * 解析后的 tango.config.json 文件，如果要获取项目配置，推荐使用 projectConfig 获取
    */
   tangoConfigJson: TangoJsonFile;
+  /**
+   * app.js 入口文件解析后的模块
+   */
+  appEntryModule: AppEntryModule;
   /**
    * 解析后的路由模块
    */
