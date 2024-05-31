@@ -121,12 +121,12 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
     externalResources: this.props.externalResources,
   });
 
-  normalizeEventType = (eventType) =>
+  normalizeEventType = (eventType: string) =>
     eventType === 'onTango'
       ? TangoEventName.DesignerAction
       : eventType.replace(/^on/, '').toLowerCase();
 
-  bindEvents = (eventHandlers) => {
+  bindEvents = (eventHandlers: EventHandlers) => {
     Object.keys(eventHandlers).forEach((eventType) => {
       this.iframe?.contentDocument?.addEventListener(
         this.normalizeEventType(eventType),
@@ -135,7 +135,7 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
     });
   };
 
-  unbindEvents = (eventHandlers) => {
+  unbindEvents = (eventHandlers: EventHandlers) => {
     Object.keys(eventHandlers).forEach((eventType) => {
       this.iframe?.contentDocument?.removeEventListener(
         this.normalizeEventType(eventType),
