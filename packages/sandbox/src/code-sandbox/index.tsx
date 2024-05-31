@@ -3,7 +3,13 @@ import { TangoEventName } from '@music163/tango-helpers';
 import Loading from './loading';
 import Manager from './manager';
 import { createMissingPackageJSON, changeRoute } from './helper';
-import { IFiles, CodeSandboxState, CodeSandboxProps, UnsubscribeFunction } from '../types';
+import {
+  IFiles,
+  CodeSandboxState,
+  CodeSandboxProps,
+  UnsubscribeFunction,
+  EventHandlers,
+} from '../types';
 
 // CodeSandbox 使用示例
 // <CodeSandbox files={files} entry={entry} template={template} bundlerURL={`${window.location.protocol}//codesandbox.fn.netease.com/`} />
@@ -31,6 +37,8 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
   unsubscribeChannelListener: UnsubscribeFunction;
 
   iframe: HTMLIFrameElement;
+
+  private eventHandlers: EventHandlers;
 
   constructor(props: CodeSandboxProps) {
     super(props);
@@ -75,11 +83,8 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
     this.manager.cleanup();
 
     // clear tango event
-    if (this.iframe && this.props?.eventHandlers?.onTango) {
-      this.iframe.contentDocument?.removeEventListener(
-        TangoEventName.DesignerAction,
-        this.props.eventHandlers.onTango,
-      );
+    if (this.iframe && this.eventHandlers) {
+      this.unbindEvents(this.eventHandlers);
     }
   }
 
@@ -115,6 +120,29 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
     skipEval: this.props.skipEval,
     externalResources: this.props.externalResources,
   });
+
+  normalizeEventType = (eventType) =>
+    eventType === 'onTango'
+      ? TangoEventName.DesignerAction
+      : eventType.replace(/^on/, '').toLowerCase();
+
+  bindEvents = (eventHandlers) => {
+    Object.keys(eventHandlers).forEach((eventType) => {
+      this.iframe?.contentDocument?.addEventListener(
+        this.normalizeEventType(eventType),
+        eventHandlers[eventType],
+      );
+    });
+  };
+
+  unbindEvents = (eventHandlers) => {
+    Object.keys(eventHandlers).forEach((eventType) => {
+      this.iframe?.contentDocument?.removeEventListener(
+        this.normalizeEventType(eventType),
+        eventHandlers[eventType],
+      );
+    });
+  };
 
   // Manager 实例化，即开始构建页面
   // 将 el 传给 Manager 作为实例化参数，当构建完成后，会将构建的页面 dom 设置给 el
@@ -155,17 +183,11 @@ export class CodeSandbox extends React.Component<CodeSandboxProps, CodeSandboxSt
 
         // 注册监听函数
         const { eventHandlers } = this.props;
-        Object.keys(eventHandlers).forEach((eventType) => {
-          if (el.contentDocument) {
-            el.contentDocument[eventType.toLowerCase()] = eventHandlers[eventType];
-          }
-          if (eventType === 'onTango') {
-            el.contentDocument?.addEventListener(
-              TangoEventName.DesignerAction,
-              eventHandlers[eventType],
-            );
-          }
-        });
+        if (eventHandlers) {
+          this.bindEvents(eventHandlers);
+          // 保存一份当前的 eventHandlers，避免 props 变更导致无法取消现在已注册的事件绑定
+          this.eventHandlers = eventHandlers;
+        }
       };
     }
   };
