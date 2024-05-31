@@ -1425,3 +1425,22 @@ export function traverseFile(ast: t.File) {
     imports,
   };
 }
+
+/**
+ * app.js 入口文件解析
+ * @param ast
+ */
+export function traverseEntryFile(ast: t.File) {
+  let appConfig: any;
+  traverse(ast, {
+    CallExpression(path) {
+      const { node } = path;
+      const calleeName = keyNode2value(node.callee) as string;
+      if (calleeName === 'runApp') {
+        appConfig = node2value(node.arguments[0]);
+        path.stop();
+      }
+    },
+  });
+  return appConfig;
+}

@@ -35,6 +35,7 @@ import { TangoStoreEntryModule, TangoStoreModule } from './store-module';
 import { TangoServiceModule } from './service-module';
 import { TangoViewModule } from './view-module';
 import { TangoComponentsEntryModule } from './component-module';
+import { AppEntryModule } from './entry-module';
 
 export interface IWorkspaceOptions {
   /**
@@ -96,6 +97,11 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 当前选中的视图文件
    */
   activeViewFile: string;
+
+  /**
+   * 应用入口模块
+   */
+  appEntryModule: AppEntryModule;
 
   /**
    * 路由配置模块
@@ -329,6 +335,9 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @param fileType 模块类型
    */
   addFile(filename: string, code: string, fileType?: FileType) {
+    if (!fileType && filename === this.entry) {
+      fileType = FileType.AppEntryModule;
+    }
     const moduleType = fileType || inferFileType(filename);
     const props = {
       filename,
@@ -338,6 +347,10 @@ export class Workspace extends EventTarget implements IWorkspace {
 
     let module;
     switch (moduleType) {
+      case FileType.AppEntryModule:
+        module = new AppEntryModule(this, props);
+        this.appEntryModule = module;
+        break;
       case FileType.StoreEntryModule:
         module = new TangoStoreEntryModule(this, props);
         this.storeEntryModule = module;

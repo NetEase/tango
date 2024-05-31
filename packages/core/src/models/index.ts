@@ -7,6 +7,7 @@ export * from './drag-source';
 export * from './history';
 export * from './file';
 export * from './module';
+export * from './entry-module';
 export * from './route-module';
 export * from './service-module';
 export * from './store-module';

@@ -49,6 +49,10 @@ export interface CombinedSandboxRef {
 
 const LANDING_PAGE_PATH = '/__background_landing_page__';
 
+function fixRouterMode(routerType: string): CodeSandboxProps['routerMode'] {
+  return routerType === 'hash' ? 'hash' : undefined;
+}
+
 function useSandbox({
   isPreview: isPreviewProp,
   configFormatter,
@@ -105,23 +109,26 @@ function useSandbox({
   // 根据当前 workspace 状态与组件传入的状态是否一致，控制是否需要切换到空白路由
   const display = isActive ? 'block' : 'none';
   const routePath = isActive ? startRoute || workspace.activeRoute : LANDING_PAGE_PATH;
+  const routerMode = fixRouterMode(workspace.appEntryModule?.routerType);
 
   const sandboxProps = isPreview
     ? {
         files,
         eventHandlers: pick(dndHandlers, ['onTango']),
         onMessage,
+        onLoad,
         display,
         startRoute: routePath,
-        onLoad,
+        routerMode,
       }
     : {
         files,
         eventHandlers: dndHandlers as any,
         onMessage,
+        onLoad,
         display,
         startRoute: routePath,
-        onLoad,
+        routerMode,
       };
 
   return sandboxProps;
