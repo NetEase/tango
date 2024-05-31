@@ -68,3 +68,10 @@ export function isServiceVariablePath(key: string) {
 export function isInTangoDesignMode() {
   return !!(window as any).__TANGO_DESIGNER__;
 }
+
+/**
+ * 是否是 macOS 或 iOS like 设备
+ */
+export function isApplePlatform() {
+  return /Mac|iPhone|iPad|iPod/i.test(navigator.platform);
+}

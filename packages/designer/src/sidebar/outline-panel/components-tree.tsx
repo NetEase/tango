@@ -8,6 +8,7 @@ import { DropMethod, ITangoViewNodeData } from '@music163/tango-core';
 import { noop, parseDndId } from '@music163/tango-helpers';
 import { useSandboxQuery } from '../../context';
 import { buildQueryBySlotId } from '../../helpers';
+import { ContextMenu } from '../../components';
 
 export interface ComponentsTreeProps {
   /**
@@ -143,6 +144,18 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
     const file = workspace.activeViewModule;
     const nodesTree = (file?.nodesTree ?? []) as ITangoViewNodeData[];
     const [expandedKeys, setExpandedKeys] = useState(getNodeKeys(nodesTree));
+    const [contextMenuOpen, setContextMenuOpen] = useState(false);
+
+    const handleSelect = (keys: React.Key[]) => {
+      const slotKey = keys?.[0] as string;
+      const data = sandboxQuery.getDraggableParentsData(buildQueryBySlotId(slotKey), true);
+      if (data && data.id) {
+        workspace.selectSource.select(data);
+      }
+      // export selected
+      onSelect(slotKey);
+      setSelectedKeys(keys);
+    };
 
     useEffect(() => {
       setSelectedKeys(workspace.selectSource.selected.map((item) => item.id));
@@ -164,64 +177,83 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
 
     return (
       <Box css={outlineStyle}>
-        <Tree
-          selectedKeys={selectedKeys as string[]}
-          fieldNames={filedNames}
-          treeData={nodesTree as any[]}
-          onSelect={(keys) => {
-            const slotKey = keys?.[0] as string;
-            const data = sandboxQuery.getDraggableParentsData(buildQueryBySlotId(slotKey), true);
-            if (data && data.id) {
-              workspace.selectSource.select(data);
+        <Dropdown
+          placement="bottomLeft"
+          trigger={['contextMenu']}
+          open={contextMenuOpen}
+          onOpenChange={(val) => {
+            if (!val) {
+              setContextMenuOpen(val);
             }
-            // export selected
-            onSelect(slotKey);
-            setSelectedKeys(keys);
           }}
-          blockNode
-          expandedKeys={expandedKeys}
-          onExpand={(keys) => setExpandedKeys(keys as string[])}
-          draggable
-          onDragStart={(data) => {
-            const prototype = workspace.componentPrototypes.get(data.node.component);
-            if (!prototype) {
-              return;
-            }
-            const { canDrag } = prototype.rules || {};
-            if (canDrag && !canDrag()) {
-              return;
-            }
-            workspace.dragSource.set({
-              id: data.node.id,
-              name: data.node.component,
-            });
-          }}
-          onDrop={(data) => {
-            const dropKey = data.node.key as string;
-            let method;
-            if (data.dropToGap) {
-              // 插入节点的后面
-              method = DropMethod.InsertAfter;
-            } else {
-              // 作为第一个子节点
-              method = DropMethod.InsertFirstChild;
-            }
-            workspace.dragSource.dropTarget.set(
-              {
-                id: dropKey,
-              },
-              method,
-            );
-            workspace.dropNode();
-          }}
-          titleRender={(node) => (
-            <OutlineTreeNode
-              actionItems={actionItems}
-              showToggleVisibleIcon={showToggleVisibleIcon}
-              node={node}
-            />
-          )}
-        />
+          overlay={<ContextMenu onClick={() => setContextMenuOpen(false)} showParents={false} />}
+        >
+          <Tree
+            selectedKeys={selectedKeys as string[]}
+            fieldNames={filedNames}
+            treeData={nodesTree as any[]}
+            onSelect={handleSelect}
+            blockNode
+            expandedKeys={expandedKeys}
+            onExpand={(keys) => setExpandedKeys(keys as string[])}
+            draggable
+            onDragStart={(data) => {
+              const prototype = workspace.componentPrototypes.get(data.node.component);
+              if (!prototype) {
+                return;
+              }
+              const { canDrag } = prototype.rules || {};
+              if (canDrag && !canDrag()) {
+                return;
+              }
+              workspace.dragSource.set({
+                id: data.node.id,
+                name: data.node.component,
+              });
+            }}
+            onDrop={(data) => {
+              const dropKey = data.node.key as string;
+              let method;
+              if (data.dropToGap) {
+                // 插入节点的后面
+                method = DropMethod.InsertAfter;
+              } else {
+                // 作为第一个子节点
+                method = DropMethod.InsertFirstChild;
+              }
+              workspace.dragSource.dropTarget.set(
+                {
+                  id: dropKey,
+                },
+                method,
+              );
+              workspace.dropNode();
+            }}
+            onRightClick={({ event, node }) => {
+              // 按下其他按键时，视为用户有特殊操作，此时不展示右键菜单
+              if (event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) {
+                setContextMenuOpen(false);
+                return;
+              }
+              // 顶层的 Page 组件不展示右键菜单
+              if (node.component === 'Page') {
+                setContextMenuOpen(false);
+                return;
+              }
+              event.preventDefault();
+              // 由于部分操作是基于 selectSource 实现的，因此右键时默认选中当前项
+              handleSelect([node.key]);
+              setContextMenuOpen(true);
+            }}
+            titleRender={(node) => (
+              <OutlineTreeNode
+                actionItems={actionItems}
+                showToggleVisibleIcon={showToggleVisibleIcon}
+                node={node}
+              />
+            )}
+          />
+        </Dropdown>
       </Box>
     );
   },
