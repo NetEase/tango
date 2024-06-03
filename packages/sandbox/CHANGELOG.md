@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/netease/tango/compare/@music163/tango-sandbox@1.0.4...@music163/tango-sandbox@1.0.5) (2024-06-03)
+
+### Bug Fixes
+
+- use addEventListener to bind iframe event handlers ([#169](https://github.com/netease/tango/issues/169)) ([c1306e2](https://github.com/netease/tango/commit/c1306e24e0c747d0f4bd845dc1714488ddd8cdac))
+
 ## [1.0.4](https://github.com/netease/tango/compare/@music163/tango-sandbox@1.0.3...@music163/tango-sandbox@1.0.4) (2024-05-21)
 
 **Note:** Version bump only for package @music163/tango-sandbox

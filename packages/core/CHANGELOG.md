@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/netease/tango/compare/@music163/tango-core@1.2.0...@music163/tango-core@1.3.0) (2024-06-03)
+
+### Bug Fixes
+
+- parse app entry file & pass correct routerType to sandbox ([#168](https://github.com/netease/tango/issues/168)) ([3f3981b](https://github.com/netease/tango/commit/3f3981bb9db874b738a67fd449c579c35c58d08b))
+
+### Features
+
+- add context menu ([#161](https://github.com/netease/tango/issues/161)) ([28040fc](https://github.com/netease/tango/commit/28040fc00604339a40ad3216b76baf7de93a13e0))
+
 # [1.2.0](https://github.com/netease/tango/compare/@music163/tango-core@1.1.0...@music163/tango-core@1.2.0) (2024-05-21)
 
 ### Bug Fixes
