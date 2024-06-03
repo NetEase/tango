@@ -12,7 +12,12 @@ const contextMenuStyle = css`
   }
 
   .ant-dropdown-menu-title-content {
-    padding-left: 20px;
+    padding-left: 22px;
+  }
+
+  .ant-dropdown-menu-item-icon {
+    font-size: 14px;
+    width: 14px;
   }
 
   .ant-dropdown-menu-item-icon + .ant-dropdown-menu-title-content {
