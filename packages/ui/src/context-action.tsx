@@ -66,7 +66,7 @@ export function ContextAction({
           option: 'Alt',
           shift: 'Shift',
         };
-    const regexp = new RegExp(Object.keys(keyMap).join('|').replace(/\\+/, '\\+'), 'ig');
+    const regexp = new RegExp(Object.keys(keyMap).join('|').replace(/\+/, '\\+'), 'ig');
     return hotkey.replace(regexp, (match) => keyMap[match.toLowerCase()]);
   }, [hotkey]);
 
