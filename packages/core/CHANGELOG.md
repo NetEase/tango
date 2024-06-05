@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/netease/tango/compare/@music163/tango-core@1.3.0...@music163/tango-core@1.3.1) (2024-06-05)
+
+### Bug Fixes
+
+- set value as jsxElement children ([#173](https://github.com/netease/tango/issues/173)) ([ae04850](https://github.com/netease/tango/commit/ae04850bb251f392575a72ca5fd960249ea9d06b))
+
 # [1.3.0](https://github.com/netease/tango/compare/@music163/tango-core@1.2.0...@music163/tango-core@1.3.0) (2024-06-03)
 
 ### Bug Fixes

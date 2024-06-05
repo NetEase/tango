@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/netease/tango/compare/@music163/tango-designer@1.3.0...@music163/tango-designer@1.3.1) (2024-06-05)
+
+### Bug Fixes
+
+- fix context menu error on macOS ([#170](https://github.com/netease/tango/issues/170)) ([ca740c8](https://github.com/netease/tango/commit/ca740c83ae7f72a75c7db90d2e137a7e9a032326))
+
 # [1.3.0](https://github.com/netease/tango/compare/@music163/tango-designer@1.2.3...@music163/tango-designer@1.3.0) (2024-06-03)
 
 ### Bug Fixes
