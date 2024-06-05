@@ -391,8 +391,10 @@ export function updateJSXElementAttribute(node: t.JSXElement, attrName: string, 
         isExist = true;
         // @ts-ignore
         if (t.isJSXAttribute(jsxAttributeNode)) {
+          // 更新 jsx 属性值 <Foo bar="1" /> 的模式
           jsxAttributeNode.value = value2jsxAttributeValueNode(attrValue);
         } else if (name === 'children') {
+          // 更新 jsx children 的情况 <Foo>children</Foo>
           node.children = value2jsxChildrenValueNode(attrValue);
         }
       }

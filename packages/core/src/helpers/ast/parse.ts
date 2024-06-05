@@ -222,15 +222,16 @@ export function value2jsxAttributeValueNode(value: any) {
   return ret;
 }
 
-// TODO: 待校验
 export function value2jsxChildrenValueNode(value: any) {
   let ret: t.JSXElement | t.JSXFragment | t.JSXExpressionContainer | t.JSXSpreadChild | t.JSXText;
   switch (typeof value) {
     case 'string':
-      if (isValidExpressionCode(value)) {
+      if (isWrappedCode(value)) {
+        // 代码模式
         const innerString = getVariableContent(value);
         ret = t.jsxExpressionContainer(code2expression(innerString));
       } else {
+        // 普通的文本
         ret = t.jsxText(value);
       }
       break;
