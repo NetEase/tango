@@ -2,7 +2,7 @@ const packageJson = {
   name: 'demo',
   private: true,
   dependencies: {
-    '@music163/tango-mail': '0.1.1',
+    '@music163/tango-mail': '0.2.4',
     '@music163/tango-boot': '0.2.5',
     react: '17.0.2',
     'react-dom': '17.0.2',
@@ -44,7 +44,7 @@ const tangoConfigJson = {
     },
     '@music163/tango-mail': {
       description: 'TangoMail 基础物料',
-      version: '0.1.1',
+      version: '0.2.4',
       library: 'TangoMail',
       type: 'baseDependency',
       resources: ['https://unpkg.com/@music163/tango-mail@{{version}}/dist/index.js'],
@@ -116,7 +116,6 @@ const WelcomeEmail = () => (
         </Section>
         <Text style={paragraph}>
           Best,
-          <br />
           The Koala team
         </Text>
         <Hr style={hr} />
