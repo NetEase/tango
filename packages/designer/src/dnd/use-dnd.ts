@@ -386,7 +386,8 @@ export function useDnd({
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
-    const isInputElement = isInputElements((e.target as HTMLElement).nodeName);
+    const target = e.target as HTMLElement;
+    const isInputElement = target.isContentEditable || isInputElements(target.nodeName);
     // 禁用输入事件的触发的快捷键逻辑
     if (!isInputElement) {
       const key = getHotkey(e);
