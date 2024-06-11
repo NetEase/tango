@@ -31,23 +31,18 @@
 - 开箱即用的前端低代码设计器，提供灵活易用的设计器 React 组件
 - 使用 TypeScript 开发，提供完整的类型定义文件
 
-## 🎯 里程碑
+## 💡 例子
 
-```mermaid
-gantt
-    dateFormat  YYYY-MM-DD
-    title       Tango 1.0 Milestones
-    excludes    weekends
-    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+你可以使用 Tango 快速构建多种类型的基于源码的低代码搭建工具，例如：
 
-    section Builder Release
-    1.0 Alpha  : m1, 2023-10-01, 2024-01-31
-    1.0 RC     : m2, 2024-02-01, 2024-04-30
-    1.0 Stable : m3, 2024-04-30, 2024-12-31
-```
+| 预览图 | 说明             |
+|---------|-------------------------|
+| ![image](https://github.com/NetEase/tango/assets/6984035/56a71741-4536-4336-803a-d81d51128a76) | 中后台系统搭建    |
+| ![image](https://github.com/NetEase/tango/assets/6984035/7f817e59-f7aa-4476-bc29-ac3e33fadbf7) | 仪表盘应用搭建   |
+| ![image](https://github.com/NetEase/tango/assets/6984035/790d88e1-d716-4f99-868a-31dda25e9fb1) | H5活动页面搭建      |
+| ![image](https://github.com/NetEase/tango/assets/6984035/06a2e1a6-dac1-4c81-bafe-3be41424ff8e) | RN应用搭建 |
+| ![image](https://github.com/NetEase/tango/assets/6984035/aed6a877-b682-4c0a-b835-473ba7297ce1) | 营销邮件搭建   |
 
-> [!NOTE]
-> Alpha 版本会持续对一些实现协议进行优化，并持续融合网易内网版本中的新增特性；RC 版本将会提供基本稳定的解析协议和实现；1.0 正式版本计划在 2024 年Q2发布。1.0 正式版发布后我们将会持续进行版本迭代，并逐步融入内网版本中的流程设计、组件库、AIGC 等核心基础能力。
 
 ## 🌐 兼容环境
 
