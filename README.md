@@ -40,8 +40,8 @@ You can use tango to build lowcode builders, for example:
 | ![image](https://github.com/NetEase/tango/assets/6984035/56a71741-4536-4336-803a-d81d51128a76) | Internal App Builder    |
 | ![image](https://github.com/NetEase/tango/assets/6984035/7f817e59-f7aa-4476-bc29-ac3e33fadbf7) | Dashboard App Builder   |
 | ![image](https://github.com/NetEase/tango/assets/6984035/790d88e1-d716-4f99-868a-31dda25e9fb1) | Mobile App Builder      |
-| ![image](https://github.com/NetEase/tango/assets/6984035/06a2e1a6-dac1-4c81-bafe-3be41424ff8e) | ReactNative App Builder |
-| ![image](https://github.com/NetEase/tango/assets/6984035/aed6a877-b682-4c0a-b835-473ba7297ce1) | Email Builder           |
+| ![rn app](public/rn-builder.png) | ReactNative App Builder |
+| ![mail app](public/mail-builder.png) | Email Builder           |
 
 ## 🌐 Compatibility
 
