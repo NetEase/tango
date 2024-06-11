@@ -31,23 +31,17 @@ You can view the detailed usage guide through the following links:
 - Out-of-the-box front-end low-code designer, providing flexible and easy-to-use designer React components
 - Developed using TypeScript, providing complete type definition files
 
-## 🎯 Milestone
+## 💡 Examples
 
-```mermaid
-gantt
-    dateFormat  YYYY-MM-DD
-    title       Tango 1.0 Milestones
-    excludes    weekends
-    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+You can use tango to build lowcode builders, for example:
 
-    section Builder Release
-    1.0 Alpha  : m1, 2023-10-01, 2024-01-31
-    1.0 RC     : m2, 2024-02-01, 2024-04-30
-    1.0 Stable : m3, 2024-04-30, 2024-12-31
-```
-
-> [!NOTE]
-> Alpha versions will continue to optimize some implementation protocols and continuously integrate new features from the internal version of NetEase; RC versions will provide a stable parsing protocol and implementation; The 1.0 official version is planned to be released in Q2 2024. After the release of the 1.0 official version, we will continue to iterate on versions and gradually incorporate core capabilities such as process design, component library, and AIGC from the internal version.
+| Preview | Description             |
+|---------|-------------------------|
+| ![image](https://github.com/NetEase/tango/assets/6984035/56a71741-4536-4336-803a-d81d51128a76) | Internal App Builder    |
+| ![image](https://github.com/NetEase/tango/assets/6984035/7f817e59-f7aa-4476-bc29-ac3e33fadbf7) | Dashboard App Builder   |
+| ![image](https://github.com/NetEase/tango/assets/6984035/790d88e1-d716-4f99-868a-31dda25e9fb1) | Mobile App Builder      |
+| ![image](https://github.com/NetEase/tango/assets/6984035/06a2e1a6-dac1-4c81-bafe-3be41424ff8e) | ReactNative App Builder |
+| ![image](https://github.com/NetEase/tango/assets/6984035/aed6a877-b682-4c0a-b835-473ba7297ce1) | Email Builder           |
 
 ## 🌐 Compatibility
 
