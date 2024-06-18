@@ -333,7 +333,12 @@ export function ExpressionPopover({
       )}
     >
       {children || (
-        <Action tooltip="打开表达式变量选择面板" icon={<ExpandAltOutlined />} size="small" />
+        <Action
+          tooltip="打开表达式变量选择面板"
+          tooltipProps={{ placement: 'topLeft' }}
+          icon={<ExpandAltOutlined />}
+          size="small"
+        />
       )}
     </DragPanel>
   );
