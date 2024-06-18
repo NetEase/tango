@@ -195,6 +195,8 @@ export function ExpressionPopover({
   return (
     <DragPanel
       width={700}
+      height={615}
+      resizeable
       title={`将 ${selectNodePath}/${title} 设置为引用变量或自定义表达式`}
       extra={subTitle}
       onOpenChange={(open) => {
@@ -203,16 +205,13 @@ export function ExpressionPopover({
           setError('');
         }
       }}
-      popoverStyle={{
-        height: '615px',
-      }}
       body={
-        <>
+        <Box display="flex" flexDirection="column">
           <Panel shape="solid">
             <InputCode
               shape="inset"
               minHeight="56px"
-              maxHeight="200px"
+              maxHeight="160px"
               value={exp}
               placeholder={placeholder}
               onChange={handleExpInputChange}
@@ -237,11 +236,15 @@ export function ExpressionPopover({
             title="从变量列表中选中"
             shape="solid"
             borderTop="0"
-            overflow="hidden"
-            bodyProps={{ overflow: 'hidden' }}
+            flex={1}
+            bodyProps={{
+              style: {
+                overflow: 'hidden',
+              },
+            }}
           >
             <VariableTree
-              height={380}
+              height="100%"
               showViewButton
               dataSource={dataSource || expressionVariables}
               appContext={sandbox?.window['tango']}
@@ -307,10 +310,10 @@ export function ExpressionPopover({
               }}
             />
           </Panel>
-        </>
+        </Box>
       }
       footer={(close) => (
-        <Box display="flex" justifyContent="flex-end" gap="5px">
+        <Box display="flex" width="100%" justifyContent="flex-end" gap="5px">
           <Button
             type="primary"
             size="small"
