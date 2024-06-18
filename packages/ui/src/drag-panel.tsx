@@ -130,13 +130,18 @@ export function DragPanel({
       }}
       overlay={
         <Draggable
-          handle=".selection-drag-bar"
+          handle=".drag-panel-header"
           onStart={() => {
             injectStyleToBody();
           }}
         >
-          <DragPanelContainer width={width} height={height} resizeable={resizeable}>
-            <DragPanelHeader className="selection-drag-bar">
+          <DragPanelContainer
+            className="drag-panel"
+            width={width}
+            height={height}
+            resizeable={resizeable}
+          >
+            <DragPanelHeader className="drag-panel-header">
               <Box fontSize="12px" color="text2">
                 <IconFont type="icon-applications" />
                 <Text marginLeft={'5px'}>{title}</Text>
@@ -152,7 +157,9 @@ export function DragPanel({
               </Box>
             </DragPanelHeader>
             <DragPanelBody className="drag-panel-body">{body}</DragPanelBody>
-            {footer && <DragPanelFooter>{footerNode}</DragPanelFooter>}
+            {footer && (
+              <DragPanelFooter className="drag-panel-footer">{footerNode}</DragPanelFooter>
+            )}
           </DragPanelContainer>
         </Draggable>
       }
