@@ -11,6 +11,7 @@ import {
   parseServiceVariablePath,
   parseStoreVariablePath,
   uniq,
+  setValue,
 } from '@music163/tango-helpers';
 import {
   prototype2jsxElement,
@@ -741,6 +742,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * 更新依赖，没有就添加
    * @param name
    * @param version
+   * FIXME: 参数3的设置需要重新考虑下
    */
   updateDependency(
     name: string,
@@ -763,15 +765,12 @@ export class Workspace extends EventTarget implements IWorkspace {
         if (!packages) {
           return undefined;
         }
-        if (options?.package || packages[name]) {
-          packages[name] = {
-            type: packages[name]?.type,
-            // 如果没有传入 package 信息，则沿用 tango.config.json 中已记录的数据
-            // 如果传入了，则全量使用传入的信息，适配可能在某个版本中如 resources 等字段被删除的情况
-            ...(options?.package || packages[name]),
-            version,
-          };
-        }
+
+        setValue(packages, name, {
+          ...packages[name], // 保留原有的配置
+          version, // 更新版本号
+          ...options?.package, // 更新 package 配置
+        });
 
         return packages;
       })
