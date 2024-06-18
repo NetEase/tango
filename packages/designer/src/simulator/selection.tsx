@@ -155,18 +155,20 @@ function SelectionBox({ showActions, actions, data }: SelectionBoxProps) {
       css={selectionBoxStyle}
       style={style}
     >
-      <>
-        <ComponentsPopover type="before">
-          <Tooltip title={`在 ${selectedNodeName} 的前方添加兄弟节点`}>
-            <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
-          </Tooltip>
-        </ComponentsPopover>
-        <ComponentsPopover type="after">
-          <Tooltip title={`在 ${selectedNodeName} 的后方添加兄弟节点`}>
-            <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
-          </Tooltip>
-        </ComponentsPopover>
-      </>
+      {!isPage ? (
+        <>
+          <ComponentsPopover type="before">
+            <Tooltip title={`在 ${selectedNodeName} 的前方添加兄弟节点`}>
+              <SelectionHelper icon={<PlusOutlined />} css={topAddSiblingBtnStyle} />
+            </Tooltip>
+          </ComponentsPopover>
+          <ComponentsPopover type="after">
+            <Tooltip title={`在 ${selectedNodeName} 的后方添加兄弟节点`}>
+              <SelectionHelper icon={<PlusOutlined />} css={bottomAddSiblingBtnStyle} />
+            </Tooltip>
+          </ComponentsPopover>
+        </>
+      ) : null}
       {showActions && (
         <SelectionHelpers align={selectionHelpersAlign}>
           <SelectionHelper

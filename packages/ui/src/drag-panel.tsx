@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Text, styled } from 'coral-system';
-import { Popover, PopoverProps, IconFont } from './';
 import Draggable from 'react-draggable';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, HolderOutlined } from '@ant-design/icons';
 import { noop } from '@music163/tango-helpers';
+import { Popover, PopoverProps } from './popover';
 
 // Dragging over an iframe stops dragging when moving the mouse too fast #613
 // https://github.com/react-grid-layout/react-draggable/issues/613
@@ -143,7 +143,7 @@ export function DragPanel({
           >
             <DragPanelHeader className="drag-panel-header">
               <Box fontSize="12px" color="text2">
-                <IconFont type="icon-applications" />
+                <HolderOutlined />
                 <Text marginLeft={'5px'}>{title}</Text>
               </Box>
               <Box color="text2" fontSize="12px" display="flex" alignItems="center">
