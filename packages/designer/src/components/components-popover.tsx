@@ -125,6 +125,8 @@ export const ComponentsPopover = observer(
         }
         footer={tipsTextMap[type]}
         width="330px"
+        height="450px"
+        resizeable
         maskClosable
         body={
           <ComponentsPanel
@@ -133,10 +135,6 @@ export const ComponentsPopover = observer(
             menuData={menuData}
             layout={layout}
             onItemSelect={handleSelect}
-            style={{
-              maxHeight: '400px',
-              overflow: 'auto',
-            }}
           />
         }
         {...popoverProps}
