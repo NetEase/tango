@@ -68,17 +68,6 @@ export const DependencyPanel = observer(
       [dependencies, baseDependencies, bizDependencies, packages, packageNames],
     );
 
-    // 业务组件依赖
-    const bizDeps = useMemo(
-      () =>
-        bizDependencies?.map((name: string) => ({
-          name,
-          version: dependencies[name] ?? packages?.[name]?.version,
-          package: packages?.[name],
-        })) || [],
-      [bizDependencies, dependencies, packages],
-    );
-
     // 基础包
     const baseDeps = useMemo(
       () =>
