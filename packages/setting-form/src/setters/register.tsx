@@ -1,3 +1,4 @@
+import React from 'react';
 import { CodeSetter } from './code-setter';
 import { BoolSetter } from './bool-setter';
 import { IdSetter } from './id-setter';
@@ -35,6 +36,10 @@ const BASIC_SETTERS: IFormItemCreateOptions[] = [
   {
     name: 'idSetter',
     component: IdSetter,
+  },
+  {
+    name: 'imageSetter',
+    render: (props) => <TextSetter placeholder="请提供图片地址" {...props} />,
   },
 ];
 

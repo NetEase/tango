@@ -80,6 +80,11 @@ const prototypeHasBasicProps: IComponentPrototype = {
       setter: 'textAreaSetter',
     },
     {
+      name: 'src',
+      title: 'imageSetter',
+      setter: 'imageSetter',
+    },
+    {
       name: 'number',
       title: 'numberSetter',
       setter: 'numberSetter',

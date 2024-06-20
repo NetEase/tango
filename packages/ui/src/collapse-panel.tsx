@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, HTMLCoralProps, css } from 'coral-system';
-import { CaretRightOutlined, UpOutlined } from '@ant-design/icons';
+import { CaretRightOutlined } from '@ant-design/icons';
 import { useControllableState } from '@music163/tango-helpers';
 
 export interface CollapsePanelProps extends Omit<HTMLCoralProps<'div'>, 'title'> {
