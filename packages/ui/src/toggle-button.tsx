@@ -160,6 +160,10 @@ export interface ToggleButtonProps extends Omit<HTMLCoralProps<'button'>, 'type'
    * 下拉菜单的属性
    */
   dropdownProps?: DropDownProps;
+  /**
+   * 是否显示下拉图标
+   */
+  showDropdownIcon?: boolean;
 }
 
 /**
@@ -182,6 +186,7 @@ export function ToggleButton(props: ToggleButtonProps) {
     overlayStyle,
     onItemClick,
     dropdownProps = {},
+    showDropdownIcon = true,
     ...rest
   } = props;
   const clazz = cx({
@@ -204,7 +209,7 @@ export function ToggleButton(props: ToggleButtonProps) {
         )}
         {children}
       </Box>
-      {showDropdown ? <DownOutlined /> : null}
+      {showDropdown && showDropdownIcon ? <DownOutlined /> : null}
     </Button>
   );
 
