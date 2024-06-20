@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/netease/tango/compare/@music163/tango-core@1.3.1...@music163/tango-core@1.3.2) (2024-06-20)
+
+### Bug Fixes
+
+- update designer style ([#176](https://github.com/netease/tango/issues/176)) ([0f3f0af](https://github.com/netease/tango/commit/0f3f0afdfa8aee2532a97c5c2e92ef4230397d86))
+
 ## [1.3.1](https://github.com/netease/tango/compare/@music163/tango-core@1.3.0...@music163/tango-core@1.3.1) (2024-06-05)
 
 ### Bug Fixes
