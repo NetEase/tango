@@ -14,8 +14,10 @@ const buttonStyle = css`
   padding: 0 8px;
 
   .anticon-down {
-    font-size: 12px !important;
+    width: 10px;
+    height: 10px;
     margin-left: 4px;
+    transition: transform 0.1s ease-in;
   }
 
   &.size-s {
@@ -57,6 +59,10 @@ const buttonStyle = css`
 
     &:hover {
       background-color: rgba(197, 197, 197, 0.16);
+
+      .anticon-down {
+        transform: translateY(2px);
+      }
     }
 
     &.disabled {
@@ -154,6 +160,10 @@ export interface ToggleButtonProps extends Omit<HTMLCoralProps<'button'>, 'type'
    * 下拉菜单的属性
    */
   dropdownProps?: DropDownProps;
+  /**
+   * 是否显示下拉图标
+   */
+  showDropdownIcon?: boolean;
 }
 
 /**
@@ -176,6 +186,7 @@ export function ToggleButton(props: ToggleButtonProps) {
     overlayStyle,
     onItemClick,
     dropdownProps = {},
+    showDropdownIcon = true,
     ...rest
   } = props;
   const clazz = cx({
@@ -198,7 +209,7 @@ export function ToggleButton(props: ToggleButtonProps) {
         )}
         {children}
       </Box>
-      {showDropdown ? <DownOutlined /> : null}
+      {showDropdown && showDropdownIcon ? <DownOutlined /> : null}
     </Button>
   );
 

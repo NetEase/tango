@@ -20,12 +20,11 @@ import {
   ApiOutlined,
   AppstoreAddOutlined,
   BuildOutlined,
-  ClusterOutlined,
   FunctionOutlined,
   PlusOutlined,
   createFromIconfontCN,
 } from '@ant-design/icons';
-import { Action } from '@music163/tango-ui';
+import { Action, PackageOutlined } from '@music163/tango-ui';
 import { useState } from 'react';
 
 const menuData = {
@@ -182,7 +181,7 @@ export default function App() {
           <Sidebar.Item
             key="dependency"
             label="依赖"
-            icon={<ClusterOutlined />}
+            icon={<PackageOutlined />}
             isFloat
             width={800}
           />

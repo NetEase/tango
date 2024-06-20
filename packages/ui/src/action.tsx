@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd';
+import { Tooltip, TooltipProps } from 'antd';
 import React from 'react';
 import { css, Button, Link, HTMLCoralProps } from 'coral-system';
 import cx from 'classnames';
@@ -49,6 +49,10 @@ export interface ActionProps extends HTMLCoralProps<any> {
    */
   tooltip?: string;
   /**
+   * Tooltip属性透传
+   */
+  tooltipProps?: TooltipProps;
+  /**
    * 超链接
    */
   href?: string;
@@ -75,6 +79,7 @@ export interface ActionProps extends HTMLCoralProps<any> {
 export function Action({
   icon,
   tooltip,
+  tooltipProps,
   href,
   size,
   shape,
@@ -110,7 +115,11 @@ export function Action({
   }
 
   if (tooltip) {
-    return <Tooltip title={tooltip}>{ret}</Tooltip>;
+    return (
+      <Tooltip title={tooltip} {...tooltipProps}>
+        {ret}
+      </Tooltip>
+    );
   }
   return ret;
 }

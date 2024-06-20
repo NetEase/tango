@@ -5,6 +5,7 @@ import { BranchesOutlined, MenuOutlined, QuestionCircleOutlined } from '@ant-des
 import { registerSetter } from '@music163/tango-designer';
 import type { IVariableTreeNode } from '@music163/tango-helpers';
 import { FooSetter } from '../components';
+import { ToggleButton } from '@music163/tango-ui';
 
 export * from './mock-files';
 
@@ -46,8 +47,17 @@ registerSetter({
 // 平台 Logo
 export function Logo() {
   return (
-    <Box width="50px" display="flex" alignItems="center" justifyContent="center" fontSize="20px">
-      <MenuOutlined />
+    <Box width="50px" display="flex" alignItems="center" justifyContent="center" fontSize="14px">
+      <ToggleButton
+        shape="text"
+        items={[
+          { label: '回到首页', key: 'home' },
+          { label: '文档', key: 'doc' },
+          { label: '设置', key: 'setting' },
+        ]}
+      >
+        <MenuOutlined />
+      </ToggleButton>
     </Box>
   );
 }
