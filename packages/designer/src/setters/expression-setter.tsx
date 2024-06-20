@@ -3,8 +3,8 @@ import { Box, Text, css } from 'coral-system';
 import { Dropdown, Button } from 'antd';
 import { isValidExpressionCode } from '@music163/tango-core';
 import { getValue, IVariableTreeNode, noop } from '@music163/tango-helpers';
-import { CloseCircleFilled, ExpandAltOutlined, MenuOutlined } from '@ant-design/icons';
-import { Panel, InputCode, Action, DragPanel } from '@music163/tango-ui';
+import { CloseCircleFilled, MenuOutlined } from '@ant-design/icons';
+import { Panel, InputCode, Action, DragPanel, PopOutOutlined } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { VariableTree } from '../components';
@@ -197,8 +197,7 @@ export function ExpressionPopover({
       width={700}
       height={615}
       resizeable
-      title={`将 ${selectNodePath}/${title} 设置为引用变量或自定义表达式`}
-      extra={subTitle}
+      title={`使用代码设置 ${selectNodePath} 组件的${title}`}
       onOpenChange={(open) => {
         if (!open) {
           setExp(undefined);
@@ -207,7 +206,7 @@ export function ExpressionPopover({
       }}
       body={
         <Box display="flex" flexDirection="column">
-          <Panel shape="solid">
+          <Box p="m">
             <InputCode
               shape="inset"
               minHeight="56px"
@@ -216,26 +215,33 @@ export function ExpressionPopover({
               placeholder={placeholder}
               onChange={handleExpInputChange}
               onBlur={() => {
-                setError(expressionValueValidate(exp));
+                if (exp) {
+                  setError(expressionValueValidate(exp));
+                }
               }}
               autoCompleteContext={evaluateContext}
               autoCompleteOptions={autoCompleteOptions}
             />
             {error ? (
-              <Text color="red" fontSize="12px">
+              <Text color="red" fontSize="12px" as="p">
                 出错了！输入的表达式存在语法错误，请修改后再提交！
               </Text>
-            ) : (
-              <Text fontSize="12px" color="text3">
-                说明：你可以在上面的代码输入框里输入常规的 javascript 代码，还可以直接使用 jsx
-                代码，但需要符合该属性的接受值定义。
+            ) : null}
+            {subTitle && (
+              <Text fontSize="12px" color="text3" as="p">
+                {subTitle}
               </Text>
             )}
-          </Panel>
+            <Text fontSize="12px" color="text3" as="p">
+              说明：你可以在上面的代码输入框里输入常规的 javascript 代码，还可以直接使用 jsx
+              代码，但需要符合该属性的接受值定义。
+            </Text>
+          </Box>
           <Panel
             title="从变量列表中选中"
             shape="solid"
-            borderTop="0"
+            borderLeft="0"
+            borderRight="0"
             flex={1}
             bodyProps={{
               style: {
@@ -334,9 +340,9 @@ export function ExpressionPopover({
     >
       {children || (
         <Action
-          tooltip="打开表达式变量选择面板"
+          tooltip="弹出代码编辑和变量选择面板"
           tooltipProps={{ placement: 'topLeft' }}
-          icon={<ExpandAltOutlined />}
+          icon={<PopOutOutlined />}
           size="small"
         />
       )}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, HTMLCoralProps, css } from 'coral-system';
-import { UpOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, UpOutlined } from '@ant-design/icons';
 import { useControllableState } from '@music163/tango-helpers';
 
 export interface CollapsePanelProps extends Omit<HTMLCoralProps<'div'>, 'title'> {
@@ -39,8 +39,10 @@ export interface CollapsePanelProps extends Omit<HTMLCoralProps<'div'>, 'title'>
 const headerStyle = css`
   user-select: none;
 
-  .anticon-up {
-    margin-right: 8px;
+  .anticon-caret-right {
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
     color: var(--tango-colors-text2);
     transition: transform 0.2s ease 0s;
   }
@@ -67,7 +69,7 @@ export function CollapsePanel(props: CollapsePanelProps) {
   });
 
   const iconStyle = {
-    transform: collapsed ? undefined : 'rotate(-180deg)',
+    transform: collapsed ? undefined : 'rotate(90deg)',
   };
 
   const stickHeaderProps: HTMLCoralProps<'div'> = stickyHeader
@@ -104,7 +106,7 @@ export function CollapsePanel(props: CollapsePanelProps) {
         css={headerStyle}
       >
         <Box display="flex" alignItems="center" fontSize="14px" fontWeight="500">
-          <UpOutlined style={iconStyle} />
+          <CaretRightOutlined style={iconStyle} />
           {title}
         </Box>
         <Box>{extra}</Box>
