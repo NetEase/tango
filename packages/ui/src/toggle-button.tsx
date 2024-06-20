@@ -14,8 +14,10 @@ const buttonStyle = css`
   padding: 0 8px;
 
   .anticon-down {
-    font-size: 12px !important;
+    width: 10px;
+    height: 10px;
     margin-left: 4px;
+    transition: transform 0.1s ease-in;
   }
 
   &.size-s {
@@ -57,6 +59,10 @@ const buttonStyle = css`
 
     &:hover {
       background-color: rgba(197, 197, 197, 0.16);
+
+      .anticon-down {
+        transform: translateY(2px);
+      }
     }
 
     &.disabled {

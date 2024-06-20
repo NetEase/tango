@@ -48,7 +48,14 @@ registerSetter({
 export function Logo() {
   return (
     <Box width="50px" display="flex" alignItems="center" justifyContent="center" fontSize="14px">
-      <ToggleButton shape="text">
+      <ToggleButton
+        shape="text"
+        items={[
+          { label: '回到首页', key: 'home' },
+          { label: '文档', key: 'doc' },
+          { label: '设置', key: 'setting' },
+        ]}
+      >
         <MenuOutlined />
       </ToggleButton>
     </Box>
