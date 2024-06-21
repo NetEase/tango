@@ -20,6 +20,10 @@ const buttonStyle = css`
     transition: transform 0.1s ease-in;
   }
 
+  &:hover .anticon-down {
+    transform: translateY(2px);
+  }
+
   &.size-s {
     height: 24px;
     font-size: 14px;
@@ -59,10 +63,6 @@ const buttonStyle = css`
 
     &:hover {
       background-color: rgba(197, 197, 197, 0.16);
-
-      .anticon-down {
-        transform: translateY(2px);
-      }
     }
 
     &.disabled {
