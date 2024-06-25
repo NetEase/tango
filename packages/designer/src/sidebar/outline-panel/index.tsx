@@ -9,9 +9,17 @@ export interface OutlineViewProps extends ComponentsTreeProps {
    * 展示状态视图
    */
   showStateView?: boolean;
+  /**
+   * 状态视图中可展示的子节点
+   */
+  pickStateViewProperties?: string[];
 }
 
-export function OutlinePanel({ showStateView = true, ...treeProps }: OutlineViewProps) {
+export function OutlinePanel({
+  showStateView = true,
+  pickStateViewProperties,
+  ...treeProps
+}: OutlineViewProps) {
   return (
     <Box height="100%" position="relative">
       <CollapsePanel
@@ -23,7 +31,7 @@ export function OutlinePanel({ showStateView = true, ...treeProps }: OutlineView
       >
         <ComponentsTree {...treeProps} />
       </CollapsePanel>
-      {showStateView && <StateTree />}
+      {showStateView && <StateTree pickProperties={pickStateViewProperties} />}
     </Box>
   );
 }

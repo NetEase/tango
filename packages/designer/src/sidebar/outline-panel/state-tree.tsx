@@ -22,15 +22,22 @@ function processTango(obj: any = {}, index = 0) {
   return ret;
 }
 
-export const StateTree = observer(() => {
+export interface StateTreeProps {
+  /**
+   * 状态视图中可展示的子节点
+   */
+  pickProperties?: string[];
+}
+
+const defaultPickProperties = ['stores', 'pageStore', 'services', 'config'];
+
+export const StateTree = observer(({ pickProperties }: StateTreeProps) => {
   const sandboxQuery = useSandboxQuery();
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
-  const tangoContext = pick(sandboxQuery.window['tango'] || {}, [
-    'stores',
-    'pageStore',
-    'services',
-    'config',
-  ]);
+  const tangoContext = pick(
+    sandboxQuery.window['tango'] || {},
+    pickProperties || defaultPickProperties,
+  );
   const callback = () => {
     forceUpdate();
   };
