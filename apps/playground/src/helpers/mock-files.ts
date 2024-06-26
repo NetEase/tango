@@ -3,7 +3,7 @@ const packageJson = {
   private: true,
   dependencies: {
     '@music163/antd': '0.2.5',
-    '@music163/tango-boot': '0.2.5',
+    '@music163/tango-boot': '0.3.5',
     react: '17.0.2',
     'react-dom': '17.0.2',
     'prop-types': '15.7.2',
@@ -48,7 +48,7 @@ const tangoConfigJson = {
     },
     '@music163/tango-boot': {
       description: '云音乐低代码运行时框架',
-      version: '0.2.5',
+      version: '0.3.5',
       library: 'TangoBoot',
       type: 'baseDependency',
       resources: ['https://unpkg.com/@music163/tango-boot@{{version}}/dist/boot.js'],

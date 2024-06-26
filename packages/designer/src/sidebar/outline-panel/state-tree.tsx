@@ -30,6 +30,7 @@ export const StateTree = observer(() => {
     'pageStore',
     'services',
     'config',
+    'routeData',
   ]);
   const callback = () => {
     forceUpdate();
