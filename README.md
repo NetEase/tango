@@ -35,13 +35,13 @@ You can view the detailed usage guide through the following links:
 
 You can use tango to build lowcode builders, for example:
 
-| Preview | Description             |
-|---------|-------------------------|
+| Preview                                                                                        | Description             |
+| ---------------------------------------------------------------------------------------------- | ----------------------- |
 | ![image](https://github.com/NetEase/tango/assets/6984035/56a71741-4536-4336-803a-d81d51128a76) | Internal App Builder    |
-| ![image](https://github.com/NetEase/tango/assets/6984035/7f817e59-f7aa-4476-bc29-ac3e33fadbf7) | Dashboard App Builder   |
+| ![dashboard app](public/dashboard-builder.png)                                                 | Dashboard App Builder   |
 | ![image](https://github.com/NetEase/tango/assets/6984035/790d88e1-d716-4f99-868a-31dda25e9fb1) | Mobile App Builder      |
-| ![rn app](public/rn-builder.png) | ReactNative App Builder |
-| ![mail app](public/mail-builder.png) | Email Builder           |
+| ![rn app](public/rn-builder.png)                                                               | ReactNative App Builder |
+| ![mail app](public/mail-builder.png)                                                           | Email Builder           |
 
 ## 🌐 Compatibility
 

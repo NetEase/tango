@@ -35,14 +35,13 @@
 
 你可以使用 Tango 快速构建多种类型的基于源码的低代码搭建工具，例如：
 
-| 预览图 | 说明             |
-|---------|-------------------------|
-| ![image](https://github.com/NetEase/tango/assets/6984035/56a71741-4536-4336-803a-d81d51128a76) | 中后台系统搭建    |
-| ![image](https://github.com/NetEase/tango/assets/6984035/7f817e59-f7aa-4476-bc29-ac3e33fadbf7) | 仪表盘应用搭建   |
-| ![image](https://github.com/NetEase/tango/assets/6984035/790d88e1-d716-4f99-868a-31dda25e9fb1) | H5活动页面搭建      |
-| ![rn app](public/rn-builder.png) | ReactNative 应用搭建 |
-| ![mail app](public/mail-builder.png) | 营销类邮件搭建           |
-
+| 预览图                                                                                         | 说明                 |
+| ---------------------------------------------------------------------------------------------- | -------------------- |
+| ![image](https://github.com/NetEase/tango/assets/6984035/56a71741-4536-4336-803a-d81d51128a76) | 中后台系统搭建       |
+| ![dashboard app](public/dashboard-builder.png)                                                 | 仪表盘应用搭建       |
+| ![image](https://github.com/NetEase/tango/assets/6984035/790d88e1-d716-4f99-868a-31dda25e9fb1) | H5活动页面搭建       |
+| ![rn app](public/rn-builder.png)                                                               | ReactNative 应用搭建 |
+| ![mail app](public/mail-builder.png)                                                           | 营销类邮件搭建       |
 
 ## 🌐 兼容环境
 
