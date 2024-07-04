@@ -70,6 +70,23 @@ yarn
 yarn start
 ```
 
+### Local Https certificate
+
+If you need to use https in the local development environment, you can use the following command to generate a certificate:
+
+```bash
+brew install mkcert
+
+# install the local certificate
+mkcert -install
+
+# enter the playground app directory
+cd apps/playground
+
+# generate a certificate
+mkcert local.netease.com # or change to your own domain name
+```
+
 ## 💬 Community
 
 Join NetEase Tango Community to share your ideas, suggestions, or questions and connect with other users and contributors.
