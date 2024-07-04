@@ -23,7 +23,7 @@ const ideConfig = {
 
 export interface CodeEditorProps extends Partial<MultiEditorProps> {
   /**
-   * 是否自动清楚未使用的导入
+   * 是否自动清除未使用的导入
    */
   autoRemoveUnusedImports?: boolean;
 }

@@ -442,7 +442,9 @@ export class Workspace extends EventTarget implements IWorkspace {
   updateFile(filename: string, code: string, shouldFormatCode = false) {
     const file = this.getFile(filename);
     file.update(code);
-    if (shouldFormatCode && file instanceof TangoViewModule) {
+
+    const shouldFormat = shouldFormatCode ?? this.projectConfig?.designerConfig?.autoFormatCode;
+    if (shouldFormat && file instanceof TangoViewModule) {
       file.removeUnusedImportSpecifiers().update();
     }
     this.history.push({
