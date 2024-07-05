@@ -27,6 +27,7 @@ export const ModeSwitchTool = observer(() => {
         selected={designer.activeView === 'design'}
         onClick={() => {
           designer.setActiveView('design');
+          designer.toggleIsPreview(false); // 切回设计模式
         }}
         tooltip="设计视图"
       >

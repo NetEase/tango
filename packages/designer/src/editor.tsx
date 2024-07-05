@@ -3,7 +3,6 @@ import { Box } from 'coral-system';
 import { MultiEditor, MultiEditorProps } from '@music163/tango-ui';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { isValidCode } from '@music163/tango-core';
-import { Modal } from 'antd';
 
 const ideConfig = {
   // disableFileOps: {
@@ -23,13 +22,13 @@ const ideConfig = {
 
 export interface CodeEditorProps extends Partial<MultiEditorProps> {
   /**
-   * 是否自动清楚未使用的导入
+   * 是否自动清除未使用的导入，IDE 组件内默认关闭
    */
   autoRemoveUnusedImports?: boolean;
 }
 
 export const CodeEditor = observer(
-  ({ autoRemoveUnusedImports = true, ...rest }: CodeEditorProps) => {
+  ({ autoRemoveUnusedImports = false, ...rest }: CodeEditorProps) => {
     const editorRef = useRef(null);
     const workspace = useWorkspace();
     const designer = useDesigner();
@@ -42,10 +41,18 @@ export const CodeEditor = observer(
       loc = selectNode.loc;
     }
 
+    // 仅在视图切换至 WEBIDE 可见时，触发一次同步
     useEffect(() => {
-      editorRef.current?.refresh(files, activeFile, loc);
-    }, [files, activeFile, loc]);
+      if (designer.activeView !== 'design') {
+        editorRef.current?.refresh(files, activeFile, loc);
+      }
+    }, [files, activeFile, loc, designer.activeView]);
 
+    /**
+     * 触发时机
+     * 1. IDE 快捷键保存
+     * 2. IDE onBlur
+     */
     const fileSave = useCallback(
       (path: string, value: string) => {
         if (!isJsFile(path)) {
@@ -54,20 +61,13 @@ export const CodeEditor = observer(
           return;
         }
 
-        // js 文件需要先检查语法，只有语法正确才会保存
+        // IDE 内置语法检查，js 文件语法错误时，不更新工作区文件
+        // FIXME: 可以考虑语法检查放入 IDE 中，有语法错误时不触发 onFileSave 回调
         if (isValidCode(value)) {
           workspace.updateFile(path, value, autoRemoveUnusedImports);
-        } else {
-          Modal.confirm({
-            title: '检测到代码中存在语法错误，暂时无法将代码同步给设计器，是否回退到安全代码？',
-            onOk: () => {
-              editorRef.current?.refresh(files, activeFile);
-            },
-            onCancel: () => {},
-          });
         }
       },
-      [workspace, autoRemoveUnusedImports, activeFile, files],
+      [workspace, autoRemoveUnusedImports],
     );
 
     const handleFileChange = useCallback(

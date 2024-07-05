@@ -1,5 +1,5 @@
 import path from 'path';
-import { camelCase, upperCamelCase } from '@music163/tango-helpers';
+import { camelCase, logger, upperCamelCase } from '@music163/tango-helpers';
 import { FileType } from './../types';
 
 /**
@@ -138,8 +138,14 @@ const prettierPlugins = (window as any).prettierPlugins;
  * @returns the formatted code
  */
 export function formatCode(code: string, parser = 'babel') {
+  // 格式化出错时，返回原始代码，避免 AST 解析崩溃
   if (prettier && prettierPlugins) {
-    return prettier.format(code, { parser, plugins: prettierPlugins });
+    try {
+      return prettier.format(code, { parser, plugins: prettierPlugins });
+    } catch (error) {
+      logger.error('[prettier lint code failed!]', error);
+      return code;
+    }
   }
   return code;
 }
