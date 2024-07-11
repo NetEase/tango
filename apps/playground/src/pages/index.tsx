@@ -187,6 +187,9 @@ export default function App() {
           />
         </Sidebar>
         <WorkspacePanel>
+          <WorkspaceView mode="code">
+            <CodeEditor />
+          </WorkspaceView>
           <WorkspaceView mode="design">
             <Sandbox
               onMessage={(e) => {
@@ -207,9 +210,6 @@ export default function App() {
               }}
               navigatorExtra={<Button size="small">hello world</Button>}
             />
-          </WorkspaceView>
-          <WorkspaceView mode="code">
-            <CodeEditor />
           </WorkspaceView>
         </WorkspacePanel>
         <SettingPanel />

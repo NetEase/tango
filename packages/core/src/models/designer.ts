@@ -239,6 +239,13 @@ export class Designer {
 
   setActiveView(view: DesignerViewType) {
     this._activeView = view;
+    if (view === 'dual') {
+      this.setActiveSidebarPanel('');
+      this.toggleRightPanel(false);
+      this.toggleIsPreview(true);
+    } else if (view === 'design') {
+      this.toggleIsPreview(false);
+    }
   }
 
   setActiveSidebarPanel(panel: string) {
