@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/netease/tango/compare/@music163/tango-designer@1.3.2...@music163/tango-designer@1.3.3) (2024-07-12)
+
+### Bug Fixes
+
+- selection bug without prototype & update ToggleButton style ([#180](https://github.com/netease/tango/issues/180)) ([1d0fb4f](https://github.com/netease/tango/commit/1d0fb4f274a5b767962c54583ab5863329d5bcc5))
+- update designer config ([#186](https://github.com/netease/tango/issues/186)) ([85c053b](https://github.com/netease/tango/commit/85c053b3db6d652b41c9873dba1366315174833f))
+
 ## [1.3.2](https://github.com/netease/tango/compare/@music163/tango-designer@1.3.1...@music163/tango-designer@1.3.2) (2024-06-20)
 
 ### Bug Fixes
