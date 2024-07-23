@@ -249,7 +249,6 @@ export class Designer {
     }
 
     const editor2workspace = () => {
-      console.log('>>>', this.editor.isFilesChanged, this.editor._history);
       if (this.editor.isFilesChanged) {
         this.workspace.clearFiles();
         this.workspace.addFiles(this.editor.listFileData());
