@@ -1,4 +1,5 @@
 import { Designer } from './designer';
+import { EditorState } from './editor-state';
 import { IWorkspace } from './interfaces';
 
 /**
@@ -13,9 +14,14 @@ export class Engine {
    * 设计器状态
    */
   designer: Designer;
+  /**
+   * 编辑器状态
+   */
+  editor: EditorState;
 
-  constructor(options: Pick<Engine, 'workspace' | 'designer'>) {
+  constructor(options: Pick<Engine, 'workspace' | 'designer' | 'editor'>) {
     this.workspace = options.workspace;
     this.designer = options.designer;
+    this.editor = options.editor;
   }
 }

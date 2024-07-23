@@ -145,7 +145,10 @@ export interface IWorkspace {
   componentPrototypes: Map<string, IComponentPrototype>;
 
   entry: string;
-  activeFile: string;
+  /**
+   * @deprecated 已废弃，使用 editor.activeFile 代替
+   */
+  activeFile?: string;
   activeViewFile: string;
   activeRoute: string;
 
@@ -174,7 +177,13 @@ export interface IWorkspace {
   refresh: (names: string[]) => void;
 
   setActiveRoute: (path: string) => void;
-  setActiveFile: (filename: string) => void;
+
+  /**
+   * @deprecated 已废弃，使用 editor.setActiveFile 代替
+   * @param filename
+   * @returns
+   */
+  setActiveFile?: (filename: string) => void;
 
   setComponentPrototypes: (prototypes: Record<string, IComponentPrototype>) => void;
   getPrototype: (name: string | IComponentPrototype) => IComponentPrototype;
@@ -188,12 +197,14 @@ export interface IWorkspace {
   addViewFile: (viewName: string, code: string) => void;
 
   removeFile: (filename: string) => void;
+  clearFiles: () => void;
 
   renameFile: (oldFilename: string, newFilename: string) => void;
   renameFolder: (oldFoldername: string, newFoldername: string) => void;
 
   updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
 
+  listFileData: () => IFileConfig[];
   listFiles: () => Record<string, string>;
   getFile: (filename: string) => TangoFile;
 

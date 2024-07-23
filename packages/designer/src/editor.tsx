@@ -1,9 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { Box } from 'coral-system';
 import { MultiEditor, MultiEditorProps } from '@music163/tango-ui';
-import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
-import { isValidCode } from '@music163/tango-core';
-import { Modal } from 'antd';
+import { observer, useDesigner, useEditorState, useWorkspace } from '@music163/tango-context';
 
 const ideConfig = {
   // disableFileOps: {
@@ -24,6 +22,7 @@ const ideConfig = {
 export interface CodeEditorProps extends Partial<MultiEditorProps> {
   /**
    * 是否自动清除未使用的导入
+   * @deprecated 已废弃，不再支持
    */
   autoRemoveUnusedImports?: boolean;
 }
@@ -32,8 +31,10 @@ export const CodeEditor = observer(({ autoRemoveUnusedImports, ...rest }: CodeEd
   const editorRef = useRef(null);
   const workspace = useWorkspace();
   const designer = useDesigner();
-  const files = workspace.listFiles();
-  const activeFile = workspace.activeFile;
+  const editorState = useEditorState();
+  const files = editorState.getFiles();
+
+  const activeFile = editorState.activeFile;
 
   let loc: any; // 记录视图代码的选中位置
   const selectNode = workspace.selectSource.firstNode;
@@ -47,58 +48,42 @@ export const CodeEditor = observer(({ autoRemoveUnusedImports, ...rest }: CodeEd
 
   const fileSave = useCallback(
     (path: string, value: string) => {
-      if (!isJsFile(path)) {
-        // 非 js 文件直接保存
-        workspace.updateFile(path, value, autoRemoveUnusedImports);
-        return;
-      }
-
-      // js 文件需要先检查语法，只有语法正确才会保存
-      if (isValidCode(value)) {
-        workspace.updateFile(path, value, autoRemoveUnusedImports);
-      } else {
-        Modal.confirm({
-          title: '检测到代码中存在语法错误，暂时无法将代码同步给设计器，是否回退到安全代码？',
-          onOk: () => {
-            editorRef.current?.refresh(files, activeFile);
-          },
-          onCancel: () => {},
-        });
-      }
+      editorState.updateFile({ filename: path, code: value });
     },
-    [workspace, autoRemoveUnusedImports, activeFile, files],
+    [editorState],
   );
 
   const handleFileChange = useCallback(
     (type: string, info: any) => {
       switch (type) {
         case 'addFile':
-          workspace.addFile(info.path, info.value);
+          editorState.addFile({ filename: info.path, code: info.value });
           break;
         case 'deleteFile':
+          editorState.deleteFile({ filename: info.path });
+          break;
         case 'deleteFolder':
-          workspace.removeFile(info.path);
+          editorState.deleteFolder({ filename: info.path });
           break;
         case 'renameFile':
-          workspace.renameFile(info.path, info.newpath);
-          workspace.setActiveFile(info.newpath);
+          editorState.renameFile({ filename: info.path, newFilename: info.newpath });
           break;
         case 'renameFolder':
-          workspace.renameFolder(info.path, info.newpath);
+          editorState.renameFolder({ filename: info.path, newFilename: info.newpath });
           break;
         case 'addFolder':
         default:
           break;
       }
     },
-    [workspace],
+    [editorState],
   );
 
   const handlePathChange = useCallback(
     (path: string) => {
-      workspace.setActiveFile(path);
+      editorState.setActiveFile(path);
     },
-    [workspace],
+    [editorState],
   );
 
   const borderStyle =
@@ -128,7 +113,3 @@ export const CodeEditor = observer(({ autoRemoveUnusedImports, ...rest }: CodeEd
     </Box>
   );
 });
-
-function isJsFile(path: string) {
-  return /.jsx?$/.test(path);
-}

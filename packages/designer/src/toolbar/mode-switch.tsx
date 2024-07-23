@@ -2,23 +2,24 @@ import React, { useCallback } from 'react';
 import { Group } from 'coral-system';
 import { Modal } from 'antd';
 import { ToggleButton, CodeOutlined, DualOutlined } from '@music163/tango-ui';
-import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
+import { observer, useDesigner, useEditorState, useWorkspace } from '@music163/tango-context';
 import { BorderOutlined } from '@ant-design/icons';
 
 export const ModeSwitchTool = observer(() => {
   const workspace = useWorkspace();
   const designer = useDesigner();
+  const editorState = useEditorState();
 
   const activeFileCheck = useCallback(() => {
-    if (workspace.activeFile !== workspace.activeViewFile) {
+    if (editorState.activeFile !== workspace.activeViewFile) {
       Modal.confirm({
-        title: '当前打开的文件与视图不匹配，是否切换到当前视图对应的文件？',
+        title: '是否切换到当前视图对应的代码文件？',
         onOk: () => {
-          workspace.setActiveFile(workspace.activeViewFile);
+          editorState.setActiveFile(workspace.activeViewFile);
         },
       });
     }
-  }, [workspace]);
+  }, [workspace, editorState]);
 
   return (
     <Group attached>

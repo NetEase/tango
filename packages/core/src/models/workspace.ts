@@ -90,11 +90,6 @@ export class Workspace extends EventTarget implements IWorkspace {
   activeRoute: string;
 
   /**
-   * 当前选中的文件
-   */
-  activeFile: string;
-
-  /**
    * 当前选中的视图文件
    */
   activeViewFile: string;
@@ -231,7 +226,6 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.componentPrototypes = new Map();
     this.entry = options?.entry;
     this.activeRoute = options?.defaultActiveRoute || '/';
-    this.activeFile = options?.entry;
     this.activeViewFile = '';
     this.files = new Map();
     this.isReady = false;
@@ -252,12 +246,10 @@ export class Workspace extends EventTarget implements IWorkspace {
     makeObservable(this, {
       files: observable,
       activeRoute: observable,
-      activeFile: observable,
       activeViewFile: observable,
       pages: computed,
       bizComps: computed,
       setActiveRoute: action,
-      setActiveFile: action,
       addFile: action,
       removeFile: action,
     });
@@ -284,17 +276,6 @@ export class Workspace extends EventTarget implements IWorkspace {
   }
 
   /**
-   * 设置当前选中的文件
-   * @param filename
-   */
-  setActiveFile(filename: string, isViewFile = false) {
-    this.activeFile = filename;
-    if (isViewFile) {
-      this.activeViewFile = filename;
-    }
-  }
-
-  /**
    * 根据当前的路由计算当前的视图模块
    */
   setActiveViewFile(routePath: string) {
@@ -307,9 +288,6 @@ export class Workspace extends EventTarget implements IWorkspace {
           break;
         }
       }
-    }
-    if (filename) {
-      this.setActiveFile(filename, true);
     }
   }
 
@@ -475,6 +453,10 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
   }
 
+  clearFiles() {
+    this.files.clear();
+  }
+
   /**
    * 重命名文件
    * @param oldFilename
@@ -516,9 +498,25 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @returns { [filename]: fileCode }
    */
   listFiles() {
-    const ret = {};
+    const ret: Dict<string> = {};
     this.files.forEach((file) => {
       ret[file.filename] = file.cleanCode;
+    });
+    return ret;
+  }
+
+  /**
+   * 获取文件列表（FileData 参数形式）
+   * @returns Array<{ filename, code, type }>
+   */
+  listFileData() {
+    const ret: IFileConfig[] = [];
+    this.files.forEach((file) => {
+      ret.push({
+        filename: file.filename,
+        code: file.cleanCode,
+        type: file.type,
+      });
     });
     return ret;
   }

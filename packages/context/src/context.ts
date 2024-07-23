@@ -29,6 +29,10 @@ export const useDesigner = () => {
   return useTangoEngine()?.engine.designer;
 };
 
+export const useEditorState = () => {
+  return useTangoEngine()?.engine.editor;
+};
+
 export const useWorkspaceData = () => {
   const ctx = useTangoEngine();
   const workspace = useWorkspace();
