@@ -1,7 +1,6 @@
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
-import { IWorkspace } from './interfaces';
 import { MenuDataType } from '@music163/tango-helpers';
-import { EditorState } from './editor-state';
+import { IWorkspace } from './interfaces';
 
 export type SimulatorNameType = 'desktop' | 'phone';
 
@@ -19,7 +18,6 @@ interface IViewportBounding {
 }
 
 interface IDesignerOptions {
-  editor: EditorState;
   workspace: IWorkspace;
   simulator?: SimulatorNameType | ISimulatorType;
   /**
@@ -112,8 +110,6 @@ export class Designer {
 
   private readonly workspace: IWorkspace;
 
-  private readonly editor: EditorState;
-
   get simulator(): ISimulatorType {
     return toJS(this._simulator);
   }
@@ -164,7 +160,6 @@ export class Designer {
 
   constructor(options: IDesignerOptions) {
     this.workspace = options.workspace;
-    this.editor = options.editor;
 
     const {
       simulator,
@@ -248,26 +243,16 @@ export class Designer {
       return;
     }
 
-    const editor2workspace = () => {
-      if (this.editor.isFilesChanged) {
-        this.workspace.clearFiles();
-        this.workspace.addFiles(this.editor.listFileData());
-      }
-    };
-    const workspace2editor = () => {
-      this.editor.clear();
-      this.editor.addFiles(this.workspace.listFileData());
-    };
     if (view === 'dual') {
       this.setActiveSidebarPanel('');
       this.toggleRightPanel(false);
       this.toggleIsPreview(true);
-      workspace2editor();
+      this.workspace.setMode('code');
     } else if (view === 'design') {
       this.toggleIsPreview(false);
-      editor2workspace();
+      this.workspace.setMode('design');
     } else if (view === 'code') {
-      workspace2editor();
+      this.workspace.setMode('code');
     }
 
     this._activeView = view;

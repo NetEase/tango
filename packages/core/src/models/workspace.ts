@@ -27,7 +27,7 @@ import { HistoryMessage, TangoHistory } from './history';
 import { TangoNode } from './node';
 import { TangoJsModule } from './module';
 import { TangoFile, TangoJsonFile, TangoLessFile } from './file';
-import { IWorkspace } from './interfaces';
+import { IWorkspace, WorkspaceMode } from './interfaces';
 import { IFileConfig, FileType, ITangoConfigPackages, IPageConfigData } from '../types';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
@@ -37,6 +37,7 @@ import { TangoServiceModule } from './service-module';
 import { TangoViewModule } from './view-module';
 import { TangoComponentsEntryModule } from './component-module';
 import { AppEntryModule } from './entry-module';
+import { EditorState } from './editor-state';
 
 export interface IWorkspaceOptions {
   /**
@@ -65,9 +66,27 @@ export interface IWorkspaceOptions {
  * 工作区
  */
 export class Workspace extends EventTarget implements IWorkspace {
+  /**
+   * 历史记录
+   */
   history: TangoHistory;
+  /**
+   * 选中源
+   */
   selectSource: SelectSource;
+  /**
+   * 拖拽源
+   */
   dragSource: DragSource;
+  /**
+   * 编辑器状态
+   */
+  editorState: EditorState;
+
+  /**
+   * 工作区模式
+   */
+  mode: WorkspaceMode;
 
   /**
    * 工作区的文件列表
@@ -223,6 +242,11 @@ export class Workspace extends EventTarget implements IWorkspace {
     this.history = new TangoHistory(this);
     this.selectSource = new SelectSource(this);
     this.dragSource = new DragSource(this);
+    this.editorState = new EditorState({
+      defaultActiveFile: options?.entry,
+      files: options?.files,
+    });
+    this.mode = 'code';
     this.componentPrototypes = new Map();
     this.entry = options?.entry;
     this.activeRoute = options?.defaultActiveRoute || '/';
@@ -244,6 +268,7 @@ export class Workspace extends EventTarget implements IWorkspace {
     }
 
     makeObservable(this, {
+      mode: observable,
       files: observable,
       activeRoute: observable,
       activeViewFile: observable,
@@ -252,7 +277,32 @@ export class Workspace extends EventTarget implements IWorkspace {
       setActiveRoute: action,
       addFile: action,
       removeFile: action,
+      setMode: action,
     });
+  }
+
+  /**
+   * 设置工作区模式
+   */
+  setMode(mode: WorkspaceMode) {
+    const prevMode = this.mode;
+    if (prevMode === mode) {
+      return;
+    }
+
+    this.mode = mode;
+
+    if (mode === 'design') {
+      // 从源码切换到设计模式
+      if (this.editorState.isFilesChanged) {
+        this.clearFiles();
+        this.addFiles(this.editorState.listFileData());
+      }
+    } else {
+      // 从设计切换到源码模式
+      this.editorState.clear();
+      this.editorState.addFiles(this.listFileData());
+    }
   }
 
   getPrototype(name: string | IComponentPrototype) {
@@ -288,6 +338,9 @@ export class Workspace extends EventTarget implements IWorkspace {
           break;
         }
       }
+    }
+    if (filename) {
+      this.editorState.setActiveFile(filename);
     }
   }
 

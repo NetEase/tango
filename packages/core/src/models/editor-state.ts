@@ -15,6 +15,7 @@ type UpdateFilePayload = Pick<EditorActionPayload, 'filename' | 'code'>;
 
 interface EditorStateConfig {
   defaultActiveFile: string;
+  files: IFileConfig[];
 }
 
 export class EditorState {
@@ -36,8 +37,9 @@ export class EditorState {
   }
 
   constructor(options?: EditorStateConfig) {
-    this._activeFile = options?.defaultActiveFile;
     this._history = new EditorHistory();
+    this._activeFile = options?.defaultActiveFile;
+    this.addFiles(options?.files);
 
     makeObservable(this, {
       _activeFile: observable,
@@ -97,6 +99,10 @@ export class EditorState {
   }
 
   addFiles(fileList: AddFilePayload[]) {
+    if (!fileList || !fileList.length) {
+      return;
+    }
+
     fileList.forEach(({ filename, ...rest }) => {
       this._files.set(filename, rest);
     });

@@ -17,6 +17,7 @@ import { TangoStoreModule } from './store-module';
 import { TangoServiceModule } from './service-module';
 import { IdGenerator } from '../helpers';
 import { AppEntryModule } from './entry-module';
+import { EditorState } from './editor-state';
 
 export interface IViewFile {
   readonly workspace: IWorkspace;
@@ -136,10 +137,17 @@ export interface IViewNode {
   get loc(): unknown;
 }
 
+export type WorkspaceMode = 'design' | 'code';
+
 export interface IWorkspace {
   history: TangoHistory;
   selectSource: SelectSource;
   dragSource: DragSource;
+  editorState: EditorState;
+  /**
+   * 工作区模式: design-设计模式, code-源码模式
+   */
+  mode: WorkspaceMode;
 
   files: Map<string, TangoFile>;
   componentPrototypes: Map<string, IComponentPrototype>;
@@ -175,6 +183,8 @@ export interface IWorkspace {
 
   ready: () => void;
   refresh: (names: string[]) => void;
+
+  setMode: (mode: WorkspaceMode) => void;
 
   setActiveRoute: (path: string) => void;
 

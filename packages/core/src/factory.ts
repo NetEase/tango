@@ -38,15 +38,10 @@ export function createEngine({
   defaultActiveSidebarPanel = '',
   menuData,
 }: ICreateEngineOptions) {
-  const editorState = new EditorState({
-    defaultActiveFile: workspace.activeViewFile || workspace.entry,
-  });
   const engine = new Engine({
     workspace,
-    editor: editorState,
     designer: new Designer({
       workspace,
-      editor: editorState,
       simulator: defaultSimulatorMode,
       activeView: defaultActiveView,
       activeSidebarPanel: defaultActiveSidebarPanel,

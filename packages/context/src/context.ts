@@ -30,7 +30,7 @@ export const useDesigner = () => {
 };
 
 export const useEditorState = () => {
-  return useTangoEngine()?.engine.editor;
+  return useTangoEngine()?.engine.workspace.editorState;
 };
 
 export const useWorkspaceData = () => {
