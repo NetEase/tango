@@ -1,7 +1,6 @@
 import { MenuDataType } from '@music163/tango-helpers';
 import { Designer, DesignerViewType, Engine, SimulatorNameType } from './models';
 import { IWorkspace } from './models/interfaces';
-import { EditorState } from './models/editor-state';
 
 interface ICreateEngineOptions {
   /**
