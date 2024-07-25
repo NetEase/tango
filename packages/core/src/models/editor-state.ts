@@ -42,9 +42,16 @@ export class EditorState {
     this.addFiles(options?.files);
 
     makeObservable(this, {
+      _files: observable,
       _activeFile: observable,
       activeFile: computed,
       setActiveFile: action,
+      updateFile: action,
+      addFile: action,
+      addFiles: action,
+      deleteFile: action,
+      deleteFolder: action,
+      _renameFile: action,
     });
   }
 

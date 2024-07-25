@@ -26,7 +26,7 @@ const navigatorStyle = css`
   }
 `;
 
-interface NavigatorProps {
+export interface NavigatorProps {
   disabled?: boolean;
   startRoute?: string;
   onBack?: () => void;

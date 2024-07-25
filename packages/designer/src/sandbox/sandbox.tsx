@@ -6,7 +6,7 @@ import { observer, useWorkspace, useDesigner } from '@music163/tango-context';
 import { Simulator, Viewport } from '../simulator';
 import { useSandboxQuery } from '../context';
 import { DndQuery, useDnd } from '../dnd';
-import { Navigator } from './navigator';
+import { Navigator, NavigatorProps } from './navigator';
 import { SelectionToolsProps } from '../simulator/selection';
 import { DESIGN_SANDBOX_ID, PREVIEW_SANDBOX_ID } from '../helpers';
 
@@ -18,6 +18,7 @@ interface ISandboxEventHandlerConfig {
 }
 
 export type SandboxProps = Omit<CodeSandboxProps, 'files' | 'eventHandlers' | 'onMessage'> & {
+  files?: CodeSandboxProps['files'];
   isPreview?: boolean;
   selectionTools?: SelectionToolsProps['actions'];
   /**
@@ -54,6 +55,7 @@ function fixRouterMode(routerType: string): CodeSandboxProps['routerMode'] {
 }
 
 function useSandbox({
+  files: filesProp,
   isPreview: isPreviewProp,
   configFormatter,
   filesFormatter,
@@ -88,14 +90,29 @@ function useSandbox({
     onViewChange: (data) => onViewChange && onViewChange(data, getSandboxConfig()),
   });
 
-  let files = Array.from(workspace.files.keys()).reduce((prev, filename) => {
-    let code = workspace.getFile(filename).code;
-    if (filename === '/tango.config.json') {
-      code = mergeTangoConfigJson(code, { isPreview, injectScript, formatter: configFormatter });
-    }
-    prev[filename] = { code };
-    return prev;
-  }, {});
+  let files = filesProp;
+  if (!files) {
+    files = Array.from(workspace.files.keys()).reduce<CodeSandboxProps['files']>(
+      (prev, filename) => {
+        const code = workspace.getFile(filename).code;
+        prev[filename] = { code };
+        return prev;
+      },
+      {},
+    );
+  }
+
+  // fix tangoConfigJson
+  const tangoConfigJson = files['/tango.config.json'];
+  if (tangoConfigJson) {
+    files['/tango.config.json'] = {
+      code: mergeTangoConfigJson(tangoConfigJson.code, {
+        isPreview,
+        injectScript,
+        formatter: configFormatter,
+      }),
+    };
+  }
 
   files = fixSandboxFiles(files, workspace.entry);
   if (filesFormatter) {
@@ -303,29 +320,66 @@ export const CombinedSandbox = observer(
   },
 );
 
+const FALLBACK_SANDBOX_BUNDLER_URL = 'https://codesandbox.fn.netease.com';
+
+interface UseSandboxNavigatorProps {
+  sandbox?: any;
+  bundlerUrl?: string;
+}
+
+function useSandboxNavigator({ sandbox, bundlerUrl }: UseSandboxNavigatorProps): NavigatorProps {
+  const workspace = useWorkspace();
+  return {
+    disabled: !sandbox?.iframe,
+    startRoute: workspace.activeRoute,
+    onInputEnter: (newUrl) => {
+      if (newUrl?.split('?')[0] === workspace.activeRoute) {
+        // 只是输入了路由参数，默认为调试模式，直接更新沙箱内的路由地址
+        sandbox?.updateRoute(newUrl);
+      } else {
+        // 如果是输入了其他路由，则直接跳转
+        workspace.setActiveRoute(newUrl);
+      }
+    },
+    onBack: () => {
+      sandbox?.manager.iframeProtocol.dispatch({ type: 'urlback' });
+    },
+    onForward: () => {
+      sandbox?.manager.iframeProtocol.dispatch({ type: 'urlforward' });
+    },
+    onRefresh: () => {
+      if (!sandbox) {
+        return;
+      }
+
+      if (
+        !canAccessIFrame(sandbox.iframe) ||
+        sandbox.iframe.contentWindow.origin !== sandbox.props.bundlerURL
+      ) {
+        sandbox.iframe.src = `${bundlerUrl}${workspace.activeRoute}`;
+      } else {
+        sandbox.manager.iframeProtocol.dispatch({ type: 'refresh' });
+      }
+      workspace.selectSource.clear();
+    },
+  };
+}
+
 export const Sandbox = observer(
   ({
     isPreview: isPreviewProp,
     selectionTools,
-    bundlerURL,
+    bundlerURL = FALLBACK_SANDBOX_BUNDLER_URL,
     mode = 'combined',
     navigatorExtra,
     ...props
   }: SandboxProps) => {
-    const bundlerUrl = bundlerURL ?? 'https://codesandbox.fn.netease.com';
     const lastScrollTopRef = useRef<number>();
     const sandboxRef = useRef<CodeSandbox>(null);
     const combinedSandboxRef = useRef<CombinedSandboxRef>(null);
     const navigatorRef = useRef<Navigator>(null);
     const workspace = useWorkspace();
     const designer = useDesigner();
-
-    let sandbox = sandboxRef.current;
-    if (mode === 'combined') {
-      sandbox = designer.isPreview
-        ? combinedSandboxRef.current?.previewSandbox
-        : combinedSandboxRef.current?.designSandbox;
-    }
 
     const onViewChange = (data: any, { isActive }: ISandboxEventHandlerConfig) => {
       if (isActive) {
@@ -340,51 +394,24 @@ export const Sandbox = observer(
       }
     };
 
+    let sandbox = sandboxRef.current;
+    if (mode === 'combined') {
+      sandbox = designer.isPreview
+        ? combinedSandboxRef.current?.previewSandbox
+        : combinedSandboxRef.current?.designSandbox;
+    }
+    const navigatorProps = useSandboxNavigator({ sandbox, bundlerUrl: bundlerURL });
+
     return (
       <Box className="SandboxContainer" height="100%">
-        <Navigator
-          ref={navigatorRef}
-          disabled={!sandbox?.iframe}
-          startRoute={workspace.activeRoute}
-          onInputEnter={(newUrl) => {
-            if (newUrl?.split('?')[0] === workspace.activeRoute) {
-              // 只是输入了路由参数，默认为调试模式，直接更新沙箱内的路由地址
-              sandbox?.updateRoute(newUrl);
-            } else {
-              // 如果是输入了其他路由，则直接跳转
-              workspace.setActiveRoute(newUrl);
-            }
-          }}
-          onBack={() => {
-            sandbox?.manager.iframeProtocol.dispatch({ type: 'urlback' });
-          }}
-          onForward={() => {
-            sandbox?.manager.iframeProtocol.dispatch({ type: 'urlforward' });
-          }}
-          onRefresh={() => {
-            if (!sandbox) {
-              return;
-            }
-
-            if (
-              !canAccessIFrame(sandbox.iframe) ||
-              sandbox.iframe.contentWindow.origin !== sandbox.props.bundlerURL
-            ) {
-              sandbox.iframe.src = `${bundlerUrl}${workspace.activeRoute}`;
-            } else {
-              sandbox.manager.iframeProtocol.dispatch({ type: 'refresh' });
-            }
-            workspace.selectSource.clear();
-          }}
-          extra={navigatorExtra}
-        />
+        <Navigator ref={navigatorRef} extra={navigatorExtra} {...navigatorProps} />
         <Simulator>
           <Viewport selectionTools={selectionTools}>
             {mode === 'single' && (
               <DesignSandbox
                 ref={sandboxRef}
                 template="create-react-app"
-                bundlerURL={bundlerUrl}
+                bundlerURL={bundlerURL}
                 entry={workspace.entry}
                 onViewChange={onViewChange}
                 onMessage={onMessage}
@@ -397,7 +424,7 @@ export const Sandbox = observer(
               <CombinedSandbox
                 ref={combinedSandboxRef}
                 template="create-react-app"
-                bundlerURL={bundlerUrl}
+                bundlerURL={bundlerURL}
                 entry={workspace.entry}
                 onViewChange={onViewChange}
                 onMessage={onMessage}
@@ -410,6 +437,54 @@ export const Sandbox = observer(
     );
   },
 );
+
+export const LiveEditorSandbox = observer(
+  ({ bundlerURL = FALLBACK_SANDBOX_BUNDLER_URL, navigatorExtra, ...props }: SandboxProps) => {
+    const sandboxRef = useRef<CodeSandbox>(null);
+    const workspace = useWorkspace();
+    const { display, ...sandboxProps } = useSandbox({
+      files: normalizeFiles(workspace.editorState.getFiles()),
+      isPreview: true,
+      sandboxType: 'preview',
+    });
+    const navigatorProps = useSandboxNavigator({
+      sandbox: sandboxRef.current,
+      bundlerUrl: bundlerURL,
+    });
+    return (
+      <Box className="LiveEditorSandbox" height="100%">
+        <Navigator extra={navigatorExtra} {...navigatorProps} />
+        <Simulator>
+          <CodeSandbox
+            ref={sandboxRef}
+            iframeId="live-editor-sandbox"
+            template="create-react-app"
+            bundlerURL={bundlerURL}
+            entry={workspace.entry}
+            startRoute={workspace.activeRoute}
+            {...sandboxProps}
+            {...props}
+          />
+        </Simulator>
+      </Box>
+    );
+  },
+);
+
+function normalizeFiles(files: Record<string, any>) {
+  if (!files) {
+    return;
+  }
+
+  const result: CodeSandboxProps['files'] = {};
+  Object.keys(files).forEach((filename) => {
+    const file = files[filename];
+    result[filename] = {
+      code: typeof file === 'string' ? file : file.code,
+    };
+  });
+  return result;
+}
 
 // 兼容 tango.config.json，转成 sandbox.config.json
 function fixSandboxFiles(files: Record<string, { code: string }>, entry = '/src/index.js') {

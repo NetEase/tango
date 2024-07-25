@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useCallback } from 'react';
-import { Box } from 'coral-system';
+import { Box, css } from 'coral-system';
 import { MultiEditor, MultiEditorProps } from '@music163/tango-ui';
 import { observer, useDesigner, useEditorState, useWorkspace } from '@music163/tango-context';
+import { LiveEditorSandbox } from './sandbox';
 
 const ideConfig = {
   // disableFileOps: {
@@ -110,6 +111,36 @@ export const CodeEditor = observer(({ autoRemoveUnusedImports, ...rest }: CodeEd
         defaultFiles={files}
         {...rest}
       />
+    </Box>
+  );
+});
+
+const liveEditorWrapperStyle = css`
+  .LiveCodeEditorLeft,
+  .LiveCodeEditorRight {
+    overflow: hidden;
+    transition: flex 100ms ease-in-out 0s;
+  }
+`;
+
+export const LiveCodeEditor = observer(() => {
+  const designer = useDesigner();
+  return (
+    <Box display="flex" className="LiveCodeEditor" height="100%" css={liveEditorWrapperStyle}>
+      <Box
+        flex={designer.activeView === 'dual' ? '55 1 0px' : '100 1 0px'}
+        className="LiveCodeEditorLeft"
+      >
+        <CodeEditor />
+      </Box>
+      <Box
+        flex={designer.activeView === 'dual' ? '45 1 0px' : '0 1 0px'}
+        borderLeft="solid"
+        borderLeftColor="line2"
+        className="LiveCodeEditorRight"
+      >
+        <LiveEditorSandbox />
+      </Box>
     </Box>
   );
 });

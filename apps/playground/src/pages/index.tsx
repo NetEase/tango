@@ -8,7 +8,7 @@ import {
   Toolbar,
   WorkspacePanel,
   WorkspaceView,
-  CodeEditor,
+  LiveCodeEditor,
   Sandbox,
   DndQuery,
   themeLight,
@@ -188,7 +188,7 @@ export default function App() {
         </Sidebar>
         <WorkspacePanel>
           <WorkspaceView mode="code">
-            <CodeEditor />
+            <LiveCodeEditor />
           </WorkspaceView>
           <WorkspaceView mode="design">
             <Sandbox

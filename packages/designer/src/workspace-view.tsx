@@ -15,14 +15,18 @@ export interface WorkspaceViewProps extends HTMLCoralProps<'div'> {
 export const WorkspaceView = observer((props: WorkspaceViewProps) => {
   const { mode = 'design', children, className, ...rest } = props;
   const designer = useDesigner();
-  const display = mode !== designer.activeView ? 'none' : 'block';
+  let activeView = designer.activeView;
+  if (designer.activeView === 'dual') {
+    activeView = 'code';
+  }
+  const display = mode !== activeView ? 'none' : 'block';
   // 云音乐移动端模式小屏幕适配，可能会溢出屏幕
   const overflow =
     designer.simulator.name === 'phone' ? 'auto' : designer.isPreview ? 'auto' : 'hidden';
   return (
     <Box
       className={cx('ViewPanel', mode, className)}
-      display={designer.activeView === 'dual' ? 'block' : display}
+      display={activeView === mode ? 'block' : display}
       overflow={overflow}
       flex="1"
       position="relative"
