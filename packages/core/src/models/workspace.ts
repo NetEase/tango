@@ -246,7 +246,7 @@ export class Workspace extends EventTarget implements IWorkspace {
       defaultActiveFile: options?.entry,
       files: options?.files,
     });
-    this.mode = 'code';
+    this.mode = 'design';
     this.componentPrototypes = new Map();
     this.entry = options?.entry;
     this.activeRoute = options?.defaultActiveRoute || '/';

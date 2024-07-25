@@ -185,6 +185,7 @@ export class Designer {
     // 默认激活的视图
     if (defaultActiveView) {
       this.setActiveView(defaultActiveView);
+      this.workspace.setMode(defaultActiveView === 'design' ? 'design' : 'code');
     }
 
     makeObservable(this, {
