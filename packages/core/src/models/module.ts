@@ -38,18 +38,26 @@ export class TangoModule extends TangoFile {
    */
   update(code?: string, isFormatCode = true, refreshWorkspace = true) {
     this.lastModified = Date.now();
-    if (isNil(code)) {
-      this._syncByAst();
-    } else {
-      this._syncByCode(code, isFormatCode);
-    }
 
-    this._analysisAst();
+    try {
+      if (isNil(code)) {
+        this._syncByAst();
+      } else {
+        this._syncByCode(code, isFormatCode);
+      }
+      this._analysisAst();
 
-    this.workspace.onFilesChange([this.filename]);
+      this.isError = false;
+      this.errorMessage = undefined;
 
-    if (refreshWorkspace) {
-      this.workspace.refresh([this.filename]);
+      this.workspace.onFilesChange([this.filename]);
+
+      if (refreshWorkspace) {
+        this.workspace.refresh([this.filename]);
+      }
+    } catch (err: any) {
+      this.isError = true;
+      this.errorMessage = err.message;
     }
   }
 
@@ -110,6 +118,8 @@ export class TangoJsModule extends TangoModule {
     makeObservable(this, {
       _code: observable,
       _cleanCode: observable,
+      isError: observable,
+      errorMessage: observable,
       code: computed,
       cleanCode: computed,
       update: action,

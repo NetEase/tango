@@ -237,6 +237,16 @@ export class Workspace extends EventTarget implements IWorkspace {
     return Object.keys(this.componentsEntryModule?.exportList || {});
   }
 
+  get fileErrors() {
+    const list: string[] = [];
+    this.files.forEach((file) => {
+      if (file.isError) {
+        list.push(file.errorMessage);
+      }
+    });
+    return list;
+  }
+
   constructor(options?: IWorkspaceOptions) {
     super();
     this.history = new TangoHistory(this);
@@ -274,6 +284,7 @@ export class Workspace extends EventTarget implements IWorkspace {
       activeViewFile: observable,
       pages: computed,
       bizComps: computed,
+      fileErrors: computed,
       setActiveRoute: action,
       addFile: action,
       removeFile: action,
@@ -300,6 +311,12 @@ export class Workspace extends EventTarget implements IWorkspace {
       }
     } else {
       // 从设计切换到源码模式
+
+      if (this.fileErrors.length) {
+        // 工作区文件存在语法错误，不同步
+        return;
+      }
+
       this.editorState.clear();
       this.editorState.addFiles(this.listFileData());
     }

@@ -1009,7 +1009,7 @@ export function serviceConfig2Node(payload: object) {
   });
 }
 
-export function updateServiceConfigToServiceFile(ast: t.File, config: Dict<object>) {
+export function updateServiceConfigToServiceFile(ast: t.File, config: Dict<Dict>) {
   traverse(ast, {
     CallExpression(path) {
       const calleeName = keyNode2value(path.node.callee) as string;
@@ -1017,7 +1017,7 @@ export function updateServiceConfigToServiceFile(ast: t.File, config: Dict<objec
         const configNode = path.node.arguments[0];
 
         if (t.isObjectExpression(configNode)) {
-          const newPropertiesNodeMap = Object.keys(config).reduce((properties, key) => {
+          const newPropertiesNodeMap: Dict = Object.keys(config).reduce<Dict>((properties, key) => {
             const serviceConfig = config[key];
             const property = t.objectProperty(t.identifier(key), serviceConfig2Node(serviceConfig));
             properties[key] = property;

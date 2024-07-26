@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { Box, HTMLCoralProps } from 'coral-system';
 import { observer, useDesigner } from '@music163/tango-context';
 import { DesignerViewType } from '@music163/tango-core';
-import { ComponentsPopover } from './components';
+import { ComponentsPopover, FilesErrorOverlay } from './components';
 
 export interface WorkspaceViewProps extends HTMLCoralProps<'div'> {
   /**
@@ -35,6 +35,7 @@ export const WorkspaceView = observer((props: WorkspaceViewProps) => {
       {children}
       {/* 添加组件弹层 */}
       {display === 'block' && <ComponentsPopover type="inner" isControlled />}
+      {mode === 'design' && <FilesErrorOverlay />}
     </Box>
   );
 });

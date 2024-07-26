@@ -3,7 +3,7 @@
  */
 import generator, { GeneratorOptions } from '@babel/generator';
 import * as t from '@babel/types';
-import { logger, wrapCode } from '@music163/tango-helpers';
+import { Dict, logger, wrapCode } from '@music163/tango-helpers';
 import { formatCode } from '../string';
 
 const defaultGeneratorOptions: GeneratorOptions = {
@@ -25,19 +25,12 @@ export function ast2code(ast: t.Node, options: GeneratorOptions = defaultGenerat
   return code;
 }
 
-const bracketPattern = /^\(.+\)$/s;
-
 /**
  * 是否被 () 包裹
- *
  * @example ({ foo: 'foo' }) -> true
  * @example { foo: 'foo' } -> false
- *
- * @param str 目标字符串
  */
-function isWrappingWithBrackets(str: string) {
-  return bracketPattern.test(str);
-}
+const bracketPattern = /^\(.+\)$/;
 
 /**
  * 将表达式生成为块级代码
@@ -54,7 +47,7 @@ export function expression2code(node: t.Expression) {
 
   const isWrappingExpression = t.isObjectExpression(node) || t.isFunctionExpression(node);
 
-  if (isWrappingExpression && isWrappingWithBrackets(ret)) {
+  if (isWrappingExpression && bracketPattern.test(ret)) {
     // 如果是对象，输出包含 ({})，则去掉首尾的括号
     ret = ret.slice(1, -1);
   }
@@ -195,7 +188,7 @@ export function node2value(node: t.Node, isWrapCode = true): any {
       );
       if (isSimpleObject) {
         // simple object: { key1, key2, key3 }
-        ret = node.properties.reduce((prev, propertyNode) => {
+        ret = node.properties.reduce<Dict>((prev, propertyNode) => {
           if (propertyNode.type === 'ObjectProperty') {
             const key = keyNode2value(propertyNode.key);
             const value = node2value(propertyNode.value, isWrapCode);

@@ -24,6 +24,16 @@ export class TangoFile {
    */
   lastModified: number;
 
+  /**
+   * 文件是否存在错误
+   */
+  isError: boolean;
+
+  /**
+   * 文件的错误消息
+   */
+  errorMessage: string;
+
   _code: string;
   _cleanCode: string;
 
@@ -40,6 +50,7 @@ export class TangoFile {
     this.filename = props.filename;
     this.type = props.type;
     this.lastModified = Date.now();
+    this.isError = false;
 
     // 这里主要是为了解决 umi ts 编译错误的问题，@see https://github.com/umijs/umi/issues/7594
     if (isSyncCode) {

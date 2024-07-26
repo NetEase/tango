@@ -320,6 +320,10 @@ export interface IWorkspace {
   get baseComps(): string[];
   get localComps(): string[];
   /**
+   * 文件错误列表
+   */
+  get fileErrors(): string[];
+  /**
    * 是否是合法的项目
    */
   get isValid(): boolean;

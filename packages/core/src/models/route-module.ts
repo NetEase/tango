@@ -28,6 +28,8 @@ export class TangoRouteModule extends TangoModule {
       _routes: observable,
       _code: observable,
       _cleanCode: observable,
+      isError: observable,
+      errorMessage: observable,
       routes: computed,
       code: computed,
       cleanCode: computed,

@@ -71,7 +71,7 @@ describe('helpers', () => {
   });
 
   it('expression2code: arrowFunctionExpression', () => {
-    expect(expression2code(code2expression('() => {}'))).toEqual('() => {}');
+    expect(expression2code(code2expression('() => {\n\n}\n'))).toEqual('() => {\n\n}');
   });
 
   it('expression2code: memberExpression', () => {
