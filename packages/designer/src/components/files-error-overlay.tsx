@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, css } from 'coral-system';
 import { observer, useWorkspace } from '@music163/tango-context';
 import { CloseOutlined } from '@ant-design/icons';
@@ -13,12 +13,7 @@ const errorMessageStyle = css`
  */
 export const FilesErrorOverlay = observer(() => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
-  const [errors, setErrors] = useState<string[]>([]);
   const workspace = useWorkspace();
-
-  useEffect(() => {
-    setErrors(workspace.fileErrors);
-  }, [workspace.fileErrors]);
 
   const handleClose = () => {
     setIsVisible(false);
@@ -55,8 +50,13 @@ export const FilesErrorOverlay = observer(() => {
           onClick={handleClose}
         />
         <Box css={errorMessageStyle}>
-          {errors.map((error, index) => (
-            <Box key={index}>{error}</Box>
+          {workspace.fileErrors.map((fileError) => (
+            <Box key={fileError.filename}>
+              <Box fontWeight="bold">{fileError.filename}</Box>
+              <Box as="code" display="block">
+                {fileError.errorMessage}
+              </Box>
+            </Box>
           ))}
         </Box>
       </Box>
