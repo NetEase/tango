@@ -8,17 +8,6 @@ export const ModeSwitchTool = observer(() => {
   const workspace = useWorkspace();
   const designer = useDesigner();
 
-  // const activeFileCheck = useCallback(() => {
-  //   if (workspace.activeFile !== workspace.activeViewFile) {
-  //     Modal.confirm({
-  //       title: '当前打开的文件与视图不匹配，是否切换到当前视图对应的文件？',
-  //       onOk: () => {
-  //         workspace.setActiveFile(workspace.activeViewFile);
-  //       },
-  //     });
-  //   }
-  // }, [workspace]);
-
   return (
     <Group attached>
       <ToggleButton

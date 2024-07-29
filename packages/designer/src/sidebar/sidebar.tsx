@@ -92,6 +92,10 @@ function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 266, footer, childre
     return ret;
   }, [children]);
 
+  if (designer.activeView !== 'design') {
+    return null;
+  }
+
   return (
     <Box display="flex" flexShrink={0} css={sidebarStyle} className="SidebarPanel">
       <Box className="SidebarPanelBar" display="flex" flexDirection="column" position="relative">
