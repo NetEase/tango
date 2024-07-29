@@ -15,25 +15,32 @@ export function Toolbar({ children }: ToolbarProps) {
 
     let prevPlacement: string;
     React.Children.forEach(children, (child: React.ReactElement, index) => {
+      const childProps = child.props;
+
       let fallbackNode;
       if (child.key) {
         const Widget = getWidget(['toolbar', child.key].join('.'));
         if (Widget) {
-          fallbackNode = React.createElement(Widget, child.props.widgetProps);
+          fallbackNode = (
+            <ToolbarItem>
+              <Widget {...childProps.widgetProps} />
+            </ToolbarItem>
+          );
         }
       }
 
-      let node = child.props.children ?? fallbackNode ?? null;
-      if (!node) {
-        node = child; // separator
+      let node;
+      if (childProps.children) {
+        // 自定义子节点
+        node = child;
+      } else {
+        // 预注册的子节点
+        node = fallbackNode || child;
       }
       const key = child.key || index;
-      node = (
-        <div key={key} className="ToolbarPanelItem" data-key={key}>
-          {node}
-        </div>
-      );
-      const placement = child.props.placement || prevPlacement || 'center';
+      node = React.cloneElement(node, { key, 'data-key': key });
+
+      const placement = childProps.placement || prevPlacement || 'center';
       switch (placement) {
         case 'left':
           left.push(node);
@@ -68,6 +75,10 @@ export function Toolbar({ children }: ToolbarProps) {
 }
 
 export interface ToolbarItemProps extends ReactComponentProps {
+  /**
+   * 类型
+   */
+  type?: 'divider';
   placement?: 'left' | 'center' | 'right';
   children?: React.ReactElement;
   /**
@@ -76,8 +87,15 @@ export interface ToolbarItemProps extends ReactComponentProps {
   widgetProps?: object;
 }
 
-function ToolbarItem({ placement, widgetProps, children }: ToolbarItemProps) {
-  return <div>{children}</div>;
+function ToolbarItem({ type, placement, widgetProps, children, ...rest }: ToolbarItemProps) {
+  if (type === 'divider') {
+    return <Separator />;
+  }
+  return (
+    <div className="ToolbarPanelItem" {...rest}>
+      {children}
+    </div>
+  );
 }
 
 function Separator() {
