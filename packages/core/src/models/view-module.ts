@@ -138,6 +138,9 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       _code: observable,
       _cleanCode: observable,
 
+      isError: observable,
+      errorMessage: observable,
+
       code: computed,
       cleanCode: computed,
 

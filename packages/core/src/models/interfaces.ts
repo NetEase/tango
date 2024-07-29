@@ -10,6 +10,7 @@ import {
   IPageConfigData,
   IImportSpecifierSourceData,
   IImportSpecifierData,
+  IFileError,
 } from '../types';
 import { TangoFile, TangoJsonFile } from './file';
 import { TangoRouteModule } from './route-module';
@@ -309,6 +310,7 @@ export interface IWorkspace {
   get bizComps(): string[];
   get baseComps(): string[];
   get localComps(): string[];
+  get fileErrors(): IFileError[];
   /**
    * 是否是合法的项目
    */

@@ -68,11 +68,7 @@ export function isValidExpressionCode(code: string) {
  * @returns
  */
 export function code2ast(code: string): t.File {
-  try {
-    return parse(code, babelParserConfig);
-  } catch (err) {
-    logger.error('[code2ast failed!]', err);
-  }
+  return parse(code, babelParserConfig);
 }
 
 /**
@@ -175,7 +171,7 @@ export function value2node(
  * 将 js 普通对象解析为 t.Node
  */
 export function object2node(
-  obj: object,
+  obj: Dict,
   getValueNode: (value: any, key?: string) => t.Expression = value2node,
 ) {
   if (!isPlainObject(obj)) {

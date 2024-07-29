@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from 'coral-system';
 import { observer, useDesigner } from '@music163/tango-context';
 import { DesignerViewType } from '@music163/tango-core';
-import { ComponentsPopover } from './components';
+import { ComponentsPopover, FileErrorsOverlay } from './components';
 
 export interface WorkspaceViewProps {
   /**
@@ -30,6 +30,7 @@ export const WorkspaceView = observer((props: WorkspaceViewProps) => {
       {children}
       {/* 添加组件弹层 */}
       {display === 'block' && <ComponentsPopover type="inner" isControlled />}
+      {mode === 'design' && <FileErrorsOverlay />}
     </Box>
   );
 });

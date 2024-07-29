@@ -43,22 +43,29 @@ export class TangoModule extends TangoFile {
    */
   update(code?: string, isSyncAst = true, isRefreshWorkspace = true) {
     this.lastModified = Date.now();
-    if (isNil(code)) {
-      this._syncByAst();
-    } else {
-      this._syncByCode(code, isSyncAst);
-    }
 
-    if (isSyncAst) {
-      this._analysisAst();
-    }
+    try {
+      if (isNil(code)) {
+        this._syncByAst();
+      } else {
+        this._syncByCode(code, isSyncAst);
+      }
 
-    this.isAstSynced = isSyncAst;
+      if (isSyncAst) {
+        this._analysisAst();
+      }
 
-    this.workspace.onFilesChange([this.filename]);
+      this.isAstSynced = isSyncAst;
+      this.isError = false;
+      this.errorMessage = undefined;
 
-    if (isRefreshWorkspace) {
-      this.workspace.refresh([this.filename]);
+      this.workspace.onFilesChange([this.filename]);
+      if (isRefreshWorkspace) {
+        this.workspace.refresh([this.filename]);
+      }
+    } catch (err: any) {
+      this.isError = true;
+      this.errorMessage = err.message;
     }
   }
 
@@ -67,9 +74,17 @@ export class TangoModule extends TangoFile {
    */
   updateAst() {
     if (!this.isAstSynced) {
-      this.ast = code2ast(this._code);
-      this._analysisAst();
-      this.isAstSynced = true;
+      try {
+        this.ast = code2ast(this._code);
+        this._analysisAst();
+        this.isAstSynced = true;
+        this.isError = false;
+        this.errorMessage = undefined;
+      } catch (err: any) {
+        this.isAstSynced = false;
+        this.isError = true;
+        this.errorMessage = err.message;
+      }
     }
   }
 
@@ -134,6 +149,8 @@ export class TangoJsModule extends TangoModule {
     makeObservable(this, {
       _code: observable,
       _cleanCode: observable,
+      isError: observable,
+      errorMessage: observable,
       code: computed,
       cleanCode: computed,
       update: action,

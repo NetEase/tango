@@ -49,6 +49,8 @@ export class TangoServiceModule extends TangoModule {
       _baseConfig: observable,
       _code: observable,
       _cleanCode: observable,
+      isError: observable,
+      errorMessage: observable,
       serviceFunctions: computed,
       baseConfig: computed,
       cleanCode: computed,

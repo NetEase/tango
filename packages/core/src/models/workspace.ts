@@ -28,7 +28,7 @@ import { TangoNode } from './node';
 import { TangoJsModule, TangoModule } from './module';
 import { TangoFile, TangoJsonFile, TangoLessFile } from './file';
 import { IWorkspace } from './interfaces';
-import { IFileConfig, FileType, ITangoConfigPackages, IPageConfigData } from '../types';
+import { IFileConfig, FileType, ITangoConfigPackages, IPageConfigData, IFileError } from '../types';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
 import { TangoRouteModule } from './route-module';
@@ -221,6 +221,19 @@ export class Workspace extends EventTarget implements IWorkspace {
 
   get localComps(): string[] {
     return Object.keys(this.componentsEntryModule?.exportList || {});
+  }
+
+  get fileErrors() {
+    const errors: IFileError[] = [];
+    this.files.forEach((file) => {
+      if (file.isError) {
+        errors.push({
+          filename: file.filename,
+          message: file.errorMessage,
+        });
+      }
+    });
+    return errors;
   }
 
   constructor(options?: IWorkspaceOptions) {
