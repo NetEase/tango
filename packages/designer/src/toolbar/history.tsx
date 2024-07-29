@@ -5,11 +5,12 @@ import { observer, useWorkspace } from '@music163/tango-context';
 
 export const HistoryTool = observer(() => {
   const workspace = useWorkspace();
+  const disabled = !workspace.isValid;
   return (
     <Box display="flex" columnGap="m">
       <ToggleButton
         shape="ghost"
-        disabled={!workspace.history.couldBack || workspace.history.index === 0}
+        disabled={disabled || !workspace.history.couldBack || workspace.history.index === 0}
         tooltip="撤销"
         onClick={() => {
           workspace.history.back();
@@ -20,7 +21,7 @@ export const HistoryTool = observer(() => {
       </ToggleButton>
       <ToggleButton
         shape="ghost"
-        disabled={!workspace.history.couldForward}
+        disabled={disabled || !workspace.history.couldForward}
         tooltip="重做"
         onClick={() => {
           workspace.history.forward();

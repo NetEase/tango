@@ -151,11 +151,8 @@ export class Workspace extends EventTarget implements IWorkspace {
    */
   private copyTempNodes: TangoNode[];
 
-  /**
-   * 是否是合法的项目
-   */
   get isValid() {
-    return !!this.tangoConfigJson && !!this.activeViewModule;
+    return !!this.tangoConfigJson && !!this.activeViewModule && this.fileErrors.length === 0;
   }
 
   /**
@@ -269,6 +266,8 @@ export class Workspace extends EventTarget implements IWorkspace {
       activeViewFile: observable,
       pages: computed,
       bizComps: computed,
+      fileErrors: computed,
+      isValid: computed,
       setActiveRoute: action,
       setActiveFile: action,
       addFile: action,

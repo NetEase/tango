@@ -4,7 +4,7 @@ import { observer, useWorkspace } from '@music163/tango-context';
 import { CloseOutlined } from '@ant-design/icons';
 
 const errorMessageStyle = css`
-  padding: 12px;
+  padding: 24px;
   white-space: pre-wrap;
 `;
 
@@ -50,8 +50,11 @@ export const FileErrorsOverlay = observer(() => {
           onClick={handleClose}
         />
         <Box css={errorMessageStyle}>
+          <Box fontSize="20px" mb="l">
+            代码解析错误，请回到源码模式检查并修改错误
+          </Box>
           {workspace.fileErrors.map((fileError) => (
-            <Box key={fileError.filename}>
+            <Box key={fileError.filename} borderBottom="solid" borderBottomColor="line2" py="l">
               <Box fontWeight="bold">{fileError.filename}</Box>
               <Box as="code" display="block">
                 {fileError.message}

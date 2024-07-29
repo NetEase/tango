@@ -312,7 +312,10 @@ export interface IWorkspace {
   get localComps(): string[];
   get fileErrors(): IFileError[];
   /**
-   * 是否是合法的项目
+   * 是否是有效的项目
+   * - 包含 tango.config.json
+   * - 包含视图模块
+   * - 没有文件错误
    */
   get isValid(): boolean;
 }
