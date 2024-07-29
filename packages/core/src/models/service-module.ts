@@ -54,6 +54,7 @@ export class TangoServiceModule extends TangoModule {
       cleanCode: computed,
       code: computed,
       update: action,
+      updateAst: action,
     });
   }
 

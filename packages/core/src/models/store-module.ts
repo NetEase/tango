@@ -35,6 +35,7 @@ export class TangoStoreEntryModule extends TangoModule {
       code: computed,
       cleanCode: computed,
       update: action,
+      updateAst: action,
     });
   }
 

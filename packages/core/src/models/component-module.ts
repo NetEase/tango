@@ -13,7 +13,7 @@ export class TangoComponentsEntryModule extends TangoModule {
 
   constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
-    this.update(props.code, false, false);
+    this.update(props.code, true, false);
     makeObservable(this, {
       _code: observable,
       _cleanCode: observable,

@@ -192,7 +192,18 @@ export interface IWorkspace {
   renameFile: (oldFilename: string, newFilename: string) => void;
   renameFolder: (oldFoldername: string, newFoldername: string) => void;
 
-  updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
+  /**
+   * 更新文件
+   * @param filename 文件名
+   * @param code 代码
+   * @param isSyncAst 是否同步 ast
+   */
+  updateFile: (filename: string, code: string, isSyncAst?: boolean) => void;
+
+  /**
+   * 检查并同步文件的 ast
+   */
+  syncFiles: () => void;
 
   listFiles: () => Record<string, string>;
   getFile: (filename: string) => TangoFile;

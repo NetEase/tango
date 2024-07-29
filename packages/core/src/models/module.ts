@@ -22,6 +22,11 @@ export class TangoModule extends TangoFile {
   ast: t.File;
 
   /**
+   * ast 是否与 code 保持同步
+   */
+  isAstSynced: boolean;
+
+  /**
    * 导入的依赖列表
    */
   importList: ImportDeclarationDataType;
@@ -33,23 +38,38 @@ export class TangoModule extends TangoFile {
   /**
    * 基于最新的 ast 进行同步
    * @param code 如果传入 code，则基于 code 进行同步
-   * @param isFormatCode 是否格式化代码
-   * @param refreshWorkspace 是否刷新 workspace
+   * @param isSyncAst 是否同步 ast
+   * @param isRefreshWorkspace 是否刷新 workspace
    */
-  update(code?: string, isFormatCode = true, refreshWorkspace = true) {
+  update(code?: string, isSyncAst = true, isRefreshWorkspace = true) {
     this.lastModified = Date.now();
     if (isNil(code)) {
       this._syncByAst();
     } else {
-      this._syncByCode(code, isFormatCode);
+      this._syncByCode(code, isSyncAst);
     }
 
-    this._analysisAst();
+    if (isSyncAst) {
+      this._analysisAst();
+    }
+
+    this.isAstSynced = isSyncAst;
 
     this.workspace.onFilesChange([this.filename]);
 
-    if (refreshWorkspace) {
+    if (isRefreshWorkspace) {
       this.workspace.refresh([this.filename]);
+    }
+  }
+
+  /**
+   * 基于当前的代码重新生成 ast
+   */
+  updateAst() {
+    if (!this.isAstSynced) {
+      this.ast = code2ast(this._code);
+      this._analysisAst();
+      this.isAstSynced = true;
     }
   }
 
@@ -75,22 +95,26 @@ export class TangoModule extends TangoFile {
   /**
    * 基于输入的源码进行同步
    * @param code 源码
-   * @param isFormatCode 是否格式化代码
+   * @param isSyncAst 是否同步 ast
    * @returns
    */
-  _syncByCode(code: string, isFormatCode = true) {
+  _syncByCode(code: string, isSyncAst = true) {
     if (code === this._code) {
       return;
     }
 
     // 提前格式化代码
-    if (isFormatCode) {
+    try {
       code = formatCode(code);
+    } catch (err) {
+      // err ignored, format code failed
     }
 
     this._code = code;
     this._cleanCode = code;
-    this.ast = code2ast(code);
+    if (isSyncAst) {
+      this.ast = code2ast(code);
+    }
   }
 
   _analysisAst() {
@@ -105,7 +129,7 @@ export class TangoModule extends TangoFile {
 export class TangoJsModule extends TangoModule {
   constructor(workspace: IWorkspace, props: IFileConfig) {
     super(workspace, props, false);
-    this.update(props.code, false, false);
+    this.update(props.code, true, false);
 
     makeObservable(this, {
       _code: observable,
@@ -113,6 +137,7 @@ export class TangoJsModule extends TangoModule {
       code: computed,
       cleanCode: computed,
       update: action,
+      updateAst: action,
     });
   }
 }

@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Group } from 'coral-system';
-import { Modal } from 'antd';
 import { ToggleButton, CodeOutlined, DualOutlined } from '@music163/tango-ui';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { BorderOutlined } from '@ant-design/icons';
@@ -9,16 +8,16 @@ export const ModeSwitchTool = observer(() => {
   const workspace = useWorkspace();
   const designer = useDesigner();
 
-  const activeFileCheck = useCallback(() => {
-    if (workspace.activeFile !== workspace.activeViewFile) {
-      Modal.confirm({
-        title: '当前打开的文件与视图不匹配，是否切换到当前视图对应的文件？',
-        onOk: () => {
-          workspace.setActiveFile(workspace.activeViewFile);
-        },
-      });
-    }
-  }, [workspace]);
+  // const activeFileCheck = useCallback(() => {
+  //   if (workspace.activeFile !== workspace.activeViewFile) {
+  //     Modal.confirm({
+  //       title: '当前打开的文件与视图不匹配，是否切换到当前视图对应的文件？',
+  //       onOk: () => {
+  //         workspace.setActiveFile(workspace.activeViewFile);
+  //       },
+  //     });
+  //   }
+  // }, [workspace]);
 
   return (
     <Group attached>
@@ -26,6 +25,7 @@ export const ModeSwitchTool = observer(() => {
         shape="ghost"
         selected={designer.activeView === 'design'}
         onClick={() => {
+          workspace.syncFiles(); // 保证 ast 与 code 是同步的
           designer.setActiveView('design');
         }}
         tooltip="设计视图"
@@ -38,7 +38,6 @@ export const ModeSwitchTool = observer(() => {
         onClick={() => {
           designer.setActiveView('code'); // 切换到源码视图
           designer.setActiveSidebarPanel(''); // 关闭左侧面板
-          activeFileCheck();
         }}
         tooltip="源码视图"
       >
@@ -50,7 +49,6 @@ export const ModeSwitchTool = observer(() => {
         onClick={() => {
           designer.setActiveView('dual'); // 切换到双屏视图
           designer.setActiveSidebarPanel(''); // 关闭左侧面板
-          activeFileCheck();
         }}
         tooltip="双屏视图"
       >

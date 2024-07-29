@@ -1,4 +1,5 @@
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
+import { logger } from '@music163/tango-helpers';
 import {
   traverseRouteFile,
   addRouteToRouteFile,
@@ -31,6 +32,7 @@ export class TangoRouteModule extends TangoModule {
       code: computed,
       cleanCode: computed,
       update: action,
+      updateAst: action,
     });
   }
 
@@ -74,7 +76,7 @@ export class TangoRouteModule extends TangoModule {
    */
   removeRoute(route: string) {
     if (route === '/') {
-      console.warn('index route should not be removed!');
+      logger.warn('index route should not be removed!');
       return;
     }
     const record = this.getRouteByRoutePath(route);
