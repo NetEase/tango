@@ -10,6 +10,7 @@ import {
   IPageConfigData,
   IImportSpecifierSourceData,
   IImportSpecifierData,
+  IFileError,
 } from '../types';
 import { TangoFile, TangoJsonFile } from './file';
 import { TangoRouteModule } from './route-module';
@@ -192,7 +193,18 @@ export interface IWorkspace {
   renameFile: (oldFilename: string, newFilename: string) => void;
   renameFolder: (oldFoldername: string, newFoldername: string) => void;
 
-  updateFile: (filename: string, code: string, shouldFormatCode?: boolean) => void;
+  /**
+   * 更新文件
+   * @param filename 文件名
+   * @param code 代码
+   * @param isSyncAst 是否同步 ast
+   */
+  updateFile: (filename: string, code: string, isSyncAst?: boolean) => void;
+
+  /**
+   * 检查并同步文件的 ast
+   */
+  syncFiles: () => void;
 
   listFiles: () => Record<string, string>;
   getFile: (filename: string) => TangoFile;
@@ -298,8 +310,12 @@ export interface IWorkspace {
   get bizComps(): string[];
   get baseComps(): string[];
   get localComps(): string[];
+  get fileErrors(): IFileError[];
   /**
-   * 是否是合法的项目
+   * 是否是有效的项目
+   * - 包含 tango.config.json
+   * - 包含视图模块
+   * - 没有文件错误
    */
   get isValid(): boolean;
 }

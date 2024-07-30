@@ -30,7 +30,7 @@ import {
 const widgets = {};
 
 export function registerWidget(key: string, component: React.ComponentType<any>) {
-  if (!/^(toolbar|sidebar|selectionMenu|contextMenu)\.[a-zA-z]+$/.test(key)) {
+  if (!/^(toolbar|sidebar|selectionMenu|contextMenu)\.[a-zA-Z]+$/.test(key)) {
     throw new Error(
       `Invalid widget key(${key}), should start with toolbar, sidebar, contextMenu or selectionMenu`,
     );

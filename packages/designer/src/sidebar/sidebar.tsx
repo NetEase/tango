@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { Box, Text, css, HTMLCoralProps } from 'coral-system';
 import { Badge } from 'antd';
 import { ReactComponentProps } from '@music163/tango-helpers';
-import { observer, useDesigner } from '@music163/tango-context';
+import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { ResizableBox } from './resizable-box';
 import { getWidget } from '../widgets';
 
@@ -19,15 +19,22 @@ const sidebarStyle = css`
     list-style: none;
     user-select: none;
     transition: all 0.3s ease;
+
+    &.disabled {
+      pointer-events: none;
+    }
   }
 
   .SidebarPanelBarListItem {
+    color: var(--tango-colors-text2);
+
     &.active {
-      background-color: var(--tango-colors-custom-sidebarItemActiveBg);
+      color: var(--tango-colors-brand);
+      background-color: var(--tango-colors-custom-sidebarItemActiveBg, --tango-colors-fill2);
     }
 
     &:hover {
-      background-color: var(--tango-colors-custom-sidebarItemHoverBg);
+      background-color: var(--tango-colors-custom-sidebarItemHoverBg, --tango-colors-fill2);
     }
   }
 `;
@@ -76,6 +83,7 @@ export interface SidebarPanelItemProps
 
 function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 266, footer, children }: SidebarProps) {
   const designer = useDesigner();
+  const workspace = useWorkspace();
 
   const items = useMemo(() => {
     const ret: Record<string, SidebarPanelItemProps> = {};
@@ -92,10 +100,23 @@ function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 266, footer, childre
     return ret;
   }, [children]);
 
+  if (designer.activeView !== 'design') {
+    return null;
+  }
+
   return (
     <Box display="flex" flexShrink={0} css={sidebarStyle} className="SidebarPanel">
       <Box className="SidebarPanelBar" display="flex" flexDirection="column" position="relative">
-        <Box as="ul" flex="0" p="0" m="0" textAlign="center" className="SidebarPanelBarList">
+        <Box
+          as="ul"
+          flex="0"
+          p="0"
+          m="0"
+          textAlign="center"
+          className={cx('SidebarPanelBarList', {
+            disabled: workspace.fileErrors.length > 0,
+          })}
+        >
           {Object.keys(items).map((key) => {
             const item = items[key];
             const isActive = key === designer.activeSidebarPanel;
@@ -112,7 +133,6 @@ function BaseSidebarPanel({ panelWidth: defaultPanelWidth = 266, footer, childre
                   icon={item.icon}
                   label={item.label}
                   showBadge={item.showBadge}
-                  isActive={isActive}
                 />
               </li>
             );
@@ -184,10 +204,6 @@ export const Sidebar = observer(BaseSidebarPanel);
 
 interface SidebarPanelBarItemProps {
   /**
-   * 是否选中
-   */
-  isActive?: boolean;
-  /**
    * 侧边栏图标
    */
   icon?: React.ReactNode;
@@ -212,15 +228,9 @@ interface SidebarPanelBarItemProps {
       };
 }
 
-function SidebarPanelBarItem({
-  isActive,
-  icon: iconProp,
-  label,
-  showBadge,
-}: SidebarPanelBarItemProps) {
-  const color = isActive ? 'brand' : 'text.body';
+function SidebarPanelBarItem({ icon: iconProp, label, showBadge }: SidebarPanelBarItemProps) {
   let icon = (
-    <Text fontSize="24px" lineHeight={1} color={color}>
+    <Text fontSize="24px" lineHeight={1}>
       {iconProp}
     </Text>
   );
@@ -241,7 +251,7 @@ function SidebarPanelBarItem({
       py="12px"
     >
       {icon}
-      <Text fontSize="12px" mt="s" color={color}>
+      <Text fontSize="12px" mt="s">
         {label}
       </Text>
     </Box>

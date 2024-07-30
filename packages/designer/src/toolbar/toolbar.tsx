@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import { Box, Group } from 'coral-system';
 import { ReactComponentProps } from '@music163/tango-helpers';
+import { DesignerViewType } from '@music163/tango-core';
+import { observer, useDesigner } from '@music163/tango-context';
 import { getWidget } from '../widgets';
 
 export interface ToolbarProps {
@@ -15,25 +17,23 @@ export function Toolbar({ children }: ToolbarProps) {
 
     let prevPlacement: string;
     React.Children.forEach(children, (child: React.ReactElement, index) => {
-      let fallbackNode;
+      const childProps = child.props;
+
+      let fallbackChildren;
       if (child.key) {
         const Widget = getWidget(['toolbar', child.key].join('.'));
         if (Widget) {
-          fallbackNode = React.createElement(Widget, child.props.widgetProps);
+          fallbackChildren = <Widget {...childProps.widgetProps} />;
         }
       }
-
-      let node = child.props.children ?? fallbackNode ?? null;
-      if (!node) {
-        node = child; // separator
-      }
       const key = child.key || index;
-      node = (
-        <div key={key} className="ToolbarPanelItem" data-key={key}>
-          {node}
-        </div>
-      );
-      const placement = child.props.placement || prevPlacement || 'center';
+      const node = React.cloneElement(child, {
+        key,
+        'data-key': key,
+        children: childProps.children || fallbackChildren,
+      });
+
+      const placement = childProps.placement || prevPlacement || 'center';
       switch (placement) {
         case 'left':
           left.push(node);
@@ -68,17 +68,47 @@ export function Toolbar({ children }: ToolbarProps) {
 }
 
 export interface ToolbarItemProps extends ReactComponentProps {
+  /**
+   * 类型
+   */
+  type?: 'divider';
   placement?: 'left' | 'center' | 'right';
   children?: React.ReactElement;
   /**
    * 如果 key 匹配到内置组件的话，传递给子节点的属性
    */
   widgetProps?: object;
+  /**
+   * 工具箱展示的视图
+   */
+  activeViews?: DesignerViewType[];
 }
 
-function ToolbarItem({ placement, widgetProps, children }: ToolbarItemProps) {
-  return <div>{children}</div>;
-}
+const ToolbarItem = observer(
+  ({
+    activeViews = ['code', 'design', 'dual'],
+    type,
+    placement,
+    widgetProps,
+    children,
+    ...rest
+  }: ToolbarItemProps) => {
+    const designer = useDesigner();
+
+    if (!activeViews.includes(designer.activeView)) {
+      return null;
+    }
+
+    if (type === 'divider') {
+      return <Separator />;
+    }
+    return (
+      <div className="ToolbarPanelItem" {...rest}>
+        {children}
+      </div>
+    );
+  },
+);
 
 function Separator() {
   return <Box className="Separator" width={1} height={16} bg="colors.custom.toolbarDividerColor" />;

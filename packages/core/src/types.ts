@@ -57,6 +57,11 @@ export interface IFileConfig {
   type?: FileType;
 }
 
+export interface IFileError {
+  filename: string;
+  message: string;
+}
+
 /**
  * 视图节点数据类型
  */

@@ -113,8 +113,8 @@ export default function App() {
         actions={
           <Box px="l">
             <Toolbar>
-              <Toolbar.Item key="routeSwitch" placement="left" />
-              <Toolbar.Item key="addPage" placement="left">
+              <Toolbar.Item key="routeSwitch" placement="left" activeViews={['design']} />
+              <Toolbar.Item key="addPage" placement="left" activeViews={['design']}>
                 <Action
                   tooltip="添加页面"
                   shape="outline"
@@ -122,10 +122,10 @@ export default function App() {
                   onClick={() => setShowNewPageModal(true)}
                 />
               </Toolbar.Item>
-              <Toolbar.Item key="history" placement="left" />
-              <Toolbar.Item key="preview" placement="left" />
+              <Toolbar.Item key="history" placement="left" activeViews={['design']} />
+              <Toolbar.Item key="preview" placement="left" activeViews={['design']} />
+              <Toolbar.Item key="togglePanel" placement="right" activeViews={['design']} />
               <Toolbar.Item key="modeSwitch" placement="right" />
-              <Toolbar.Item key="togglePanel" placement="right" />
               <Toolbar.Separator />
               <Toolbar.Item placement="right">
                 <Space>

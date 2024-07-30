@@ -31,10 +31,13 @@ export class TangoStoreEntryModule extends TangoModule {
       _stores: observable,
       _code: observable,
       _cleanCode: observable,
+      isError: observable,
+      errorMessage: observable,
       stores: computed,
       code: computed,
       cleanCode: computed,
       update: action,
+      updateAst: action,
     });
   }
 

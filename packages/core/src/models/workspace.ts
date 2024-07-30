@@ -25,10 +25,10 @@ import {
 import { DropMethod } from './drop-target';
 import { HistoryMessage, TangoHistory } from './history';
 import { TangoNode } from './node';
-import { TangoJsModule } from './module';
+import { TangoJsModule, TangoModule } from './module';
 import { TangoFile, TangoJsonFile, TangoLessFile } from './file';
 import { IWorkspace } from './interfaces';
-import { IFileConfig, FileType, ITangoConfigPackages, IPageConfigData } from '../types';
+import { IFileConfig, FileType, ITangoConfigPackages, IPageConfigData, IFileError } from '../types';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
 import { TangoRouteModule } from './route-module';
@@ -151,11 +151,8 @@ export class Workspace extends EventTarget implements IWorkspace {
    */
   private copyTempNodes: TangoNode[];
 
-  /**
-   * 是否是合法的项目
-   */
   get isValid() {
-    return !!this.tangoConfigJson && !!this.activeViewModule;
+    return !!this.tangoConfigJson && !!this.activeViewModule && this.fileErrors.length === 0;
   }
 
   /**
@@ -223,6 +220,19 @@ export class Workspace extends EventTarget implements IWorkspace {
     return Object.keys(this.componentsEntryModule?.exportList || {});
   }
 
+  get fileErrors() {
+    const errors: IFileError[] = [];
+    this.files.forEach((file) => {
+      if (file.isError) {
+        errors.push({
+          filename: file.filename,
+          message: file.errorMessage,
+        });
+      }
+    });
+    return errors;
+  }
+
   constructor(options?: IWorkspaceOptions) {
     super();
     this.history = new TangoHistory(this);
@@ -256,6 +266,8 @@ export class Workspace extends EventTarget implements IWorkspace {
       activeViewFile: observable,
       pages: computed,
       bizComps: computed,
+      fileErrors: computed,
+      isValid: computed,
       setActiveRoute: action,
       setActiveFile: action,
       addFile: action,
@@ -439,11 +451,15 @@ export class Workspace extends EventTarget implements IWorkspace {
     );
   }
 
-  updateFile(filename: string, code: string, shouldFormatCode = false) {
+  updateFile(filename: string, code: string, isSyncAst = true) {
     const file = this.getFile(filename);
-    file.update(code);
+    if (file instanceof TangoModule) {
+      file.update(code, isSyncAst);
+    } else {
+      file.update(code);
+    }
 
-    const shouldFormat = shouldFormatCode ?? this.projectConfig?.designerConfig?.autoFormatCode;
+    const shouldFormat = this.projectConfig?.designerConfig?.autoFormatCode;
     if (shouldFormat && file instanceof TangoViewModule) {
       file.removeUnusedImportSpecifiers().update();
     }
@@ -455,12 +471,15 @@ export class Workspace extends EventTarget implements IWorkspace {
     });
   }
 
-  /**
-   * 删除工作区的文件
-   * @param filename
-   */
+  syncFiles() {
+    this.files.forEach((file) => {
+      if (file instanceof TangoModule) {
+        file.updateAst();
+      }
+    });
+  }
+
   removeFile(filename: string) {
-    // TODO: refactor visitFile to share this logic
     if (this.files.get(filename)) {
       // 如果是文件，直接删除
       this.files.delete(filename);
@@ -516,7 +535,7 @@ export class Workspace extends EventTarget implements IWorkspace {
    * @returns { [filename]: fileCode }
    */
   listFiles() {
-    const ret = {};
+    const ret: Dict<string> = {};
     this.files.forEach((file) => {
       ret[file.filename] = file.cleanCode;
     });

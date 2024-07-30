@@ -138,10 +138,14 @@ export class TangoViewModule extends TangoModule implements IViewFile {
       _code: observable,
       _cleanCode: observable,
 
+      isError: observable,
+      errorMessage: observable,
+
       code: computed,
       cleanCode: computed,
 
       update: action,
+      updateAst: action,
     });
   }
 
@@ -320,7 +324,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   updateNodeAttributes(nodeId: string, config: Record<string, any>, relatedImports?: string[]) {
     if (relatedImports && relatedImports.length) {
       // 导入依赖的组件
-      const newImportData = relatedImports.reduce((prev, name) => {
+      const newImportData = relatedImports.reduce<Dict<IImportSpecifierData[]>>((prev, name) => {
         const proto = this.workspace.getPrototype(name);
         const { source, specifiers } = prototype2importDeclarationData(proto, this.filename);
         const existSpecifiers: IImportSpecifierData[] = prev[source];

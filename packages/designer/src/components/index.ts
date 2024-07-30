@@ -4,3 +4,4 @@ export * from './input-kv';
 export * from './variable-tree';
 export * from './variable-tree-modal';
 export * from './components-popover';
+export * from './file-errors-overlay';
