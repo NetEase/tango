@@ -246,10 +246,6 @@ export abstract class AbstractWorkspace extends EventTarget {
       this.onFilesChange = options.onFilesChange;
     }
 
-    if (options?.files) {
-      this.addFiles(options.files);
-    }
-
     if (options?.prototypes) {
       this.setComponentPrototypes(options.prototypes);
     }
