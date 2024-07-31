@@ -1,14 +1,14 @@
 import path from 'path';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { AbstractJsFile } from './module';
 import { IExportSpecifierData, IFileConfig } from '../types';
 import { traverseComponentsEntryFile } from '../helpers';
 import { AbstractWorkspace } from './abstract-workspace';
+import { AbstractJsFile } from './abstract-js-file';
 
 /**
  * 本地组件目录的入口文件，例如 '/components/index.js' 或 `/blocks/index.js`
  */
-export class TangoComponentsEntryModule extends AbstractJsFile {
+export class JsLocalComponentsEntryFile extends AbstractJsFile {
   exportList: Record<string, IExportSpecifierData>;
 
   constructor(workspace: AbstractWorkspace, props: IFileConfig) {

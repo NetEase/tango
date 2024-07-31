@@ -1,5 +1,4 @@
 import * as t from '@babel/types';
-import { action, computed, makeObservable, observable } from 'mobx';
 import { isNil } from '@music163/tango-helpers';
 import {
   code2ast,
@@ -9,9 +8,9 @@ import {
   addImportDeclaration,
   updateImportDeclaration,
 } from '../helpers';
-import { AbstractFile } from './file';
 import { IFileConfig, IImportSpecifierData, ImportDeclarationDataType } from '../types';
 import { AbstractWorkspace } from './abstract-workspace';
+import { AbstractFile } from './abstract-file';
 
 /**
  * JS 文件抽象基类
@@ -135,26 +134,5 @@ export abstract class AbstractJsFile extends AbstractFile {
   _analysisAst() {
     const { imports } = traverseFile(this.ast);
     this.importList = imports;
-  }
-}
-
-/**
- * 普通 JS 文件
- */
-export class JsFile extends AbstractJsFile {
-  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
-    super(workspace, props, false);
-    this.update(props.code, true, false);
-
-    makeObservable(this, {
-      _code: observable,
-      _cleanCode: observable,
-      isError: observable,
-      errorMessage: observable,
-      code: computed,
-      cleanCode: computed,
-      update: action,
-      updateAst: action,
-    });
   }
 }

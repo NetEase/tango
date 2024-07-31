@@ -1,10 +1,7 @@
-import { JSXElement } from '@babel/types';
 import { Dict } from '@music163/tango-helpers';
-import { cloneJSXElement, getJSXElementAttributes } from '../helpers';
-import { TangoViewModule } from './view-module';
-import { AbstractFile } from './file';
+import { AbstractFile } from './abstract-file';
 
-interface IViewNodeInitConfig<RawNodeType = unknown, ViewFileType = AbstractFile> {
+export interface IViewNodeInitConfig<RawNodeType = unknown, ViewFileType = AbstractFile> {
   id: string;
   component: string;
   rawNode: RawNodeType;
@@ -59,27 +56,4 @@ export abstract class AbstractViewNode<RawNodeType = unknown, ViewFileType = Abs
    * @returns 返回克隆的原始节点
    */
   abstract cloneRawNode(overrideProps?: Dict): RawNodeType;
-}
-
-/**
- * 视图节点类
- */
-export class TangoNode extends AbstractViewNode<JSXElement, TangoViewModule> {
-  get loc() {
-    return this.rawNode?.loc;
-  }
-
-  constructor(props: IViewNodeInitConfig<JSXElement, TangoViewModule>) {
-    super(props);
-    this.props = getJSXElementAttributes(cloneJSXElement(props.rawNode));
-  }
-
-  /**
-   * 返回克隆后的 ast 节点
-   * @param overrideProps 额外设置给克隆节点的属性
-   * @returns
-   */
-  cloneRawNode(overrideProps?: Dict) {
-    return cloneJSXElement(this.rawNode, overrideProps);
-  }
 }
