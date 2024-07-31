@@ -8,7 +8,7 @@ import { inferFileType, getFilepath } from '../helpers';
 import { TangoFile } from './file';
 import { FileType } from '../types';
 import { JsRouteConfigFile } from './js-route-config-file';
-import { JsStoreEntryFile, TangoStoreModule } from './js-store-entry-file';
+import { JsStoreEntryFile } from './js-store-entry-file';
 import { JsServiceFile } from './js-service-file';
 import { JsViewFile } from './js-view-file';
 import { JsLocalComponentsEntryFile } from './js-local-components-entry-file';
@@ -16,6 +16,7 @@ import { JsAppEntryFile } from './js-app-entry-file';
 import { JsFile } from './js-file';
 import { AbstractWorkspace, IWorkspaceInitConfig } from './abstract-workspace';
 import { JsonFile } from './json-file';
+import { JsStoreFile } from './js-store-file';
 
 /**
  * CodeWorkspace 抽象基类
@@ -29,7 +30,7 @@ export abstract class AbstractCodeWorkspace extends AbstractWorkspace {
   /**
    * 状态管理模块
    */
-  storeModules: Record<string, TangoStoreModule>;
+  storeModules: Record<string, JsStoreFile>;
 
   /**
    * 数据服务模块
@@ -91,7 +92,7 @@ export abstract class AbstractCodeWorkspace extends AbstractWorkspace {
         this.serviceModules[module.name] = module;
         break;
       case FileType.StoreModule:
-        module = new TangoStoreModule(this, props);
+        module = new JsStoreFile(this, props);
         this.storeModules[module.name] = module;
         break;
       case FileType.Module:

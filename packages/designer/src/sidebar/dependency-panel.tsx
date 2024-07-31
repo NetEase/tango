@@ -21,7 +21,6 @@ import { ColorTag, ConfigGroup, ConfigItem } from '@music163/tango-ui';
 import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useBoolean } from '@music163/tango-helpers';
 import { isUndefined } from 'lodash-es';
-import { Workspace } from '@music163/tango-core';
 import { useSandboxQuery } from '../context';
 
 enum DependencyItemType {
@@ -169,7 +168,7 @@ function RenderItem({
 }: RenderItemProps) {
   const [open, { on, off }] = useBoolean(false);
 
-  const workspace = useWorkspace() as Workspace;
+  const workspace = useWorkspace();
 
   const basePackage = useMemo(() => {
     if (type !== DependencyItemType.基础包 || !templateBaseDependencies) return undefined;

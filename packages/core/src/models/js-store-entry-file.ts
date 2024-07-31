@@ -1,20 +1,11 @@
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
-import {
-  traverseStoreFile,
-  traverseStoreEntryFile,
-  addStoreToEntryFile,
-  getModuleNameByFilename,
-  addStoreState,
-  updateStoreState,
-  removeStoreState,
-  removeStoreToEntryFile,
-} from '../helpers';
-import { IFileConfig, IStorePropertyData } from '../types';
+import { traverseStoreEntryFile, addStoreToEntryFile, removeStoreToEntryFile } from '../helpers';
+import { IFileConfig } from '../types';
 import { AbstractWorkspace } from './abstract-workspace';
 import { AbstractJsFile } from './abstract-js-file';
 
 /**
- * 入口配置模块
+ * stores 入口文件
  */
 export class JsStoreEntryFile extends AbstractJsFile {
   _stores: string[] = [];
@@ -61,72 +52,5 @@ export class JsStoreEntryFile extends AbstractJsFile {
   removeStore(name: string) {
     this.ast = removeStoreToEntryFile(this.ast, name);
     return this;
-  }
-}
-
-/**
- * 状态模型模块
- */
-export class TangoStoreModule extends AbstractJsFile {
-  /**
-   * 模块名
-   */
-  name: string;
-
-  namespace: string;
-
-  states: IStorePropertyData[];
-
-  actions: IStorePropertyData[];
-
-  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
-    super(workspace, props, false);
-    this.name = getModuleNameByFilename(props.filename);
-    this.update(props.code, true, false);
-
-    makeObservable(this, {
-      states: observable,
-      actions: observable,
-      _code: observable,
-      _cleanCode: observable,
-      cleanCode: computed,
-      code: computed,
-      update: action,
-    });
-  }
-
-  /**
-   * 添加状态属性
-   * @param stateName
-   * @param initValue
-   */
-  addState(stateName: string, initValue: string) {
-    this.ast = addStoreState(this.ast, stateName, initValue);
-    return this;
-  }
-
-  /**
-   * 移除状态
-   */
-  removeState(stateName: string) {
-    this.ast = removeStoreState(this.ast, stateName);
-    return this;
-  }
-
-  /**
-   * 更新状态代码
-   * @param stateName 状态名
-   * @param code 代码
-   */
-  updateState(stateName: string, code: string) {
-    this.ast = updateStoreState(this.ast, stateName, code);
-    return this;
-  }
-
-  _analysisAst() {
-    const { namespace, states, actions } = traverseStoreFile(this.ast);
-    this.namespace = namespace || this.name;
-    this.states = states;
-    this.actions = actions;
   }
 }
