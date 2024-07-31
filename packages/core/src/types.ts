@@ -65,7 +65,7 @@ export interface IFileError {
 /**
  * 视图节点数据类型
  */
-export interface ITangoViewNodeData<T = JSXElement> {
+export interface IViewNodeData<T = JSXElement> {
   /**
    * 节点 ID
    */
@@ -97,7 +97,7 @@ export interface ITangoViewNodeData<T = JSXElement> {
   /**
    * 子节点列表
    */
-  children?: Array<ITangoViewNodeData<T>>;
+  children?: Array<IViewNodeData<T>>;
 }
 
 /**

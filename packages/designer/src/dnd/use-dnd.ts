@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { DropMethod, FileType, Designer, IWorkspace } from '@music163/tango-core';
+import { DropMethod, FileType, Designer, AbstractCodeWorkspace } from '@music163/tango-core';
 import { ISelectedItemData, events, getHotkey } from '@music163/tango-helpers';
 import {
   setElementStyle,
@@ -12,7 +12,7 @@ import { Hotkey } from './hotkey';
 import { SelectModeType } from '../types';
 
 interface UseDndProps {
-  workspace: IWorkspace;
+  workspace: AbstractCodeWorkspace;
   designer: Designer;
   /**
    * 沙箱内的 DOM 查询操作
