@@ -1,9 +1,9 @@
 import { traverseEntryFile } from '../helpers';
 import { IFileConfig } from '../types';
+import { AbstractJsFile } from './abstract-js-file';
 import { AbstractWorkspace } from './abstract-workspace';
-import { AbstractJsFile } from './module';
 
-export class AppEntryModule extends AbstractJsFile {
+export class JsAppEntryFile extends AbstractJsFile {
   routerType: string;
 
   constructor(workspace: AbstractWorkspace, props: IFileConfig) {

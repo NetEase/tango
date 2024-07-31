@@ -9,12 +9,12 @@ import {
 } from '../helpers';
 import { IFileConfig } from '../types';
 import { AbstractWorkspace } from './abstract-workspace';
-import { AbstractJsFile } from './module';
+import { AbstractJsFile } from './abstract-js-file';
 
 /**
  * 数据服务模块
  */
-export class TangoServiceModule extends AbstractJsFile {
+export class JsServiceFile extends AbstractJsFile {
   /**
    * 服务函数的模块名，默认为 index
    */

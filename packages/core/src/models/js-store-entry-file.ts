@@ -11,12 +11,12 @@ import {
 } from '../helpers';
 import { IFileConfig, IStorePropertyData } from '../types';
 import { AbstractWorkspace } from './abstract-workspace';
-import { AbstractJsFile } from './module';
+import { AbstractJsFile } from './abstract-js-file';
 
 /**
  * 入口配置模块
  */
-export class TangoStoreEntryModule extends AbstractJsFile {
+export class JsStoreEntryFile extends AbstractJsFile {
   _stores: string[] = [];
 
   get stores() {

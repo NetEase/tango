@@ -1,11 +1,12 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-import { AbstractCodeWorkspace, IWorkspaceOptions } from './abstract-workspace';
+import { IWorkspaceInitConfig } from './abstract-workspace';
+import { AbstractCodeWorkspace } from './abstract-code-workspace';
 
 /**
  * 工作区
  */
 export class Workspace extends AbstractCodeWorkspace {
-  constructor(options?: IWorkspaceOptions) {
+  constructor(options?: IWorkspaceInitConfig) {
     super(options);
     makeObservable(this, {
       files: observable,

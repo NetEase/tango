@@ -7,13 +7,13 @@ import {
   updateRouteToRouteFile,
 } from '../helpers';
 import { IRouteData, IFileConfig } from '../types';
-import { AbstractCodeWorkspace } from './abstract-workspace';
-import { AbstractJsFile } from './module';
+import { AbstractJsFile } from './abstract-js-file';
+import { AbstractCodeWorkspace } from './abstract-code-workspace';
 
 /**
  * 路由配置模块
  */
-export class TangoRouteModule extends AbstractJsFile {
+export class JsRouteConfigFile extends AbstractJsFile {
   _routes: IRouteData[];
 
   get routes() {

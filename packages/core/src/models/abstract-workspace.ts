@@ -4,17 +4,13 @@ import {
   Dict,
   ITangoConfigJson,
   hasFileExtension,
-  isStoreVariablePath,
   isString,
   logger,
-  parseServiceVariablePath,
-  parseStoreVariablePath,
   uniq,
   setValue,
 } from '@music163/tango-helpers';
 import {
   prototype2jsxElement,
-  inferFileType,
   getFilepath,
   isPathnameMatchRoute,
   getJSXElementChildrenNames,
@@ -23,20 +19,19 @@ import {
 } from '../helpers';
 import { DropMethod } from './drop-target';
 import { HistoryMessage, TangoHistory } from './history';
-import { TangoNode } from './node';
-import { AbstractFile, TangoFile, TangoJsonFile } from './file';
+import { JsxViewNode } from './view-node';
 import { IFileConfig, FileType, ITangoConfigPackages, IPageConfigData, IFileError } from '../types';
 import { SelectSource } from './select-source';
 import { DragSource } from './drag-source';
-import { TangoRouteModule } from './route-module';
-import { TangoStoreEntryModule, TangoStoreModule } from './store-module';
-import { TangoServiceModule } from './service-module';
-import { TangoViewModule } from './view-module';
-import { TangoComponentsEntryModule } from './component-module';
-import { AppEntryModule } from './entry-module';
-import { AbstractJsFile, JsFile } from './module';
+import { JsRouteConfigFile } from './js-route-config-file';
+import { JsViewFile } from './js-view-file';
+import { JsLocalComponentsEntryFile } from './js-local-components-entry-file';
+import { JsAppEntryFile } from './js-app-entry-file';
+import { AbstractFile } from './abstract-file';
+import { JsonFile } from './json-file';
+import { AbstractJsFile } from './abstract-js-file';
 
-export interface IWorkspaceOptions {
+export interface IWorkspaceInitConfig {
   /**
    * 入口文件
    */
@@ -109,27 +104,27 @@ export abstract class AbstractWorkspace extends EventTarget {
   /**
    * 应用入口模块
    */
-  appEntryModule: AppEntryModule;
+  jsAppEntryFile: JsAppEntryFile;
 
   /**
    * 路由配置模块
    */
-  routeModule: TangoRouteModule;
+  routeModule: JsRouteConfigFile;
 
   /**
    * 组件入口模块
    */
-  componentsEntryModule: TangoComponentsEntryModule;
+  componentsEntryModule: JsLocalComponentsEntryFile;
 
   /**
    * package.json 文件
    */
-  packageJson: TangoJsonFile;
+  packageJson: JsonFile;
 
   /**
    * tango.config.json 文件
    */
-  tangoConfigJson: TangoJsonFile;
+  tangoConfigJson: JsonFile;
 
   /**
    * 绑定事件
@@ -149,7 +144,7 @@ export abstract class AbstractWorkspace extends EventTarget {
   /**
    * 拷贝的暂存区
    */
-  private copyTempNodes: TangoNode[];
+  private copyTempNodes: JsxViewNode[];
 
   get isValid() {
     return !!this.tangoConfigJson && !!this.activeViewModule && this.fileErrors.length === 0;
@@ -169,7 +164,7 @@ export abstract class AbstractWorkspace extends EventTarget {
     if (!this.activeViewFile) {
       this.setActiveViewFile(this.activeRoute);
     }
-    return this.files.get(this.activeViewFile) as TangoViewModule;
+    return this.files.get(this.activeViewFile) as JsViewFile;
   }
 
   /**
@@ -233,7 +228,7 @@ export abstract class AbstractWorkspace extends EventTarget {
     return errors;
   }
 
-  constructor(options?: IWorkspaceOptions) {
+  constructor(options?: IWorkspaceInitConfig) {
     super();
     this.history = new TangoHistory(this);
     this.selectSource = new SelectSource(this);
@@ -353,7 +348,7 @@ export abstract class AbstractWorkspace extends EventTarget {
     }
 
     const shouldFormat = this.projectConfig?.designerConfig?.autoFormatCode;
-    if (shouldFormat && file instanceof TangoViewModule) {
+    if (shouldFormat && file instanceof JsViewFile) {
       file.removeUnusedImportSpecifiers().update();
     }
     this.history.push({
@@ -481,7 +476,7 @@ export abstract class AbstractWorkspace extends EventTarget {
 
   getNode(id: string, filename?: string) {
     const file = filename ? this.getFile(filename) : this.activeViewModule;
-    if (file instanceof TangoViewModule) {
+    if (file instanceof JsViewFile) {
       return file.getNode(id);
     }
   }
@@ -689,7 +684,7 @@ export abstract class AbstractWorkspace extends EventTarget {
    * 复制选中结点
    */
   copySelectedNode() {
-    this.copyTempNodes = this.selectSource.nodes as TangoNode[];
+    this.copyTempNodes = this.selectSource.nodes as JsxViewNode[];
   }
 
   /**
@@ -1096,246 +1091,4 @@ export abstract class AbstractWorkspace extends EventTarget {
   }
 
   abstract addFile(filename: string, code: string, fileType?: FileType): void;
-}
-
-/**
- * CodeWorkspace 抽象基类
- */
-export abstract class AbstractCodeWorkspace extends AbstractWorkspace {
-  /**
-   * 模型入口配置模块
-   */
-  storeEntryModule: TangoStoreEntryModule;
-
-  /**
-   * 状态管理模块
-   */
-  storeModules: Record<string, TangoStoreModule>;
-
-  /**
-   * 数据服务模块
-   */
-  serviceModules: Record<string, TangoServiceModule>;
-
-  constructor(options: IWorkspaceOptions) {
-    super(options);
-    this.storeModules = {};
-    this.serviceModules = {};
-  }
-
-  /**
-   * 添加文件到工作区
-   * @param filename 文件名
-   * @param code 代码片段
-   * @param fileType 模块类型
-   */
-  addFile(filename: string, code: string, fileType?: FileType) {
-    if (!fileType && filename === this.entry) {
-      fileType = FileType.AppEntryModule;
-    }
-    const moduleType = fileType || inferFileType(filename);
-    const props = {
-      filename,
-      code,
-      type: moduleType,
-    };
-
-    let module;
-    switch (moduleType) {
-      case FileType.AppEntryModule:
-        module = new AppEntryModule(this, props);
-        this.appEntryModule = module;
-        break;
-      case FileType.StoreEntryModule:
-        module = new TangoStoreEntryModule(this, props);
-        this.storeEntryModule = module;
-        break;
-      case FileType.ComponentsEntryModule:
-        module = new TangoComponentsEntryModule(this, props);
-        this.componentsEntryModule = module;
-        break;
-      case FileType.RouteModule: {
-        module = new TangoRouteModule(this, props);
-        this.routeModule = module;
-        // check if activeRoute exists
-        const route = module.routes.find((item) => item.path === this.activeRoute);
-        if (!route) {
-          this.setActiveRoute(module.routes[0]?.path);
-        }
-        break;
-      }
-      case FileType.JsxViewModule:
-        module = new TangoViewModule(this, props);
-        break;
-      case FileType.ServiceModule:
-        module = new TangoServiceModule(this, props);
-        this.serviceModules[module.name] = module;
-        break;
-      case FileType.StoreModule:
-        module = new TangoStoreModule(this, props);
-        this.storeModules[module.name] = module;
-        break;
-      case FileType.Module:
-        module = new JsFile(this, props);
-        break;
-      case FileType.PackageJson:
-        module = new TangoJsonFile(this, props);
-        this.packageJson = module;
-        break;
-      case FileType.TangoConfigJson:
-        module = new TangoJsonFile(this, props);
-        this.tangoConfigJson = module;
-        break;
-      case FileType.Json:
-        module = new TangoJsonFile(this, props);
-        break;
-      default:
-        module = new TangoFile(this, props);
-    }
-
-    this.files.set(filename, module);
-  }
-
-  addServiceFile(serviceName: string, code: string) {
-    const filename = `/src/services/${serviceName}.js`;
-    this.addFile(filename, code, FileType.ServiceModule);
-    const indexServiceModule = this.serviceModules.index;
-    indexServiceModule?.addImportDeclaration(`./${serviceName}`, []).update();
-  }
-
-  addStoreFile(storeName: string, code: string) {
-    const filename = `/src/stores/${storeName}.js`;
-    this.addFile(filename, code);
-    if (!this.storeEntryModule) {
-      this.addFile('/src/stores/index.js', '');
-    }
-    this.storeEntryModule.addStore(storeName).update();
-  }
-
-  /**
-   * 添加新的模型文件
-   * @deprecated 使用 addStoreFile 代替
-   */
-  addStoreModule(name: string, code: string) {
-    this.addStoreFile(name, code);
-  }
-
-  /**
-   * 删除模型文件
-   * @param name
-   */
-  removeStoreModule(name: string) {
-    const filename = getFilepath(name, '/src/stores', '.js');
-    this.storeEntryModule.removeStore(name).update();
-    this.removeFile(filename);
-  }
-
-  /**
-   * 添加模型属性
-   * @param storeName
-   * @param stateName
-   * @param initValue
-   */
-  addStoreState(storeName: string, stateName: string, initValue: string) {
-    this.storeModules[storeName]?.addState(stateName, initValue).update();
-  }
-
-  /**
-   * 删除模型属性
-   * @param storeName
-   * @param stateName
-   */
-  removeStoreState(storeName: string, stateName: string) {
-    this.storeModules[storeName]?.removeState(stateName).update();
-  }
-
-  /**
-   * 根据变量路径删除状态变量
-   * @param variablePath
-   */
-  removeStoreVariable(variablePath: string) {
-    const { storeName, variableName } = parseStoreVariablePath(variablePath);
-    this.removeStoreState(storeName, variableName);
-  }
-
-  /**
-   * 根据变量路径更新状态变量的值
-   * @param variablePath 变量路径
-   * @param code 变量代码
-   */
-  updateStoreVariable(variablePath: string, code: string) {
-    if (isStoreVariablePath(variablePath)) {
-      const { storeName, variableName } = parseStoreVariablePath(variablePath);
-      this.storeModules[storeName]?.updateState(variableName, code).update();
-    }
-  }
-
-  /**
-   * 获取服务函数的详情
-   * TODO: 不要 services 前缀
-   * @param serviceKey `services.list` 或 `services.sub.list`
-   * @returns
-   */
-  getServiceFunction(serviceKey: string) {
-    const { name, moduleName } = parseServiceVariablePath(serviceKey);
-    if (!name) {
-      return;
-    }
-
-    return {
-      name,
-      moduleName,
-      config: this.serviceModules[moduleName]?.serviceFunctions[name],
-    };
-  }
-
-  /**
-   * 获取服务函数的列表
-   * @returns 返回服务函数的列表 { [serviceKey: string]: Dict }
-   */
-  listServiceFunctions() {
-    const ret: Record<string, Dict> = {};
-    Object.keys(this.serviceModules).forEach((moduleName) => {
-      const module = this.serviceModules[moduleName];
-      Object.keys(module.serviceFunctions).forEach((name) => {
-        const serviceKey = moduleName === 'index' ? name : [moduleName, name].join('.');
-        ret[serviceKey] = module.serviceFunctions[name];
-      });
-    });
-    return ret;
-  }
-
-  /**
-   * 更新服务函数
-   */
-  updateServiceFunction(serviceName: string, payload: Dict, moduleName = 'index') {
-    this.serviceModules[moduleName].updateServiceFunction(serviceName, payload).update();
-  }
-
-  /**
-   * 新增服务函数，支持批量添加
-   */
-  addServiceFunction(name: string, config: Dict, moduleName = 'index') {
-    this.serviceModules[moduleName]?.addServiceFunction(name, config).update();
-  }
-
-  addServiceFunctions(configs: Dict<Dict>, modName = 'index') {
-    this.serviceModules[modName]?.addServiceFunctions(configs).update();
-  }
-
-  /**
-   * 删除服务函数
-   * @param name
-   */
-  removeServiceFunction(serviceKey: string) {
-    const { moduleName, name } = parseServiceVariablePath(serviceKey);
-    this.serviceModules[moduleName]?.deleteServiceFunction(name).update();
-  }
-
-  /**
-   * 更新服务的基础配置
-   */
-  updateServiceBaseConfig(config: Dict, moduleName = 'index') {
-    this.serviceModules[moduleName]?.updateBaseConfig(config).update();
-  }
 }

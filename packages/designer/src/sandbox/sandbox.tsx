@@ -109,7 +109,7 @@ function useSandbox({
   // 根据当前 workspace 状态与组件传入的状态是否一致，控制是否需要切换到空白路由
   const display = isActive ? 'block' : 'none';
   const routePath = isActive ? startRoute || workspace.activeRoute : LANDING_PAGE_PATH;
-  const routerMode = fixRouterMode(workspace.appEntryModule?.routerType);
+  const routerMode = fixRouterMode(workspace.jsAppEntryFile?.routerType);
 
   const sandboxProps = isPreview
     ? {
