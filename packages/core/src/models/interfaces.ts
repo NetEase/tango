@@ -12,7 +12,7 @@ import {
   IImportSpecifierData,
   IFileError,
 } from '../types';
-import { TangoFile, TangoJsonFile } from './file';
+import { AbstractFile, TangoJsonFile } from './file';
 import { TangoRouteModule } from './route-module';
 import { TangoStoreModule } from './store-module';
 import { TangoServiceModule } from './service-module';
@@ -20,9 +20,10 @@ import { IdGenerator } from '../helpers';
 import { AppEntryModule } from './entry-module';
 
 export interface IViewFile {
-  readonly workspace: IWorkspace;
-  readonly filename: string;
-  readonly type: FileType;
+  /**
+   * 文件名
+   */
+  filename: string;
 
   /**
    * ID 生成器
@@ -57,41 +58,43 @@ export interface IViewFile {
 
   getNode: (targetNodeId: string) => IViewNode;
 
-  removeNode: (targetNodeId: string) => IViewFile;
+  removeNode: (targetNodeId: string) => this;
 
-  insertChild: (
-    targetNodeId: string,
-    newNode: any,
-    position?: InsertChildPositionType,
-  ) => IViewFile;
+  insertChild: (targetNodeId: string, newNode: any, position?: InsertChildPositionType) => this;
 
-  insertAfter: (targetNodeId: string, newNode: any) => IViewFile;
+  insertAfter: (targetNodeId: string, newNode: any) => this;
 
-  insertBefore: (targetNodeId: string, newNode: any) => IViewFile;
+  insertBefore: (targetNodeId: string, newNode: any) => this;
 
-  replaceNode: (targetNodeId: string, newNode: any) => IViewFile;
+  replaceNode: (targetNodeId: string, newNode: any) => this;
 
-  replaceViewChildren: (rawNodes: any[]) => IViewFile;
+  replaceViewChildren: (rawNodes: any[]) => this;
 
   updateNodeAttribute: (
     nodeId: string,
     attrName: string,
     attrValue?: any,
     relatedImports?: string[],
-  ) => IViewFile;
+  ) => this;
 
   updateNodeAttributes: (
     nodeId: string,
     config: Record<string, any>,
     relatedImports?: string[],
-  ) => IViewFile;
+  ) => this;
 
-  get code(): string;
   get nodes(): Map<string, IViewNode>;
   get nodesTree(): object[];
   get tree(): any;
+  /**
+   * 文件中的代码
+   */
+  get code(): string;
 }
 
+/**
+ * @deprecated
+ */
 export interface IViewNode {
   /**
    * 所属的文件
@@ -137,12 +140,15 @@ export interface IViewNode {
   get loc(): unknown;
 }
 
+/**
+ * @deprecated 使用 AbstractWorkspace 代替
+ */
 export interface IWorkspace {
   history: TangoHistory;
   selectSource: SelectSource;
   dragSource: DragSource;
 
-  files: Map<string, TangoFile>;
+  files: Map<string, AbstractFile>;
   componentPrototypes: Map<string, IComponentPrototype>;
 
   entry: string;
@@ -207,7 +213,7 @@ export interface IWorkspace {
   syncFiles: () => void;
 
   listFiles: () => Record<string, string>;
-  getFile: (filename: string) => TangoFile;
+  getFile: (filename: string) => AbstractFile;
 
   /**
    * 文件变化回调

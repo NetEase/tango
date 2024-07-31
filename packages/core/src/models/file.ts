@@ -1,14 +1,14 @@
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
 import { getValue, isNil, logger, setValue } from '@music163/tango-helpers';
 import type { FileType, IFileConfig } from '../types';
-import { IWorkspace } from './interfaces';
 import { formatCode } from '../helpers';
+import { AbstractWorkspace } from './abstract-workspace';
 
 /**
- * 普通文件，不进行 AST 解析
+ * 普通文件抽象基类，不进行 AST 解析
  */
-export class TangoFile {
-  readonly workspace: IWorkspace;
+export abstract class AbstractFile {
+  readonly workspace: AbstractWorkspace;
   /**
    * 文件名
    */
@@ -41,11 +41,12 @@ export class TangoFile {
     return this._code;
   }
 
+  // FIXME: cleanCode 是不是只有 viewFile 有 ????
   get cleanCode() {
     return this._cleanCode;
   }
 
-  constructor(workspace: IWorkspace, props: IFileConfig, isSyncCode = true) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig, isSyncCode = true) {
     this.workspace = workspace;
     this.filename = props.filename;
     this.type = props.type;
@@ -61,18 +62,11 @@ export class TangoFile {
   /**
    * 更新文件内容
    */
-  update(code?: string) {
-    if (!isNil(code)) {
-      this.lastModified = Date.now();
-      this._code = code;
-      this._cleanCode = code;
-    }
-    this.workspace.onFilesChange([this.filename]);
-  }
+  abstract update(code?: string): void;
 }
 
-export class TangoLessFile extends TangoFile {
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+export class TangoFile extends AbstractFile {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code);
     makeObservable(this, {
@@ -83,9 +77,18 @@ export class TangoLessFile extends TangoFile {
       update: action,
     });
   }
+
+  update(code?: string) {
+    if (!isNil(code)) {
+      this.lastModified = Date.now();
+      this._code = code;
+      this._cleanCode = code;
+    }
+    this.workspace.onFilesChange([this.filename]);
+  }
 }
 
-export class TangoJsonFile extends TangoFile {
+export class TangoJsonFile extends AbstractFile {
   _object = {};
 
   /**
@@ -99,7 +102,7 @@ export class TangoJsonFile extends TangoFile {
     return toJS(this._object);
   }
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code);
     makeObservable(this, {

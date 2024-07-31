@@ -1,5 +1,5 @@
+import { AbstractWorkspace } from './abstract-workspace';
 import { Designer } from './designer';
-import { IWorkspace } from './interfaces';
 
 /**
  * 设计器引擎
@@ -8,7 +8,7 @@ export class Engine {
   /**
    * 工作区状态
    */
-  workspace: IWorkspace;
+  workspace: AbstractWorkspace;
   /**
    * 设计器状态
    */

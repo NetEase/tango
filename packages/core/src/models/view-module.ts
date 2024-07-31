@@ -30,8 +30,9 @@ import {
   ImportDeclarationDataType,
   IImportSpecifierData,
 } from '../types';
-import { IViewFile, IWorkspace } from './interfaces';
-import { TangoModule } from './module';
+import { AbstractWorkspace } from './abstract-workspace';
+import { AbstractJsFile } from './module';
+import { IViewFile } from './interfaces';
 
 /**
  * 导入信息转为 变量名->来源 的 map 结构
@@ -82,7 +83,7 @@ function nodeListToTreeData(list: ITangoViewNodeData[]) {
 /**
  * 视图模块
  */
-export class TangoViewModule extends TangoModule implements IViewFile {
+export class TangoViewModule extends AbstractJsFile implements IViewFile {
   // 解析为树结构的 jsxNodes 数组
   _nodesTree: ITangoViewNodeData[] = [];
   /**
@@ -127,7 +128,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     return this.ast;
   }
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this._nodes = new Map();
     this.idGenerator = new IdGenerator({ prefix: props.filename });
@@ -177,7 +178,9 @@ export class TangoViewModule extends TangoModule implements IViewFile {
 
     nodes.forEach((cur) => {
       const node = new TangoNode({
-        ...cur,
+        id: cur.id,
+        component: cur.component,
+        rawNode: cur.rawNode,
         file: this,
       });
       this._nodes.set(cur.id, node);

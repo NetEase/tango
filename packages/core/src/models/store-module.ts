@@ -10,20 +10,20 @@ import {
   removeStoreToEntryFile,
 } from '../helpers';
 import { IFileConfig, IStorePropertyData } from '../types';
-import { IWorkspace } from './interfaces';
-import { TangoModule } from './module';
+import { AbstractWorkspace } from './abstract-workspace';
+import { AbstractJsFile } from './module';
 
 /**
  * 入口配置模块
  */
-export class TangoStoreEntryModule extends TangoModule {
+export class TangoStoreEntryModule extends AbstractJsFile {
   _stores: string[] = [];
 
   get stores() {
     return toJS(this._stores);
   }
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code, true, false);
 
@@ -67,7 +67,7 @@ export class TangoStoreEntryModule extends TangoModule {
 /**
  * 状态模型模块
  */
-export class TangoStoreModule extends TangoModule {
+export class TangoStoreModule extends AbstractJsFile {
   /**
    * 模块名
    */
@@ -79,7 +79,7 @@ export class TangoStoreModule extends TangoModule {
 
   actions: IStorePropertyData[];
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.name = getModuleNameByFilename(props.filename);
     this.update(props.code, true, false);

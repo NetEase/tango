@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { ISelectedItemData } from '@music163/tango-helpers';
-import { IWorkspace } from './interfaces';
+import { AbstractWorkspace } from './abstract-workspace';
 
 export enum DropMethod {
   ReplaceNode = 'replaceNode', // 替换节点
@@ -23,7 +23,7 @@ export class DropTarget {
    */
   data: ISelectedItemData;
 
-  private readonly workspace: IWorkspace;
+  private readonly workspace: AbstractWorkspace;
 
   get node() {
     return this.workspace.getNode(this.data.id, this.data.filename);
@@ -48,7 +48,7 @@ export class DropTarget {
     return this.data?.display;
   }
 
-  constructor(workspace: IWorkspace) {
+  constructor(workspace: AbstractWorkspace) {
     this.workspace = workspace;
     this.method = DropMethod.InsertAfter;
     this.data = null;

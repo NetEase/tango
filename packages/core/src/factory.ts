@@ -1,12 +1,12 @@
 import { MenuDataType } from '@music163/tango-helpers';
 import { Designer, DesignerViewType, Engine, SimulatorNameType } from './models';
-import { IWorkspace } from './models/interfaces';
+import { AbstractWorkspace } from './models/abstract-workspace';
 
 interface ICreateEngineOptions {
   /**
    * 自定义工作区
    */
-  workspace?: IWorkspace;
+  workspace?: AbstractWorkspace;
   /**
    * 菜单信息
    */

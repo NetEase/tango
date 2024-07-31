@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { ISelectedItemData } from '@music163/tango-helpers';
 import { DropTarget } from './drop-target';
-import { IWorkspace } from './interfaces';
+import { AbstractWorkspace } from './abstract-workspace';
 
 /**
  * 拖拽来源类，被拖拽的物体
@@ -22,7 +22,7 @@ export class DragSource {
    */
   dropTarget: DropTarget;
 
-  private readonly workspace: IWorkspace;
+  private readonly workspace: AbstractWorkspace;
 
   get node() {
     return this.workspace.getNode(this.data?.id, this.data?.filename);
@@ -47,7 +47,7 @@ export class DragSource {
     return this.data?.bounding;
   }
 
-  constructor(workspace: IWorkspace) {
+  constructor(workspace: AbstractWorkspace) {
     this.workspace = workspace;
     this.data = null;
     this.isDragging = false;
