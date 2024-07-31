@@ -41,6 +41,9 @@ export abstract class AbstractCodeWorkspace extends AbstractWorkspace {
     super(options);
     this.storeModules = {};
     this.serviceModules = {};
+    if (options?.files) {
+      this.addFiles(options.files);
+    }
   }
 
   /**

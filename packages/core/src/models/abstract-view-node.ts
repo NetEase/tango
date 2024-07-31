@@ -40,7 +40,7 @@ export abstract class AbstractViewNode<RawNodeType = unknown, ViewFileType = Abs
     this.id = props.id;
     this.component = props.component;
     this.rawNode = props.rawNode;
-    this.file = null;
+    this.file = props.file;
   }
 
   /**
