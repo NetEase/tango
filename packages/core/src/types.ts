@@ -6,40 +6,28 @@ export type SimulatorMode = 'desktop' | 'tablet' | 'phone';
  * 文件类型枚举
  */
 export enum FileType {
-  // js 文件
-  Module = 'module',
+  File = 'file',
+
+  JsFile = 'jsFile',
   JsAppEntryFile = 'jsAppEntryFile',
-  StoreEntryModule = 'storeEntryModule',
-  RouteModule = 'routeModule',
-  ServiceModule = 'serviceModule',
-  StoreModule = 'storeModule',
+  JsRouteConfigFile = 'jsRouteConfigFile',
+  JsStoreEntryFile = 'jsStoreEntryFile',
+  JsStoreFile = 'jsStoreFile',
+  JsServiceFile = 'jsServiceFile',
+  JsLocalComponentsEntryFile = 'jsLocalComponentsEntryFile',
+
+  JsViewFile = 'jsViewFile',
+  JsonViewFile = 'jsonViewFile',
+
+  JsonFile = 'jsonFile',
+  PackageJsonFile = 'packageJsonFile',
+  TangoConfigJsonFile = 'tangoConfigJsonFile',
+  AppJsonFile = 'appJsonFile',
 
   // 组件配置文件
   ComponentPrototypeModule = 'componentPrototypeModule',
   // 组件运行调试入口文件，一般为 `/app.js`
   ComponentDemoEntryModule = 'componentDemoEntryModule',
-  /**
-   * 本地组件目录的入口文件
-   */
-  ComponentsEntryModule = 'componentsEntryModule',
-  /**
-   * @deprecated 已废弃
-   */
-  BlockEntryModule = 'blockEntryModule',
-
-  // jsx 类型视图文件
-  JsxViewModule = 'jsxViewModule',
-  // json 类型视图文件
-  JsonViewModule = 'jsonViewModule',
-
-  // 非 js 文件
-  PackageJson = 'packageJson',
-  TangoConfigJson = 'tangoConfigJson',
-  AppJson = 'appJson',
-  File = 'file',
-  Json = 'json',
-  Less = 'less',
-  Scss = 'scss',
 }
 
 export interface IFileConfig {

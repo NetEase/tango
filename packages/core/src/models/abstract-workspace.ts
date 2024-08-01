@@ -289,8 +289,8 @@ export abstract class AbstractWorkspace extends EventTarget {
     let filename = this.getFilenameByRoutePath(routePath);
     if (!filename) {
       // 没有找到 route 对应的文件，使用默认的 entry
-      for (const [key, file] of this.files) {
-        if (file.type === FileType.JsxViewModule) {
+      for (const [, file] of this.files) {
+        if (file.type === FileType.JsViewFile) {
           filename = file.filename;
           break;
         }

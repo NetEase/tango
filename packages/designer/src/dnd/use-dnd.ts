@@ -345,7 +345,7 @@ export function useDnd({
     // 区块不能拖拽到区块中
     if (
       workspace.dragSource.prototype.type === 'block' &&
-      closetDropTargetNode.file.type === FileType.BlockEntryModule
+      closetDropTargetNode.file.type === FileType.JsLocalComponentsEntryFile
     ) {
       return;
     }
