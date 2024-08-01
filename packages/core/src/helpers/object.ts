@@ -11,7 +11,7 @@ export function namesToImportDeclarations(
   names: string[],
   nameMap: Dict<IImportSpecifierSourceData>,
 ) {
-  const map = {};
+  const map: Dict = {};
   names.forEach((name) => {
     const mod = nameMap[name];
     if (mod) {

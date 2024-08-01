@@ -24,7 +24,7 @@ const DataSourceView = observer(() => {
     <Box className="ServiceFunctionList" p="m">
       <VariableTree
         dataSource={serviceVariables}
-        appContext={sandbox?.window['tango']}
+        appContext={(sandbox?.window as any)['tango']}
         serviceModules={serviceModules}
         onRemoveService={(variableKey) => {
           workspace.removeServiceFunction(variableKey);

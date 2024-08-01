@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from 'coral-system';
 import { SettingForm, FormModel, SettingFormProps } from '@music163/tango-setting-form';
 import { Panel } from '@music163/tango-ui';
-import { clone, parseDndId } from '@music163/tango-helpers';
+import { clone, Dict, parseDndId } from '@music163/tango-helpers';
 import { observer, useDesigner, useWorkspace } from '@music163/tango-context';
 import { registerBuiltinSetters } from './setters';
 
@@ -34,7 +34,7 @@ export const SettingPanel = observer((props: SettingPanelProps) => {
   }
 
   const getSettingValue = (attributes: Record<string, string>) => {
-    const ret = {};
+    const ret: Dict = {};
     const keys = Object.keys(attributes);
     for (const key of keys) {
       if (/^data-/.test(key)) {

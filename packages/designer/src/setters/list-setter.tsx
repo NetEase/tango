@@ -3,10 +3,11 @@ import { css, Box } from 'coral-system';
 import { Form, Input, Button, Popover } from 'antd';
 import { DeleteOutlined, EditOutlined, HolderOutlined } from '@ant-design/icons';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
+import { Dict } from '@music163/tango-helpers';
 import { DragBox } from '../components';
 
-function copyWithoutUndefined(source: Record<string, any>) {
-  const ret = {};
+function copyWithoutUndefined(source: Dict) {
+  const ret: Dict = {};
   for (const key in source) {
     if (source[key] !== undefined) {
       ret[key] = source[key];

@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Box, Grid, Text } from 'coral-system';
 import styled, { css } from 'styled-components';
 import {
+  Dict,
   IComponentPrototype,
   MenuDataType,
   MenuValueType,
@@ -66,7 +67,7 @@ export interface ComponentsPanelProps {
   layout?: 'grid' | 'line';
 }
 
-const localeMap = {
+const localeMap: Dict = {
   common: '基础组件',
   atom: '原子组件',
   snippet: '组合',
@@ -124,7 +125,7 @@ export const ComponentsPanel = observer(
     const tabs = Object.keys(menuData).map((key) => ({
       key,
       label: localeMap[key],
-      children: <MaterialList data={menuData[key]} />,
+      children: <MaterialList data={(menuData as any)[key]} />,
     }));
 
     if (showBizComps) {

@@ -60,7 +60,7 @@ export function ModelSetter({
 }: FormItemComponentProps) {
   const [inputValue, setInputValue] = useState(value);
   const { modelVariables } = useWorkspaceData();
-  const evaluateContext = useSandboxQuery().window || {};
+  const evaluateContext: any = useSandboxQuery().window || {};
   const workspace = useWorkspace();
   const definedVariables = useMemo(() => {
     const list: string[] = [];

@@ -1,8 +1,10 @@
+import { Dict } from '@music163/tango-helpers';
+
 /**
  * 快捷键
  */
 export class Hotkey {
-  private readonly hotkeyMap = {};
+  private readonly hotkeyMap: Dict = {};
 
   constructor(hotkeys: Record<string, Function>) {
     Object.keys(hotkeys).forEach((hotkey) => {

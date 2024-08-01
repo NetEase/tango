@@ -4,6 +4,7 @@ import { ConfigGroup, ConfigItem } from '@music163/tango-ui';
 import { Box, css } from 'coral-system';
 import { Input, Switch, Form, Button, message, FormProps } from 'antd';
 import { CloseCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import { Dict } from '@music163/tango-helpers';
 
 export default observer(() => {
   const workspace = useWorkspace();
@@ -63,7 +64,7 @@ function ProxyManage({
   initialValues: initialValuesProp = {},
   onSave,
 }: {
-  initialValues?: object;
+  initialValues?: Dict;
   onSave?: (values: any) => void;
 }) {
   const initialValues = useMemo(() => {
@@ -84,7 +85,7 @@ function ProxyManage({
       {...proxyManageFormStyle}
       initialValues={initialValues}
       onFinish={(values) => {
-        const proxy = values.proxy.reduce((prev: object, { path, ...rest }: any) => {
+        const proxy = values.proxy.reduce((prev: any, { path, ...rest }: any) => {
           prev[path] = rest;
           return prev;
         }, {});

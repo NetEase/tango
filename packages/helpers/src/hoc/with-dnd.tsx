@@ -57,7 +57,7 @@ export function withDnd(options: IWithDndOptions<any>) {
     const override = options.overrideProps || {};
     const renderFooter = options.renderFooter || renderEmpty;
 
-    const Component = forwardRef<unknown, P & DraggableComponentProps>((props, refProp) => {
+    const Component = forwardRef<unknown, P & DraggableComponentProps>((props: any, refProp) => {
       const dndProps = {
         [SLOT.id]: props.tid, // id 作为唯一标记
         [SLOT.dnd]: props[SLOT.dnd], // dnd 作为追踪标记

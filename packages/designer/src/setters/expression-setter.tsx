@@ -182,7 +182,7 @@ export function ExpressionPopover({
   }));
 
   const sandbox = useSandboxQuery();
-  const evaluateContext = sandbox.window;
+  const evaluateContext: any = sandbox.window;
 
   const handleExpInputChange = (val: string) => {
     setExp(val?.trim());
@@ -253,7 +253,7 @@ export function ExpressionPopover({
               height="100%"
               showViewButton
               dataSource={dataSource || expressionVariables}
-              appContext={sandbox?.window['tango']}
+              appContext={evaluateContext['tango']}
               getStoreNames={() => Object.keys(workspace.storeModules)}
               serviceModules={serviceModules}
               getServiceData={(serviceKey) => {

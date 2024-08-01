@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActionSelect, InputCode } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { Box } from 'coral-system';
+import { Dict } from '@music163/tango-helpers';
 
 interface IRenderOption {
   label: string;
@@ -37,7 +38,7 @@ export function RenderSetter({
   }, [value]);
 
   const optionsMap = useMemo(() => {
-    return options.reduce((prev, cur) => {
+    return options.reduce<Dict>((prev, cur) => {
       prev[cur.value] = cur;
       return prev;
     }, {});

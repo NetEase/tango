@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Menu, Space } from 'antd';
 import { Box, css } from 'coral-system';
-import { isApplePlatform } from '@music163/tango-helpers';
+import { Dict, isApplePlatform } from '@music163/tango-helpers';
 
 const contextActionStyle = css`
   display: flex;
@@ -46,7 +46,7 @@ export function ContextAction({
     if (!hotkey) {
       return null;
     }
-    const keyMap = isApplePlatform()
+    const keyMap: Dict = isApplePlatform()
       ? {
           command: '⌘',
           meta: '⌘',

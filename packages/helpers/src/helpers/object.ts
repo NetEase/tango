@@ -1,5 +1,6 @@
 import get from 'lodash.get';
 import set from 'lodash.set';
+import { Dict } from '../types';
 
 /**
  * 合并 target 和 source 对象，source 对象的优先级更高，如存在重名，覆盖 target 中的 key
@@ -45,7 +46,7 @@ export function clone(obj: any, withUndefined = true) {
     return obj;
   }
 
-  const target = {};
+  const target: Dict = {};
   for (const key in obj) {
     if (withUndefined) {
       target[key] = obj[key];
@@ -65,7 +66,7 @@ export function omit(obj: any, keys: string[]) {
 }
 
 export function pick(obj: any, keys: string[]) {
-  const target = {};
+  const target: Dict = {};
   for (const key of keys) {
     target[key] = obj[key];
   }

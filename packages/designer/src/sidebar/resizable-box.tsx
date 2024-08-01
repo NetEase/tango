@@ -19,7 +19,7 @@ const resizeHandleStyle = (axis: ResizableBoxProps['axis'], barStyle: HTMLCoralP
   cursor: ${axis === 'x' ? 'col-resize' : 'row-resize'};
   ${barStyle &&
   Object.keys(barStyle)
-    .map((key) => `${key}: ${barStyle[key]};`)
+    .map((key) => `${key}: ${(barStyle as any)[key]};`)
     .join('')}
   &:hover,
   &:active {

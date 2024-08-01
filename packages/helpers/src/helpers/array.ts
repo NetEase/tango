@@ -43,7 +43,7 @@ export function filterTreeData<T = unknown>(
   childrenProp = 'children',
   onlyLeaf = false,
 ) {
-  const reducer = (result: T[], current: T) => {
+  const reducer = (result: T[], current: any) => {
     if (current[childrenProp]) {
       const newChildren = current[childrenProp].reduce(reducer, []);
       if (newChildren.length) {
@@ -70,7 +70,7 @@ export function mapTreeData<T = unknown>(
   mapper: (node: T) => any,
   childrenProp = 'children',
 ) {
-  return treeData.map((node) => {
+  return treeData.map((node: any) => {
     const newNode = mapper(node);
     if (node[childrenProp]) {
       newNode[childrenProp] = mapTreeData(node[childrenProp], mapper, childrenProp);

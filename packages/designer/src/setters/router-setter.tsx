@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from 'coral-system';
 import { Input, Radio } from 'antd';
-import { isValidUrl } from '@music163/tango-helpers';
+import { Dict, isValidUrl } from '@music163/tango-helpers';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspaceData } from '@music163/tango-context';
 import { PickerSetter } from './picker-setter';
+
+const routerModeMap: Dict = {
+  link: '链接',
+  router: '路由',
+  both: '',
+};
 
 export function RouterSetter(props: FormItemComponentProps) {
   const [type, setType] = useState<'input' | 'select'>(() => {
@@ -37,7 +43,7 @@ export function RouterSetter(props: FormItemComponentProps) {
       )}
       {type === 'input' && (
         <Input
-          placeholder={`请输入任意${{ link: '链接', router: '路由', both: '' }[displayType]}地址`}
+          placeholder={`请输入任意${routerModeMap[displayType]}地址`}
           {...props}
           value={input}
           onChange={(e) => setInput(e.target.value)}

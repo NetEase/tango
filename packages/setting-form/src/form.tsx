@@ -7,6 +7,7 @@ import {
   noop,
   filterTreeData,
   mapTreeData,
+  Dict,
 } from '@music163/tango-helpers';
 import { Action, Search, Tabs } from '@music163/tango-ui';
 import { SettingFormItem, register } from './form-item';
@@ -24,7 +25,7 @@ function normalizeComponentProps(
   props: IComponentPrototype['props'],
   groupOptions: IFormTabsGroupOption[],
 ) {
-  const groups: Record<string, IComponentProp[]> = groupOptions.reduce((prev, cur) => {
+  const groups: Record<string, IComponentProp[]> = groupOptions.reduce<Dict>((prev, cur) => {
     prev[cur.value] = [];
     return prev;
   }, {});

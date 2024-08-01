@@ -1,11 +1,11 @@
-import { isValidFunctionCode, url2serviceName } from '@music163/tango-helpers';
+import { Dict, isValidFunctionCode, url2serviceName } from '@music163/tango-helpers';
 import { InputCode } from '@music163/tango-ui';
 import { Button, Dropdown, Form, FormProps, Input, Select, Space } from 'antd';
 import { Box } from 'coral-system';
 import React, { useState } from 'react';
 
 interface AddServiceFormProps extends FormProps {
-  initialValues?: object;
+  initialValues?: Dict;
   onSubmit: (values: object) => void;
   onCancel: () => void;
   serviceModules: object[];

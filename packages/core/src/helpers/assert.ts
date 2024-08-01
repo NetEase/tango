@@ -35,7 +35,7 @@ export function isTangoVariable(name: string) {
   return /^tango\??\.(stores|services)\??\./.test(name) && name.split('.').length > 2;
 }
 
-const templatePattern = /^{(.+)}$/s;
+const templatePattern = /^{(.+)}$/;
 
 /**
  * 判断给定字符串是否被表达式容器`{expCode}`包裹

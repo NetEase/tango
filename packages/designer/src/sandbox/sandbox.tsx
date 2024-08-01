@@ -1,7 +1,7 @@
 import React, { useImperativeHandle, ForwardedRef, useRef, useState, useEffect } from 'react';
 import { Box } from 'coral-system';
 import { CodeSandbox, CodeSandboxProps } from '@music163/tango-sandbox';
-import { getValue, isFunction, logger, pick, setValue } from '@music163/tango-helpers';
+import { Dict, getValue, isFunction, logger, pick, setValue } from '@music163/tango-helpers';
 import { observer, useWorkspace, useDesigner } from '@music163/tango-context';
 import { Simulator, Viewport } from '../simulator';
 import { useSandboxQuery } from '../context';
@@ -88,7 +88,7 @@ function useSandbox({
     onViewChange: (data) => onViewChange && onViewChange(data, getSandboxConfig()),
   });
 
-  let files = Array.from(workspace.files.keys()).reduce((prev, filename) => {
+  let files = Array.from(workspace.files.keys()).reduce<Dict>((prev, filename) => {
     let code = workspace.getFile(filename).code;
     if (filename === '/tango.config.json') {
       code = mergeTangoConfigJson(code, { isPreview, injectScript, formatter: configFormatter });

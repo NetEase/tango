@@ -4,7 +4,7 @@ import { AutoComplete } from 'antd';
 import { ActionSelect } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
-import { wrapCode } from '@music163/tango-helpers';
+import { Dict, wrapCode } from '@music163/tango-helpers';
 import { ExpressionPopover } from './expression-setter';
 import { value2code } from '@music163/tango-core';
 
@@ -141,7 +141,7 @@ export function EventSetter(props: EventSetterProps) {
   );
 }
 
-const handlerMap = {
+const handlerMap: Dict = {
   [EventAction.OpenModal]: 'openModal',
   [EventAction.CloseModal]: 'closeModal',
   [EventAction.NavigateTo]: 'navigateTo',

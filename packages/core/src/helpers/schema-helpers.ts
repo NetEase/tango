@@ -1,9 +1,9 @@
-import { parseDndId, uuid } from '@music163/tango-helpers';
+import { Dict, parseDndId, uuid } from '@music163/tango-helpers';
 
 // { id: 1, component, props: { id: 1 }, children: [ { id: 2, component } ] }
 export function deepCloneNode(obj: any, component?: string): any {
   function deepCloneObject() {
-    const target = {};
+    const target: Dict = {};
     for (const key in obj) {
       if (Object.hasOwn(obj, key)) {
         target[key] = deepCloneNode(obj[key], component);

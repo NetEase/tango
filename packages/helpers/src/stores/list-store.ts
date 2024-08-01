@@ -1,13 +1,14 @@
 import { warning } from '../helpers';
+import { Dict } from '../types';
 
-type ListStoreOptionsType<T = object> = {
+type ListStoreOptionsType<T extends Dict = Dict> = {
   data: T[];
   keyProp?: string;
   labelProp?: string;
   childrenProp?: string;
 };
 
-export class ListStore<T = object> {
+export class ListStore<T extends Dict = Dict> {
   private nodeMap: Map<string, T>;
   private keyProp: string;
   private childrenProp: string;
