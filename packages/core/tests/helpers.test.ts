@@ -179,12 +179,12 @@ describe('string helpers', () => {
   });
 
   it('inferFileType', () => {
-    expect(inferFileType('/src/pages/template.js')).toBe(FileType.JsxViewModule);
-    expect(inferFileType('/src/pages/template.jsx')).toBe(FileType.JsxViewModule);
+    expect(inferFileType('/src/pages/template.js')).toBe(FileType.JsViewFile);
+    expect(inferFileType('/src/pages/template.jsx')).toBe(FileType.JsViewFile);
     expect(inferFileType('/src/pages/template.ejs')).toBe(FileType.File);
-    expect(inferFileType('/src/index.scss')).toBe(FileType.Scss);
-    expect(inferFileType('/src/index.less')).toBe(FileType.Less);
-    expect(inferFileType('/src/index.json')).toBe(FileType.Json);
+    expect(inferFileType('/src/index.scss')).toBe(FileType.File);
+    expect(inferFileType('/src/index.less')).toBe(FileType.File);
+    expect(inferFileType('/src/index.json')).toBe(FileType.JsonFile);
   });
 });
 

@@ -69,15 +69,15 @@ export abstract class AbstractCodeWorkspace extends AbstractWorkspace {
         module = new JsAppEntryFile(this, props);
         this.jsAppEntryFile = module;
         break;
-      case FileType.StoreEntryModule:
+      case FileType.JsStoreEntryFile:
         module = new JsStoreEntryFile(this, props);
         this.storeEntryModule = module;
         break;
-      case FileType.ComponentsEntryModule:
+      case FileType.JsLocalComponentsEntryFile:
         module = new JsLocalComponentsEntryFile(this, props);
         this.componentsEntryModule = module;
         break;
-      case FileType.RouteModule: {
+      case FileType.JsRouteConfigFile: {
         module = new JsRouteConfigFile(this, props);
         this.routeModule = module;
         // check if activeRoute exists
@@ -87,29 +87,29 @@ export abstract class AbstractCodeWorkspace extends AbstractWorkspace {
         }
         break;
       }
-      case FileType.JsxViewModule:
+      case FileType.JsViewFile:
         module = new JsViewFile(this, props);
         break;
-      case FileType.ServiceModule:
+      case FileType.JsServiceFile:
         module = new JsServiceFile(this, props);
         this.serviceModules[module.name] = module;
         break;
-      case FileType.StoreModule:
+      case FileType.JsStoreFile:
         module = new JsStoreFile(this, props);
         this.storeModules[module.name] = module;
         break;
-      case FileType.Module:
+      case FileType.JsFile:
         module = new JsFile(this, props);
         break;
-      case FileType.PackageJson:
+      case FileType.PackageJsonFile:
         module = new JsonFile(this, props);
         this.packageJson = module;
         break;
-      case FileType.TangoConfigJson:
+      case FileType.TangoConfigJsonFile:
         module = new JsonFile(this, props);
         this.tangoConfigJson = module;
         break;
-      case FileType.Json:
+      case FileType.JsonFile:
         module = new JsonFile(this, props);
         break;
       default:
@@ -121,7 +121,7 @@ export abstract class AbstractCodeWorkspace extends AbstractWorkspace {
 
   addServiceFile(serviceName: string, code: string) {
     const filename = `/src/services/${serviceName}.js`;
-    this.addFile(filename, code, FileType.ServiceModule);
+    this.addFile(filename, code, FileType.JsServiceFile);
     const indexServiceModule = this.serviceModules.index;
     indexServiceModule?.addImportDeclaration(`./${serviceName}`, []).update();
   }
