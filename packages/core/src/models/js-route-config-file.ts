@@ -7,20 +7,20 @@ import {
   updateRouteToRouteFile,
 } from '../helpers';
 import { IRouteData, IFileConfig } from '../types';
-import { IWorkspace } from './interfaces';
-import { TangoModule } from './module';
+import { AbstractJsFile } from './abstract-js-file';
+import { AbstractCodeWorkspace } from './abstract-code-workspace';
 
 /**
  * 路由配置模块
  */
-export class TangoRouteModule extends TangoModule {
+export class JsRouteConfigFile extends AbstractJsFile {
   _routes: IRouteData[];
 
   get routes() {
     return toJS(this._routes);
   }
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractCodeWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code, true, false);
 

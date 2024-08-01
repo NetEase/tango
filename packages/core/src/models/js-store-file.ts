@@ -1,73 +1,19 @@
-import { action, computed, makeObservable, observable, toJS } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import {
   traverseStoreFile,
-  traverseStoreEntryFile,
-  addStoreToEntryFile,
   getModuleNameByFilename,
   addStoreState,
   updateStoreState,
   removeStoreState,
-  removeStoreToEntryFile,
 } from '../helpers';
 import { IFileConfig, IStorePropertyData } from '../types';
-import { IWorkspace } from './interfaces';
-import { TangoModule } from './module';
-
-/**
- * 入口配置模块
- */
-export class TangoStoreEntryModule extends TangoModule {
-  _stores: string[] = [];
-
-  get stores() {
-    return toJS(this._stores);
-  }
-
-  constructor(workspace: IWorkspace, props: IFileConfig) {
-    super(workspace, props, false);
-    this.update(props.code, true, false);
-
-    makeObservable(this, {
-      _stores: observable,
-      _code: observable,
-      _cleanCode: observable,
-      isError: observable,
-      errorMessage: observable,
-      stores: computed,
-      code: computed,
-      cleanCode: computed,
-      update: action,
-      updateAst: action,
-    });
-  }
-
-  _analysisAst() {
-    this._stores = traverseStoreEntryFile(this.ast);
-  }
-
-  /**
-   * 新建模型
-   * @param name
-   */
-  addStore(name: string) {
-    this.ast = addStoreToEntryFile(this.ast, name);
-    return this;
-  }
-
-  /**
-   * 删除模型
-   * @param name
-   */
-  removeStore(name: string) {
-    this.ast = removeStoreToEntryFile(this.ast, name);
-    return this;
-  }
-}
+import { AbstractWorkspace } from './abstract-workspace';
+import { AbstractJsFile } from './abstract-js-file';
 
 /**
  * 状态模型模块
  */
-export class TangoStoreModule extends TangoModule {
+export class JsStoreFile extends AbstractJsFile {
   /**
    * 模块名
    */
@@ -79,7 +25,7 @@ export class TangoStoreModule extends TangoModule {
 
   actions: IStorePropertyData[];
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.name = getModuleNameByFilename(props.filename);
     this.update(props.code, true, false);

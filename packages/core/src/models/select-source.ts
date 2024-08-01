@@ -1,6 +1,7 @@
 import { ISelectedItemData, MousePoint } from '@music163/tango-helpers';
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
-import { IViewFile, IWorkspace } from './interfaces';
+import { AbstractWorkspace } from './abstract-workspace';
+import { IViewFile } from './interfaces';
 
 type StartDataType = {
   point: MousePoint;
@@ -24,7 +25,7 @@ export class SelectSource {
     element: null,
   };
 
-  private readonly workspace: IWorkspace;
+  private readonly workspace: AbstractWorkspace;
 
   get start() {
     return toJS(this._start);
@@ -74,7 +75,7 @@ export class SelectSource {
       .filter((node) => !!node);
   }
 
-  constructor(workspace: IWorkspace) {
+  constructor(workspace: AbstractWorkspace) {
     this.workspace = workspace;
     makeObservable(this, {
       _items: observable,

@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
-import { IWorkspace } from './interfaces';
+import { AbstractWorkspace } from './abstract-workspace';
 
 export enum HistoryMessage {
   InitView = 'initView',
@@ -43,7 +43,7 @@ export class TangoHistory {
   // 最多记录数
   _maxSize = 100;
 
-  private readonly workspace: IWorkspace;
+  private readonly workspace: AbstractWorkspace;
 
   get index() {
     return this._index;
@@ -65,7 +65,7 @@ export class TangoHistory {
     return this._records.length > this._index + 1;
   }
 
-  constructor(workspace: IWorkspace) {
+  constructor(workspace: AbstractWorkspace) {
     this.workspace = workspace;
 
     makeObservable(this, {

@@ -8,65 +8,57 @@ import { FileType } from './../types';
 export function inferFileType(filename: string): FileType {
   // 增加 tangoConfigJson Module
   if (/\/tango\.config\.json$/.test(filename)) {
-    return FileType.TangoConfigJson;
+    return FileType.TangoConfigJsonFile;
   }
 
   if (/\/appJson\.json$/.test(filename)) {
-    return FileType.AppJson;
+    return FileType.AppJsonFile;
   }
 
   if (/\/package\.json$/.test(filename)) {
-    return FileType.PackageJson;
+    return FileType.PackageJsonFile;
   }
 
   if (/\/routes\.js$/.test(filename)) {
-    return FileType.RouteModule;
+    return FileType.JsRouteConfigFile;
   }
 
   // 所有 pages 下的 js 文件均认为是有效的 viewModule
   if (/\/pages\/.+\.jsx?$/.test(filename)) {
-    return FileType.JsxViewModule;
+    return FileType.JsViewFile;
   }
 
   // 所有 pages 下的 js 文件均认为是有效的 viewModule
   if (/\/pages\/.+\.schema\.json?$/.test(filename)) {
-    return FileType.JsonViewModule;
+    return FileType.JsonViewFile;
   }
 
   if (/\/(blocks|components)\/index\.js/.test(filename)) {
-    return FileType.ComponentsEntryModule;
+    return FileType.JsLocalComponentsEntryFile;
   }
 
   if (/\/services\/.+\.js$/.test(filename)) {
-    return FileType.ServiceModule;
+    return FileType.JsServiceFile;
   }
 
   if (/service\.js$/.test(filename)) {
-    return FileType.ServiceModule;
+    return FileType.JsServiceFile;
   }
 
   if (/\/stores\/index\.js$/.test(filename)) {
-    return FileType.StoreEntryModule;
+    return FileType.JsStoreEntryFile;
   }
 
   if (/\/stores\/.+\.js$/.test(filename)) {
-    return FileType.StoreModule;
+    return FileType.JsStoreFile;
   }
 
   if (/\.jsx?$/.test(filename)) {
-    return FileType.Module;
+    return FileType.JsFile;
   }
 
   if (/\.json$/.test(filename)) {
-    return FileType.Json;
-  }
-
-  if (/\.less$/.test(filename)) {
-    return FileType.Less;
-  }
-
-  if (/\.scss$/.test(filename)) {
-    return FileType.Scss;
+    return FileType.JsonFile;
   }
 
   return FileType.File;

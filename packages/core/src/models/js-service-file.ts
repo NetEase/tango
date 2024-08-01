@@ -8,13 +8,13 @@ import {
   updateBaseConfigToServiceFile,
 } from '../helpers';
 import { IFileConfig } from '../types';
-import { IWorkspace } from './interfaces';
-import { TangoModule } from './module';
+import { AbstractWorkspace } from './abstract-workspace';
+import { AbstractJsFile } from './abstract-js-file';
 
 /**
  * 数据服务模块
  */
-export class TangoServiceModule extends TangoModule {
+export class JsServiceFile extends AbstractJsFile {
   /**
    * 服务函数的模块名，默认为 index
    */
@@ -39,7 +39,7 @@ export class TangoServiceModule extends TangoModule {
     return toJS(this._baseConfig);
   }
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.name = getModuleNameByFilename(props.filename);
     this.update(props.code, true, false);

@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
-import { IWorkspace } from './interfaces';
 import { MenuDataType } from '@music163/tango-helpers';
+import { AbstractWorkspace } from './abstract-workspace';
 
 export type SimulatorNameType = 'desktop' | 'phone';
 
@@ -18,7 +18,7 @@ interface IViewportBounding {
 }
 
 interface IDesignerOptions {
-  workspace: IWorkspace;
+  workspace: AbstractWorkspace;
   simulator?: SimulatorNameType | ISimulatorType;
   /**
    * 菜单配置
@@ -108,7 +108,7 @@ export class Designer {
    */
   _menuData?: MenuDataType = null;
 
-  private readonly workspace: IWorkspace;
+  private readonly workspace: AbstractWorkspace;
 
   get simulator(): ISimulatorType {
     return toJS(this._simulator);
