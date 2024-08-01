@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/netease/tango/compare/@music163/tango-designer@1.3.3...@music163/tango-designer@1.4.0) (2024-08-01)
+
+### Bug Fixes
+
+- update types ([67d602a](https://github.com/netease/tango/commit/67d602a3ec6b7f74156bb78fda6f3b4bc2676e55))
+
+### Features
+
+- add isError and errorMessage to File & add isAstSynced to Module ([#190](https://github.com/netease/tango/issues/190)) ([8dd289c](https://github.com/netease/tango/commit/8dd289cd7daba628e54dc6b8929f22a1e2245160))
+
 ## [1.3.3](https://github.com/netease/tango/compare/@music163/tango-designer@1.3.2...@music163/tango-designer@1.3.3) (2024-07-12)
 
 ### Bug Fixes

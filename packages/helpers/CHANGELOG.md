@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/netease/tango/compare/@music163/tango-helpers@1.2.0...@music163/tango-helpers@1.2.1) (2024-08-01)
+
+### Bug Fixes
+
+- update types ([67d602a](https://github.com/netease/tango/commit/67d602a3ec6b7f74156bb78fda6f3b4bc2676e55))
+
 # [1.2.0](https://github.com/netease/tango/compare/@music163/tango-helpers@1.1.1...@music163/tango-helpers@1.2.0) (2024-06-03)
 
 ### Features
