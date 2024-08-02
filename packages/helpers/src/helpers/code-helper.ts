@@ -32,7 +32,7 @@ export function isValidFunctionCode(str: string) {
   }
 }
 
-const templatePattern = /^{{(.+)}}$/;
+const templatePattern = /^{{([\s\S]+)}}$/;
 
 /**
  * 判断给定代码是否被双花括号包裹
