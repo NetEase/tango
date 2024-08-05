@@ -31,7 +31,7 @@ export const WorkspaceView = observer((props: WorkspaceViewProps) => {
       {children}
       {/* 添加组件弹层 */}
       {display === 'block' && <ComponentsPopover type="inner" isControlled />}
-      {mode === 'design' && <FileErrorsOverlay />}
+      {designer.activeView === 'design' && <FileErrorsOverlay />}
     </Box>
   );
 });
