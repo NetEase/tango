@@ -81,6 +81,7 @@ export const CodeEditor = observer((props: CodeEditorProps) => {
     designer.activeView === 'dual'
       ? {
           borderLeft: 'solid 1px var(--tango-colors-line2)',
+          borderRight: 'solid 1px var(--tango-colors-line2)',
         }
       : {};
 

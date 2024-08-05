@@ -137,6 +137,8 @@ export function useDnd({
     const data = sandboxQuery.getDraggableParentsData(e.target as HTMLElement, true);
     if (data && data.id) {
       selectSource.select(data);
+      // 画布选中节点时，自动唤起 right-panel
+      designer.toggleRightPanel(true);
     }
   };
 
