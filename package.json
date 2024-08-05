@@ -17,7 +17,7 @@
     "publish": "lerna publish",
     "ver": "lerna version --no-private --conventional-commits",
     "release": "yarn eslint && yarn build && yarn ver && lerna publish from-git",
-    "release:npm": "yarn eslint && yarn build && yarn ver && lerna publish from-git",
+    "release:npm": "yarn eslint && yarn build && yarn ver && lerna publish from-package",
     "release:beta": "yarn eslint && yarn build && yarn ver && lerna publish from-package --dist-tag beta",
     "up": "yarn upgrade-interactive --latest",
     "prepare": "husky install"
