@@ -166,7 +166,7 @@ import { OutButton } from "../components";
 class App extends React.Component {
   render() {
     return (
-      <Page title={tango.stores.app.title} subTitle={111}>
+      <Page title={tango.stores.app.title} subTitle={<><Button>hello</Button></>}>
         <Section tid="section0" />
         <Section tid="section1" title="Section Title">
           your input: <Input tid="input1" defaultValue="hello" />

@@ -34,7 +34,7 @@ export function TextSetter({
 
 const autoSize = {
   minRows: 2,
-  maxRows: 5,
+  maxRows: 6,
 };
 
 export function TextAreaSetter({
