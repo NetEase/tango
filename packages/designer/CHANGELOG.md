@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/netease/tango/compare/@music163/tango-designer@1.4.0...@music163/tango-designer@1.4.1) (2024-08-05)
+
+### Bug Fixes
+
+- parse template code & update maxRow of TextAreaSetter ([#192](https://github.com/netease/tango/issues/192)) ([a1eea02](https://github.com/netease/tango/commit/a1eea02f9409db73f042c74d7903ad84258f25c2))
+- show right panel when design view select node & optimize editor css ([#193](https://github.com/netease/tango/issues/193)) ([b83d965](https://github.com/netease/tango/commit/b83d965955c8d33ed8d37063482c7abe079e62b1))
+
 # [1.4.0](https://github.com/netease/tango/compare/@music163/tango-designer@1.3.3...@music163/tango-designer@1.4.0) (2024-08-01)
 
 ### Bug Fixes

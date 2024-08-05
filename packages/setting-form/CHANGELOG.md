@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.10](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.2.9...@music163/tango-setting-form@1.2.10) (2024-08-05)
+
+### Bug Fixes
+
+- parse template code & update maxRow of TextAreaSetter ([#192](https://github.com/netease/tango/issues/192)) ([a1eea02](https://github.com/netease/tango/commit/a1eea02f9409db73f042c74d7903ad84258f25c2))
+
 ## [1.2.9](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.2.8...@music163/tango-setting-form@1.2.9) (2024-08-01)
 
 ### Bug Fixes
