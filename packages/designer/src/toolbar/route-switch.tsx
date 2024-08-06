@@ -47,7 +47,8 @@ function PageSelect({ value, onSelect, onRemove, onUpdate, onCopy, options }: Pa
     setVisible(false);
   };
 
-  const current = optionMap[value];
+  const pathname = value?.split?.('?')[0];
+  const current = optionMap[pathname];
   return (
     <ToggleButton
       shape="ghost"
