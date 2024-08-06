@@ -84,7 +84,7 @@ function nodeListToTreeData(list: ITangoViewNodeData[]) {
  */
 export class TangoViewModule extends TangoModule implements IViewFile {
   // 解析为树结构的 jsxNodes 数组
-  _nodesTree: ITangoViewNodeData[];
+  _nodesTree: ITangoViewNodeData[] = [];
   /**
    * 通过导入组件名查找组件来自的包
    */
