@@ -1,6 +1,6 @@
 {
   "name": "@music163/tango-context",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "react context for tango-apps",
   "keywords": [
     "react",
@@ -31,7 +31,7 @@
     "react": ">= 16.8"
   },
   "dependencies": {
-    "@music163/tango-core": "^1.4.1",
+    "@music163/tango-core": "^1.4.2",
     "@music163/tango-helpers": "^1.2.2",
     "mobx-react-lite": "4.0.7"
   },

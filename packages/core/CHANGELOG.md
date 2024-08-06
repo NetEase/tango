@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/netease/tango/compare/@music163/tango-core@1.4.1...@music163/tango-core@1.4.2) (2024-08-06)
+
+### Bug Fixes
+
+- view module \_nodesTree set init value ([#194](https://github.com/netease/tango/issues/194)) ([269e304](https://github.com/netease/tango/commit/269e304d685c4fcc80635b9d04220cda333b80c4))
+
 ## [1.4.1](https://github.com/netease/tango/compare/@music163/tango-core@1.4.0...@music163/tango-core@1.4.1) (2024-08-05)
 
 **Note:** Version bump only for package @music163/tango-core
