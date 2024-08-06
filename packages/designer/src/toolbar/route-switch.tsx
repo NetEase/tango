@@ -53,6 +53,8 @@ function PageSelect({ value, onSelect, onRemove, onUpdate, onCopy, options }: Pa
     <ToggleButton
       shape="ghost"
       minWidth={100}
+      maxWidth={200}
+      textAlign="left"
       dropdownProps={{
         open: visible,
         onOpenChange: setVisible,

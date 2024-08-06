@@ -12,6 +12,7 @@ const buttonStyle = css`
   cursor: pointer;
   color: var(--tango-colors-gray-50);
   padding: 0 8px;
+  white-space: nowrap;
 
   .anticon-down {
     width: 10px;
@@ -201,7 +202,8 @@ export function ToggleButton(props: ToggleButtonProps) {
 
   let btn = (
     <Button css={buttonStyle} className={clazz} type="button" {...rest}>
-      <Box as="span">
+      {/* @ts-ignore textOverflow is available */}
+      <Box as="span" flex="1" overflow="hidden" textOverflow="ellipsis">
         {icon && (
           <Box as="span" className="buttonIcon" mr="s">
             {icon}
