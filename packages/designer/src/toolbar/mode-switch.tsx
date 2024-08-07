@@ -9,7 +9,7 @@ export const ModeSwitchTool = observer(() => {
   const designer = useDesigner();
 
   return (
-    <Group attached>
+    <Group attached whiteSpace="nowrap">
       <ToggleButton
         shape="ghost"
         selected={designer.activeView === 'design'}
