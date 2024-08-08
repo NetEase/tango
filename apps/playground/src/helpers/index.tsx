@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Group } from 'coral-system';
+import { Box, Group, Text } from 'coral-system';
 import { Avatar, Space, Switch } from 'antd';
 import { BranchesOutlined, MenuOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { registerSetter } from '@music163/tango-designer';
@@ -66,12 +66,12 @@ export function Logo() {
 export function ProjectDetail() {
   return (
     <Box display="flex" alignItems="center" columnGap="l">
-      <Box className="ProjectName" fontSize="18px" fontWeight="bold">
+      <Text className="ProjectName" fontSize="18px" fontWeight="bold" truncated>
         community-test
-      </Box>
-      <Box className="BranchName" as="code" fontSize="14px">
+      </Text>
+      <Text className="BranchName" as="code" fontSize="14px" truncated>
         <BranchesOutlined /> feature/list
-      </Box>
+      </Text>
     </Box>
   );
 }

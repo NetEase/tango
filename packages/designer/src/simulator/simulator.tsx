@@ -25,22 +25,45 @@ function DesktopSimulator({ children }: HTMLCoralProps<'div'>) {
 }
 
 const mobileStyle = css`
-  --device-viewport-width: 375px;
-  --device-viewport-height: 812px;
-  --device-frame-width: 13px;
-  background-image: url(https://p5.music.126.net/obj/wonDlsKUwrLClGjCm8Kx/21897838692/b1c5/2665/56db/10558c1bb2030d55ceabbcc74431de99.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  box-shadow: 0 2px 8px rgb(2 8 20 / 10%), 0 8px 16px rgb(2 8 20 / 8%);
-  border-radius: 62px;
-  overflow: hidden;
+  --device-viewport-width: 360px;
+  --device-viewport-height: 640px;
+  position: relative;
+  margin: auto;
+  border: 16px black solid;
+  border-top-width: 60px;
+  border-bottom-width: 60px;
+  border-radius: 36px;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 5px;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #333;
+    border-radius: 10px;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    left: 50%;
+    bottom: -65px;
+    transform: translate(-50%, -50%);
+    background: #333;
+    border-radius: 50%;
+  }
 
   .MobileSimulatorDeviceFrame {
-    border-radius: 50px;
     width: var(--device-viewport-width);
     height: var(--device-viewport-height);
-    margin: var(--device-frame-width);
-    overflow: hidden;
+    background: white;
   }
 `;
 
