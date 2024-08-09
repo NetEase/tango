@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.3](https://github.com/netease/tango/compare/@music163/tango-designer@1.4.2...@music163/tango-designer@1.4.3) (2024-08-09)
+
+### Bug Fixes
+
+- file errors overlay support click to error file & optimize ui ([#197](https://github.com/netease/tango/issues/197)) ([ca56edd](https://github.com/netease/tango/commit/ca56edd9ae201dbeb84b03ad390a09085433a257))
+- route matching without query string & toggle button wrapping ([#195](https://github.com/netease/tango/issues/195)) ([9394666](https://github.com/netease/tango/commit/939466648d40331800f15e886256a0789b7e7623))
+- update mobile simulator ui ([#196](https://github.com/netease/tango/issues/196)) ([65149f1](https://github.com/netease/tango/commit/65149f1326eaf78e8a27222993c3cacc674cd378))
+
 ## [1.4.2](https://github.com/netease/tango/compare/@music163/tango-designer@1.4.1...@music163/tango-designer@1.4.2) (2024-08-06)
 
 **Note:** Version bump only for package @music163/tango-designer

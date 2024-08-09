@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/netease/tango/compare/@music163/tango-ui@1.4.1...@music163/tango-ui@1.4.2) (2024-08-09)
+
+### Bug Fixes
+
+- route matching without query string & toggle button wrapping ([#195](https://github.com/netease/tango/issues/195)) ([9394666](https://github.com/netease/tango/commit/939466648d40331800f15e886256a0789b7e7623))
+- update mobile simulator ui ([#196](https://github.com/netease/tango/issues/196)) ([65149f1](https://github.com/netease/tango/commit/65149f1326eaf78e8a27222993c3cacc674cd378))
+
 ## [1.4.1](https://github.com/netease/tango/compare/@music163/tango-ui@1.4.0...@music163/tango-ui@1.4.1) (2024-08-05)
 
 **Note:** Version bump only for package @music163/tango-ui
