@@ -4,7 +4,14 @@ import { Dropdown, Button } from 'antd';
 import { isValidExpressionCode } from '@music163/tango-core';
 import { getValue, IVariableTreeNode, noop } from '@music163/tango-helpers';
 import { CloseCircleFilled, MenuOutlined } from '@ant-design/icons';
-import { Panel, InputCode, Action, DragPanel, PopOutOutlined } from '@music163/tango-ui';
+import {
+  Panel,
+  InputCode,
+  Action,
+  DragPanel,
+  PopOutOutlined,
+  InputCodeProps,
+} from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { VariableTree } from '../components';
@@ -51,15 +58,18 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     modalTitle,
     modalTip,
     autoCompleteOptions,
-    placeholder = '在这里输入JS代码',
+    placeholder = '在这里输入代码',
     value: valueProp,
     status,
     allowClear = true,
     newStoreTemplate,
     showOptionsDropDown = true,
+    name,
   } = props;
   // const codeValue = getCodeOfWrappedCode(valueProp);
   const [inputValue, setInputValue] = useState(valueProp);
+
+  const isCssField = ['style'].includes(name);
 
   // when receive new value, sync state
   useEffect(() => {
@@ -84,6 +94,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
       {/* 同时支持下拉框展示 */}
       <InputCode
         placeholder={placeholder}
+        enableJSXCSS={isCssField}
         suffix={
           <Box css={suffixStyle}>
             {allowClear && (
@@ -118,6 +129,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
               title={modalTitle}
               subTitle={modalTip}
               placeholder={placeholder}
+              enableJSXCSS={isCssField}
               autoCompleteOptions={autoCompleteOptions}
               newStoreTemplate={newStoreTemplate}
               value={inputValue}
@@ -141,7 +153,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
   );
 }
 
-export interface ExpressionPopoverProps {
+export interface ExpressionPopoverProps extends InputCodeProps {
   title?: string;
   subTitle?: string;
   placeholder?: string;
@@ -168,6 +180,7 @@ export function ExpressionPopover({
   autoCompleteOptions,
   newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
   children,
+  enableJSXCSS = false,
 }: ExpressionPopoverProps) {
   const [exp, setExp] = useState(value ?? defaultValue);
   const [error, setError] = useState('');
@@ -211,6 +224,7 @@ export function ExpressionPopover({
               shape="inset"
               minHeight="56px"
               maxHeight="160px"
+              enableJSXCSS={enableJSXCSS}
               value={exp}
               placeholder={placeholder}
               onChange={handleExpInputChange}

@@ -40,6 +40,7 @@ export interface FormItemComponentProps<T = any> {
   readOnly?: boolean;
   disabled?: boolean;
   status?: InputProps['status'];
+  name?: string;
   [prop: string]: any;
 }
 
@@ -223,6 +224,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
       status: field.error ? 'error' : undefined,
       placeholder,
       options: setterOptions,
+      name,
     };
     baseComponentProps = clone(baseComponentProps, false);
 

@@ -28,6 +28,16 @@ export function Basic() {
   );
 }
 
+export function CSS() {
+  return (
+    <InputCode
+      enableESLint
+      enableJSXCSS
+      suffix={<Action icon={<BlockOutlined />} size="small" />}
+    />
+  );
+}
+
 const code = `
 function foo() {
   console.log("test");
