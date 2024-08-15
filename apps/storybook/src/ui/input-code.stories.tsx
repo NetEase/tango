@@ -1,5 +1,5 @@
 import React from 'react';
-import { Action, InputCode } from '@music163/tango-ui';
+import { Action, InputCode, InputStyleCode } from '@music163/tango-ui';
 import { BlockOutlined } from '@ant-design/icons';
 
 export default {
@@ -29,13 +29,7 @@ export function Basic() {
 }
 
 export function CSS() {
-  return (
-    <InputCode
-      enableESLint
-      enableJSXCSS
-      suffix={<Action icon={<BlockOutlined />} size="small" />}
-    />
-  );
+  return <InputStyleCode enableESLint suffix={<Action icon={<BlockOutlined />} size="small" />} />;
 }
 
 const code = `
