@@ -40,7 +40,6 @@ export interface FormItemComponentProps<T = any> {
   readOnly?: boolean;
   disabled?: boolean;
   status?: InputProps['status'];
-  name?: string;
   [prop: string]: any;
 }
 
