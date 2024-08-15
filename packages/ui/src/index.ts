@@ -13,6 +13,7 @@ export * from './menu';
 export * from './panel';
 export * from './toggle-button';
 export * from './input-code';
+export * from './input-style-code';
 export * from './input-list';
 export * from './search';
 export * from './json-view';

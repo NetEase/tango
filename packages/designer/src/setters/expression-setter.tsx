@@ -11,6 +11,7 @@ import {
   DragPanel,
   PopOutOutlined,
   InputCodeProps,
+  InputStyleCode,
 } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
@@ -50,6 +51,10 @@ export interface ExpressionSetterProps extends FormItemComponentProps<string> {
   autoCompleteOptions?: string[];
   allowClear?: boolean;
   showOptionsDropDown?: boolean;
+  /**
+   * 表达式类型指定为 css object
+   */
+  expressionType?: 'cssObject';
 }
 
 export function ExpressionSetter(props: ExpressionSetterProps) {
@@ -64,12 +69,10 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     allowClear = true,
     newStoreTemplate,
     showOptionsDropDown = true,
-    name,
+    expressionType,
   } = props;
   // const codeValue = getCodeOfWrappedCode(valueProp);
   const [inputValue, setInputValue] = useState(valueProp);
-
-  const isCssField = ['style'].includes(name);
 
   // when receive new value, sync state
   useEffect(() => {
@@ -89,12 +92,13 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
   const sandbox = useSandboxQuery();
   const evaluateContext = sandbox.window;
 
+  const InputCodeComponent = expressionType === 'cssObject' ? InputStyleCode : InputCode;
+
   return (
     <Box className="ExpressionSetter">
       {/* 同时支持下拉框展示 */}
-      <InputCode
+      <InputCodeComponent
         placeholder={placeholder}
-        enableJSXCSS={isCssField}
         suffix={
           <Box css={suffixStyle}>
             {allowClear && (
@@ -129,10 +133,10 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
               title={modalTitle}
               subTitle={modalTip}
               placeholder={placeholder}
-              enableJSXCSS={isCssField}
               autoCompleteOptions={autoCompleteOptions}
               newStoreTemplate={newStoreTemplate}
               value={inputValue}
+              expressionType={expressionType}
               onOk={(value) => {
                 change(value);
               }}
@@ -166,6 +170,10 @@ export interface ExpressionPopoverProps extends InputCodeProps {
    * 新建 store 的模板代码
    */
   newStoreTemplate?: string;
+  /**
+   * 表达式类型指定为 css object
+   */
+  expressionType?: 'cssObject';
   children?: React.ReactNode;
 }
 
@@ -180,11 +188,12 @@ export function ExpressionPopover({
   autoCompleteOptions,
   newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
   children,
-  enableJSXCSS = false,
+  expressionType,
 }: ExpressionPopoverProps) {
   const [exp, setExp] = useState(value ?? defaultValue);
   const [error, setError] = useState('');
   const workspace = useWorkspace();
+  const InputCodeComponent = expressionType === 'cssObject' ? InputStyleCode : InputCode;
 
   const selectNodePath = workspace.selectSource.selected[0]?.codeId;
 
@@ -220,11 +229,10 @@ export function ExpressionPopover({
       body={
         <Box display="flex" flexDirection="column">
           <Box p="m">
-            <InputCode
+            <InputCodeComponent
               shape="inset"
               minHeight="56px"
               maxHeight="160px"
-              enableJSXCSS={enableJSXCSS}
               value={exp}
               placeholder={placeholder}
               onChange={handleExpInputChange}

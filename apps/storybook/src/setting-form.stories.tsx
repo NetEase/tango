@@ -70,6 +70,14 @@ const prototypeHasBasicProps: IComponentPrototype = {
       setter: 'codeSetter',
     },
     {
+      name: 'style',
+      title: 'codeSetter(cssObject)',
+      setter: 'codeSetter',
+      setterProps: {
+        expressionType: 'cssObject',
+      },
+    },
+    {
       name: 'text',
       title: 'textSetter',
       setter: 'textSetter',
@@ -268,6 +276,9 @@ export function InitValues() {
             name: 'style',
             title: 'codeSetter',
             setter: 'codeSetter',
+            setterProps: {
+              expressionType: 'cssObject',
+            },
           },
           {
             name: 'object',

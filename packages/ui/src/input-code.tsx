@@ -7,8 +7,6 @@ import { syntaxTree } from '@codemirror/language';
 import { linter, lintGutter } from '@codemirror/lint';
 import * as eslint from 'eslint-linter-browserify';
 import { getValue } from '@music163/tango-helpers';
-import { jsxCSSproperties, jsxCSSvalues } from './lang-jsx-css/complete';
-import type { Completion } from '@codemirror/autocomplete';
 
 const completePropertyAfter = ['PropertyName', '.', '?.'];
 const dontCompleteIn = [
@@ -45,43 +43,13 @@ function completeProperties(from: number, object: Object) {
   };
 }
 
-function completeCSSProperties(from: number, cssOptions: Completion[] | readonly Completion[]) {
-  return {
-    from,
-    options: cssOptions,
-    validFor: /^[\w$]*$/,
-  };
-}
-
 /**
  *
  * @param scope 预测的补全上下文
  * @param customOptions 自定义补全选项列表
  * @returns
  */
-function buildAutoComplete(
-  scope: any = window,
-  customOptions: Array<{ label: string }> = [],
-  isCss = false,
-) {
-  if (isCss) {
-    /**
-     * @see context https://codemirror.net/docs/ref/#autocomplete.CompletionContext
-     */
-    return function completeFromCSSScope(context: CompletionContext) {
-      const nodeBefore = syntaxTree(context.state).resolveInner(context.pos, -1);
-      if (nodeBefore.name === 'VariableName') {
-        // match css property name
-        return completeCSSProperties(nodeBefore.from, jsxCSSproperties());
-      }
-      // match css property value
-      else if (nodeBefore.name === 'String') {
-        return completeCSSProperties(nodeBefore.from + 1, jsxCSSvalues);
-      }
-      return null;
-    };
-  }
-
+function buildAutoComplete(scope: any = window, customOptions: Array<{ label: string }> = []) {
   /**
    * @see context https://codemirror.net/docs/ref/#autocomplete.CompletionContext
    */
@@ -165,10 +133,6 @@ export interface InputCodeProps extends ReactCodeMirrorProps {
    * 启用 ESLint
    */
   enableESLint?: boolean;
-  /**
-   * 启动 JSX CSS 编辑器模式
-   */
-  enableJSXCSS?: boolean;
 }
 
 export function InputCode({
@@ -180,16 +144,15 @@ export function InputCode({
   showLineNumbers,
   showFoldGutter,
   enableESLint = false,
-  enableJSXCSS = false,
   ...rest
 }: InputCodeProps) {
   const globalJavaScriptCompletions = useMemo(() => {
     // 格式化补全的选项值，原始格式参考 https://codemirror.net/docs/ref/#autocomplete.Completion
     const options = autoCompleteOptions ? autoCompleteOptions.map((str) => ({ label: str })) : [];
     return javascriptLanguage.data.of({
-      autocomplete: buildAutoComplete(autoCompleteContext, options, enableJSXCSS),
+      autocomplete: buildAutoComplete(autoCompleteContext, options),
     });
-  }, [autoCompleteContext, autoCompleteOptions, enableJSXCSS]);
+  }, [autoCompleteContext, autoCompleteOptions]);
   const extensions = [javascript({ jsx: true }), globalJavaScriptCompletions];
   if (enableESLint) {
     extensions.push(lintGutter(), linter(esLint(new eslint.Linter(), eslintConfig)));
@@ -202,7 +165,7 @@ export function InputCode({
         <CodeMirror
           extensions={extensions}
           basicSetup={codeSetup}
-          placeholder={`'//输入 ${enableJSXCSS ? 'css' : 'javascript'} 代码'`}
+          placeholder="//输入 javascript 代码"
           {...rest}
         />
       </Box>
@@ -211,7 +174,7 @@ export function InputCode({
   );
 }
 
-function useInputCode({
+export function useInputCode({
   shape,
   status,
   showLineNumbers,
