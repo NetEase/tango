@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.3](https://github.com/netease/tango/compare/@music163/tango-ui@1.4.2...@music163/tango-ui@1.4.3) (2024-08-16)
+
+### Bug Fixes
+
+- CodeInput 支持 jsx css 代码补全 ([#198](https://github.com/netease/tango/issues/198)) ([6de5488](https://github.com/netease/tango/commit/6de54884b50d683c74d695a8c13184dc0ce8d3c4))
+
 ## [1.4.2](https://github.com/netease/tango/compare/@music163/tango-ui@1.4.1...@music163/tango-ui@1.4.2) (2024-08-09)
 
 ### Bug Fixes

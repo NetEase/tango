@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.13](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.2.12...@music163/tango-setting-form@1.2.13) (2024-08-16)
+
+### Bug Fixes
+
+- CodeInput 支持 jsx css 代码补全 ([#198](https://github.com/netease/tango/issues/198)) ([6de5488](https://github.com/netease/tango/commit/6de54884b50d683c74d695a8c13184dc0ce8d3c4))
+
 ## [1.2.12](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.2.11...@music163/tango-setting-form@1.2.12) (2024-08-09)
 
 **Note:** Version bump only for package @music163/tango-setting-form
