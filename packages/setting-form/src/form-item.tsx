@@ -246,7 +246,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     const CodeSetter = REGISTERED_FORM_ITEM_MAP['codeSetter']?.config?.component;
 
     const setterNode = isCodeSetter ? (
-      <CodeSetter {...expProps} {...baseComponentProps} />
+      <CodeSetter {...expProps} {...baseComponentProps} {...setterProps} />
     ) : (
       renderSetter({
         ...expProps,

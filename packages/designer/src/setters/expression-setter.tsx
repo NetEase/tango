@@ -4,7 +4,15 @@ import { Dropdown, Button } from 'antd';
 import { isValidExpressionCode } from '@music163/tango-core';
 import { getValue, IVariableTreeNode, noop } from '@music163/tango-helpers';
 import { CloseCircleFilled, MenuOutlined } from '@ant-design/icons';
-import { Panel, InputCode, Action, DragPanel, PopOutOutlined } from '@music163/tango-ui';
+import {
+  Panel,
+  InputCode,
+  Action,
+  DragPanel,
+  PopOutOutlined,
+  InputCodeProps,
+  InputStyleCode,
+} from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { VariableTree } from '../components';
@@ -43,6 +51,10 @@ export interface ExpressionSetterProps extends FormItemComponentProps<string> {
   autoCompleteOptions?: string[];
   allowClear?: boolean;
   showOptionsDropDown?: boolean;
+  /**
+   * 表达式类型指定为 css object
+   */
+  expressionType?: 'cssObject';
 }
 
 export function ExpressionSetter(props: ExpressionSetterProps) {
@@ -51,12 +63,13 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     modalTitle,
     modalTip,
     autoCompleteOptions,
-    placeholder = '在这里输入JS代码',
+    placeholder = '在这里输入代码',
     value: valueProp,
     status,
     allowClear = true,
     newStoreTemplate,
     showOptionsDropDown = true,
+    expressionType,
   } = props;
   // const codeValue = getCodeOfWrappedCode(valueProp);
   const [inputValue, setInputValue] = useState(valueProp);
@@ -79,10 +92,12 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
   const sandbox = useSandboxQuery();
   const evaluateContext = sandbox.window;
 
+  const InputCodeComponent = expressionType === 'cssObject' ? InputStyleCode : InputCode;
+
   return (
     <Box className="ExpressionSetter">
       {/* 同时支持下拉框展示 */}
-      <InputCode
+      <InputCodeComponent
         placeholder={placeholder}
         suffix={
           <Box css={suffixStyle}>
@@ -121,6 +136,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
               autoCompleteOptions={autoCompleteOptions}
               newStoreTemplate={newStoreTemplate}
               value={inputValue}
+              expressionType={expressionType}
               onOk={(value) => {
                 change(value);
               }}
@@ -141,7 +157,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
   );
 }
 
-export interface ExpressionPopoverProps {
+export interface ExpressionPopoverProps extends InputCodeProps {
   title?: string;
   subTitle?: string;
   placeholder?: string;
@@ -154,6 +170,10 @@ export interface ExpressionPopoverProps {
    * 新建 store 的模板代码
    */
   newStoreTemplate?: string;
+  /**
+   * 表达式类型指定为 css object
+   */
+  expressionType?: 'cssObject';
   children?: React.ReactNode;
 }
 
@@ -168,10 +188,12 @@ export function ExpressionPopover({
   autoCompleteOptions,
   newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
   children,
+  expressionType,
 }: ExpressionPopoverProps) {
   const [exp, setExp] = useState(value ?? defaultValue);
   const [error, setError] = useState('');
   const workspace = useWorkspace();
+  const InputCodeComponent = expressionType === 'cssObject' ? InputStyleCode : InputCode;
 
   const selectNodePath = workspace.selectSource.selected[0]?.codeId;
 
@@ -207,7 +229,7 @@ export function ExpressionPopover({
       body={
         <Box display="flex" flexDirection="column">
           <Box p="m">
-            <InputCode
+            <InputCodeComponent
               shape="inset"
               minHeight="56px"
               maxHeight="160px"

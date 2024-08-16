@@ -174,7 +174,7 @@ export function InputCode({
   );
 }
 
-function useInputCode({
+export function useInputCode({
   shape,
   status,
   showLineNumbers,

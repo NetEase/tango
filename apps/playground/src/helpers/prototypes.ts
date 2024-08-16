@@ -132,6 +132,9 @@ export const nativeDomPrototypes = () => {
             title: '样式',
             group: 'style',
             setter: 'expressionSetter',
+            setterProps: {
+              expressionType: 'cssObject',
+            },
           },
           {
             name: 'className',
