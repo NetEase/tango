@@ -105,7 +105,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
               <CloseCircleFilled
                 title="清空"
                 onClick={() => {
-                  change('');
+                  change(undefined);
                 }}
               />
             )}
