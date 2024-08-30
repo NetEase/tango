@@ -365,7 +365,7 @@ function MaterialGrid({ data }: MaterialProps) {
     <IconFont className="material-icon" type={data.icon || 'icon-placeholder'} />
   ) : (
     <Box className="material-icon">
-      <img src={icon} alt={data.name} />
+      <img src={icon} alt={data.name} height="32" />
     </Box>
   );
 
