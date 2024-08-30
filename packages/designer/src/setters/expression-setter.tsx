@@ -296,7 +296,8 @@ export function ExpressionPopover({
                 }
                 let str;
                 if (/^(stores|services)\./.test(node.key)) {
-                  str = `tango.${node.key.replaceAll('.', '?.')}`;
+                  // 从匹配到的第二个点开始替换为 ?.，因为第一个点是 stores 或 services
+                  str = `tango.${node.key.replace(/(?<=\..*?)\./g, '?.')}`;
                 } else {
                   str = `${node.key}`;
                 }
