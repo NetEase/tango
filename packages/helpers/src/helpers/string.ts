@@ -125,3 +125,17 @@ export function parseDndId(str: string): DndIdParsedType {
     id: str,
   };
 }
+
+/**
+ * 替换模板中的变量
+ * @example interpolate('hello {{name}}', { name: 'world' }) -> 'hello world'
+ *
+ * @param template 带模板变量的字符串
+ * @param props 变量字典
+ * @returns 返回替换后的字符串
+ */
+export function interpolate(template: string, props: Record<string, any>) {
+  return template.replace(/\{\{(\w+)\}\}/g, (_match, key) => {
+    return props[key];
+  });
+}
