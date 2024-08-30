@@ -182,6 +182,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
     placeholder,
     docs,
     autoCompleteOptions,
+    template,
     setter: setterProp,
     setterProps,
     defaultValue,
@@ -238,6 +239,7 @@ export function createFormItem(options: IFormItemCreateOptions) {
         modalTitle: title,
         modalTip: tip,
         autoCompleteOptions,
+        template,
       };
     }
 

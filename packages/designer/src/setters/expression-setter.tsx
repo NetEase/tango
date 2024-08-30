@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Text, css } from 'coral-system';
 import { Dropdown, Button } from 'antd';
 import { isValidExpressionCode } from '@music163/tango-core';
-import { getValue, IVariableTreeNode, noop } from '@music163/tango-helpers';
+import { getValue, interpolate, IVariableTreeNode, noop } from '@music163/tango-helpers';
 import { CloseCircleFilled, MenuOutlined } from '@ant-design/icons';
 import {
   Panel,
@@ -34,6 +34,19 @@ export const jsonValueValidate = (value: string) => {
   }
 };
 
+/**
+ * 拼装回调函数
+ * @param value 回调函数体
+ * @param template 回调函数模板
+ * @returns
+ */
+export function getCallbackValue(value: string, template?: string) {
+  if (!value) {
+    return;
+  }
+  return template ? interpolate(template, { content: value }) : `() => {\n  ${value}\n}`;
+}
+
 const suffixStyle = css`
   display: flex;
   align-items: center;
@@ -63,6 +76,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
     modalTitle,
     modalTip,
     autoCompleteOptions,
+    template,
     placeholder = '在这里输入代码',
     value: valueProp,
     status,
@@ -105,7 +119,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
               <CloseCircleFilled
                 title="清空"
                 onClick={() => {
-                  change('');
+                  change(undefined);
                 }}
               />
             )}
@@ -134,6 +148,7 @@ export function ExpressionSetter(props: ExpressionSetterProps) {
               subTitle={modalTip}
               placeholder={placeholder}
               autoCompleteOptions={autoCompleteOptions}
+              template={template}
               newStoreTemplate={newStoreTemplate}
               value={inputValue}
               expressionType={expressionType}
@@ -167,6 +182,10 @@ export interface ExpressionPopoverProps extends InputCodeProps {
   dataSource?: IVariableTreeNode[];
   autoCompleteOptions?: string[];
   /**
+   * 值的模板，一般用于定义函数模板
+   */
+  template?: string;
+  /**
    * 新建 store 的模板代码
    */
   newStoreTemplate?: string;
@@ -186,6 +205,7 @@ export function ExpressionPopover({
   value,
   dataSource,
   autoCompleteOptions,
+  template,
   newStoreTemplate = CODE_TEMPLATES.newStoreTemplate,
   children,
   expressionType,
@@ -245,19 +265,18 @@ export function ExpressionPopover({
               autoCompleteOptions={autoCompleteOptions}
             />
             {error ? (
-              <Text color="red" fontSize="12px" as="p">
+              <Text color="red" fontSize="12px" as="div">
                 出错了！输入的表达式存在语法错误，请修改后再提交！
               </Text>
             ) : null}
-            {subTitle && (
-              <Text fontSize="12px" color="text3" as="p">
-                {subTitle}
+            <Box fontSize="12px" color="text2">
+              <Text display="block">说明：</Text>
+              {subTitle && <Text display="block">{subTitle}</Text>}
+              <Text display="block">
+                你可以在上面的代码输入框里输入常规的 javascript 代码，还可以直接使用 jsx
+                代码，但需要符合该属性的接受值定义。
               </Text>
-            )}
-            <Text fontSize="12px" color="text3" as="p">
-              说明：你可以在上面的代码输入框里输入常规的 javascript 代码，还可以直接使用 jsx
-              代码，但需要符合该属性的接受值定义。
-            </Text>
+            </Box>
           </Box>
           <Panel
             title="从变量列表中选中"
@@ -296,7 +315,11 @@ export function ExpressionPopover({
                 }
                 let str;
                 if (/^(stores|services)\./.test(node.key)) {
-                  str = `tango.${node.key.replaceAll('.', '?.')}`;
+                  // 从匹配到的第二个点开始替换为 ?.，因为第一个点是 stores 或 services
+                  str = `tango.${node.key.replace(/(?<=\..*?)\./g, '?.')}`;
+                  if (node.type === 'function') {
+                    str = getCallbackValue(`${str}();`, template);
+                  }
                 } else {
                   str = `${node.key}`;
                 }

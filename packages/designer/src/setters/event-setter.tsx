@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { css, Box, Text } from 'coral-system';
-import { AutoComplete } from 'antd';
+import { AutoComplete, Input } from 'antd';
 import { ActionSelect } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { Dict, wrapCode } from '@music163/tango-helpers';
-import { ExpressionPopover } from './expression-setter';
+import { ExpressionPopover, getCallbackValue } from './expression-setter';
 import { value2code } from '@music163/tango-core';
 
 enum EventAction {
@@ -31,7 +31,7 @@ export type EventSetterProps = FormItemComponentProps<string>;
  * 事件监听函数绑定器
  */
 export function EventSetter(props: EventSetterProps) {
-  const { value, onChange, modalTitle } = props;
+  const { value, onChange, modalTitle, modalTip, template } = props;
   const [type, setType] = useState<EventAction>(); // 事件类型
   const [temp, setTemp] = useState(''); // 二级暂存值
   const { actionVariables, routeOptions } = useWorkspaceData();
@@ -59,7 +59,9 @@ export function EventSetter(props: EventSetterProps) {
         label: (
           <ExpressionPopover
             title={modalTitle}
+            subTitle={modalTip}
             value={value}
+            template={template}
             onOk={(nextValue) => {
               handleChange(nextValue);
             }}
@@ -74,30 +76,34 @@ export function EventSetter(props: EventSetterProps) {
       { label: '打开弹窗', value: EventAction.OpenModal },
       { label: '关闭弹窗', value: EventAction.CloseModal },
     ],
-    [modalTitle, value, actionVariables, handleChange],
+    [modalTitle, value, actionVariables, template, handleChange],
   );
 
   const onAction = (key: string) => {
     setType(key as EventAction); // 记录事件类型
     setTemp(''); // 重置二级选项值
 
-    switch (key) {
-      case EventAction.ConsoleLog:
-        handleChange('(...args) => console.log(...args)');
-        break;
-      case EventAction.NoAction:
-        handleChange(undefined);
-        break;
-      default:
-        break;
+    if (key === EventAction.NoAction) {
+      handleChange(undefined);
+      return;
     }
   };
 
-  const actionText = getActionText(type, temp, code);
-
   return (
     <Box css={wrapperStyle}>
-      <ActionSelect options={options} onSelect={onAction} text={actionText} />
+      <ActionSelect options={options} onSelect={onAction} defaultText="请选择动作类型" />
+      {type === EventAction.ConsoleLog && (
+        <Input
+          placeholder="输入 Console.log 日志内容"
+          value={temp}
+          onChange={(e) => setTemp(e.target.value)}
+          onBlur={() => {
+            if (temp) {
+              handleChange(getExpressionValue(type, temp));
+            }
+          }}
+        />
+      )}
       {type === EventAction.NavigateTo && (
         <AutoComplete
           placeholder="选择或输入页面路由"
@@ -142,25 +148,15 @@ export function EventSetter(props: EventSetterProps) {
 }
 
 const handlerMap: Dict = {
-  [EventAction.OpenModal]: 'openModal',
-  [EventAction.CloseModal]: 'closeModal',
-  [EventAction.NavigateTo]: 'navigateTo',
+  [EventAction.ConsoleLog]: 'console.log',
+  [EventAction.OpenModal]: 'tango.openModal',
+  [EventAction.CloseModal]: 'tango.closeModal',
+  [EventAction.NavigateTo]: 'tango.navigateTo',
 };
-
-function getActionText(type: EventAction, temp: string, fallbackCode: string) {
-  let text;
-  if (handlerMap[type]) {
-    text = getExpressionValue(type, temp);
-  } else if (fallbackCode) {
-    text = fallbackCode;
-  }
-  text = text || '请选择';
-  return text;
-}
 
 function getExpressionValue(type: EventAction, value = '') {
   const handler = handlerMap[type];
   if (handler) {
-    return `() => tango.${handler}("${value}")`;
+    return getCallbackValue(`${handler}("${value}");`);
   }
 }

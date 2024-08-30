@@ -34,17 +34,17 @@ export const ComponentsPopover = observer(
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       workspace.componentPrototypes.get(selectedNode?.name) ?? ({} as IComponentPrototype);
 
-    // 推荐使用的子组件
-    const insertedList = useMemo(
-      () =>
-        Array.isArray(prototype?.childrenName)
-          ? prototype?.childrenName
-          : [prototype?.childrenName].filter(Boolean),
-      [prototype?.childrenName],
-    );
-
-    // 推荐使用的代码片段
-    const siblingList = useMemo(() => prototype?.siblingNames ?? [], [prototype.siblingNames]);
+    const recommendedList = useMemo(() => {
+      if (type === 'inner') {
+        return prototype?.childrenName
+          ? Array.isArray(prototype?.childrenName)
+            ? prototype.childrenName
+            : [prototype.childrenName]
+          : [];
+      }
+      // 默认推荐使用相同类型的组件作为兄弟节点
+      return prototype.siblingNames || [prototype.name];
+    }, [prototype.childrenName, prototype.siblingNames, prototype.name, type]);
 
     const tipsTextMap = useMemo(
       () => ({
@@ -82,22 +82,15 @@ export const ComponentsPopover = observer(
       const menuList = JSON.parse(JSON.stringify(designer.menuData));
 
       const commonList = menuList['common'] ?? [];
-      if (commonList?.length && siblingList?.length) {
-        commonList.unshift({
-          title: '代码片段',
-          items: siblingList,
-        });
-      }
-
-      if (commonList?.length && insertedList?.length) {
+      if (commonList?.length && recommendedList.length) {
         commonList.unshift({
           title: '推荐使用',
-          items: insertedList,
+          items: recommendedList,
         });
       }
 
       return menuList;
-    }, [insertedList, siblingList, designer.menuData]);
+    }, [recommendedList, designer.menuData]);
 
     const innerTypeProps =
       // 手动触发 适用于 点击添加组件

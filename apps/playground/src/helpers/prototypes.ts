@@ -200,6 +200,13 @@ const prototypes: Dict<IComponentPrototype> = {
         title: 'd',
         setter: 'textSetter',
       },
+      {
+        name: 'onClick',
+        title: '点击事件',
+        setter: 'eventSetter',
+        template: '(e) => {\n  {{content}}\n}',
+        tip: '回调参数说明：e 为事件对象',
+      },
     ],
   },
   Columns: {

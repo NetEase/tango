@@ -89,6 +89,11 @@ export interface IComponentProp<T = any> {
    */
   autoCompleteOptions?: string[];
   /**
+   * value 的模板，一般用于函数类型的属性，便于 setter 用来拼装返回值
+   * @example "(arg1, arg2, arg3) => {  {{content}}}"
+   */
+  template?: string;
+  /**
    * 设置器
    */
   setter?: string;
