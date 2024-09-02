@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.14](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.2.13...@music163/tango-setting-form@1.2.14) (2024-09-02)
+
+### Bug Fixes
+
+- add prop value template & fix components popover ([#201](https://github.com/netease/tango/issues/201)) ([c4e1ed6](https://github.com/netease/tango/commit/c4e1ed67f55deb17dae740559602cd0adcfc8eb4))
+
 ## [1.2.13](https://github.com/netease/tango/compare/@music163/tango-setting-form@1.2.12...@music163/tango-setting-form@1.2.13) (2024-08-16)
 
 ### Bug Fixes

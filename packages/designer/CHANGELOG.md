@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.5](https://github.com/netease/tango/compare/@music163/tango-designer@1.4.4...@music163/tango-designer@1.4.5) (2024-09-02)
+
+### Bug Fixes
+
+- add prop value template & fix components popover ([#201](https://github.com/netease/tango/issues/201)) ([c4e1ed6](https://github.com/netease/tango/commit/c4e1ed67f55deb17dae740559602cd0adcfc8eb4))
+
 ## [1.4.4](https://github.com/netease/tango/compare/@music163/tango-designer@1.4.3...@music163/tango-designer@1.4.4) (2024-08-16)
 
 ### Bug Fixes
