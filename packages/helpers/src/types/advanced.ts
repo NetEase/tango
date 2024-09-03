@@ -26,7 +26,7 @@ export interface IOptionItem<T = string> {
   /**
    * 显示的文本
    */
-  label: string;
+  label?: string;
   /**
    * 图标
    */
