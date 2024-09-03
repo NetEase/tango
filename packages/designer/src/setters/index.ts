@@ -5,14 +5,14 @@ import { CssSetter } from './css-setter';
 import { DateRangeSetter, DateSetter, TimeRangeSetter } from './date-setter';
 import { EnumSetter } from './enum-setter';
 import { EventSetter } from './event-setter';
-import { ExpressionSetter } from './expression-setter';
+import { CodeSetter } from './code-setter';
 import { JSONSetter } from './json-setter';
 import { JsxSetter } from './jsx-setter';
 import { ListSetter } from './list-setter';
 import { ModelSetter } from './model-setter';
 import { OptionSetter } from './option-setter';
 import { PickerSetter } from './picker-setter';
-import { RenderSetter, TableCellSetter, TableExpandableSetter } from './render-setter';
+import { RenderSetter } from './render-setter';
 import { RouterSetter } from './router-setter';
 import {
   SpacingSetter,
@@ -49,7 +49,7 @@ export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
   {
     name: 'codeSetter',
     alias: ['expSetter', 'expressionSetter'],
-    component: ExpressionSetter,
+    component: CodeSetter,
     type: 'code',
     validate: codeValidate,
   },
@@ -126,19 +126,9 @@ export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
     component: PickerSetter,
   },
   {
-    name: 'renderPropsSetter',
+    name: 'renderSetter',
+    alias: ['renderPropsSetter'],
     component: RenderSetter,
-    type: 'code',
-    validate: codeValidate,
-  },
-  {
-    name: 'tableCellSetter',
-    component: TableCellSetter,
-    type: 'code',
-  },
-  {
-    name: 'tableExpandableSetter',
-    component: TableExpandableSetter,
     type: 'code',
     validate: codeValidate,
   },

@@ -10,15 +10,23 @@ export type MousePoint = {
   y: number;
 };
 
-export type OptionType = {
+/**
+ * @deprecated 使用 IOptionItem 代替
+ */
+export type OptionType = IOptionItem<any>;
+
+/**
+ * 列表项
+ */
+export interface IOptionItem<T = string> {
   /**
    * 值
    */
-  value: any;
+  value: T;
   /**
    * 显示的文本
    */
-  label?: string;
+  label: string;
   /**
    * 图标
    */
@@ -28,10 +36,18 @@ export type OptionType = {
    */
   tip?: string;
   /**
-   * 关联的导入
+   * 自定义渲染函数，仅用于 renderSetter
+   */
+  render?: string;
+  /**
+   * 自定义渲染函数的 body（可以用来和 template 配合），仅用于 renderSetter
+   */
+  renderBody?: string;
+  /**
+   * 关联的导入，仅用于 renderSetter
    */
   relatedImports?: string[];
-};
+}
 
 /**
  * 变量树节点类型

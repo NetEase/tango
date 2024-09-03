@@ -231,9 +231,14 @@ export function createFormItem(options: IFormItemCreateOptions) {
 
     // FIXME: 重新考虑这段代码的位置，外置这个逻辑
     if (
-      ['codeSetter', 'expressionSetter', 'expSetter', 'actionSetter', 'eventSetter'].includes(
-        setter,
-      )
+      [
+        'codeSetter',
+        'expressionSetter',
+        'expSetter',
+        'actionSetter',
+        'eventSetter',
+        'renderSetter',
+      ].includes(setter)
     ) {
       expProps = {
         modalTitle: title,

@@ -2,7 +2,7 @@
  * 物料描述类型
  */
 
-import { OptionType } from './advanced';
+import { IOptionItem } from './advanced';
 import { PartialRecord } from './base';
 
 /**
@@ -113,7 +113,7 @@ export interface IComponentProp<T = any> {
   /**
    * 配置项的可选值，setterProps.options 的简写
    */
-  options?: OptionType[];
+  options?: IOptionItem[];
   /**
    * 是否禁用变量绑定
    */
