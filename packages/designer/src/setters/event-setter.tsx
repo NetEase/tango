@@ -5,7 +5,7 @@ import { ActionSelect } from '@music163/tango-ui';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { useWorkspace, useWorkspaceData } from '@music163/tango-context';
 import { Dict, wrapCode } from '@music163/tango-helpers';
-import { ExpressionPopover, getCallbackValue } from './expression-setter';
+import { ExpressionPopover, getCallbackValue } from './code-setter';
 import { value2code } from '@music163/tango-core';
 
 enum EventAction {

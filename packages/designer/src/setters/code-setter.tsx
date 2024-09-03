@@ -58,7 +58,7 @@ const suffixStyle = css`
   }
 `;
 
-export interface ExpressionSetterProps extends FormItemComponentProps<string> {
+export interface CodeSetterProps extends FormItemComponentProps<string> {
   modalTitle?: string;
   modalTip?: string;
   autoCompleteOptions?: string[];
@@ -70,7 +70,7 @@ export interface ExpressionSetterProps extends FormItemComponentProps<string> {
   expressionType?: 'cssObject';
 }
 
-export function ExpressionSetter(props: ExpressionSetterProps) {
+export function CodeSetter(props: CodeSetterProps) {
   const {
     onChange,
     modalTitle,

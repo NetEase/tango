@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { Radio, RadioProps, Tooltip } from 'antd';
-import type { OptionType } from '@music163/tango-helpers';
+import type { IOptionItem } from '@music163/tango-helpers';
 import { FormItemComponentProps } from '@music163/tango-setting-form';
 import { IconFont } from '@music163/tango-ui';
 
 interface ChoiceSetterProps {
-  options?: OptionType[];
+  options?: IOptionItem[];
 }
 
 export function ChoiceSetter({

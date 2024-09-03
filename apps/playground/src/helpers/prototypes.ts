@@ -48,7 +48,6 @@ const Snippet3ColumnLayout: IComponentPrototype = {
   icon: 'icon-column-3',
   type: 'snippet',
   package: '@music163/antd',
-  // FIXME: Column 组件 需要更新为 defineComponent
   initChildren: `
   <Columns columns={12}>
     <Column colSpan={4}>
@@ -169,6 +168,32 @@ const prototypes: Dict<IComponentPrototype> = {
   Snippet2ColumnLayout,
   Snippet3ColumnLayout,
   SnippetButtonGroup,
+  Section: {
+    ...basePrototypes['Section'],
+    props: [
+      // ...(basePrototypes['Section'].props as any),
+      {
+        name: 'title',
+        title: '标题',
+        setter: 'textSetter',
+      },
+      {
+        name: 'extra',
+        title: '额外内容',
+        setter: 'renderSetter',
+        options: [
+          {
+            label: '按钮组',
+            value: 'ButtonGroup',
+            renderBody:
+              '<ButtonGroup><Button>button1</Button><Button>button2</Button></ButtonGroup>',
+            relatedImports: ['ButtonGroup', 'Button'],
+          },
+        ],
+        template: '(v) => {\n  return {{content}};\n}',
+      },
+    ],
+  },
   Box: {
     name: 'Box',
     title: '盒子',
@@ -206,6 +231,25 @@ const prototypes: Dict<IComponentPrototype> = {
         setter: 'eventSetter',
         template: '(e) => {\n  {{content}}\n}',
         tip: '回调参数说明：e 为事件对象',
+      },
+      {
+        name: 'renderFoo',
+        title: 'foo自定义渲染',
+        setter: 'renderSetter',
+        options: [
+          {
+            label: '占位空间',
+            value: 'Box',
+            render: '() => <Box>test</Box>',
+            relatedImports: ['Box'],
+          },
+          {
+            label: '占位文本',
+            value: 'Text',
+            render: '() => <Text>text</Text>',
+            relatedImports: ['Text'],
+          },
+        ],
       },
     ],
   },
