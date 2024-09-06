@@ -90,12 +90,15 @@ export const useWorkspaceData = () => {
       key: prefix,
       selectable: false,
       showAddButton: true,
-      children: Object.entries(file.serviceFunctions || {}).map(([key, value]) => ({
-        title: value.description || key,
-        key: [prefix, key].join('.'),
-        type: 'function',
-        showRemoveButton: true,
-      })),
+      children: Object.entries(file.serviceFunctions || {}).map(([key, value]) => {
+        const title = value.description ? `${key}(${value.description})` : key;
+        return {
+          title,
+          key: [prefix, key].join('.'),
+          type: 'function',
+          showRemoveButton: true,
+        };
+      }),
     });
   });
 
