@@ -377,13 +377,16 @@ export default defineServices({
   add: {
     url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
     method: 'post',
+    description: '新增用户'
   },
   update: {
     url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users',
     method: 'post',
+    description: '更新用户'
   },
   delete: {
     url: 'https://nei.hz.netease.com/api/apimock-v2/c45109399a1d33d83e32a59984b25b00/api/users?id=1',
+    description: '删除用户'
   },
 });
 `;

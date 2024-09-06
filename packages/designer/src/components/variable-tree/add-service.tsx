@@ -88,6 +88,10 @@ export function AddServiceForm({
       >
         <Input placeholder="请输入数据服务调用名称" disabled={disabled || isModifyMode} />
       </Form.Item>
+      {/* 备注 */}
+      <Form.Item label="备注" name="description">
+        <Input placeholder="请输入备注信息" />
+      </Form.Item>
       <Form.Item label="路径" name="url" rules={[{ required: true, type: 'url' }]}>
         <Input placeholder="请输入数据服务调用名称" disabled={disabled || isModifyMode} />
       </Form.Item>

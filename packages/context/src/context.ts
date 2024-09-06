@@ -90,8 +90,8 @@ export const useWorkspaceData = () => {
       key: prefix,
       selectable: false,
       showAddButton: true,
-      children: Object.keys(file.serviceFunctions || {}).map((key) => ({
-        title: key,
+      children: Object.entries(file.serviceFunctions || {}).map(([key, value]) => ({
+        title: value?.description ?? key,
         key: [prefix, key].join('.'),
         type: 'function',
         showRemoveButton: true,
