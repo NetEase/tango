@@ -91,7 +91,7 @@ export const useWorkspaceData = () => {
       selectable: false,
       showAddButton: true,
       children: Object.entries(file.serviceFunctions || {}).map(([key, value]) => ({
-        title: value?.description ?? key,
+        title: value.description || key,
         key: [prefix, key].join('.'),
         type: 'function',
         showRemoveButton: true,
