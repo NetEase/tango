@@ -26,3 +26,4 @@ export * from './tag-select';
 export * from './popover';
 export * from './drag-panel';
 export * from './context-action';
+export * from './classname-input';
