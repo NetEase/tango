@@ -26,6 +26,7 @@ import {
   FlexDirectionSetter,
 } from './style-setter';
 import { ChoiceSetter } from './choice-setter';
+import { ClassNameSetter } from './classname-setter';
 import { isValidExpressionCode } from '@music163/tango-core';
 
 const codeValidate: IFormItemCreateOptions['validate'] = (value, field) => {
@@ -52,6 +53,10 @@ export const BUILT_IN_SETTERS: IFormItemCreateOptions[] = [
     component: CodeSetter,
     type: 'code',
     validate: codeValidate,
+  },
+  {
+    name: 'classNameSetter',
+    component: ClassNameSetter,
   },
   {
     name: 'radioGroupSetter',
