@@ -46,7 +46,7 @@
     "eslint-linter-browserify": "^8.51.0",
     "react-draggable": "^4.4.5",
     "react-json-view": "^1.21.3",
-    "react-monaco-editor-lite": "^1.3.11"
+    "react-monaco-editor-lite": "^1.3.16"
   },
   "publishConfig": {
     "access": "public",
