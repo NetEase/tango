@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.5](https://github.com/netease/tango/compare/@music163/tango-ui@1.4.4...@music163/tango-ui@1.4.5) (2024-09-09)
+
+### Bug Fixes
+
+- add classNameSetter and classNameInput ([#207](https://github.com/netease/tango/issues/207)) ([55602fc](https://github.com/netease/tango/commit/55602fc961b5c20d923891ce13d7a51588bd047f))
+
 ## [1.4.4](https://github.com/netease/tango/compare/@music163/tango-ui@1.4.3...@music163/tango-ui@1.4.4) (2024-09-02)
 
 ### Bug Fixes

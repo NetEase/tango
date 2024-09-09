@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/netease/tango/compare/@music163/tango-helpers@1.2.3...@music163/tango-helpers@1.2.4) (2024-09-09)
+
+### Bug Fixes
+
+- renderSetter with template ([#202](https://github.com/netease/tango/issues/202)) ([ea96872](https://github.com/netease/tango/commit/ea9687226123c839f7a9e001b4c01aa8315a135d))
+
 ## [1.2.3](https://github.com/netease/tango/compare/@music163/tango-helpers@1.2.2...@music163/tango-helpers@1.2.3) (2024-09-02)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.10](https://github.com/netease/tango/compare/@music163/tango-context@1.1.9...@music163/tango-context@1.1.10) (2024-09-09)
+
+### Bug Fixes
+
+- service support set description field ([#206](https://github.com/netease/tango/issues/206)) ([79f9a8c](https://github.com/netease/tango/commit/79f9a8c1791424f35f194ab2a9aa7c263ef39f40))
+
 ## [1.1.9](https://github.com/netease/tango/compare/@music163/tango-context@1.1.8...@music163/tango-context@1.1.9) (2024-09-02)
 
 **Note:** Version bump only for package @music163/tango-context

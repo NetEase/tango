@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.6](https://github.com/netease/tango/compare/@music163/tango-designer@1.4.5...@music163/tango-designer@1.4.6) (2024-09-09)
+
+### Bug Fixes
+
+- add classNameSetter and classNameInput ([#207](https://github.com/netease/tango/issues/207)) ([55602fc](https://github.com/netease/tango/commit/55602fc961b5c20d923891ce13d7a51588bd047f))
+- renderSetter with template ([#202](https://github.com/netease/tango/issues/202)) ([ea96872](https://github.com/netease/tango/commit/ea9687226123c839f7a9e001b4c01aa8315a135d))
+- service support set description field ([#206](https://github.com/netease/tango/issues/206)) ([79f9a8c](https://github.com/netease/tango/commit/79f9a8c1791424f35f194ab2a9aa7c263ef39f40))
+
 ## [1.4.5](https://github.com/netease/tango/compare/@music163/tango-designer@1.4.4...@music163/tango-designer@1.4.5) (2024-09-02)
 
 ### Bug Fixes
