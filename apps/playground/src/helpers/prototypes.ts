@@ -138,7 +138,7 @@ export const nativeDomPrototypes = () => {
           {
             name: 'className',
             title: '类名',
-            setter: 'textSetter',
+            setter: 'classNameSetter',
           },
           {
             name: 'id',
@@ -191,6 +191,12 @@ const prototypes: Dict<IComponentPrototype> = {
           },
         ],
         template: '(v) => {\n  return {{content}};\n}',
+      },
+      {
+        name: 'className',
+        title: '类名',
+        setter: 'classNameSetter',
+        group: 'style',
       },
     ],
   },
@@ -250,6 +256,12 @@ const prototypes: Dict<IComponentPrototype> = {
             relatedImports: ['Text'],
           },
         ],
+      },
+      {
+        name: 'className',
+        title: '类名',
+        setter: 'classNameSetter',
+        group: 'style',
       },
     ],
   },
