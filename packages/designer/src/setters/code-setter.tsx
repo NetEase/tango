@@ -225,7 +225,6 @@ export function ExpressionPopover({
 
   const sandbox = useSandboxQuery();
   const evaluateContext: any = sandbox.window;
-  const evaluateContext: any = sandbox.window;
 
   const handleExpInputChange = (val: string) => {
     setExp(val?.trim());
