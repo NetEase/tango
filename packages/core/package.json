@@ -31,7 +31,7 @@
     "@music163/tango-helpers": "^1.2.4",
     "@types/babel__generator": "^7.6.7",
     "@types/babel__traverse": "^7.20.6",
-    "mobx": "6.12.3",
+    "mobx": "6.13.2",
     "path-browserify": "^1.0.1"
   },
   "peerDependencies": {
