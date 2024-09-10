@@ -23,7 +23,7 @@ import {
 import { JsxViewNode } from './view-node';
 import {
   IFileConfig,
-  ITangoViewNodeData,
+  IViewNodeData,
   IImportDeclarationPayload,
   InsertChildPositionType,
   IImportSpecifierSourceData,
@@ -57,8 +57,8 @@ function buildImportMap(importedModules: ImportDeclarationDataType) {
  * 将节点列表转换为 tree data 嵌套数组
  * @param list
  */
-function nodeListToTreeData(list: ITangoViewNodeData[]) {
-  const map: Record<string, ITangoViewNodeData> = {};
+function nodeListToTreeData(list: IViewNodeData[]) {
+  const map: Record<string, IViewNodeData> = {};
 
   list.forEach((item) => {
     // 如果不存在，则初始化
@@ -85,7 +85,7 @@ function nodeListToTreeData(list: ITangoViewNodeData[]) {
  */
 export class JsViewFile extends AbstractJsFile implements IViewFile {
   // 解析为树结构的 jsxNodes 数组
-  _nodesTree: ITangoViewNodeData[] = [];
+  _nodesTree: IViewNodeData[] = [];
   /**
    * 通过导入组件名查找组件来自的包
    */
