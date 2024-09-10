@@ -10,7 +10,6 @@
     "skipLibCheck": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "suppressImplicitAnyIndexErrors": true,
     "ignoreDeprecations": "5.0",
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": false,
