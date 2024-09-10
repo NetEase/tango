@@ -23,9 +23,9 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.23.6",
-    "@babel/preset-react": "^7.23.3",
-    "@babel/preset-typescript": "^7.23.3",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
     "@types/jest": "^29.5.7",
@@ -58,7 +58,7 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "styled-components": "^5.3.6",
-    "typedoc": "^0.25.4",
+    "typedoc": "^0.26.7",
     "typescript": "^5.3.3"
   },
   "engines": {

@@ -16,7 +16,7 @@
   "dependencies": {
     "@music163/tango-setting-form": "*",
     "@music163/tango-ui": "*",
-    "mobx": "6.12.3",
+    "mobx": "6.13.2",
     "mobx-react-lite": "4.0.7"
   },
   "devDependencies": {
