@@ -42,7 +42,7 @@ export const SettingFormObject = observer(
             note={name}
             tip={tip}
             docs={docs}
-            checked={!!subModel.values ?? !!defaultValue}
+            checked={!!subModel.values || !!defaultValue}
             onCheck={(checked) => {
               const nextValue = checked ? {} : undefined;
               parent.setValue(name, nextValue);
