@@ -1,4 +1,4 @@
-import type { Engine } from '@music163/tango-core';
+import type { AbstractCodeWorkspace, Engine } from '@music163/tango-core';
 import { IVariableTreeNode, createContext } from '@music163/tango-helpers';
 
 export interface ITangoEngineContext {
@@ -21,8 +21,12 @@ const [TangoEngineProvider, useTangoEngine] = createContext<ITangoEngineContext>
 
 export { TangoEngineProvider };
 
+/**
+ * 获取 CodeWorkspace 实例
+ * @returns
+ */
 export const useWorkspace = () => {
-  return useTangoEngine()?.engine.workspace;
+  return useTangoEngine()?.engine.workspace as AbstractCodeWorkspace;
 };
 
 export const useDesigner = () => {

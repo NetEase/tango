@@ -1,5 +1,4 @@
 import * as t from '@babel/types';
-import { action, computed, makeObservable, observable } from 'mobx';
 import { isNil } from '@music163/tango-helpers';
 import {
   code2ast,
@@ -9,16 +8,16 @@ import {
   addImportDeclaration,
   updateImportDeclaration,
 } from '../helpers';
-import { TangoFile } from './file';
 import { IFileConfig, IImportSpecifierData, ImportDeclarationDataType } from '../types';
-import { IWorkspace } from './interfaces';
+import { AbstractWorkspace } from './abstract-workspace';
+import { AbstractFile } from './abstract-file';
 
 /**
- * JS 模块实现规范
+ * JS 文件抽象基类
  * - ast 操纵类方法，统一返回 this，支持外层链式调用
  * - observable state 统一用 _foo 格式，并提供 getter 方法
  */
-export class TangoModule extends TangoFile {
+export abstract class AbstractJsFile extends AbstractFile {
   ast: t.File;
 
   /**
@@ -31,7 +30,7 @@ export class TangoModule extends TangoFile {
    */
   importList: ImportDeclarationDataType;
 
-  constructor(workspace: IWorkspace, props: IFileConfig, isSyncCode = true) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig, isSyncCode = true) {
     super(workspace, props, isSyncCode);
   }
 
@@ -135,26 +134,5 @@ export class TangoModule extends TangoFile {
   _analysisAst() {
     const { imports } = traverseFile(this.ast);
     this.importList = imports;
-  }
-}
-
-/**
- * 普通 JS 文件
- */
-export class TangoJsModule extends TangoModule {
-  constructor(workspace: IWorkspace, props: IFileConfig) {
-    super(workspace, props, false);
-    this.update(props.code, true, false);
-
-    makeObservable(this, {
-      _code: observable,
-      _cleanCode: observable,
-      isError: observable,
-      errorMessage: observable,
-      code: computed,
-      cleanCode: computed,
-      update: action,
-      updateAst: action,
-    });
   }
 }

@@ -1,12 +1,12 @@
 import { traverseEntryFile } from '../helpers';
 import { IFileConfig } from '../types';
-import { IWorkspace } from './interfaces';
-import { TangoModule } from './module';
+import { AbstractJsFile } from './abstract-js-file';
+import { AbstractWorkspace } from './abstract-workspace';
 
-export class AppEntryModule extends TangoModule {
+export class JsAppEntryFile extends AbstractJsFile {
   routerType: string;
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this.update(props.code, true, false);
   }

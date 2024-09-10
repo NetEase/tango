@@ -294,7 +294,7 @@ export function ExpressionPopover({
               height="100%"
               showViewButton
               dataSource={dataSource || expressionVariables}
-              appContext={evaluateContext['tango']}
+              appContext={evaluateContext?.['tango']}
               getStoreNames={() => Object.keys(workspace.storeModules)}
               serviceModules={serviceModules}
               getServiceData={(serviceKey) => {

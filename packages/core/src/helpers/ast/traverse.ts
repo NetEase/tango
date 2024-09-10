@@ -28,7 +28,7 @@ import { isDefineService, isDefineStore, isTangoVariable } from '../assert';
 import type {
   IRouteData,
   IStorePropertyData,
-  ITangoViewNodeData,
+  IViewNodeData,
   IImportDeclarationPayload,
   InsertChildPositionType,
   IImportSpecifierData,
@@ -1234,7 +1234,7 @@ export function cloneJSXElement(node: t.JSXElement, overrideProps?: Dict) {
 export function traverseViewFile(ast: t.File, idGenerator: IdGenerator) {
   const imports: Record<string, IImportSpecifierData[]> = {};
   const importedModules: Dict<IImportDeclarationPayload | IImportDeclarationPayload[]> = {};
-  const nodes: Array<ITangoViewNodeData<t.JSXElement>> = [];
+  const nodes: Array<IViewNodeData<t.JSXElement>> = [];
   const cloneAst = t.cloneNode(ast, true, true);
   const cleanAst = clearTrackingData(cloneAst);
   const variables: string[] = []; // 使用的 tango 变量

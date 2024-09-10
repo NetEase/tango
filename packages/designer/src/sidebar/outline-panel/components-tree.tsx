@@ -4,7 +4,7 @@ import { Box, css } from 'coral-system';
 import { IconFont } from '@music163/tango-ui';
 import { EyeOutlined, EyeInvisibleOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { observer, useWorkspace } from '@music163/tango-context';
-import { DropMethod, ITangoViewNodeData } from '@music163/tango-core';
+import { DropMethod, IViewNodeData } from '@music163/tango-core';
 import { noop, parseDndId } from '@music163/tango-helpers';
 import { useSandboxQuery } from '../../context';
 import { buildQueryBySlotId } from '../../helpers';
@@ -65,7 +65,7 @@ const filedNames = {
   children: 'children',
 };
 
-const getNodeKeys = (data: ITangoViewNodeData[]) => {
+const getNodeKeys = (data: IViewNodeData[]) => {
   const ids: string[] = [];
   data?.forEach((node) => {
     ids.push(node.id);
@@ -76,7 +76,7 @@ const getNodeKeys = (data: ITangoViewNodeData[]) => {
   return ids;
 };
 
-const OutlineTreeNode: React.FC<{ node: ITangoViewNodeData } & ComponentsTreeProps> = observer(
+const OutlineTreeNode: React.FC<{ node: IViewNodeData } & ComponentsTreeProps> = observer(
   ({ node, showToggleVisibleIcon, actionItems }) => {
     const workspace = useWorkspace();
     const sandboxQuery = useSandboxQuery();
@@ -142,7 +142,7 @@ export const ComponentsTree: React.FC<ComponentsTreeProps> = observer(
       workspace.selectSource.selected.map((item) => item.id),
     );
     const file = workspace.activeViewModule;
-    const nodesTree = (file?.nodesTree ?? []) as ITangoViewNodeData[];
+    const nodesTree = (file?.nodesTree ?? []) as IViewNodeData[];
     const [expandedKeys, setExpandedKeys] = useState(getNodeKeys(nodesTree));
     const [contextMenuOpen, setContextMenuOpen] = useState(false);
 

@@ -20,18 +20,19 @@ import {
   addImportDeclarationLegacy,
   updateImportDeclarationLegacy,
 } from '../helpers';
-import { TangoNode } from './node';
+import { JsxViewNode } from './view-node';
 import {
   IFileConfig,
-  ITangoViewNodeData,
+  IViewNodeData,
   IImportDeclarationPayload,
   InsertChildPositionType,
   IImportSpecifierSourceData,
   ImportDeclarationDataType,
   IImportSpecifierData,
 } from '../types';
-import { IViewFile, IWorkspace } from './interfaces';
-import { TangoModule } from './module';
+import { AbstractWorkspace } from './abstract-workspace';
+import { IViewFile } from './interfaces';
+import { AbstractJsFile } from './abstract-js-file';
 
 /**
  * 导入信息转为 变量名->来源 的 map 结构
@@ -56,8 +57,8 @@ function buildImportMap(importedModules: ImportDeclarationDataType) {
  * 将节点列表转换为 tree data 嵌套数组
  * @param list
  */
-function nodeListToTreeData(list: ITangoViewNodeData[]) {
-  const map: Record<string, ITangoViewNodeData> = {};
+function nodeListToTreeData(list: IViewNodeData[]) {
+  const map: Record<string, IViewNodeData> = {};
 
   list.forEach((item) => {
     // 如果不存在，则初始化
@@ -82,9 +83,9 @@ function nodeListToTreeData(list: ITangoViewNodeData[]) {
 /**
  * 视图模块
  */
-export class TangoViewModule extends TangoModule implements IViewFile {
+export class JsViewFile extends AbstractJsFile implements IViewFile {
   // 解析为树结构的 jsxNodes 数组
-  _nodesTree: ITangoViewNodeData[] = [];
+  _nodesTree: IViewNodeData[] = [];
   /**
    * 通过导入组件名查找组件来自的包
    */
@@ -108,7 +109,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
   /**
    * 节点列表 <id, Node>
    */
-  private _nodes: Map<string, TangoNode>;
+  private _nodes: Map<string, JsxViewNode>;
   /**
    * 导入的模块
    * @deprecated
@@ -127,7 +128,7 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     return this.ast;
   }
 
-  constructor(workspace: IWorkspace, props: IFileConfig) {
+  constructor(workspace: AbstractWorkspace, props: IFileConfig) {
     super(workspace, props, false);
     this._nodes = new Map();
     this.idGenerator = new IdGenerator({ prefix: props.filename });
@@ -176,8 +177,10 @@ export class TangoViewModule extends TangoModule implements IViewFile {
     this._codeIdList = [];
 
     nodes.forEach((cur) => {
-      const node = new TangoNode({
-        ...cur,
+      const node = new JsxViewNode({
+        id: cur.id,
+        component: cur.component,
+        rawNode: cur.rawNode,
         file: this,
       });
       this._nodes.set(cur.id, node);
