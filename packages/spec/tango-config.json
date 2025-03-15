@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://unpkg.com/tango-spec/tango-config.json",
+  "$id": "https://fastly.jsdelivr.net/npm/tango-spec/tango-config.json",
   "title": "JSON Schema of tango.config.json",
   "description": "tango.config.json is a configuration file for NetEase Tango apps",
   "type": "object",
